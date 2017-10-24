@@ -11,7 +11,7 @@ use_setuptools()
 from setuptools import setup
 
 VERSION = """
-1.0.2
+1.0.3
 """.strip()
 
 DESCRIPTION = """
