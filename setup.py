@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 
-import os
-import pip
 import sys
 from os.path import join, dirname
 
@@ -48,12 +46,4 @@ setup(name         = 'zoomba',
       zip_safe     = True,
       package_dir  = {'' : 'src'},
       packages     = ['Zoomba']
-      license      = '',
-      keywords     = 'bots',
-      platforms    = 'any',
-      install_requires=[
-      ],
-      classifiers  = CLASSIFIERS,
-      zip_safe     = True,
-      packages     = ['zoomba']
       )
