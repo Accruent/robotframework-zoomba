@@ -48,4 +48,12 @@ setup(name         = 'zoomba',
       zip_safe     = True,
       package_dir  = {'' : 'src'},
       packages     = ['Zoomba']
+      license      = '',
+      keywords     = 'bots',
+      platforms    = 'any',
+      install_requires=[
+      ],
+      classifiers  = CLASSIFIERS,
+      zip_safe     = True,
+      packages     = ['zoomba']
       )
