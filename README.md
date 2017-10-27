@@ -5,7 +5,17 @@ Zoomba
 Introduction
 -----------
 
-Extending the abilities of the Robot Framework test automation libraries
+Zoomba is a collection of libraries spanning UI, REST API, and SOAP API automation using [Robot Framework](https://github.com/robotframework/robotframework).
+These libraries are extensions of existing libraries [Selenium2Library](https://github.com/robotframework/Selenium2Library), [Requests](https://github.com/bulkan/robotframework-requests), 
+and [Suds](https://github.com/ombre42/robotframework-sudslibrary). 
+
+Zoomba adds a significant amount of data validation support for REST and SOAP APIs, and extends functionality for typical GUI automation.
+
+As a team beginning the journey of automation with Robot Framework - we found that there was some time spent ramping up our libraries and 
+Zoomba aims to make that process easier for new projects.
+
+See the Keyword Documentation for the [API](docs/APILibraryDocumentation.html), [SOAP](docs/SOAPLibrarydocumentation.html), 
+or [GUI](docs/GUILibraryDocumentation.html) library for more specific information about the functionality. 
 
 
 Getting Started
@@ -28,9 +38,11 @@ pip install .
 Contributing
 ------------
 
-To make contributions please refer to [CONTRIBUTING.rst](CONTRIBUTING.rst)
+To make contributions please refer to the [CONTRIBUTING](CONTRIBUTING.rst) guidelines.
+
 
 Support
 --------
+General Robot Framework questions should be directed to the [community forum](https://groups.google.com/forum/#!forum/robotframework-users).
 
-Contact the team at `robosquad@accruent.com` with specific requests or questions!
+Contact the team at `robosquad@accruent.com` with specific requests or questions regarding the Zoomba libraries!
