@@ -14,7 +14,7 @@ Zoomba adds a significant amount of data validation support for REST and SOAP AP
 As a team beginning the journey of automation with Robot Framework - we found that there was some time spent ramping up our libraries and 
 Zoomba aims to make that process easier for new projects.
 
-See the Keyword Documentation for the [API](docs/APILibraryDocumentation.html), [SOAP](docs/SOAPLibrarydocumentation.html), 
+See the **Keyword Documentation** for the [API](docs/APILibraryDocumentation.html), [SOAP](docs/SOAPLibrarydocumentation.html), 
 or [GUI](docs/GUILibraryDocumentation.html) library for more specific information about the functionality. 
 
 
