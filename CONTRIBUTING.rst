@@ -37,5 +37,5 @@ In order to best create a consistent library look and feel please follow the fol
 - `PEP-8` python standards
 - Documentation strings on any new method including parameters, parameter types, and a short method description.
 - General user readability over condensed code
-- New methods should have new Unit Tests added to the test file
+- New methods should have new Unit Tests added to the appropriate test file
 
