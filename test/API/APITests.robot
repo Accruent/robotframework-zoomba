@@ -140,6 +140,8 @@ Key By Key Validator Positive Tests
     [Template]      Key By Key Validator Testing Template
 #   Actual Dictionary           Expected Dictionary     Expected Unmatched Keys    Ignored Keys     Unmatched Keys
     ${dict_actual_8}            ${dict_expected_8}      ${empty_list}
+    ${dict_actual_9}            ${dict_expected_10}     ${unmatched_keys_9}
+    ${dict_actual_9}            ${dict_expected_10}     ${unmatched_keys_10}       cat
 
 Key By Key Validator Positive Tests - Dates
     [Template]      Key By Key Validator Testing Template
