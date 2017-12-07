@@ -1,6 +1,6 @@
 *** Settings ***
 Documentation   Zoomba API Library Tests
-Library         ../../src/APILibrary.py
+Library         ../../src/Zoomba/APILibrary.py
 Library         Collections
 Variables       ZoombaAPITestsData.py
 
