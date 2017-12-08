@@ -231,7 +231,7 @@ class APILibrary(object):
                                                                       "\nExpected: " + str(value) + \
                                                                       "\nActual: " + str(actual_dictionary[key])
                     for item in value:
-                        if type(item) is unicode or str:
+                        if isinstance(item, unicode) or isinstance(item, str):
                             assert value == actual_dictionary[key],   "Arrays do not match:" + \
                                                                       "\nExpected: " + str(value) + \
                                                                       "\nActual: " + str(actual_dictionary[key])

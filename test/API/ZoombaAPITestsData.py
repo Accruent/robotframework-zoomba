@@ -112,6 +112,17 @@ dict_actual_8 = \
        ]
    }
 
+dict_actual_9 = \
+    {
+        "apple": "cat",
+        "strawberry":
+        [
+            {
+                "dog": "wags",
+                "cat": "meow"
+            }
+        ]
+    }
 # ------------------ List and Dictionary objects for use on Validator Testing ------------------------------------------
 
 dict_expected_1 = \
@@ -252,6 +263,18 @@ dict_expected_9 = \
           "pear",
        ]
    }
+
+dict_expected_10 = \
+{
+    "apple": "cat",
+    "strawberry": [
+        {
+            "dog": 9854,
+            "cat": "purr"
+        }
+    ]
+}
+
 keys_list_1 = ["apple", "banana"]
 
 keys_list_2 = ["banana", "pear"]
@@ -273,6 +296,15 @@ unmatched_keys_6 = [('------------------\nDates Not Close Enough\nKey: SomeDate'
 unmatched_keys_7 = [('------------------\nKey: AssignedDate', 'Expected: 2015-12-16T14:21:58Z', 'Actual: 1234-34-45')]
 unmatched_keys_8 = [('------------------\nDates Not Close Enough\nKey: AssignedDate',
                      'Expected: 2015-12-16 14:21:58', 'Actual: 2015-12-16 14:10:58')]
+unmatched_keys_9 = \
+            [
+                ('------------------\nKey: dog', 'Expected: 9854', 'Actual: wags'),
+                ('------------------\nKey: cat', 'Expected: purr', 'Actual: meow')
+            ]
+unmatched_keys_10 = \
+            [
+                ('------------------\nKey: dog', 'Expected: 9854', 'Actual: wags')
+            ]
 # ---------------- Error Messages --------------------------------------------------------------------------------------
 
 not_match1 = "Key(s) Did Not Match:" \
