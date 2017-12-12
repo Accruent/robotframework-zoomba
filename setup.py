@@ -4,12 +4,10 @@ import sys
 from os.path import join, dirname
 
 sys.path.append(join(dirname(__file__), 'src'))
-from ez_setup import use_setuptools
-use_setuptools()
-from setuptools import setup
+from distutils.core import setup
 
 VERSION = """
-1.0.1
+1.1.0
 """.strip()
 
 DESCRIPTION = """
@@ -32,15 +30,14 @@ setup(name         = 'zoomba',
       keywords     = 'Robot Framework',
       platforms    = 'any',
       install_requires= [
-          "robotframework==3.0",
-          "robotframework-requests==0.4.5",
-          "robotframework-selenium2library==1.7.4",
+          "robotframework==3.0.2",
+          "robotframework-requests==0.4.7",
+          "robotframework-selenium2library==3.0.0",
           "robotframework-extendedselenium2library==0.9.1",
-          "robotframework-debuglibrary==0.8",
-          "robotframework-databaselibrary==0.8.1",
-          "robotframework-sudslibrary==0.8",
-          "requests==2.11.1",
-          "selenium==2.53.6"
+          "robotframework-debuglibrary==1.0.2",
+          "robotframework-databaselibrary==1.0.1",
+          "requests==2.18.4",
+          "selenium==3.8.0"
       ],
       classifiers  = CLASSIFIERS,
       zip_safe     = True,
