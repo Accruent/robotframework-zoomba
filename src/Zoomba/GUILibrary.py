@@ -1,4 +1,4 @@
-from Selenium2Library import Selenium2Library
+from SeleniumLibrary import SeleniumLibrary
 from robot.libraries.BuiltIn import BuiltIn
 from robot.libraries.Collections import Collections
 
@@ -6,7 +6,7 @@ zoomba = BuiltIn()
 zoomba_collections = Collections()
 
 
-class GUILibrary(Selenium2Library):
+class GUILibrary(SeleniumLibrary):
     """Zoomba GUI Library
 
     This class inherits from the Selenium2Library Class, and expands it with some commonly used keywords.

@@ -32,10 +32,7 @@ setup(name         = 'zoomba',
       install_requires= [
           "robotframework==3.0.2",
           "robotframework-requests==0.4.7",
-          "robotframework-selenium2library==3.0.0",
-          "robotframework-extendedselenium2library==0.9.1",
-          "robotframework-debuglibrary==1.0.2",
-          "robotframework-databaselibrary==1.0.1",
+          "robotframework-seleniumlibrary==3.0.0",
           "requests==2.18.4",
           "selenium==3.8.0"
       ],
