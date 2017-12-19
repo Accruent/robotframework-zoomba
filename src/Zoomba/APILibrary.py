@@ -244,7 +244,7 @@ class APILibrary(object):
                                                                       "\nActual: " + str(actual_dictionary[key])
                     self.key_by_key_validator(actual_dictionary[key], expected_dictionary[key],
                                               ignored_keys, unmatched_keys_list)
-                elif isinstance(expected_dictionary[key], basestring) and not expected_dictionary[key].isdigit():
+                elif isinstance(expected_dictionary[key], str) and not expected_dictionary[key].isdigit():
                     try:
                         parse(expected_dictionary[key])
                         self.date_string_comparator(value, actual_dictionary[key], key, unmatched_keys_list)

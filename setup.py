@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import sys
 from os.path import join, dirname
@@ -17,7 +17,7 @@ Zoomba
 CLASSIFIERS  = """
 Development Status :: 5 - Production/Stable
 Operating System :: OS Independent
-Programming Language :: Python
+Programming Language :: Python 3
 Topic :: Software Development :: Communication
 """.strip().splitlines()
 
