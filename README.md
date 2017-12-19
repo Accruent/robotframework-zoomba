@@ -34,6 +34,12 @@ you can install Zoomba by running the following from the *root directory*:
 pip install .
 ```
 
+If you do not plan on using SOAP Calls please ignore this section.
+Currently Sudslibrary has been removed from the list of installed packages.
+If you need this section please run the following command.
+```python
+pip install git+https://github.com/metaspace/robotframework-sudslibrary
+```
 
 Contributing
 ------------

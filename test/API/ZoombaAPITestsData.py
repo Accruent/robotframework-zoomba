@@ -373,7 +373,7 @@ no_items_err_1 = "API is returning 1 instead of the expected 2 result(s)."
 
 not_list_err_1 = "TypeError: The response is not a list:" \
                  "\nActual Response:" \
-                 "\n{u'pear': u'fish', u'apple': u'cat', u'banana': u'dog'}"
+                 "\n{'pear': 'fish', 'apple': 'cat', 'banana': 'dog'}"
 
 bad_value_err = "The value for the key you provided doesn't match the response:" \
                 "\nExpected: dog" \
