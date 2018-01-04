@@ -24,22 +24,22 @@ class _ObjectNamespacePlugin(DocumentPlugin):
             context: (string) The Raw WSDL and imported schema.\n
         """
         if self.defaultNamespace is None:
-            start = context.document.find('targetNamespace')
-            firstQuote = int(context.document.find('"', start)) + 1
-            secondQuote = int(context.document.find('"', firstQuote))
+            start = context.document.find(b'targetNamespace')
+            firstQuote = int(context.document.find(b'"', start)) + 1
+            secondQuote = int(context.document.find(b'"', firstQuote))
             self.defaultNamespace = context.document[firstQuote:secondQuote]
-        elif 'tns' not in context.document or 'targetNamespace' not in context.document:
-            documentSplit = context.document.split('xmlns', 1)
-            context.document = documentSplit[0]+'xmlns:tns="'+self.defaultNamespace+'" targetNamespace="' + self.defaultNamespace + '" xmlns'+documentSplit[1]
-            numberOfTypes = context.document.count('type="')
-            startLocation = context.document.find('type="')
+        elif b'tns' not in context.document or b'targetNamespace' not in context.document:
+            documentSplit = context.document.split(b'xmlns', 1)
+            context.document = documentSplit[0]+b'xmlns:tns="'+self.defaultNamespace+b'" targetNamespace="' + self.defaultNamespace + b'" xmlns'+documentSplit[1]
+            numberOfTypes = context.document.count(b'type="')
+            startLocation = context.document.find(b'type="')
             for x in range(numberOfTypes):
-                endType = context.document.find('"', startLocation+len('type="'))
-                if ':' not in context.document[startLocation:endType]:
+                endType = context.document.find(b'"', startLocation+len(b'type="'))
+                if b':' not in context.document[startLocation:endType]:
                     changeType = context.document[startLocation:endType]
-                    changeType = changeType.replace('"', '"tns:')
+                    changeType = changeType.replace(b'"', b'"tns:')
                     context.document = context.document[:startLocation] + changeType + context.document[endType:]
-                startLocation = context.document.find('type="', startLocation+1)
+                startLocation = context.document.find(b'type="', startLocation+1)
 
 
 class SOAPLibrary(object):
