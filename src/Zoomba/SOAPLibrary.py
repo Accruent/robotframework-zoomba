@@ -8,10 +8,11 @@ from SudsLibrary import SudsLibrary
 
 zoomba = BuiltIn()
 
-class _ObjectNSPlugin(DocumentPlugin):
-    """_ObjectNSPlugin
 
-        This class contains a plugin for use in fixing broken WSDLs.\n
+class _ObjectNamespacePlugin(DocumentPlugin):
+    """_ObjectNamespacePlugin
+
+        This class contains a plugin for use in fixing broken WSDL Namespaces.\n
         defaultNamespace: (string) The default namespace found in the primary WSDL\n
 
 
@@ -57,7 +58,7 @@ class SOAPLibrary(object):
             Current supported parameters are:\n
                 set_location: http address\n
         """
-        pluginInstance = _ObjectNSPlugin()
+        pluginInstance = _ObjectNamespacePlugin()
         plugin_client = Client(host+endpoint + '?WSDL', plugins=[pluginInstance])
         suds_library = BuiltIn().get_library_instance("SudsLibrary")
         suds_library._add_client(plugin_client, alias)
@@ -80,7 +81,7 @@ class SOAPLibrary(object):
         if 'set_location' in kwargs:
             suds_library.set_location(kwargs['set_location'])
 
-    def create_soap_session_and_set_location(self, host=None, endpoint=None, alias=None, set_location=None):
+    def create_soap_session_and_set_location(self, host=None, endpoint=None, alias=None, set_location=None, fix=False):
         """ Create Soap Session and Set Location. In addition to the client creation, this keyword sets the location
             as specified.\n
             host: (string) The host url.\n
@@ -90,7 +91,10 @@ class SOAPLibrary(object):
         """
         if set_location is None:
             set_location = host+endpoint
-        self.create_soap_session_and_fix_wsdl(host, endpoint, alias, set_location=set_location)
+        if fix:
+            self.create_soap_session_and_fix_wsdl(host, endpoint, alias, set_location=set_location)
+        else:
+            self.create_soap_session(host, endpoint, alias, set_location=set_location)
 
     def call_soap_method_with_list_object(self, action=None, soap_object=None):
         """ Call Soap Method. Calls soap method with list object \n
@@ -112,7 +116,7 @@ class SOAPLibrary(object):
         received = None
         try:
             received = method(**soap_object)
-        except WebFault, e:
+        except WebFault as e:
             received = e.fault
         return received
 
@@ -151,7 +155,7 @@ def _build_dict_from_response(soap_response=None):
         return soap_response
     new_response = {}
 
-    for index in xrange(len(response_dictionary)):
+    for index in range(len(response_dictionary)):
         key, value = response_dictionary.popitem()
         if isinstance(value, list):
             temp_list = []
@@ -167,6 +171,7 @@ def _build_dict_from_response(soap_response=None):
             new_response[key] = str(value)
     return new_response
 
+
 def _build_wsdl_objects(client=None, request_object=None, object_dict=None):
     """ Build Wsdl Objects. This Keyword utilizes the WSDL to build a wsdl object in a recursive manner.\n
         client: (SudsLibrary._client() instance) The current client session.\n
@@ -174,7 +179,7 @@ def _build_wsdl_objects(client=None, request_object=None, object_dict=None):
         object_dict: (dict) Dictionary containing data to create request_object.\n
 
     """
-    for key, value in object_dict.iteritems():
+    for key, value in object_dict.items():
         if isinstance(value, dict):
             try:
                 temp_object = _wsdl_sub_builder(client, value)
@@ -192,6 +197,7 @@ def _build_wsdl_objects(client=None, request_object=None, object_dict=None):
             request_object.__setattr__(key, temp_list)
         else:
             request_object.__setattr__(key, value)
+
 
 def _wsdl_sub_builder(client=None, object_dict=None):
     """
