@@ -1,12 +1,14 @@
-from Selenium2Library import Selenium2Library
+from SeleniumLibrary import SeleniumLibrary
+from selenium.webdriver.remote.webelement import WebElement
 from robot.libraries.BuiltIn import BuiltIn
+from robot.api import logger
 from robot.libraries.Collections import Collections
 
 zoomba = BuiltIn()
 zoomba_collections = Collections()
 
 
-class GUILibrary(Selenium2Library):
+class GUILibrary(SeleniumLibrary):
     """Zoomba GUI Library
 
     This class inherits from the Selenium2Library Class, and expands it with some commonly used keywords.
@@ -259,3 +261,24 @@ class GUILibrary(Selenium2Library):
         if load_jquery:
             driver.execute_async_script(load_jquery_js, None)
         driver.execute_script(js, source, target)
+
+    def scroll_element_into_view(self, locator):
+        """Scrolls an element from given ``locator`` into view. This keyword was created in robotframework-extendedselenium2library.
+
+        Arguments:
+        - ``locator``: The locator to find requested element. Key attributes for
+                       arbitrary elements are ``id`` and ``name``. See `introduction` for
+                       details about locating elements.
+
+        Examples:
+        | Scroll Element Into View | css=div.class |
+        """
+        if isinstance(locator, WebElement):
+            element = locator
+        else:
+            logger.info("Scrolling element '%s' into view." % locator)
+            element = self._element_find(locator, True, True)
+        script = 'arguments[0].scrollIntoView()'
+        # pylint: disable=no-member
+        self.driver.execute_script(script, element)
+        return element
