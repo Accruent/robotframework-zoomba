@@ -17,7 +17,7 @@ Zoomba
 CLASSIFIERS  = """
 Development Status :: 5 - Production/Stable
 Operating System :: OS Independent
-Programming Language :: Python 3
+Programming Language :: Python :: 3
 Topic :: Software Development :: Communication
 """.strip().splitlines()
 
