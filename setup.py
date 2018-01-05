@@ -38,6 +38,7 @@ setup(name         = 'zoomba',
           "robotframework==3.0.2",
           "robotframework-requests==0.4.7",
           "robotframework-seleniumlibrary==3.0.0",
+          "robotframework-sudslibrary-aljcalandra",
           "requests==2.18.4",
           "selenium==3.8.0"
       ],
