@@ -4,7 +4,10 @@ import sys
 from os.path import join, dirname
 
 sys.path.append(join(dirname(__file__), 'src'))
-from distutils.core import setup
+try:
+    from setuptools import setup
+except ImportError:
+    from distutils.core import setup
 
 VERSION = """
 1.1.0
@@ -39,7 +42,6 @@ setup(name         = 'zoomba',
           "selenium==3.8.0"
       ],
       classifiers  = CLASSIFIERS,
-      zip_safe     = True,
       package_dir  = {'' : 'src'},
       packages     = ['Zoomba']
       )
