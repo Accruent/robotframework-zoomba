@@ -21,7 +21,7 @@ CLASSIFIERS  = """
 Development Status :: 5 - Production/Stable
 Operating System :: OS Independent
 Programming Language :: Python :: 3
-Topic :: Software Development :: Communication
+Topic :: Software Development :: Testing
 """.strip().splitlines()
 
 setup(name         = 'zoomba',
