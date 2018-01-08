@@ -157,9 +157,9 @@ list_expected_1 = \
 list_expected_2 = \
     [
         {
+            "pear": "fish",
             "apple": "elephant",
-            "banana": "dog",
-            "pear": "fish"
+            "banana": "dog"
         }
     ]
 
@@ -348,7 +348,7 @@ not_match_date_3 = "Key(s) Did Not Match:" \
                    "\nActual: 2015-12-16 14:10:58" \
                    "\n\nPlease see differing value(s)"
 
-id_key_err = "KeyError: u'what'"
+id_key_err = "KeyError: 'what'"
 
 id_key_err_2 = "Item was not within the response:" \
                "\n{'pear': 'fish', 'apple': 'elephant', 'banana': 'dog'}"
@@ -361,7 +361,7 @@ top_only_err = "Key(s) Did Not Match:" \
 
 list_dict_err = "Collections not the same length:" \
                 "\nActual length: 3" \
-                "\nExpected length 4"
+                "\nExpected length 5"
 
 only_keys_err_1 = "The value for the key 'apple' doesn't match the response:" \
                   "\nExpected: elephant" \
@@ -373,15 +373,15 @@ no_items_err_1 = "API is returning 1 instead of the expected 2 result(s)."
 
 not_list_err_1 = "TypeError: The response is not a list:" \
                  "\nActual Response:" \
-                 "\n{'pear': 'fish', 'apple': 'cat', 'banana': 'dog'}"
+                 "\n{'apple': 'cat', 'banana': 'dog', 'pear': 'fish'}"
 
 bad_value_err = "The value for the key you provided doesn't match the response:" \
                 "\nExpected: dog" \
                 "\nActual: cat"
 
-bad_key_err = "KeyError: u'The response does not contain the key you provided: mango'"
+bad_key_err = "KeyError: 'The response does not contain the key you provided: mango'"
 
-date_type_err = "TypeError: must be string, not None"
+date_type_err = "TypeError: strptime() argument 1 must be str, not None"
 date_value_err = "ValueError: time data '2015-12-16T14:21:58Z' does not match format '%Y-%m-%dT%H:%M:%S.%fZ'"
 
 empty_resp_err = "The Actual Response is Empty."

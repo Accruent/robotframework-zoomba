@@ -4,7 +4,7 @@ import requests
 
 from RequestsLibrary import RequestsLibrary
 from dateutil.parser import parse
-from requests.packages.urllib3.exceptions import InsecureRequestWarning
+from urllib3.exceptions import InsecureRequestWarning
 from robot.libraries.BuiltIn import BuiltIn
 
 
@@ -100,7 +100,7 @@ class APILibrary(object):
             return: (response object) Returns the request response object, which includes headers, content, etc.\n
         """
         if disable_warnings:
-            requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+            requests.packages.disable_warnings(InsecureRequestWarning)
         requests_lib = RequestsLibrary()
         requests_lib.create_session("postapi", endpoint, headers)
         resp = requests_lib.post_request("postapi", method, data)
@@ -194,7 +194,7 @@ class APILibrary(object):
             return: There is no actual returned output, other than error messages when comparisons fail.\n
         """
         actual_response_dict = json.loads(json_actual_response)
-        if type(number_of_items) is unicode or type(number_of_items) is str:
+        if type(number_of_items) is str:
             number_of_items = number_of_items.upper()
             if number_of_items == "IGNORE":
                 return True
@@ -327,3 +327,4 @@ class APILibrary(object):
                 for key_error in key_error_tuple:
                     keys_error_msg += str(key_error) + "\n"
             assert False, keys_error_msg + "\nPlease see differing value(s)"
+
