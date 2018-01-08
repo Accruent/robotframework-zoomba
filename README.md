@@ -7,7 +7,7 @@ Introduction
 
 Zoomba is a collection of libraries spanning UI, REST API, and SOAP API automation using [Robot Framework](https://github.com/robotframework/robotframework).
 These libraries are extensions of existing libraries [Selenium2Library](https://github.com/robotframework/Selenium2Library), [Requests](https://github.com/bulkan/robotframework-requests), 
-and [Suds](https://github.com/ombre42/robotframework-sudslibrary). 
+and [Suds](https://github.com/aljcalandra/robotframework-sudslibrary)[Original author ombre42].
 
 Zoomba adds a significant amount of data validation support for REST and SOAP APIs, and extends functionality for typical GUI automation.
 
@@ -25,20 +25,13 @@ The Zoomba library is easily installed using the [`setup.py`](setup.py) file in 
 Simply run the following command to install Zoomba and it's dependencies:
 
 ```python
-pip install git+https://git@github.com/Accruent/zoomba
+pip install zoomba
 ```
 
 If you decide to pull the repo locally to make contributions or just want to play around with the code 
 you can install Zoomba by running the following from the *root directory*:
 ```python
 pip install .
-```
-
-If you do not plan on using SOAP Calls please ignore this section.
-Currently Sudslibrary has been removed from the list of installed packages.
-If you need this section please run the following command.
-```python
-pip install git+https://github.com/metaspace/robotframework-sudslibrary
 ```
 
 Contributing
