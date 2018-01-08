@@ -44,7 +44,7 @@ class GUILibrary(SeleniumLibrary):
             self.scroll_to_bottom_of_page()
             self.click_element(locator)
 
-    @keyword('Wait For And Input text')
+    @keyword('Wait For And Input Text')
     def wait_for_and_input_text(self, locator, text):
         """This is a series of chained Selenium keywords, that tries to find a web element first, and then input text.
         If the element fails to typed into, it will scroll to the bottom of the page and try again.\n
