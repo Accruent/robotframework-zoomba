@@ -1,6 +1,6 @@
 *** Settings ***
 Documentation   Zoomba GUI Library Tests
-Library         Zoomba.GUILibrary
+Library         ../../src/Zoomba/GUILibrary.py
 
 *** Test Cases ***
 Wait for Keywords Test

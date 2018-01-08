@@ -2,6 +2,7 @@ from SeleniumLibrary import SeleniumLibrary
 from selenium.webdriver.remote.webelement import WebElement
 from robot.libraries.BuiltIn import BuiltIn
 from robot.api import logger
+from robot.api.deco import keyword
 from robot.libraries.Collections import Collections
 
 zoomba = BuiltIn()
@@ -13,6 +14,7 @@ class GUILibrary(SeleniumLibrary):
 
     This class inherits from the Selenium2Library Class, and expands it with some commonly used keywords.
     """
+    @keyword("Element Value Should Be Equal")
     def element_value_should_be_equal(self, locator, expected_value):
         """Assert that the value attribute of a web element is equal to a given value\n
         locator: (string) A selenium locator(CSS, XPATH, ID, NAME, etc)\n
@@ -21,6 +23,7 @@ class GUILibrary(SeleniumLibrary):
         value = self.get_value(locator)
         zoomba.should_be_equal(value, expected_value)
 
+    @keyword("Element Value Should Not Be Equal")
     def element_value_should_not_be_equal(self, locator, expected_value):
         """Assert that the value attribute of a web element is not equal to a given value\n
         locator: (string) A selenium locator(CSS, XPATH, ID, NAME, etc)\n
@@ -29,6 +32,7 @@ class GUILibrary(SeleniumLibrary):
         value = self.get_value(locator)
         zoomba.should_not_be_equal(value, expected_value)
 
+    @keyword("Wait For And Click Element")
     def wait_for_and_click_element(self, locator):
         """This is a series of chained Selenium keywords, that tries to find a web element first, and then clicks it.
         If the element fails to be clicked, it will scroll to the bottom of the page and try again.\n
@@ -40,6 +44,7 @@ class GUILibrary(SeleniumLibrary):
             self.scroll_to_bottom_of_page()
             self.click_element(locator)
 
+    @keyword('Wait For And Input text')
     def wait_for_and_input_text(self, locator, text):
         """This is a series of chained Selenium keywords, that tries to find a web element first, and then input text.
         If the element fails to typed into, it will scroll to the bottom of the page and try again.\n
@@ -52,6 +57,7 @@ class GUILibrary(SeleniumLibrary):
             self.scroll_to_bottom_of_page()
             self.input_text(locator, text)
 
+    @keyword("Wait For And Select Frame")
     def wait_for_and_select_frame(self, locator):
         """This is a series of chained Selenium keywords, that first waits until an iFrame exists in the page, and then
         selects it.\n
@@ -61,6 +67,7 @@ class GUILibrary(SeleniumLibrary):
         self.wait_until_page_contains_element(locator)
         self.select_frame(locator)
 
+    @keyword("Unselect and Select Frame")
     def unselect_and_select_frame(self, locator):
         """This is a series of chained Selenium keywords, that first unselects the current iFrame, then executes a
         wait for and select frame for a new iFrame.\n
@@ -69,6 +76,7 @@ class GUILibrary(SeleniumLibrary):
         self.unselect_frame()
         self.wait_for_and_select_frame(locator)
 
+    @keyword("Wait For And Select From List")
     def wait_for_and_select_from_list(self, locator, target):
         """This is a series of chained Selenium keywords, that first waits for and focuses on a list element, then
         selects an item(s).\n
@@ -78,6 +86,7 @@ class GUILibrary(SeleniumLibrary):
         self.wait_for_and_focus_on_element(locator)
         self.select_from_list_by_label(locator, target)
 
+    @keyword("Wait For And Select From List By Value")
     def wait_for_and_select_from_list_by_value(self, locator, target):
         """This is a series of chained Selenium keywords, that first waits for and focuses on a list element, then
         selects an item(s) for it using the value attribute of the item(s) web element.\n
@@ -87,6 +96,7 @@ class GUILibrary(SeleniumLibrary):
         self.wait_for_and_focus_on_element(locator)
         self.select_from_list_by_value(locator, target)
 
+    @keyword("Wait For And Select From List By Index")
     def wait_for_and_select_from_list_by_index(self, locator, target):
         """This is a series of chained Selenium keywords, that first waits for and focuses on a list element, then
         selects an item(s) for it using the index of the item(s) web element.\n
@@ -96,6 +106,7 @@ class GUILibrary(SeleniumLibrary):
         self.wait_for_and_focus_on_element(locator)
         self.select_from_list_by_index(locator, target)
 
+    @keyword("Wait For And Mouse Over")
     def wait_for_and_mouse_over(self, locator):
         """This is a series of chained Selenium keywords, that first waits for an element to be visible, then executes a
         mouse over command on it.\n
@@ -104,6 +115,7 @@ class GUILibrary(SeleniumLibrary):
         self.wait_for_and_focus_on_element(locator)
         self.mouse_over(locator)
 
+    @keyword("Wait For And Select Checkbox")
     def wait_for_and_select_checkbox(self, locator):
         """This is a series of chained Selenium keywords, that first waits for an element to be visible, then selects it
         if it's a checkbox.\n
@@ -112,6 +124,7 @@ class GUILibrary(SeleniumLibrary):
         self.wait_for_and_focus_on_element(locator)
         self.select_checkbox(locator)
 
+    @keyword("Wait For And Mouse Over And Click")
     def wait_for_and_mouse_over_and_click(self, locator):
         """This is a series of chained Selenium keywords, that first waits for an element to be visible, executes a
         mouse over command on it, and it finally clicks it.\n
@@ -121,6 +134,7 @@ class GUILibrary(SeleniumLibrary):
         self.mouse_over(locator)
         self.click_element(locator)
 
+    @keyword("Wait For and Focus On Element")
     def wait_for_and_focus_on_element(self, locator):
         """This is a series of chained Selenium keywords, that first waits for an element to be on the DOM, executes
         Focus on it, then it waits for it to be visible.\n
@@ -130,6 +144,7 @@ class GUILibrary(SeleniumLibrary):
         zoomba.wait_until_keyword_succeeds(5, 1, "Focus", locator)
         self.wait_until_element_is_visible(locator)
 
+    @keyword("Wait Until Window Opens")
     def wait_until_window_opens(self, title):
         """This is a series of chained Selenium keywords, used to get the titles of the current browser windows, then
         verify that the provided window title is among them.\n
@@ -138,6 +153,7 @@ class GUILibrary(SeleniumLibrary):
         titles = self.get_window_titles()
         zoomba_collections.list_should_contain_value(titles, title)
 
+    @keyword("Window Should Not Be Open")
     def window_should_not_be_open(self, title):
         """This is a series of chained Selenium keywords, used to check that a window with the title no longer exists.\n
         title: (string) The title of the window you are expecting to be closed.
@@ -145,6 +161,7 @@ class GUILibrary(SeleniumLibrary):
         titles = self.get_window_titles()
         zoomba_collections.list_should_not_contain_value(titles, title)
 
+    @keyword("Wait For And Select Window")
     def wait_for_and_select_window(self, title):
         """This is a series of chained Selenium keywords, used to wait until a window with the title argument exists,
         then it selects that window.\n
@@ -153,12 +170,14 @@ class GUILibrary(SeleniumLibrary):
         zoomba.wait_until_keyword_succeeds(5, 1, "Wait Until Window Opens", title)
         self.select_window(title)
 
+    @keyword("Scroll To Bottom Of Page")
     def scroll_to_bottom_of_page(self):
         """This keyword scrolls down the page 2000 pixels, which is usually enough to get to the bottom of the page
 
         """
         self.execute_javascript("window.scrollTo(0,2000)")
 
+    @keyword("Wait Until Javascript Is Complete")
     def wait_until_javascript_is_complete(self):
         """This keyword polls the jQuery.active flag, to track execution of AJAX requests. The web application needs
         to have jQuery in order for this to work.
@@ -174,6 +193,7 @@ class GUILibrary(SeleniumLibrary):
                 break
             zoomba.sleep("0.5s")
 
+    @keyword("Get Text From Web Elements List")
     def get_text_from_web_elements_list(self, web_elements_list):
         """This keyword extracts the HTML text of a list of web elements, and returns a list.\n
         web_elements_list: (array of selenium web elements) A selenium web element objects list.\n
@@ -185,6 +205,7 @@ class GUILibrary(SeleniumLibrary):
             text_element_list.append(element_text)
         return text_element_list
 
+    @keyword("Get Values From Web Elements List")
     def get_values_from_web_elements_list(self, web_elements_list):
         """This keyword extracts the HTML value of a list of web elements, and returns a list.\n
         web_elements_list: (array of selenium web elements) A selenium web element objects list.\n
@@ -196,6 +217,7 @@ class GUILibrary(SeleniumLibrary):
             value_element_list.append(element_value)
         return value_element_list
 
+    @keyword("Get Vertical Position From Web Elements List")
     def get_vertical_position_from_web_elements_list(self, web_elements_list):
         """This keyword extracts the vertical position in pixels of a list of web elements, and returns a list.\n
         web_elements_list: (array of selenium web elements) A selenium web element objects list.\n
@@ -207,6 +229,7 @@ class GUILibrary(SeleniumLibrary):
             position_element_list.append(element_position)
         return position_element_list
 
+    @keyword("Wait Until Window Closes")
     def wait_until_window_closes(self, title, timeout=5):
         """This is a series of chained Selenium keywords, used to wait until a window with the title no longer exists.\n
         title: (string) The title of the window you are expecting to close.
@@ -214,6 +237,7 @@ class GUILibrary(SeleniumLibrary):
         """
         zoomba.wait_until_keyword_succeeds(timeout, 1, "Window Should Not Be Open", title)
 
+    @keyword("Create Dictionary From Keys And Values Lists")
     def create_dictionary_from_keys_and_values_lists(self, keys, values):
         """This keyword returns a dictionary, given a list of keys and a list of values of the same length.\n
         keys: (array of strings) A list of keys to be assigned to a dictionary.\n
@@ -226,6 +250,7 @@ class GUILibrary(SeleniumLibrary):
         new_dict = dict(zip(keys, values))
         return new_dict
 
+    @keyword("Truncate String")
     def truncate_string(self, string, number_of_characters):
         """Truncates a given string to a certain amount of the given number of characters parameter.\n
         string: (string) Original String
@@ -235,6 +260,7 @@ class GUILibrary(SeleniumLibrary):
         truncated_string = string[0:number_of_characters] if len(string) > number_of_characters else string
         return truncated_string
 
+    @keyword("Drag And Drop By JS")
     def drag_and_drop_by_js(self, source, target, load_jquery=True):
         """Loads a JS helper function to simulate a drag and drop event. jQuery is necessary for the function to work.\n
         This method is a workaround for the Selenium 2 Library issue present in this issue:
@@ -248,7 +274,7 @@ class GUILibrary(SeleniumLibrary):
         | Drag And Drop by JS | source | target | | # Move source over target. |
         | Drag And Drop by JS | source | target | False | # Move source over target. (No JQuery is loaded to the page) |
         """
-        s2l = BuiltIn().get_library_instance('Zoomba.GUILibrary')
+        s2l = zoomba.get_library_instance("GUILibrary")
         driver = s2l._current_browser()
         driver.set_script_timeout(30)
 
@@ -262,6 +288,7 @@ class GUILibrary(SeleniumLibrary):
             driver.execute_async_script(load_jquery_js, None)
         driver.execute_script(js, source, target)
 
+    @keyword("Scroll Element Into View")
     def scroll_element_into_view(self, locator):
         """Scrolls an element from given ``locator`` into view. This keyword was created in robotframework-extendedselenium2library.
 
