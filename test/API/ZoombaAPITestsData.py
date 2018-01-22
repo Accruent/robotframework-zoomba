@@ -293,7 +293,10 @@ unmatched_keys_5 = [('Date time parsing failed for key: SomeDate',
                      'Expected: 2015-12-16T14:21:58Z', 'Actual: 1234-34-45')]
 unmatched_keys_6 = [('------------------\nDates Not Close Enough\nKey: SomeDate',
                      'Expected: 2015-12-16 14:21:58', 'Actual: 2015-12-16 18:21:58')]
-unmatched_keys_7 = [('------------------\nKey: AssignedDate', 'Expected: 2015-12-16T14:21:58Z', 'Actual: 1234-34-45')]
+unmatched_keys_7 = [('------------------\nKey: AssignedDate', 'Actual Date Not Correct Format:',
+                     'Expected Formats: %Y-%m-%dT%H:%M:%S', '                  %Y-%m-%dT%H:%M:%SZ',
+                     '                  %Y-%m-%dT%H:%M:%S.%f', '                  %Y-%m-%dT%H:%M:%S.%fZ',
+                     'Date: 1234-34-45')]
 unmatched_keys_8 = [('------------------\nDates Not Close Enough\nKey: AssignedDate',
                      'Expected: 2015-12-16 14:21:58', 'Actual: 2015-12-16 14:10:58')]
 unmatched_keys_9 = \
@@ -305,6 +308,10 @@ unmatched_keys_10 = \
             [
                 ('------------------\nKey: dog', 'Expected: 9854', 'Actual: wags')
             ]
+unmatched_keys_11 = [('------------------\nKey: SomeDate', 'Date Not Correct Format:',
+                     'Expected Formats: %Y-%m-%dT%H:%M:%S', '                  %Y-%m-%dT%H:%M:%SZ',
+                     '                  %Y-%m-%dT%H:%M:%S.%f', '                  %Y-%m-%dT%H:%M:%S.%fZ',
+                     'Date: 1234-34-45')]
 # ---------------- Error Messages --------------------------------------------------------------------------------------
 
 not_match1 = "Key(s) Did Not Match:" \
@@ -336,8 +343,12 @@ not_match_date_1 = "Key(s) Did Not Match:" \
 not_match_date_2 = "Key(s) Did Not Match:" \
                    "\n------------------" \
                    "\nKey: AssignedDate" \
-                   "\nExpected: 2015-12-16T14:21:58Z" \
-                   "\nActual: 1234-34-45" \
+                   "\nActual Date Not Correct Format:" \
+                   "\nExpected Formats: %Y-%m-%dT%H:%M:%S" \
+                   "\n                  %Y-%m-%dT%H:%M:%SZ" \
+                   "\n                  %Y-%m-%dT%H:%M:%S.%f" \
+                   "\n                  %Y-%m-%dT%H:%M:%S.%fZ" \
+                   "\nDate: 1234-34-45" \
                    "\n\nPlease see differing value(s)"
 
 not_match_date_3 = "Key(s) Did Not Match:" \
@@ -346,6 +357,17 @@ not_match_date_3 = "Key(s) Did Not Match:" \
                    "\nKey: AssignedDate" \
                    "\nExpected: 2015-12-16 14:21:58" \
                    "\nActual: 2015-12-16 14:10:58" \
+                   "\n\nPlease see differing value(s)"
+
+not_match_date_4 = "Key(s) Did Not Match:" \
+                   "\n------------------" \
+                   "\nKey: AssignedDate" \
+                   "\nExpected Date Not Correct Format:" \
+                   "\nExpected Formats: %Y-%m-%dT%H:%M:%S" \
+                   "\n                  %Y-%m-%dT%H:%M:%SZ" \
+                   "\n                  %Y-%m-%dT%H:%M:%S.%f" \
+                   "\n                  %Y-%m-%dT%H:%M:%S.%fZ" \
+                   "\nDate: 1234-11-30" \
                    "\n\nPlease see differing value(s)"
 
 id_key_err = "KeyError: 'what'"
@@ -382,7 +404,6 @@ bad_value_err = "The value for the key you provided doesn't match the response:"
 bad_key_err = "KeyError: 'The response does not contain the key you provided: mango'"
 
 date_type_err = "TypeError: strptime() argument 1 must be str, not None"
-date_value_err = "ValueError: time data '2015-12-16T14:21:58Z' does not match format '%Y-%m-%dT%H:%M:%S.%fZ'"
 
 empty_resp_err = "The Actual Response is Empty."
 
@@ -390,6 +411,20 @@ bad_array_err_1 = "Arrays do not match:" \
                 "\nExpected: ['str', 'aw', 'ber', 'ry']" \
                 "\nActual: ['dog', 'cat', 'bird', 'elephant']"
 # -------------- Date Methods Test Data --------------------------------------------------------------------------------
+json_wo_example = """
+    {
+        "AssignedDate": "2015-12-16T14:10:58Z",
+        "NoneField": null,
+        "CreateDate": "2015-12-16T14:21:58Z",
+        "CreatedByEmail": "",
+        "CreatedByExternalId": "360API_ExtID_User318",
+        "CreatedByFirstName": "MyCompanyOnlyRight",
+        "CreatedById": "318",
+        "CreatedByLastName": "GETWOUserWith",
+        "CreatedByPhone": "(444) 444-4444"
+    }
+"""
+
 json_wo_date_none = """
     {
         "AssignedDate": null,
@@ -446,6 +481,18 @@ wo_example = \
     "CreatedByPhone": "(444) 444-4444"
 }
 
+wo_bad_date_example = \
+{
+    "AssignedDate": "1234-11-30",
+    "NoneField": None,
+    "CreateDate": "2015-12-16T14:21:58Z",
+    "CreatedByEmail": "",
+    "CreatedByExternalId": "360API_ExtID_User318",
+    "CreatedByFirstName": "MyCompanyOnlyRight",
+    "CreatedById": "318",
+    "CreatedByLastName": "GETWOUserWith",
+    "CreatedByPhone": "(444) 444-4444"
+}
 
 wo_example_none = \
 {

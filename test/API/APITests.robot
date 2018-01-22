@@ -58,6 +58,7 @@ Validate Response Date Negative Tests
     ${not_match_date_1}     ${json_wo_date_none}    ${wo_example}
     ${not_match_date_2}     ${json_wo_date_bad}     ${wo_example}
     ${not_match_date_3}     ${json_wo_date_long}    ${wo_example}
+    ${not_match_date_4}     ${json_wo_example}      ${wo_bad_date_example}
 
 Validate Response List Positive Tests
     [Template]      Validate Response Contains Expected Response
@@ -169,7 +170,6 @@ Date String Comparator Negative Tests
 #   Error String        Expected Date           Actual Date             Expected Unmatched Keys     Unmatched Keys
     ${date_type_err}    ${NONE}                 2015-12-16T14:21:58Z    ${empty_list}               ${empty_list}
     ${date_type_err}    2015-12-16T14:21:58Z    ${NONE}                 ${empty_list}               ${empty_list}
-    ${date_value_err}   2015-12-16T14:21:58Z    1234-34-45              ${empty_list}               ${empty_list}
 
 *** Keywords ***
 Validate Response Contains Expected Response Errors Template
