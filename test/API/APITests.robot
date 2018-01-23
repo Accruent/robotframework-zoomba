@@ -58,6 +58,7 @@ Validate Response Date Negative Tests
     ${not_match_date_1}     ${json_wo_date_none}    ${wo_example}
     ${not_match_date_2}     ${json_wo_date_bad}     ${wo_example}
     ${not_match_date_3}     ${json_wo_date_long}    ${wo_example}
+    ${not_match_date_4}     ${json_wo_example}      ${wo_bad_date_example}
 
 Validate Response List Positive Tests
     [Template]      Validate Response Contains Expected Response
@@ -159,17 +160,17 @@ Key By Key Validator Negative Tests
 
 Date String Comparator Positive Tests
     [Template]      Date String Comparator Template
-#   Expected Date            Actual Date             Expected Unmatched Keys     Unmatched Keys
-    2015-12-16T14:21:58Z    2015-12-16T14:21:58Z    ${empty_list}               ${empty_list}
-    2015-12-16T14:12:58Z    2015-12-16T14:21:58Z    ${empty_list}               ${empty_list}
-    2015-12-16T14:21:58Z    2015-12-16T18:21:58Z    ${unmatched_keys_6}         ${empty_list}
+#   Expected Date            Actual Date               Expected Unmatched Keys     Unmatched Keys
+    2015-12-16T14:21:58Z    2015-12-16T14:21:58Z       ${empty_list}               ${empty_list}
+    2015-12-16T14:12:58Z    2015-12-16T14:21:58Z       ${empty_list}               ${empty_list}
+    2015-12-16T14:12:58Z    2015-12-16T14:21:58.05Z    ${empty_list}               ${empty_list}
+    2015-12-16T14:21:58Z    2015-12-16T18:21:58Z       ${unmatched_keys_6}         ${empty_list}
 
 Date String Comparator Negative Tests
     [Template]      Date String Comparator Errors Template
 #   Error String        Expected Date           Actual Date             Expected Unmatched Keys     Unmatched Keys
     ${date_type_err}    ${NONE}                 2015-12-16T14:21:58Z    ${empty_list}               ${empty_list}
     ${date_type_err}    2015-12-16T14:21:58Z    ${NONE}                 ${empty_list}               ${empty_list}
-    ${date_value_err}   2015-12-16T14:21:58Z    1234-34-45              ${empty_list}               ${empty_list}
 
 *** Keywords ***
 Validate Response Contains Expected Response Errors Template
