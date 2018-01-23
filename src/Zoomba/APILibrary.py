@@ -248,7 +248,7 @@ class APILibrary(object):
                     try:
                         parse(expected_dictionary[key])
                         self.date_string_comparator(value, actual_dictionary[key], key, unmatched_keys_list)
-                    except (ValueError, TypeError) as e:
+                    except (ValueError, TypeError):
                         if value == actual_dictionary[key]:
                             continue
                         else:
