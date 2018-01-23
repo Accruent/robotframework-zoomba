@@ -160,10 +160,11 @@ Key By Key Validator Negative Tests
 
 Date String Comparator Positive Tests
     [Template]      Date String Comparator Template
-#   Expected Date            Actual Date             Expected Unmatched Keys     Unmatched Keys
-    2015-12-16T14:21:58Z    2015-12-16T14:21:58Z    ${empty_list}               ${empty_list}
-    2015-12-16T14:12:58Z    2015-12-16T14:21:58Z    ${empty_list}               ${empty_list}
-    2015-12-16T14:21:58Z    2015-12-16T18:21:58Z    ${unmatched_keys_6}         ${empty_list}
+#   Expected Date            Actual Date               Expected Unmatched Keys     Unmatched Keys
+    2015-12-16T14:21:58Z    2015-12-16T14:21:58Z       ${empty_list}               ${empty_list}
+    2015-12-16T14:12:58Z    2015-12-16T14:21:58Z       ${empty_list}               ${empty_list}
+    2015-12-16T14:12:58Z    2015-12-16T14:21:58.05Z    ${empty_list}               ${empty_list}
+    2015-12-16T14:21:58Z    2015-12-16T18:21:58Z       ${unmatched_keys_6}         ${empty_list}
 
 Date String Comparator Negative Tests
     [Template]      Date String Comparator Errors Template
