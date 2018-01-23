@@ -275,24 +275,10 @@ class APILibrary(object):
         if expected_date == actual_date:
             return
         else:
-            try:
-                expected_utc = datetime.datetime.strptime(expected_date, '%Y-%m-%dT%H:%M:%S')
-                actual_utc = datetime.datetime.strptime(actual_date, '%Y-%m-%dT%H:%M:%S')
+            expected_utc = _date_format(expected_date, key, unmatched_keys_list, "Expected")
+            actual_utc = _date_format(actual_date, key, unmatched_keys_list, "Actual")
+            if expected_utc and actual_utc:
                 self.date_comparator(expected_utc, actual_utc, key, unmatched_keys_list)
-            except ValueError:
-                try:
-                    expected_utc = datetime.datetime.strptime(expected_date, '%Y-%m-%dT%H:%M:%SZ')
-                    actual_utc = datetime.datetime.strptime(actual_date, '%Y-%m-%dT%H:%M:%SZ')
-                    self.date_comparator(expected_utc, actual_utc, key, unmatched_keys_list)
-                except ValueError:
-                    try:
-                        expected_utc = datetime.datetime.strptime(expected_date, '%Y-%m-%dT%H:%M:%S.%f')
-                        actual_utc = datetime.datetime.strptime(actual_date, '%Y-%m-%dT%H:%M:%S.%f')
-                        self.date_comparator(expected_utc, actual_utc, key, unmatched_keys_list)
-                    except ValueError:
-                        expected_utc = datetime.datetime.strptime(expected_date, '%Y-%m-%dT%H:%M:%S.%fZ')
-                        actual_utc = datetime.datetime.strptime(actual_date, '%Y-%m-%dT%H:%M:%S.%fZ')
-                        self.date_comparator(expected_utc, actual_utc, key, unmatched_keys_list)
 
     def date_comparator(self, expected_date, actual_date, key, unmatched_keys_list, margin_type="minutes", margin_amt=10):
         """This method compares two date values, given a certain margin type(minutes, seconds, etc),
@@ -309,7 +295,7 @@ class APILibrary(object):
         """
         arg_dict = {margin_type: margin_amt}
         margin = datetime.timedelta(**arg_dict)
-        if expected_date - margin <= actual_date <= expected_date + margin:
+        if expected_date - margin <= actual_date and actual_date <= expected_date + margin:
             return
         else:
             unmatched_keys_list.append(("------------------\n" + "Dates Not Close Enough\nKey: " + str(key),
@@ -328,3 +314,36 @@ class APILibrary(object):
                     keys_error_msg += str(key_error) + "\n"
             assert False, keys_error_msg + "\nPlease see differing value(s)"
 
+
+def _date_format(date_string, key, unmatched_keys_list, date_type, date_format=None):
+    formatted_date = None
+    if date_format is None:
+        try:
+            formatted_date = datetime.datetime.strptime(date_string, '%Y-%m-%dT%H:%M:%S')
+        except ValueError:
+            try:
+                formatted_date = datetime.datetime.strptime(date_string, '%Y-%m-%dT%H:%M:%SZ')
+            except ValueError:
+                try:
+                    formatted_date = datetime.datetime.strptime(date_string, '%Y-%m-%dT%H:%M:%S.%f')
+                except ValueError:
+                    try:
+                        formatted_date = datetime.datetime.strptime(date_string, '%Y-%m-%dT%H:%M:%S.%fZ')
+                    except ValueError:
+                        unmatched_keys_list.append(("------------------\nKey: " + str(key),
+                                                    date_type + " Date Not Correct Format:",
+                                                    "Expected Formats: %Y-%m-%dT%H:%M:%S",
+                                                    "                  %Y-%m-%dT%H:%M:%SZ",
+                                                    "                  %Y-%m-%dT%H:%M:%S.%f",
+                                                    "                  %Y-%m-%dT%H:%M:%S.%fZ",
+                                                    "Date: " + str(date_string)))
+
+    else:
+        try:
+            formatted_date = datetime.datetime.strptime(date_string, date_format)
+        except ValueError:
+            unmatched_keys_list.append(("------------------\nKey: " + str(key),
+                                        date_type + " Date Not Correct Format:",
+                                        "Expected Format: " + date_format,
+                                        "Date: " + str(date_string)))
+    return formatted_date
