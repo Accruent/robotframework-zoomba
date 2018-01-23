@@ -107,7 +107,8 @@ class APILibrary(object):
         return resp
 
     def validate_response_contains_expected_response(self, json_actual_response, expected_response_dict,
-                                                     ignored_keys=None, full_list_validation=False, identity_key=""):
+                                                     ignored_keys=None, full_list_validation=False, identity_key="",
+                                                     **kwargs):
         """ This is the most used method for validating Request responses from an API against a supplied
             expected response. It performs an object to object comparison between two json objects, and if that fails,
             a more in depth method is called to find the exact discrepancies between the values of the provided objects.
@@ -116,6 +117,9 @@ class APILibrary(object):
             json_actual_response: (request response object) The response from an API.\n
             expected_response_dict: (json) The expected response, in json format.\n
             ignored_keys: (strings list) A list of strings of the keys to be ignored on the validation.\n
+            **kwargs: (dict) Currently supported kwargs are margin_type and margin_amt\n
+            margin_type: (string) The type of unit of time to be used to generate a delta for the date comparisons.\n
+            margin_amt: (string/#) The amount of units specified in margin_type to allot for difference between dates.\n
             return: There is no actual returned output, other than error messages when comparisons fail.\n
         """
         if not json_actual_response:
@@ -128,7 +132,7 @@ class APILibrary(object):
                 assert True
             else:
                 self.key_by_key_validator(actual_response_dict, expected_response_dict, ignored_keys,
-                                          unmatched_keys_list)
+                                          unmatched_keys_list, **kwargs)
                 self.generate_unmatched_keys_error_message(unmatched_keys_list)
                 return
         elif type(actual_response_dict) is list and actual_response_dict:
@@ -137,7 +141,8 @@ class APILibrary(object):
                     assert True
                 else:
                     for actual_item, expected_item in zip(actual_response_dict, expected_response_dict):
-                        self.key_by_key_validator(actual_item, expected_item, ignored_keys, unmatched_keys_list)
+                        self.key_by_key_validator(actual_item, expected_item, ignored_keys, unmatched_keys_list,
+                                                  **kwargs)
                     if len(unmatched_keys_list) > 0:
                         BuiltIn().log("Responses didn't match:"
                                    "\nActual:\n" + str(actual_response_dict) +
@@ -148,7 +153,8 @@ class APILibrary(object):
                 for exp_item in expected_response_dict:
                     for actual_item in actual_response_dict:
                         if exp_item[identity_key] == actual_item[identity_key]:
-                            self.key_by_key_validator(actual_item, exp_item, ignored_keys, unmatched_keys_list)
+                            self.key_by_key_validator(actual_item, exp_item, ignored_keys, unmatched_keys_list,
+                                                      **kwargs)
                             self.generate_unmatched_keys_error_message(unmatched_keys_list)
                             break
                         elif actual_response_dict[-1] == actual_item:
@@ -207,13 +213,17 @@ class APILibrary(object):
         else:
             raise TypeError("The response is not a list:\nActual Response:\n" + str(actual_response_dict))
 
-    def key_by_key_validator(self, actual_dictionary, expected_dictionary, ignored_keys=None, unmatched_keys_list=None):
+    def key_by_key_validator(self, actual_dictionary, expected_dictionary, ignored_keys=None, unmatched_keys_list=None,
+                             **kwargs):
         """ This method is used to find and verify the value of every key in the expectedItem dictionary when compared
             against a single dictionary actual_item, unless any keys are included on the ignored_keys array./n
 
             actual_item: (array of dictionaries) The list of dictionary items extracted from a json Response.\n
             ExpectedItem: (dictionary) The expected item with the key to be validated.\n
             ignored_keys: (strings list) A list of strings of the keys to be ignored on the validation.\n
+                        **kwargs: (dict) Currently supported kwargs are margin_type and margin_amt\n
+            margin_type: (string) The type of unit of time to be used to generate a delta for the date comparisons.\n
+            margin_amt: (string/#) The amount of units specified in margin_type to allot for difference between dates.\n
             return: (boolean) If the method completes successfully, it returns True. Appropriate error messages are
             returned otherwise.\n
         """
@@ -247,7 +257,7 @@ class APILibrary(object):
                 elif isinstance(expected_dictionary[key], str) and not expected_dictionary[key].isdigit():
                     try:
                         parse(expected_dictionary[key])
-                        self.date_string_comparator(value, actual_dictionary[key], key, unmatched_keys_list)
+                        self.date_string_comparator(value, actual_dictionary[key], key, unmatched_keys_list, **kwargs)
                     except (ValueError, TypeError):
                         if value == actual_dictionary[key]:
                             continue
@@ -262,7 +272,7 @@ class APILibrary(object):
                                                 "Actual: " + str(actual_dictionary[key])))
         return True
 
-    def date_string_comparator(self, expected_date, actual_date, key, unmatched_keys_list):
+    def date_string_comparator(self, expected_date, actual_date, key, unmatched_keys_list, **kwargs):
         """This Method is used to validate a single property on a JSON object of the Date Type.
         It Validates for any the following Date Formats:
         %Y-%m-%dT%H:%M:%S, %Y-%m-%dT%H:%M:%SZ, %Y-%m-%dT%H:%M:%S.%f, %Y-%m-%dT%H:%M:%S.%fZ
@@ -271,6 +281,9 @@ class APILibrary(object):
         actual_date: (string) The Actual date string of the key being validated.\n
         key: (string) The key being validated.\n
         unmatched_keys_list (list): List of keys that are unvalidated - to be passed to error handling method.
+        **kwargs: (dict) Currently supported kwargs are margin_type and margin_amt\n
+        margin_type: (string) The type of unit of time to be used to generate a delta for the date comparisons.\n
+        margin_amt: (string/#) The amount of units specified in margin_type to allot for difference between dates.\n
         """
         if expected_date == actual_date:
             return
@@ -278,7 +291,7 @@ class APILibrary(object):
             expected_utc = _date_format(expected_date, key, unmatched_keys_list, "Expected")
             actual_utc = _date_format(actual_date, key, unmatched_keys_list, "Actual")
             if expected_utc and actual_utc:
-                self.date_comparator(expected_utc, actual_utc, key, unmatched_keys_list)
+                self.date_comparator(expected_utc, actual_utc, key, unmatched_keys_list, **kwargs)
 
     def date_comparator(self, expected_date, actual_date, key, unmatched_keys_list, margin_type="minutes", margin_amt=10):
         """This method compares two date values, given a certain margin type(minutes, seconds, etc),
@@ -293,7 +306,7 @@ class APILibrary(object):
         margin_type: (string) The type of unit of time to be used to generate a delta for the date comparisons.\n
         margin_amt: (integer) The amount of units specified in margin_type to allot for difference between dates.\n
         """
-        arg_dict = {margin_type: margin_amt}
+        arg_dict = {margin_type: int(margin_amt)}
         margin = datetime.timedelta(**arg_dict)
         if expected_date - margin <= actual_date and actual_date <= expected_date + margin:
             return

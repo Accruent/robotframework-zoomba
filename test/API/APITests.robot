@@ -12,6 +12,8 @@ Validate Response Positive Tests
     ${json_actual_1}    ${dict_expected_1}
 # --- Common Case with Ignored key on wrong value ----------------------------------------------------------------------
     ${json_actual_1}    ${dict_expected_2}      pear
+# --- Common Case with Ignored key on wrong value, margin_type doesn't affect results-----------------------------------
+    ${json_actual_1}    ${dict_expected_2}      pear             margin_type=hours
 # --- Common Case on identical Lists with Identity Key -----------------------------------------------------------------
     ${json_actual_2}    ${list_expected_1}      ${NONE}          ${FALSE}        apple
 # --- Expected list with one item inside of the Actual using Identity Key that is not unique ---------------------------
@@ -32,7 +34,7 @@ Validate Response Positive Tests
 
 Validate Response Negative Tests
     [Template]      Validate Response Contains Expected Response Errors Template
-#   Error               JSON Actual         Expected Dict           Ignored Keys    Full List       Identity Key
+#   Error               JSON Actual         Expected Dict           Ignored Keys    Full List       Identity Key     **kwargs
 # --- Empty Actual Response dictionary----------------------------------------------------------------------------------
     ${empty_resp_err}   ${EMPTY}            ${dict_expected_1}
 # --- Empty Actual Response dictionary----------------------------------------------------------------------------------
@@ -41,6 +43,8 @@ Validate Response Negative Tests
     ${not_match1}       ${json_actual_1}    ${dict_expected_2}
 # --- No match on some keys on single dictionary with ignored key ------------------------------------------------------
     ${not_match1}       ${json_actual_1}    ${dict_expected_2}      apple
+# --- No match on some keys on single dictionary with ignored key, margin_type doesn't affect results-------------------
+    ${not_match1}       ${json_actual_1}    ${dict_expected_2}      apple           margin_type=hours
 # --- Identity Key not in expected dictionary error on lists comparison ------------------------------------------------
     ${id_key_err}       ${json_actual_2}    ${list_expected_1}      ${NONE}         ${FALSE}        what
 # --- Identity Key not found in actual list dictionaries error on lists comparison -------------------------------------
@@ -146,8 +150,9 @@ Key By Key Validator Positive Tests
 
 Key By Key Validator Positive Tests - Dates
     [Template]      Key By Key Validator Testing Template
-#   Actual Dictionary           Expected Dictionary     Expected Unmatched Keys    Ignored Keys     Unmatched Keys
+#   Actual Dictionary           Expected Dictionary     Expected Unmatched Keys    Ignored Keys     Unmatched Keys    **kwargs
     ${wo_example}               ${wo_example}           ${empty_list}
+    ${wo_example_2}             ${wo_example}           ${empty_list}              margin_type=hours    margin_amt=2
     ${wo_example_none}          ${wo_example}           ${unmatched_keys_2}
     ${wo_example}               ${wo_example_none}      ${unmatched_keys_1}
     ${wo_example_bad_date}      ${wo_example}           ${unmatched_keys_7}
@@ -174,10 +179,10 @@ Date String Comparator Negative Tests
 
 *** Keywords ***
 Validate Response Contains Expected Response Errors Template
-    [Arguments]     ${error}    ${json_actual}      ${expected_dict}    ${ignored_keys}=${NONE}     ${id_key}=${EMPTY}    ${top_level}=${FALSE}
+    [Arguments]     ${error}    ${json_actual}      ${expected_dict}    ${ignored_keys}=${NONE}     ${id_key}=${EMPTY}    ${top_level}=${FALSE}    &{kwargs}
     Run Keyword And Expect Error    ${error}
     ...     Validate Response Contains Expected Response
-    ...     ${json_actual}      ${expected_dict}    ${ignored_keys}     ${id_key}    ${top_level}
+    ...     ${json_actual}      ${expected_dict}    ${ignored_keys}     ${id_key}    ${top_level}    &{kwargs}
 
 Validate Response Contains Expected List Response Errors Template
     [Arguments]     ${error}    ${json_actual}      ${expected_dict}    ${ignored_keys}=${NONE}   ${full_list_validation}=${True}
@@ -218,8 +223,9 @@ Date String Comparator Errors Template
     Lists Should be Equal     ${expected_unmatched_keys}      ${new_unmatched_keys}
 
 Key By Key Validator Testing Template
-    [Arguments]     ${actual_dictionary}  ${expected_dictionary}   ${expected_unmatched_keys}   ${ignored_keys}=${EMPTY}   ${unmatched_keys}=@{EMPTY}
-    Key By Key Validator        ${actual_dictionary}    ${expected_dictionary}    ${ignored_keys}   ${unmatched_keys}
+    [Arguments]     ${actual_dictionary}  ${expected_dictionary}   ${expected_unmatched_keys}   ${ignored_keys}=${EMPTY}   ${unmatched_keys}=@{EMPTY}    &{kwargs}
+    Key By Key Validator        ${actual_dictionary}    ${expected_dictionary}    ${ignored_keys}   ${unmatched_keys}    &{kwargs}
+    log                         ${unmatched_keys}
     Lists Should be Equal       ${expected_unmatched_keys}      ${unmatched_keys}
 
 Key By Key Validator Errors Template
