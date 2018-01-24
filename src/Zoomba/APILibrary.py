@@ -1,10 +1,10 @@
 import datetime
 import json
-import requests
 
 from RequestsLibrary import RequestsLibrary
 from dateutil.parser import parse
 from urllib3.exceptions import InsecureRequestWarning
+from requests.packages import urllib3
 from robot.libraries.BuiltIn import BuiltIn
 
 
@@ -100,7 +100,7 @@ class APILibrary(object):
             return: (response object) Returns the request response object, which includes headers, content, etc.\n
         """
         if disable_warnings:
-            requests.packages.disable_warnings(InsecureRequestWarning)
+            urllib3.disable_warnings(InsecureRequestWarning)
         requests_lib = RequestsLibrary()
         requests_lib.create_session("postapi", endpoint, headers)
         resp = requests_lib.post_request("postapi", method, data)
