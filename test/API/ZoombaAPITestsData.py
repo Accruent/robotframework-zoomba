@@ -481,19 +481,6 @@ wo_example = \
     "CreatedByPhone": "(444) 444-4444"
 }
 
-wo_example_2 = \
-{
-    "AssignedDate": "2015-12-16T16:21:58Z",
-    "NoneField": None,
-    "CreateDate": "2015-12-16T14:21:58Z",
-    "CreatedByEmail": "",
-    "CreatedByExternalId": "360API_ExtID_User318",
-    "CreatedByFirstName": "MyCompanyOnlyRight",
-    "CreatedById": "318",
-    "CreatedByLastName": "GETWOUserWith",
-    "CreatedByPhone": "(444) 444-4444"
-}
-
 wo_bad_date_example = \
 {
     "AssignedDate": "1234-11-30",
