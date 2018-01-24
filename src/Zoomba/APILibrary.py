@@ -247,13 +247,13 @@ class APILibrary(object):
                                                                       "\nActual: " + str(actual_dictionary[key])
                             continue
                         actual_item = actual_dictionary[key][value.index(item)]
-                        self.key_by_key_validator(actual_item, item, ignored_keys, unmatched_keys_list)
+                        self.key_by_key_validator(actual_item, item, ignored_keys, unmatched_keys_list, **kwargs)
                 elif isinstance(value, dict):
                     assert len(value) == len(actual_dictionary[key]), "Dicts do not match:" + \
                                                                       "\nExpected: " + str(value) + \
                                                                       "\nActual: " + str(actual_dictionary[key])
                     self.key_by_key_validator(actual_dictionary[key], expected_dictionary[key],
-                                              ignored_keys, unmatched_keys_list)
+                                              ignored_keys, unmatched_keys_list, **kwargs)
                 elif isinstance(expected_dictionary[key], str) and not expected_dictionary[key].isdigit():
                     try:
                         parse(expected_dictionary[key])
