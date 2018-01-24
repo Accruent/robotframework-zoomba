@@ -164,7 +164,7 @@ def _build_dict_from_response(soap_response=None):
                 temp_list.append(temp_item)
 
             new_response[key] = temp_list
-        elif str(type(value)) == "<type 'instance'>":
+        elif str(type(value)) == "<type 'instance'>" or 'sudsobject' in str(type(value)):
             temp_dict = _build_dict_from_response(value)
             new_response[key] = temp_dict
         else:
