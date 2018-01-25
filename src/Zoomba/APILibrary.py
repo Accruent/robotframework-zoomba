@@ -13,6 +13,21 @@ class APILibrary(object):
         This class is the base Library used to generate automated API Tests in the Robot Automation Framework.
         It has been generated to accommodate the RESTful API design pattern.
     """
+    def __init__(self):
+        self.suppress_warnings=False
+
+    def supress_insecure_request_warnings(self, suppress="True"):
+        """Suppress Insecure Request Warnings. This keyword suppress or un-suppresses insecure request warnings\n
+        suppress: (bool) True/False to suppress warnings, default is True\n
+        Examples:
+        | Suppress Insecure Request Warnings                       #Supresses Insecure Request Warnings
+        | Suppress Insecure Request Warnings | suppress=True |     #Supresses Insecure Request Warnings
+        | Suppress Insecure Request Warnings | False |    #Does Not Supresses Insecure Request Warnings
+        """
+        if "FALSE" in suppress.upper():
+            self.warnings = False
+        else:
+            self.warnings = True
 
     def call_get_request(self, headers=None, endpoint=None, fullstring=None):
         """ Generate a GET Request. This Keyword is basically a wrapper for get_request from the RequestsLibrary.\n
@@ -22,6 +37,8 @@ class APILibrary(object):
             return: (response object) Returns the request response object, which includes headers, content, etc.
             along with any query parameters.
         """
+        if self.suppress_warnings:
+            urllib3.disable_warnings(InsecureRequestWarning)
         requests_lib = RequestsLibrary()
         requests_lib.create_session("getapi", endpoint, headers)
         resp = requests_lib.get_request("getapi", fullstring)
@@ -39,6 +56,8 @@ class APILibrary(object):
             files: (json) A JSON object that sends in the body of the request to be used by the specific Web service.\n
             return: (response object) Returns the request response object, which includes headers, content, etc.
         """
+        if self.suppress_warnings:
+            urllib3.disable_warnings(InsecureRequestWarning)
         requests_lib = RequestsLibrary()
         requests_lib.create_session("postapi", endpoint, headers)
         resp = requests_lib.post_request("postapi", fullstring, data, files=files)
@@ -53,6 +72,8 @@ class APILibrary(object):
             data: (json) The JSON object to be sent on the body of the request to be used by the specific Web service.\n
             return: (response object) Returns the request response object, which includes headers, content, etc.
         """
+        if not self.suppress_warnings:
+            urllib3.disable_warnings(InsecureRequestWarning)
         requests_lib = RequestsLibrary()
         requests_lib.create_session("deleteapi", endpoint, headers)
         resp = requests_lib.delete_request("deleteapi", fullstring, data)
@@ -67,6 +88,8 @@ class APILibrary(object):
             data: (json) The JSON object to be sent on the body of the request to be used by the specific Web service.\n
             return: (response object) Returns the request response object, which includes headers, content, etc.
         """
+        if not self.suppress_warnings:
+            urllib3.disable_warnings(InsecureRequestWarning)
         requests_lib = RequestsLibrary()
         requests_lib.create_session("patchapi", endpoint, headers)
         resp = requests_lib.patch_request("patchapi", fullstring, data)
@@ -81,12 +104,14 @@ class APILibrary(object):
             data: (json) The JSON object to be sent on the body of the request to be used by the specific Web service.\n
             return: (response object) Returns the request response object, which includes headers, content, etc.
         """
+        if not self.suppress_warnings:
+            urllib3.disable_warnings(InsecureRequestWarning)
         requests_lib = RequestsLibrary()
         requests_lib.create_session("putapi", endpoint, headers)
         resp = requests_lib.put_request("putapi", fullstring, data)
         return resp
 
-    def create_connection(self, endpoint, method, data, headers=None, disable_warnings=False):
+    def create_connection(self, endpoint, method, data, headers=None):
         """ Opens a connection to an Application Endpoint. This Keyword is used commonly as part of a Login or Initial
             Authentication request. Given it's similarities to a pure post request, this could be deprecated in the near
             future.\n
@@ -99,7 +124,7 @@ class APILibrary(object):
             be used. Currently only suppresses the InsecureRequestWarning exceptions. \n
             return: (response object) Returns the request response object, which includes headers, content, etc.\n
         """
-        if disable_warnings:
+        if not self.suppress_warnings:
             urllib3.disable_warnings(InsecureRequestWarning)
         requests_lib = RequestsLibrary()
         requests_lib.create_session("postapi", endpoint, headers)
