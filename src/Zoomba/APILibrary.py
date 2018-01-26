@@ -14,15 +14,15 @@ class APILibrary(object):
         It has been generated to accommodate the RESTful API design pattern.
     """
     def __init__(self):
-        self.suppress_warnings=False
+        self.suppress_warnings = False
 
-    def supress_insecure_request_warnings(self, suppress="True"):
-        """Suppress Insecure Request Warnings. This keyword suppress or un-suppresses insecure request warnings\n
+    def suppress_insecure_request_warnings(self, suppress="True"):
+        """Suppress Insecure Request Warnings. This keyword suppresses or un-suppresses insecure request warnings\n
         suppress: (bool) True/False to suppress warnings, default is True\n
         Examples:
-        | Suppress Insecure Request Warnings                       #Supresses Insecure Request Warnings
-        | Suppress Insecure Request Warnings | suppress=True |     #Supresses Insecure Request Warnings
-        | Suppress Insecure Request Warnings | False |    #Does Not Supresses Insecure Request Warnings
+        | Suppress Insecure Request Warnings                       #Suppresses Insecure Request Warnings
+        | Suppress Insecure Request Warnings | suppress=True |     #Suppresses Insecure Request Warnings
+        | Suppress Insecure Request Warnings | False |    #Does Not Suppresses Insecure Request Warnings
         """
         if "FALSE" in suppress.upper():
             self.warnings = False
@@ -70,7 +70,7 @@ class APILibrary(object):
             data: (json) The JSON object to be sent on the body of the request to be used by the specific Web service.\n
             return: (response object) Returns the request response object, which includes headers, content, etc.
         """
-        if not self.suppress_warnings:
+        if self.suppress_warnings:
             urllib3.disable_warnings(InsecureRequestWarning)
         requests_lib = RequestsLibrary()
         requests_lib.create_session("deleteapi", endpoint, headers)
@@ -86,7 +86,7 @@ class APILibrary(object):
             data: (json) The JSON object to be sent on the body of the request to be used by the specific Web service.\n
             return: (response object) Returns the request response object, which includes headers, content, etc.
         """
-        if not self.suppress_warnings:
+        if self.suppress_warnings:
             urllib3.disable_warnings(InsecureRequestWarning)
         requests_lib = RequestsLibrary()
         requests_lib.create_session("patchapi", endpoint, headers)
@@ -102,7 +102,7 @@ class APILibrary(object):
             data: (json) The JSON object to be sent on the body of the request to be used by the specific Web service.\n
             return: (response object) Returns the request response object, which includes headers, content, etc.
         """
-        if not self.suppress_warnings:
+        if self.suppress_warnings:
             urllib3.disable_warnings(InsecureRequestWarning)
         requests_lib = RequestsLibrary()
         requests_lib.create_session("putapi", endpoint, headers)
@@ -120,7 +120,7 @@ class APILibrary(object):
             data: (json) The JSON object to be sent on the body of the request to be used by the specific Web service.\n
             return: (response object) Returns the request response object, which includes headers, content, etc.\n
         """
-        if not self.suppress_warnings:
+        if self.suppress_warnings:
             urllib3.disable_warnings(InsecureRequestWarning)
         requests_lib = RequestsLibrary()
         requests_lib.create_session("postapi", endpoint, headers)
