@@ -24,7 +24,7 @@ Programming Language :: Python :: 3
 Topic :: Software Development :: Testing
 """.strip().splitlines()
 
-setup(name         = 'zoomba',
+setup(name         = 'robotframework-zoomba',
       version      = VERSION,
       description  = 'Robot Framework mini-framework.',
       long_description = DESCRIPTION,
