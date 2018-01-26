@@ -1,6 +1,6 @@
 Zoomba
 ===========
-
+[![PyPI version](https://badge.fury.io/py/zoomba.svg)](https://badge.fury.io/py/zoomba)
 
 Introduction
 -----------
