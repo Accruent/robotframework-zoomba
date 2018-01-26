@@ -25,7 +25,7 @@ The Zoomba library is easily installed using the [`setup.py`](setup.py) file in 
 Simply run the following command to install Zoomba and it's dependencies:
 
 ```python
-pip install zoomba
+pip install robotframework-zoomba
 ```
 
 If you decide to pull the repo locally to make contributions or just want to play around with the code
