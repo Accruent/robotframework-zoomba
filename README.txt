@@ -1,6 +1,6 @@
 Zoomba
 ===========
-!https://badge.fury.io/py/zoomba.svg!:https://badge.fury.io/py/zoomba
+!https://badge.fury.io/py/robotframework-zoomba.svg!:https://badge.fury.io/py/robotframework-zoomba
 
 Introduction
 -----------
