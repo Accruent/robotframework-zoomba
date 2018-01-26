@@ -120,8 +120,6 @@ class APILibrary(object):
             fullstring: (string) A string that contains the rest of the url that identifies a specific API/Webservice
             along with any query parameters.\n
             data: (json) The JSON object to be sent on the body of the request to be used by the specific Web service.\n
-            disable_warnings: (boolean) Boolean value used to determine if the urllib3 disable_warnings function should
-            be used. Currently only suppresses the InsecureRequestWarning exceptions. \n
             return: (response object) Returns the request response object, which includes headers, content, etc.\n
         """
         if not self.suppress_warnings:
