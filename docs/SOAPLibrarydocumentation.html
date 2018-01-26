@@ -5,7 +5,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="-1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta content="Robot Framework 3.0 (Python 2.7.10 on win32)" name="Generator">
+<meta content="Robot Framework 3.0.2 (Python 3.6.3 on win32)" name="Generator">
 <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAAAIAAAAAAAAAAAAAEAAAAAAAAAAAAAAAJEBoACtnfgA5cYYAERsiAEx2lAAbKkQAcazBACZCVwAcM1cAK0ucAAMDBQAnQncASG+FABkoVQAyWmgA6f8SgvH/Ij99+GLyIinyJfn/Yi//KSLzUy9iZogpIld3/4JVVTkid7vyUjNVNVJEAGOZ6Z7pXwAABpmZkRiLAAAGiJZpmGAAAEEt3SXdxAAATC7o/u3EAAC8MRZpjasAAAY1VVVTYAAABKqqqqpAAAAADKqq4AAAAAAAv4sAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMADAADgAwAA4AcAAOAHAADgBwAAwAcAAOAHAADgDwAA8A8AAPg/AAD+fwAA">
 <style media="all" type="text/css">
 body {
@@ -157,6 +157,76 @@ tr.no-match.hide-unmatched {
     display: none;
 }
 </style>
+<style media="all" type="text/css">
+/* Pygments 'default' style sheet. Generated with Pygments 2.1.3 using:
+     pygmentize -S default -f html -a .code > src/robot/htmldata/libdoc/pygments.css
+*/
+.code .hll { background-color: #ffffcc }
+.code  { background: #f8f8f8; }
+.code .c { color: #408080; font-style: italic } /* Comment */
+.code .err { border: 1px solid #FF0000 } /* Error */
+.code .k { color: #008000; font-weight: bold } /* Keyword */
+.code .o { color: #666666 } /* Operator */
+.code .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
+.code .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.code .cp { color: #BC7A00 } /* Comment.Preproc */
+.code .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
+.code .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.code .cs { color: #408080; font-style: italic } /* Comment.Special */
+.code .gd { color: #A00000 } /* Generic.Deleted */
+.code .ge { font-style: italic } /* Generic.Emph */
+.code .gr { color: #FF0000 } /* Generic.Error */
+.code .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.code .gi { color: #00A000 } /* Generic.Inserted */
+.code .go { color: #888888 } /* Generic.Output */
+.code .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.code .gs { font-weight: bold } /* Generic.Strong */
+.code .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.code .gt { color: #0044DD } /* Generic.Traceback */
+.code .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.code .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.code .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.code .kp { color: #008000 } /* Keyword.Pseudo */
+.code .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.code .kt { color: #B00040 } /* Keyword.Type */
+.code .m { color: #666666 } /* Literal.Number */
+.code .s { color: #BA2121 } /* Literal.String */
+.code .na { color: #7D9029 } /* Name.Attribute */
+.code .nb { color: #008000 } /* Name.Builtin */
+.code .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.code .no { color: #880000 } /* Name.Constant */
+.code .nd { color: #AA22FF } /* Name.Decorator */
+.code .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.code .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.code .nf { color: #0000FF } /* Name.Function */
+.code .nl { color: #A0A000 } /* Name.Label */
+.code .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.code .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.code .nv { color: #19177C } /* Name.Variable */
+.code .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.code .w { color: #bbbbbb } /* Text.Whitespace */
+.code .mb { color: #666666 } /* Literal.Number.Bin */
+.code .mf { color: #666666 } /* Literal.Number.Float */
+.code .mh { color: #666666 } /* Literal.Number.Hex */
+.code .mi { color: #666666 } /* Literal.Number.Integer */
+.code .mo { color: #666666 } /* Literal.Number.Oct */
+.code .sb { color: #BA2121 } /* Literal.String.Backtick */
+.code .sc { color: #BA2121 } /* Literal.String.Char */
+.code .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.code .s2 { color: #BA2121 } /* Literal.String.Double */
+.code .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.code .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.code .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.code .sx { color: #008000 } /* Literal.String.Other */
+.code .sr { color: #BB6688 } /* Literal.String.Regex */
+.code .s1 { color: #BA2121 } /* Literal.String.Single */
+.code .ss { color: #19177C } /* Literal.String.Symbol */
+.code .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.code .vc { color: #19177C } /* Name.Variable.Class */
+.code .vg { color: #19177C } /* Name.Variable.Global */
+.code .vi { color: #19177C } /* Name.Variable.Instance */
+.code .il { color: #666666 } /* Literal.Number.Integer.Long */
+</style>
 <style media="print" type="text/css">
 body {
     margin: 0;
@@ -224,7 +294,7 @@ a {
 .doc pre {
     font-size: 1.1em;
     letter-spacing: 0.05em;
-    background: #eee;
+    background: #f4f4f4;
 }
 .doc code {
     padding: 0 0.2em;
@@ -362,8 +432,16 @@ window.util = function () {
         var base = window.output ? window.output.baseMillis : 0;
         return new Date(base + millis);
     }
-    function createGeneratedAgoString(generatedMillis) {
-        generatedMillis = timestamp(generatedMillis);
+    function createGeneratedString(timestamp) {
+        var date = new Date(timestamp);
+        var dt = dateTimeFromDate(date).slice(0, 17);  // drop millis
+        var offset = date.getTimezoneOffset();
+        var sign = offset > 0 ? '-' : '+';
+        var hours = Math.floor(Math.abs(offset) / 60);
+        var mins = Math.abs(offset) % 60;
+        return dt + ' GMT' + sign + padTo(hours, 2) + ':' + padTo(mins, 2);
+    }
+    function createGeneratedAgoString(timestamp) {
         function timeString(time, shortUnit) {
             var unit = {y: 'year', d: 'day', h: 'hour', m: 'minute',
                         s: 'second'}[shortUnit];
@@ -374,7 +452,7 @@ window.util = function () {
             // Not a perfect algorithm but ought to be enough
             return days - Math.floor(years / 4);
         }
-        var generated = Math.round(generatedMillis / 1000);
+        var generated = Math.round(timestamp / 1000);
         var current = Math.round(new Date().getTime() / 1000);
         var elapsed = current - generated;
         var prefix = '';
@@ -433,6 +511,7 @@ window.util = function () {
         dateTimeFromDate: dateTimeFromDate,
         formatElapsed: formatElapsed,
         timestamp: timestamp,
+        createGeneratedString: createGeneratedString,
         createGeneratedAgoString: createGeneratedAgoString,
         parseQueryString: parseQueryString
     };
@@ -468,7 +547,7 @@ window.util = function () {
 jQuery.extend({highlight:function(e,t,n,r){if(e.nodeType===3){var i=e.data.match(t);if(i){var s=document.createElement(n||"span");s.className=r||"highlight";var o=e.splitText(i.index);o.splitText(i[0].length);var u=o.cloneNode(true);s.appendChild(u);o.parentNode.replaceChild(s,o);return 1}}else if(e.nodeType===1&&e.childNodes&&!/(script|style)/i.test(e.tagName)&&!(e.tagName===n.toUpperCase()&&e.className===r)){for(var a=0;a<e.childNodes.length;a++){a+=jQuery.highlight(e.childNodes[a],t,n,r)}}return 0}});jQuery.fn.unhighlight=function(e){var t={className:"highlight",element:"span"};jQuery.extend(t,e);return this.find(t.element+"."+t.className).each(function(){var e=this.parentNode;e.replaceChild(this.firstChild,this);e.normalize()}).end()};jQuery.fn.highlight=function(e,t){var n={className:"highlight",element:"span",caseSensitive:false,wordsOnly:false};jQuery.extend(n,t);if(e.constructor===String){e=[e]}e=jQuery.grep(e,function(e,t){return e!=""});e=jQuery.map(e,function(e,t){return e.replace(/[-[\]{}()*+?.,\\^$|#\s]/g,"\\$&")});if(e.length==0){return this}var r=n.caseSensitive?"":"i";var i="("+e.join("|")+")";if(n.wordsOnly){i="\\b"+i+"\\b"}var s=new RegExp(i,r);return this.each(function(){jQuery.highlight(this,s,n.element,n.className)})}
 </script>
 <script type="text/javascript">
-libdoc = {"all_tags":[],"contains_tags":false,"doc":"<p>Roomba SOAP Library\x3c/p>\n<p>This class is the base Library used to generate automated SOAP Tests in the Accruent Automation Framework.\x3c/p>","generated":"2017-09-18 10:12:00","inits":[],"keywords":[{"args":["action=None","soap_object=None"],"doc":"<p>Call Soap Method. Calls soap method with list object\x3c/p>\n<p>action: (string) SOAP Action to be called.\x3c/p>\n<p>soap_object: (list) Soap Object in list format, list must be ordered wrt schema\x3c/p>","matched":true,"name":"Call Soap Method With List Object","shortdoc":"Call Soap Method. Calls soap method with list object ","tags":[]},{"args":["action=None","**soap_object"],"doc":"<p>Call Soap Method with dictionary object. Calls soap method\x3c/p>\n<p>action: (string) SOAP Action to be called.\x3c/p>\n<p>soap_object: (dict) Soap Object in dict format, dict must contain all required parts of schema object.\x3c/p>","matched":true,"name":"Call Soap Method With Object","shortdoc":"Call Soap Method with dictionary object. Calls soap method ","tags":[]},{"args":["soap_response=None"],"doc":"<p>Convert Soap Response To Dictionary: This keyword builds a dictionary from the sudsLibrary response\x3c/p>\n<p>json_actual_response: (request response object) The response from an Accruent API.\x3c/p>\n<p>return: There is no actual returned output, other than error messages when comparisons fail.\x3c/p>","matched":true,"name":"Convert Soap Response To Json","shortdoc":"Convert Soap Response To Dictionary: This keyword builds a dictionary from the sudsLibrary response","tags":[]},{"args":["host=None","endpoint=None","alias=None","**kwargs"],"doc":"<p>Create Soap Session. This Keyword utilizes the WSDL to create a soap client.\x3c/p>\n<p>host: (string) The host url.\x3c/p>\n<p>endpoint: (string) SOAP API endpoint containing the actions to be referenced.\x3c/p>\n<p>**kwargs: (optional) Parameters that could be included to add options to client creation. Current supported parameters are:\x3c/p>\n<p>set_location: http address\x3c/p>","matched":true,"name":"Create Soap Session","shortdoc":"Create Soap Session. This Keyword utilizes the WSDL to create a soap client.","tags":[]},{"args":["host=None","endpoint=None","alias=None","**kwargs"],"doc":"<p>Create Soap Session. This Keyword utilizes the WSDL and directly accesses calls from sudsLibrary.\x3c/p>\n<p>host: (string) The host url.\x3c/p>\n<p>endpoint: (string) SOAP API endpoint containing the actions to be referenced.\x3c/p>\n<p>alias: (string} Sets the alias for the SudsLibrary Framework **kwargs: (optional) Parameters that could be included to add options to client creation. Current supported parameters are:\x3c/p>\n<p>set_location: http address\x3c/p>","matched":true,"name":"Create Soap Session And Fix Wsdl","shortdoc":"Create Soap Session. This Keyword utilizes the WSDL and directly accesses calls from sudsLibrary.","tags":[]},{"args":["host=None","endpoint=None","alias=None","set_location=None"],"doc":"<p>Create Soap Session and Set Location. In addition to the client creation, this keyword sets the location as specified.\x3c/p>\n<p>host: (string) The host url.\x3c/p>\n<p>endpoint: (string) SOAP API endpoint containing the actions to be referenced.\x3c/p>\n<p>set_location: (string) If set will overwrite the WSDL location with specified address.\x3c/p>\n<p>If set to None will replace location with host and endpoint specified\x3c/p>","matched":true,"name":"Create Soap Session And Set Location","shortdoc":"Create Soap Session and Set Location. In addition to the client creation, this keyword sets the location","tags":[]},{"args":["type=None","object_dict=None"],"doc":"<p>Create Wsdl Objects. This Keyword utilizes the WSDL to create a WSDL object based on the information provided.\x3c/p>\n<p>type: (string) Wsdl object to be created.\x3c/p>\n<p>object_dict: (dict) Python Dictionary containing values and nested dictionaries with construction similar to wsdl defined objects.\x3c/p>\n<p>return: (response object) Returns the SOAP client object.\x3c/p>","matched":true,"name":"Create Wsdl Objects","shortdoc":"Create Wsdl Objects. This Keyword utilizes the WSDL to create a WSDL object based on the information","tags":[]}],"name":"SOAPLibrary","named_args":true,"scope":"test case","version":""};
+libdoc = {"all_tags":[],"contains_tags":false,"doc":"<p>Zoomba SOAP Library\x3c/p>\n<p>This class is the base Library used to generate automated SOAP Tests in the Zoomba Automation Framework.\x3c/p>","generated":"2018-01-25 12:32:20","inits":[],"keywords":[{"args":["action=None","soap_object=None"],"doc":"<p>Call Soap Method. Calls soap method with list object\x3c/p>\n<p>action: (string) SOAP Action to be called.\x3c/p>\n<p>soap_object: (list) Soap Object in list format, list must be ordered wrt schema\x3c/p>","matched":true,"name":"Call Soap Method With List Object","shortdoc":"Call Soap Method. Calls soap method with list object ","tags":[]},{"args":["action=None","**soap_object"],"doc":"<p>Call Soap Method with dictionary object. Calls soap method\x3c/p>\n<p>action: (string) SOAP Action to be called.\x3c/p>\n<p>soap_object: (dict) Soap Object in dict format, dict must contain all required parts of schema object.\x3c/p>","matched":true,"name":"Call Soap Method With Object","shortdoc":"Call Soap Method with dictionary object. Calls soap method ","tags":[]},{"args":["soap_response=None"],"doc":"<p>Convert Soap Response To Dictionary: This keyword builds a dictionary from the sudsLibrary response\x3c/p>\n<p>json_actual_response: (request response object) The response from an API.\x3c/p>\n<p>return: There is no actual returned output, other than error messages when comparisons fail.\x3c/p>","matched":true,"name":"Convert Soap Response To Json","shortdoc":"Convert Soap Response To Dictionary: This keyword builds a dictionary from the sudsLibrary response","tags":[]},{"args":["host=None","endpoint=None","alias=None","**kwargs"],"doc":"<p>Create Soap Session. This Keyword utilizes the WSDL to create a soap client.\x3c/p>\n<p>host: (string) The host url.\x3c/p>\n<p>endpoint: (string) SOAP API endpoint containing the actions to be referenced.\x3c/p>\n<p>**kwargs: (optional) Parameters that could be included to add options to client creation. Current supported parameters are:\x3c/p>\n<p>set_location: http address\x3c/p>","matched":true,"name":"Create Soap Session","shortdoc":"Create Soap Session. This Keyword utilizes the WSDL to create a soap client.","tags":[]},{"args":["host=None","endpoint=None","alias=None","**kwargs"],"doc":"<p>Create Soap Session. This Keyword utilizes the WSDL and directly accesses calls from sudsLibrary.\x3c/p>\n<p>host: (string) The host url.\x3c/p>\n<p>endpoint: (string) SOAP API endpoint containing the actions to be referenced.\x3c/p>\n<p>alias: (string} Sets the alias for the SudsLibrary Framework **kwargs: (optional) Parameters that could be included to add options to client creation. Current supported parameters are:\x3c/p>\n<p>set_location: http address\x3c/p>","matched":true,"name":"Create Soap Session And Fix Wsdl","shortdoc":"Create Soap Session. This Keyword utilizes the WSDL and directly accesses calls from sudsLibrary.","tags":[]},{"args":["host=None","endpoint=None","alias=None","set_location=None","fix=False"],"doc":"<p>Create Soap Session and Set Location. In addition to the client creation, this keyword sets the location as specified.\x3c/p>\n<p>host: (string) The host url.\x3c/p>\n<p>endpoint: (string) SOAP API endpoint containing the actions to be referenced.\x3c/p>\n<p>set_location: (string) If set will overwrite the WSDL location with specified address.\x3c/p>\n<p>If set to None will replace location with host and endpoint specified\x3c/p>","matched":true,"name":"Create Soap Session And Set Location","shortdoc":"Create Soap Session and Set Location. In addition to the client creation, this keyword sets the location","tags":[]},{"args":["type=None","object_dict=None"],"doc":"<p>Create Wsdl Objects. This Keyword utilizes the WSDL to create a WSDL object based on the information provided.\x3c/p>\n<p>type: (string) Wsdl object to be created.\x3c/p>\n<p>object_dict: (dict) Python Dictionary containing values and nested dictionaries with construction similar to wsdl defined objects.\x3c/p>\n<p>return: (response object) Returns the SOAP client object.\x3c/p>","matched":true,"name":"Create Wsdl Objects","shortdoc":"Create Wsdl Objects. This Keyword utilizes the WSDL to create a WSDL object based on the information","tags":[]}],"name":"SOAP_Library","named_args":true,"scope":"test case","version":""};
 </script>
 <title></title>
 </head>
