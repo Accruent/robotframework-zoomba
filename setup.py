@@ -10,7 +10,7 @@ except ImportError:
     from distutils.core import setup
 
 VERSION = """
-1.3.0
+1.4.0
 """.strip()
 
 DESCRIPTION = """
@@ -24,7 +24,7 @@ Programming Language :: Python :: 3
 Topic :: Software Development :: Testing
 """.strip().splitlines()
 
-setup(name         = 'zoomba',
+setup(name         = 'robotframework-zoomba',
       version      = VERSION,
       description  = 'Robot Framework mini-framework.',
       long_description = DESCRIPTION,
