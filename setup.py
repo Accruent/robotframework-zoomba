@@ -22,6 +22,7 @@ Development Status :: 5 - Production/Stable
 Operating System :: OS Independent
 Programming Language :: Python :: 3
 Topic :: Software Development :: Testing
+Framework :: Robot Framework :: Library
 """.strip().splitlines()
 
 setup(name         = 'robotframework-zoomba',
