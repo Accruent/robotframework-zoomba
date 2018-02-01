@@ -25,9 +25,9 @@ class APILibrary(object):
         | Suppress Insecure Request Warnings | False |    #Does Not Suppresses Insecure Request Warnings
         """
         if "FALSE" in suppress.upper():
-            self.warnings = False
+            self.suppress_warnings = False
         else:
-            self.warnings = True
+            self.suppress_warnings = True
 
     def call_get_request(self, headers=None, endpoint=None, fullstring=None):
         """ Generate a GET Request. This Keyword is basically a wrapper for get_request from the RequestsLibrary.\n
