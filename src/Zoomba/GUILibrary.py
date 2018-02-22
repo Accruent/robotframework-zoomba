@@ -141,7 +141,7 @@ class GUILibrary(SeleniumLibrary):
         locator: (string) A selenium locator(CSS, XPATH, ID, NAME, etc)
         """
         self.wait_until_page_contains_element(locator)
-        zoomba.wait_until_keyword_succeeds(5, 1, "Focus", locator)
+        zoomba.wait_until_keyword_succeeds(5, 1, "Set Focus To Element", locator)
         self.wait_until_element_is_visible(locator)
 
     @keyword("Wait Until Window Opens")
