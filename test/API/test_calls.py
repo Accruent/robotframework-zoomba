@@ -35,10 +35,8 @@ class TestExternal(unittest.TestCase):
     def test_basic(self, create_session, get_request):
         library = APILibrary()
         r = library.call_get_request({"a": "Text"}, "Endpoint", "fullstring")
-        prop_text = PropertyMock(return_value="success")
-        type(r).text = prop_text
-        prop_status = PropertyMock(return_value=200)
-        type(r).status_code = prop_status
+        type(r).text = PropertyMock(return_value="success")
+        type(r).status_code = PropertyMock(return_value=200)
         assert r.text
         assert r.status_code == 200
 
