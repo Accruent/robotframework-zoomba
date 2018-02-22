@@ -1,7 +1,7 @@
 from src.Zoomba.APILibrary import *
 import unittest
 from unittest.mock import patch
-
+from unittest.mock import PropertyMock
 
 class TestInternal(unittest.TestCase):
     def test_suppress_default(self):
@@ -30,8 +30,15 @@ class TestExternal(unittest.TestCase):
         library = APILibrary()
         self.assertRaises(TypeError, library.call_get_request)
 
+    @patch('RequestsLibrary.RequestsKeywords.create_session')
     @patch('RequestsLibrary.RequestsKeywords.get_request')
-    def test_basic(self, get_request):
+    def test_basic(self, create_session, get_request):
         library = APILibrary()
-        get_request.return_value.text.return_value = True
-        assert library.call_get_request({"a":"Text"}, "Endpoint", "fullstring").text
+        r = library.call_get_request({"a": "Text"}, "Endpoint", "fullstring")
+        prop_text = PropertyMock(return_value="success")
+        type(r).text = prop_text
+        prop_status = PropertyMock(return_value=200)
+        type(r).status_code = prop_status
+        assert r.text
+        assert r.status_code == 200
+
