@@ -10,7 +10,7 @@ except ImportError:
     from distutils.core import setup
 
 VERSION = """
-1.4.1
+1.4.3
 """.strip()
 
 DESCRIPTION = """

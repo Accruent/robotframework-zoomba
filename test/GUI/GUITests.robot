@@ -66,7 +66,7 @@ Web Elements Vertical Position Test
     wait until element is visible                       //h3[@class='r']//a
     ${resultsLinksList}=            Get Webelements     //h3[@class='r']//a
     ${linksPositionList}=           Get Vertical Position From Web Elements List        ${resultsLinksList}
-    should be equal                 @{linksPositionList}[0]     ${174.0}
+    should be equal                 @{linksPositionList}[0]     ${175}
 
 Create Dictionary from Lists Test
     ${testDict1}=       create dictionary   Name=User1      ID=01   Phone=51212345678
