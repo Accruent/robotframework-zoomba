@@ -1,7 +1,12 @@
-from src.Zoomba.APILibrary import *
+import os
+import sys
+sys.path.insert(0, os.path.abspath( os.path.join(os.path.dirname(__file__), '../../src/') ))
+
+from Zoomba.APILibrary import APILibrary
 import unittest
 from unittest.mock import patch
 from unittest.mock import PropertyMock
+
 
 class TestInternal(unittest.TestCase):
     def test_suppress_default(self):
@@ -42,6 +47,14 @@ class TestExternal(unittest.TestCase):
 
     @patch('RequestsLibrary.RequestsKeywords.create_session')
     @patch('RequestsLibrary.RequestsKeywords.get_request')
+    def test_get_called_with(self, create_session, get_request):
+        library = APILibrary()
+        library.call_get_request({"a": "Text"}, "Endpoint", "fullstring")
+        assert get_request.called_with("getapi", "fullstring")
+        assert create_session.called_with("getapi", "Endpoint", {"a": "Text"})
+
+    @patch('RequestsLibrary.RequestsKeywords.create_session')
+    @patch('RequestsLibrary.RequestsKeywords.get_request')
     @patch('requests.packages.urllib3.disable_warnings')
     def test_get_insecure_request(self, create_session, get_request, disable_warnings):
         library = APILibrary()
@@ -55,7 +68,7 @@ class TestExternal(unittest.TestCase):
 
     @patch('RequestsLibrary.RequestsKeywords.create_session')
     @patch('RequestsLibrary.RequestsKeywords.post_request')
-    def test_basic_post(self, create_session, get_request):
+    def test_basic_post(self, create_session, post_request):
         library = APILibrary()
         r = library.call_post_request({"a": "Text"}, "Endpoint", "fullstring")
         type(r).text = PropertyMock(return_value="success")
@@ -65,8 +78,144 @@ class TestExternal(unittest.TestCase):
 
     @patch('RequestsLibrary.RequestsKeywords.create_session')
     @patch('RequestsLibrary.RequestsKeywords.post_request')
+    def test_files_post(self, create_session, post_request):
+        library = APILibrary()
+        r = library.call_post_request({"a": "Text"}, "Endpoint", "fullstring", b'item')
+        type(r).text = PropertyMock(return_value="success")
+        type(r).status_code = PropertyMock(return_value=200)
+        assert r.text
+        assert r.status_code == 200
+
+    @patch('RequestsLibrary.RequestsKeywords.create_session')
+    @patch('RequestsLibrary.RequestsKeywords.post_request')
     @patch('requests.packages.urllib3.disable_warnings')
     def test_post_insecure_request(self, create_session, post_request, disable_warnings):
+        library = APILibrary()
+        library.suppress_insecure_request_warnings()
+        r = library.call_post_request({"a": "Text"}, "Endpoint", "fullstring")
+        assert disable_warnings.called
+
+    def test_delete_default(self):
+        library = APILibrary()
+        self.assertRaises(TypeError, library.call_delete_request)
+
+    @patch('RequestsLibrary.RequestsKeywords.create_session')
+    @patch('RequestsLibrary.RequestsKeywords.delete_request')
+    def test_basic_delete(self, create_session, delete_request):
+        library = APILibrary()
+        r = library.call_delete_request({"a": "Text"}, "Endpoint", "fullstring")
+        type(r).text = PropertyMock(return_value="success")
+        type(r).status_code = PropertyMock(return_value=200)
+        assert r.text
+        assert r.status_code == 200
+
+    @patch('RequestsLibrary.RequestsKeywords.create_session')
+    @patch('RequestsLibrary.RequestsKeywords.delete_request')
+    def test_delete_called_with(self, create_session, delete_request):
+        library = APILibrary()
+        library.call_delete_request({"a": "Text"}, "Endpoint", "fullstring")
+        assert delete_request.called_with("deleteapi", "fullstring")
+        assert create_session.called_with("deleteapi", "Endpoint", {"a": "Text"})
+
+    @patch('RequestsLibrary.RequestsKeywords.create_session')
+    @patch('RequestsLibrary.RequestsKeywords.delete_request')
+    @patch('requests.packages.urllib3.disable_warnings')
+    def test_delete_insecure_request(self, create_session, delete_request, disable_warnings):
+        library = APILibrary()
+        library.suppress_insecure_request_warnings()
+        library.call_delete_request({"a": "Text"}, "Endpoint", "fullstring")
+        assert disable_warnings.called
+        
+    def test_patch_default(self):
+        library = APILibrary()
+        self.assertRaises(TypeError, library.call_patch_request)
+
+    @patch('RequestsLibrary.RequestsKeywords.create_session')
+    @patch('RequestsLibrary.RequestsKeywords.patch_request')
+    def test_basic_patch(self, create_session, patch_request):
+        library = APILibrary()
+        r = library.call_patch_request({"a": "Text"}, "Endpoint", "fullstring")
+        type(r).text = PropertyMock(return_value="success")
+        type(r).status_code = PropertyMock(return_value=200)
+        assert r.text
+        assert r.status_code == 200
+
+    @patch('RequestsLibrary.RequestsKeywords.create_session')
+    @patch('RequestsLibrary.RequestsKeywords.patch_request')
+    def test_patch_called_with(self, create_session, patch_request):
+        library = APILibrary()
+        library.call_patch_request({"a": "Text"}, "Endpoint", "fullstring")
+        assert patch_request.called_with("patchapi", "fullstring")
+        assert create_session.called_with("patchapi", "Endpoint", {"a": "Text"})
+
+    @patch('RequestsLibrary.RequestsKeywords.create_session')
+    @patch('RequestsLibrary.RequestsKeywords.patch_request')
+    @patch('requests.packages.urllib3.disable_warnings')
+    def test_patch_insecure_request(self, create_session, patch_request, disable_warnings):
+        library = APILibrary()
+        library.suppress_insecure_request_warnings()
+        library.call_patch_request({"a": "Text"}, "Endpoint", "fullstring")
+        assert disable_warnings.called
+        
+    def test_put_default(self):
+        library = APILibrary()
+        self.assertRaises(TypeError, library.call_put_request)
+
+    @patch('RequestsLibrary.RequestsKeywords.create_session')
+    @patch('RequestsLibrary.RequestsKeywords.put_request')
+    def test_basic_put(self, create_session, put_request):
+        library = APILibrary()
+        r = library.call_put_request({"a": "Text"}, "Endpoint", "fullstring")
+        type(r).text = PropertyMock(return_value="success")
+        type(r).status_code = PropertyMock(return_value=200)
+        assert r.text
+        assert r.status_code == 200
+
+    @patch('RequestsLibrary.RequestsKeywords.create_session')
+    @patch('RequestsLibrary.RequestsKeywords.put_request')
+    def test_put_called_with(self, create_session, put_request):
+        library = APILibrary()
+        library.call_put_request({"a": "Text"}, "Endpoint", "fullstring")
+        assert put_request.called_with("putapi", "fullstring")
+        assert create_session.called_with("putapi", "Endpoint", {"a": "Text"})
+
+    @patch('RequestsLibrary.RequestsKeywords.create_session')
+    @patch('RequestsLibrary.RequestsKeywords.put_request')
+    @patch('requests.packages.urllib3.disable_warnings')
+    def test_put_insecure_request(self, create_session, put_request, disable_warnings):
+        library = APILibrary()
+        library.suppress_insecure_request_warnings()
+        library.call_put_request({"a": "Text"}, "Endpoint", "fullstring")
+        assert disable_warnings.called
+
+    def test_create_connection_default(self):
+        library = APILibrary()
+        self.assertRaises(TypeError, library.call_post_request)
+
+    @patch('RequestsLibrary.RequestsKeywords.create_session')
+    @patch('RequestsLibrary.RequestsKeywords.post_request')
+    def test_basic_create_connection(self, create_session, post_request):
+        library = APILibrary()
+        r = library.call_post_request({"a": "Text"}, "Endpoint", "fullstring")
+        type(r).text = PropertyMock(return_value="success")
+        type(r).status_code = PropertyMock(return_value=200)
+        assert r.text
+        assert r.status_code == 200
+
+    @patch('RequestsLibrary.RequestsKeywords.create_session')
+    @patch('RequestsLibrary.RequestsKeywords.post_request')
+    def test_files_create_connection(self, create_session, post_request):
+        library = APILibrary()
+        r = library.call_post_request({"a": "Text"}, "Endpoint", "fullstring", b'item')
+        type(r).text = PropertyMock(return_value="success")
+        type(r).status_code = PropertyMock(return_value=200)
+        assert r.text
+        assert r.status_code == 200
+
+    @patch('RequestsLibrary.RequestsKeywords.create_session')
+    @patch('RequestsLibrary.RequestsKeywords.post_request')
+    @patch('requests.packages.urllib3.disable_warnings')
+    def test_create_connection_insecure_request(self, create_session, post_request, disable_warnings):
         library = APILibrary()
         library.suppress_insecure_request_warnings()
         r = library.call_post_request({"a": "Text"}, "Endpoint", "fullstring")
