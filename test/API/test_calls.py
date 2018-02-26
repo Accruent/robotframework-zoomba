@@ -42,7 +42,7 @@ class TestExternal(unittest.TestCase):
         r = library.call_get_request({"a": "Text"}, "Endpoint", "fullstring")
         type(r).text = PropertyMock(return_value="success")
         type(r).status_code = PropertyMock(return_value=200)
-        assert r.text
+        assert r.text == "success"
         assert r.status_code == 200
 
     @patch('RequestsLibrary.RequestsKeywords.create_session')
@@ -73,7 +73,7 @@ class TestExternal(unittest.TestCase):
         r = library.call_post_request({"a": "Text"}, "Endpoint", "fullstring")
         type(r).text = PropertyMock(return_value="success")
         type(r).status_code = PropertyMock(return_value=200)
-        assert r.text
+        assert r.text == "success"
         assert r.status_code == 200
 
     @patch('RequestsLibrary.RequestsKeywords.create_session')
@@ -83,7 +83,7 @@ class TestExternal(unittest.TestCase):
         r = library.call_post_request({"a": "Text"}, "Endpoint", "fullstring", b'item')
         type(r).text = PropertyMock(return_value="success")
         type(r).status_code = PropertyMock(return_value=200)
-        assert r.text
+        assert r.text == "success"
         assert r.status_code == 200
 
     @patch('RequestsLibrary.RequestsKeywords.create_session')
@@ -106,7 +106,7 @@ class TestExternal(unittest.TestCase):
         r = library.call_delete_request({"a": "Text"}, "Endpoint", "fullstring")
         type(r).text = PropertyMock(return_value="success")
         type(r).status_code = PropertyMock(return_value=200)
-        assert r.text
+        assert r.text == "success"
         assert r.status_code == 200
 
     @patch('RequestsLibrary.RequestsKeywords.create_session')
@@ -137,7 +137,7 @@ class TestExternal(unittest.TestCase):
         r = library.call_patch_request({"a": "Text"}, "Endpoint", "fullstring")
         type(r).text = PropertyMock(return_value="success")
         type(r).status_code = PropertyMock(return_value=200)
-        assert r.text
+        assert r.text == "success"
         assert r.status_code == 200
 
     @patch('RequestsLibrary.RequestsKeywords.create_session')
@@ -168,7 +168,7 @@ class TestExternal(unittest.TestCase):
         r = library.call_put_request({"a": "Text"}, "Endpoint", "fullstring")
         type(r).text = PropertyMock(return_value="success")
         type(r).status_code = PropertyMock(return_value=200)
-        assert r.text
+        assert r.text == "success"
         assert r.status_code == 200
 
     @patch('RequestsLibrary.RequestsKeywords.create_session')
@@ -199,7 +199,7 @@ class TestExternal(unittest.TestCase):
         r = library.call_post_request({"a": "Text"}, "Endpoint", "fullstring")
         type(r).text = PropertyMock(return_value="success")
         type(r).status_code = PropertyMock(return_value=200)
-        assert r.text
+        assert r.text == "success"
         assert r.status_code == 200
 
     @patch('RequestsLibrary.RequestsKeywords.create_session')
@@ -209,7 +209,7 @@ class TestExternal(unittest.TestCase):
         r = library.call_post_request({"a": "Text"}, "Endpoint", "fullstring", b'item')
         type(r).text = PropertyMock(return_value="success")
         type(r).status_code = PropertyMock(return_value=200)
-        assert r.text
+        assert r.text == "success"
         assert r.status_code == 200
 
     @patch('RequestsLibrary.RequestsKeywords.create_session')
@@ -218,5 +218,5 @@ class TestExternal(unittest.TestCase):
     def test_create_connection_insecure_request(self, create_session, post_request, disable_warnings):
         library = APILibrary()
         library.suppress_insecure_request_warnings()
-        r = library.call_post_request({"a": "Text"}, "Endpoint", "fullstring")
+        library.call_post_request({"a": "Text"}, "Endpoint", "fullstring")
         assert disable_warnings.called
