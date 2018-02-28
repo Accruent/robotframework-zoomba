@@ -41,7 +41,8 @@ setup(name         = 'robotframework-zoomba',
           "robotframework-seleniumlibrary==3.0.1",
           "robotframework-sudslibrary-aljcalandra",
           "requests==2.18.4",
-          "selenium==3.8.1"
+          "selenium==3.8.1",
+          "python-dateutil"
       ],
       classifiers  = CLASSIFIERS,
       package_dir  = {'' : 'src'},
