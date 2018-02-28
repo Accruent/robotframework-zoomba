@@ -4,6 +4,6 @@ python:
 install:
   - pip install .
 script:
-  - py.test --cov=src -v
+  - pytest -v
 after_success:
   - coveralls
