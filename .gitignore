@@ -1,13 +1,2 @@
 # IntelliJ project files
 .idea
-*.iml
-out
-gen
-.gitignore
-.idea/inspectionProfiles/
-.idea/misc.xml
-.idea/modules.xml
-.idea/workspace.xml
-.idea/zoomba.iml
-src/Zoomba/__pycache__/
-test/API/__pycache__/
