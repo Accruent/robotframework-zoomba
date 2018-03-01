@@ -5,5 +5,9 @@ install:
   - pip install .
 script:
   - pytest --cov src -v
+notifications:
+
+webhooks: https://outlook.office.com/webhook/d21bbd8c-15d5-438d-b677-ec46b5a9d206@e9539418-46f3-4813-b93b-c9fe957bf3ae/TravisCI/76aa86bbd7314d138fd45d2500901b55/f936d851-4113-4039-bebb-0f3d095e4d0d
+
 after_success:
   - coveralls
