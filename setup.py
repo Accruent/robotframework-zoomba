@@ -43,7 +43,8 @@ setup(name         = 'robotframework-zoomba',
           "requests==2.18.4",
           "selenium==3.8.1",
           "python-dateutil",
-          "pytest-cov"
+          "pytest-cov",
+          "python-coveralls"
       ],
       classifiers  = CLASSIFIERS,
       package_dir  = {'' : 'src'},
