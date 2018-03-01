@@ -1,8 +1,8 @@
 Zoomba
 ===========
 !https://badge.fury.io/py/robotframework-zoomba.svg!:https://badge.fury.io/py/robotframework-zoomba
-!https://travis-ci.org/m-hintz-42/zoomba.svg?branch=master!:https://travis-ci.org/m-hintz-42/zoomba
-!https://coveralls.io/repos/github/m-hintz-42/zoomba/badge.svg?branch=master!:https://coveralls.io/github/m-hintz-42/zoomba?branch=master
+!https://travis-ci.org/accruent/zoomba.svg?branch=master!:https://travis-ci.org/accruent/zoomba
+!https://coveralls.io/repos/github/accruent/zoomba/badge.svg?branch=master!:https://coveralls.io/github/accruent/zoomba?branch=master
 
 Introduction
 -----------
