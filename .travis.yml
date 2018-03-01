@@ -1,6 +1,9 @@
 language: python
 python:
   - "3.6"
+branches:
+  except:
+    - /^(documentation).*$/i
 install:
   - pip install .
 script:
