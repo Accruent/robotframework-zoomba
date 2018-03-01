@@ -190,13 +190,13 @@ class TestExternal(unittest.TestCase):
 
     def test_create_connection_default(self):
         library = APILibrary()
-        self.assertRaises(TypeError, library.call_post_request)
+        self.assertRaises(TypeError, library.create_connection)
 
     @patch('RequestsLibrary.RequestsKeywords.create_session')
     @patch('RequestsLibrary.RequestsKeywords.post_request')
     def test_basic_create_connection(self, create_session, post_request):
         library = APILibrary()
-        r = library.call_post_request({"a": "Text"}, "Endpoint", "fullstring")
+        r = library.create_connection({"a": "Text"}, "Endpoint", "fullstring")
         type(r).text = PropertyMock(return_value="success")
         type(r).status_code = PropertyMock(return_value=200)
         assert r.text == "success"
@@ -206,7 +206,7 @@ class TestExternal(unittest.TestCase):
     @patch('RequestsLibrary.RequestsKeywords.post_request')
     def test_files_create_connection(self, create_session, post_request):
         library = APILibrary()
-        r = library.call_post_request({"a": "Text"}, "Endpoint", "fullstring", b'item')
+        r = library.create_connection({"a": "Text"}, "Endpoint", "fullstring", b'item')
         type(r).text = PropertyMock(return_value="success")
         type(r).status_code = PropertyMock(return_value=200)
         assert r.text == "success"
@@ -218,5 +218,5 @@ class TestExternal(unittest.TestCase):
     def test_create_connection_insecure_request(self, create_session, post_request, disable_warnings):
         library = APILibrary()
         library.suppress_insecure_request_warnings()
-        library.call_post_request({"a": "Text"}, "Endpoint", "fullstring")
+        library.create_connection({"a": "Text"}, "Endpoint", "fullstring")
         assert disable_warnings.called
