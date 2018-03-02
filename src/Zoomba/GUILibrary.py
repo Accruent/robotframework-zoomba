@@ -39,10 +39,7 @@ class GUILibrary(SeleniumLibrary):
         locator: (string) A selenium locator(CSS, XPATH, ID, NAME, etc)
         """
         self.wait_for_and_focus_on_element(locator)
-        scroll_problem = zoomba.run_keyword_and_return_status("Click Element", locator)
-        if not scroll_problem:
-            self.scroll_to_bottom_of_page()
-            self.click_element(locator)
+        self.click_element(locator)
 
     @keyword('Wait For And Input Text')
     def wait_for_and_input_text(self, locator, text):
@@ -52,10 +49,7 @@ class GUILibrary(SeleniumLibrary):
         text: (string) Text to be typed into the input field.
         """
         self.wait_for_and_focus_on_element(locator)
-        scroll_problem = zoomba.run_keyword_and_return_status("Input Text", locator, text)
-        if not scroll_problem:
-            self.scroll_to_bottom_of_page()
-            self.input_text(locator, text)
+        self.input_text(locator, text)
 
     @keyword("Wait For And Select Frame")
     def wait_for_and_select_frame(self, locator):
@@ -63,7 +57,6 @@ class GUILibrary(SeleniumLibrary):
         selects it.\n
         locator: (string) A selenium locator(CSS, XPATH, ID, NAME, etc)
         """
-        self.scroll_to_bottom_of_page()
         self.wait_until_page_contains_element(locator)
         self.select_frame(locator)
 
@@ -141,7 +134,7 @@ class GUILibrary(SeleniumLibrary):
         locator: (string) A selenium locator(CSS, XPATH, ID, NAME, etc)
         """
         self.wait_until_page_contains_element(locator)
-        zoomba.wait_until_keyword_succeeds(5, 1, "Set Focus To Element", locator)
+        zoomba.wait_until_keyword_succeeds(self.timeout, 1, "Set Focus To Element", locator)
         self.wait_until_element_is_visible(locator)
 
     @keyword("Wait Until Window Opens")
@@ -167,15 +160,19 @@ class GUILibrary(SeleniumLibrary):
         then it selects that window.\n
         title: (string) The title of the window you are waiting for.
         """
-        zoomba.wait_until_keyword_succeeds(5, 1, "Wait Until Window Opens", title)
+        zoomba.wait_until_keyword_succeeds(self.timeout, 1, "Wait Until Window Opens", title)
         self.select_window(title)
 
     @keyword("Scroll To Bottom Of Page")
     def scroll_to_bottom_of_page(self):
-        """This keyword scrolls down the page 2000 pixels, which is usually enough to get to the bottom of the page
+        """This keyword scrolls down to the bottom of the page, if jquery is not available it will scroll 20000 pixels
 
         """
-        self.execute_javascript("window.scrollTo(0,2000)")
+        try:
+            height = self.execute_javascript("return $(document).height()")
+        except:
+            height = 20000
+        self.execute_javascript(f"window.scrollTo(0,{height})")
 
     @keyword("Wait Until Javascript Is Complete")
     def wait_until_javascript_is_complete(self):
@@ -230,12 +227,12 @@ class GUILibrary(SeleniumLibrary):
         return position_element_list
 
     @keyword("Wait Until Window Closes")
-    def wait_until_window_closes(self, title, timeout=5):
+    def wait_until_window_closes(self, title):
         """This is a series of chained Selenium keywords, used to wait until a window with the title no longer exists.\n
         title: (string) The title of the window you are expecting to close.
         timeout: (integer) The amount of time (in seconds) the keyword will try to wait for the window to close.
         """
-        zoomba.wait_until_keyword_succeeds(timeout, 1, "Window Should Not Be Open", title)
+        zoomba.wait_until_keyword_succeeds(self.timeout, 1, "Window Should Not Be Open", title)
 
     @keyword("Create Dictionary From Keys And Values Lists")
     def create_dictionary_from_keys_and_values_lists(self, keys, values):
@@ -245,8 +242,8 @@ class GUILibrary(SeleniumLibrary):
         return: (dictionary) A dictionary with the mapped key-value pairs.
         """
         if len(keys) != len(values):
-            raise ValueError("The length of the keys and values lists is not the same: \nKeys Length: " +
-                             str(len(keys)) + "\nValues Length: " + str(len(values)))
+            zoomba.log("The length of the keys and values lists is not the same: \nKeys Length: " +
+                             str(len(keys)) + "\nValues Length: " + str(len(values)), "ERROR")
         new_dict = dict(zip(keys, values))
         return new_dict
 
@@ -257,7 +254,7 @@ class GUILibrary(SeleniumLibrary):
         number_of_characters: (integer) Truncation index
         return: (string) A truncated String
         """
-        truncated_string = string[0:number_of_characters] if len(string) > number_of_characters else string
+        truncated_string = string[0:number_of_characters]
         return truncated_string
 
     @keyword("Drag And Drop By JS")
@@ -279,7 +276,6 @@ class GUILibrary(SeleniumLibrary):
 
         self.page_should_contain_element(source)
         self.page_should_contain_element(target)
-
         js = "(function( $ ) {$.fn.simulateDragDrop = function(options) {return this.each(function() {new $.simulateDragDrop(this, options); }); }; $.simulateDragDrop = function(elem, options) {this.options = options; this.simulateEvent(elem, options); }; $.extend($.simulateDragDrop.prototype, {simulateEvent: function(elem, options) {/*Simulating drag start*/ var type = 'dragstart'; var event = this.createEvent(type); this.dispatchEvent(elem, type, event); /*Simulating drop*/ type = 'drop'; var dropEvent = this.createEvent(type, {}); dropEvent.dataTransfer = event.dataTransfer; this.dispatchEvent($(options.dropTarget)[0], type, dropEvent); /*Simulating drag end*/ type = 'dragend'; var dragEndEvent = this.createEvent(type, {}); dragEndEvent.dataTransfer = event.dataTransfer; this.dispatchEvent(elem, type, dragEndEvent); }, createEvent: function(type) {var event = document.createEvent('CustomEvent'); event.initCustomEvent(type, true, true, null); event.dataTransfer = {data: {}, setData: function(type, val){this.data[type] = val; }, getData: function(type){return this.data[type]; } }; return event; }, dispatchEvent: function(elem, type, event) {if(elem.dispatchEvent) {elem.dispatchEvent(event); }else if( elem.fireEvent ) {elem.fireEvent('on'+type, event); } } }); })(jQuery);$(document.evaluate(arguments[0], document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue) .simulateDragDrop({ dropTarget: document.evaluate(arguments[1], document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue});"
         load_jquery_js = "/** dynamically load jQuery */ (function(jqueryUrl, callback) { if (typeof jqueryUrl != 'string') { jqueryUrl = 'https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'; } if (typeof jQuery == 'undefined') { var script = document.createElement('script'); var head = document.getElementsByTagName('head')[0]; var done = false; script.onload = script.onreadystatechange = (function() { if (!done && (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete')) { done = true; script.onload = script.onreadystatechange = null; head.removeChild(script); callback(); } }); script.src = jqueryUrl; head.appendChild(script); } else { callback(); } })(arguments[0], arguments[arguments.length - 1]);"
 
@@ -289,22 +285,7 @@ class GUILibrary(SeleniumLibrary):
 
     @keyword("Scroll Element Into View")
     def scroll_element_into_view(self, locator):
-        """Scrolls an element from given ``locator`` into view. This keyword was created in robotframework-extendedselenium2library.
-
-        Arguments:
-        - ``locator``: The locator to find requested element. Key attributes for
-                       arbitrary elements are ``id`` and ``name``. See `introduction` for
-                       details about locating elements.
-
-        Examples:
-        | Scroll Element Into View | css=div.class |
+        """This keyword has been deprecated: use Set Focus To Element instead
         """
-        if isinstance(locator, WebElement):
-            element = locator
-        else:
-            logger.info("Scrolling element '%s' into view." % locator)
-            element = self._element_find(locator, True, True)
-        script = 'arguments[0].scrollIntoView()'
-        # pylint: disable=no-member
-        self.driver.execute_script(script, element)
-        return element
+        zoomba.log("This keyword has been deprecated: use Set Focus To Element instead.", "WARNING")
+        self.set_focus_to_element(locator)
