@@ -1,6 +1,8 @@
 Zoomba
 ===========
 [![PyPI version](https://badge.fury.io/py/robotframework-zoomba.svg)](https://badge.fury.io/py/robotframework-zoomba)
+[![Build Status](https://travis-ci.org/Accruent/zoomba.svg?branch=master)](https://travis-ci.org/Accruent/zoomba)
+[![Coverage Status](https://coveralls.io/repos/github/Accruent/zoomba/badge.svg?branch=master)](https://coveralls.io/github/Accruent/zoomba?branch=master)
 
 Introduction
 -----------
