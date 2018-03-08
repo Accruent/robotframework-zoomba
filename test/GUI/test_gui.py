@@ -8,8 +8,6 @@ from unittest.mock import patch
 from unittest.mock import Mock
 
 
-
-
 class TestInternal(unittest.TestCase):
     @patch('robot.libraries.BuiltIn.BuiltIn.should_be_equal')
     def test_should_be_equal_simple(self, robot_call):
@@ -101,7 +99,7 @@ class TestInternal(unittest.TestCase):
     @patch('SeleniumLibrary.ElementKeywords.click_element')
     def test_wait_for_mouse_over_and_click_simple(self, robot_call, mouse_over, click_element):
         mock_gui = Mock()
-        GUILibrary.wait_for_and_mouse_over(mock_gui, "some_locator")
+        GUILibrary.wait_for_and_mouse_over_and_click(mock_gui, "some_locator")
         assert robot_call.called_with(15, 1, "Set Focus To Element", "some_locator")
         assert mouse_over.called_with("some_locator")
         assert click_element.called_with("some_locator")
@@ -128,10 +126,56 @@ class TestInternal(unittest.TestCase):
         GUILibrary.window_should_not_be_open(mock_gui, "title")
         assert robot_call.called_with(["main"], "title")
 
+    @patch('robot.libraries.BuiltIn.BuiltIn.wait_until_keyword_succeeds')
+    @patch('SeleniumLibrary.WindowKeywords.select_window')
+    def test_wait_for_and_select_window_simple(self, robot_call, select_window):
+        mock_gui = Mock()
+        GUILibrary.wait_for_and_select_window(mock_gui, "title")
+        assert robot_call.called_with(15, 1, "wait_until_window_opens", "title")
+        assert select_window.called_with("title")
 
+    @patch('robot.libraries.BuiltIn.BuiltIn.sleep')
+    def test_wait_until_javascript_is_complete_simple(self, robot_call):
+        mock_gui = Mock()
+        mock_gui.execute_javascript = Mock(side_effect=[False, True, False, True])
+        GUILibrary.wait_until_javascript_is_complete(mock_gui)
+        assert robot_call.called
 
+    @patch('SeleniumLibrary.ElementKeywords.get_text')
+    def test_get_text_from_web_elements_list_simple(self, robot_call):
+        mock_gui = Mock()
+        mock_gui.get_text = Mock(side_effect=['a', 'b'])
+        assert GUILibrary.get_text_from_web_elements_list(mock_gui, ['a', 'b']) == ['a', 'b']
 
+    @patch('SeleniumLibrary.ElementKeywords.get_value')
+    def test_get_values_from_web_elements_list_simple(self, robot_call):
+        mock_gui = Mock()
+        mock_gui.get_value = Mock(side_effect=['a', 'b'])
+        assert GUILibrary.get_values_from_web_elements_list(mock_gui, ['a', 'b']) == ['a', 'b']
 
+    @patch('SeleniumLibrary.ElementKeywords.get_vertical_position')
+    def test_get_vertical_position_from_web_elements_list_simple(self, robot_call):
+        mock_gui = Mock()
+        mock_gui.get_vertical_position = Mock(side_effect=[1, 2])
+        assert GUILibrary.get_vertical_position_from_web_elements_list(mock_gui, ['a', 'b']) == [1, 2]
+
+    @patch('robot.libraries.BuiltIn.BuiltIn.wait_until_keyword_succeeds')
+    def test_wait_until_window_closes_simple(self, robot_call):
+        mock_gui = Mock()
+        GUILibrary.wait_until_window_closes(mock_gui, "title")
+        assert robot_call.called_with(15, 1, "Window Should Not Be Open", "title")
+
+    def test_scroll_to_bottom_of_page_simple(self):
+        mock_gui = Mock()
+        mock_gui.execute_javascript = Mock(return_value=20)
+        GUILibrary.scroll_to_bottom_of_page(mock_gui)
+        mock_gui.execute_javascript.assert_called_with("window.scrollTo(0,20)")
+
+    def test_scroll_to_bottom_of_page_exception(self):
+        mock_gui = Mock()
+        mock_gui.execute_javascript = Mock(side_effect=[BaseException, True])
+        GUILibrary.scroll_to_bottom_of_page(mock_gui)
+        mock_gui.execute_javascript.assert_called_with("window.scrollTo(0,20000)")
 
 
 
