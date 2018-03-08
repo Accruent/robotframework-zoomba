@@ -3,12 +3,10 @@ import sys
 sys.path.insert(0, os.path.abspath( os.path.join(os.path.dirname(__file__), '../../src/') ))
 
 from Zoomba.GUILibrary import GUILibrary
-import SeleniumLibrary
-from robot.libraries.Collections import Collections
 import unittest
 from unittest.mock import patch
 from unittest.mock import Mock
-from unittest.mock import PropertyMock
+
 
 
 
@@ -107,6 +105,14 @@ class TestInternal(unittest.TestCase):
         assert robot_call.called_with(15, 1, "Set Focus To Element", "some_locator")
         assert mouse_over.called_with("some_locator")
         assert click_element.called_with("some_locator")
+
+    @patch('robot.libraries.BuiltIn.BuiltIn.wait_until_keyword_succeeds')
+    @patch('SeleniumLibrary.FormElementKeywords.select_checkbox')
+    def test_wait_for_and_select_checkbox_simple(self, robot_call, select_checkbox):
+        mock_gui = Mock()
+        GUILibrary.wait_for_and_select_checkbox(mock_gui, "some_locator")
+        assert robot_call.called_with(15, 1, "Set Focus To Element", "some_locator")
+        assert select_checkbox.called_with("some_locator")
 
     @patch('robot.libraries.Collections.Collections.list_should_contain_value')
     def test_wait_until_window_opens_simple(self, robot_call):
