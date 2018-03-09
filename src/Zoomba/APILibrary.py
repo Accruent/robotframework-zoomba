@@ -7,6 +7,8 @@ from urllib3.exceptions import InsecureRequestWarning
 from requests.packages import urllib3
 from robot.libraries.BuiltIn import BuiltIn
 
+zoomba = BuiltIn()
+
 
 class APILibrary(object):
     """Zoomba API Library
@@ -346,7 +348,7 @@ class APILibrary(object):
             for key_error_tuple in unmatched_keys:
                 for key_error in key_error_tuple:
                     keys_error_msg += str(key_error) + "\n"
-            assert False, keys_error_msg + "\nPlease see differing value(s)"
+            zoomba.fail(keys_error_msg + "\nPlease see differing value(s)")
 
 
 def _date_format(date_string, key, unmatched_keys_list, date_type, date_format=None):
