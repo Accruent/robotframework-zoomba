@@ -177,7 +177,38 @@ class TestInternal(unittest.TestCase):
         GUILibrary.scroll_to_bottom_of_page(mock_gui)
         mock_gui.execute_javascript.assert_called_with("window.scrollTo(0,20000)")
 
+    def test_create_dictionary_from_keys_and_values_lists_simple(self):
+        mock_gui = Mock()
+        assert GUILibrary.create_dictionary_from_keys_and_values_lists(mock_gui, [5], [6]) == {5:6}
 
+    @patch('robot.libraries.BuiltIn.BuiltIn.log')
+    def test_create_dictionary_from_keys_and_values_lists_fail(self, robot_call):
+        mock_gui = Mock()
+        GUILibrary.create_dictionary_from_keys_and_values_lists(mock_gui, [5], [6, 7])
+        assert robot_call.called_with("The length of the keys and values lists is not the same: \nKeys Length: " +
+                             "1" + "\nValues Length: " + "2", "ERROR")
 
+    def test_truncate_string_simple(self):
+        mock_gui = Mock()
+        assert GUILibrary.truncate_string(mock_gui, "string", 3) == "str"
 
+    def test_drag_and_drop_by_js_simple(self):
+        mock_gui = Mock()
+        GUILibrary.drag_and_drop_by_js(mock_gui, "source", "target", True)
+        mock_gui.driver.execute_async_script.assert_called()
+        mock_gui.driver.execute_script.assert_called()
+
+    def test_drag_and_drop_by_js_false(self):
+        mock_gui = Mock()
+        GUILibrary.drag_and_drop_by_js(mock_gui, "source", "target", False)
+        mock_gui.driver.execute_async_script.assert_not_called()
+        mock_gui.driver.execute_script.assert_called()
+
+    @patch('robot.libraries.BuiltIn.BuiltIn.log')
+    @patch('SeleniumLibrary.ElementKeywords.set_focus_to_element')
+    def test_scroll_element_into_view_fail(self, robot_call, set_focus):
+        mock_gui = Mock()
+        GUILibrary.scroll_element_into_view(mock_gui, "locator")
+        assert robot_call.called_with("This keyword has been deprecated: use Set Focus To Element instead.", "WARNING")
+        assert set_focus.called_with("locator")
 

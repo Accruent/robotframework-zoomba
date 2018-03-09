@@ -169,7 +169,7 @@ class GUILibrary(SeleniumLibrary):
 
         """
         try:
-            height = self.execute_javascript("return $(document).height()")
+            height = self.execute_javascript("return window.outerHeight")
         except:
             height = 20000
         self.execute_javascript(f"window.scrollTo(0,{height})")
