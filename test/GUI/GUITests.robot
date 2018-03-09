@@ -93,3 +93,14 @@ Drag and Drop by JS Test
     Open Browser                        https://html5demos.com/drag/    browser=chrome
     Drag and Drop by JS                 //a[@id='one']      //div[@id='bin']
     Page Should Not Contain Element     //a[@id='one']
+
+Scroll To Bottom of Page Test
+    [Teardown]      Close All Browsers
+    Open Browser    http://www.google.com    browser=chrome
+    Maximize Browser Window
+    wait for and input text      lst-ib      robot framework
+    press key                    lst-ib      \\13
+    wait until element is visible                   //h3[@class='r']//a
+    scroll to bottom of page
+    ${position} =                Execute Javascript        return window.pageYOffset
+    should be equal              "878"         "${position}"
