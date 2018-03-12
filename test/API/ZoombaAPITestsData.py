@@ -393,7 +393,7 @@ only_keys_err_2 = "The response does not contain the key 'orange'"
 
 no_items_err_1 = "API is returning 1 instead of the expected 2 result(s)."
 
-not_list_err_1 = "TypeError: The response is not a list:" \
+not_list_err_1 = "The response is not a list:" \
                  "\nActual Response:" \
                  "\n{'apple': 'cat', 'banana': 'dog', 'pear': 'fish'}"
 

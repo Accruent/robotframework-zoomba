@@ -168,8 +168,8 @@ class APILibrary(object):
                                                   **kwargs)
                     if len(unmatched_keys_list) > 0:
                         BuiltIn().log("Responses didn't match:"
-                                   "\nActual:\n" + str(actual_response_dict) +
-                                   "\nExpected:\n" + str(expected_response_dict) + "\n", console=True)
+                                      "\nActual:\n" + str(actual_response_dict) +
+                                      "\nExpected:\n" + str(expected_response_dict) + "\n", console=True)
                         self.generate_unmatched_keys_error_message(unmatched_keys_list)
                     return
             else:
@@ -199,21 +199,23 @@ class APILibrary(object):
         actual_response_dict = json.loads(json_actual_response)
         if type(actual_response_dict) is not list:
             for expected_key in key_list:
-                assert expected_key in actual_response_dict, \
-                    "The response does not contain the key '" + expected_key + "'"
-                assert actual_response_dict[expected_key] == expected_response[expected_key], \
-                    "The value for the key '" + expected_key + "' doesn't match the response:" + \
-                    "\nExpected: " + expected_response[expected_key] +\
-                    "\nActual: " + actual_response_dict[expected_key]
+                if expected_key not in actual_response_dict:
+                    zoomba.fail("The response does not contain the key '" + expected_key + "'")
+                    continue
+                if actual_response_dict[expected_key] != expected_response[expected_key]:
+                    zoomba.fail("The value for the key '" + expected_key + "' doesn't match the response:" + \
+                                "\nExpected: " + expected_response[expected_key] +\
+                                "\nActual: " + actual_response_dict[expected_key])
             return
         elif type(actual_response_dict) is list:
             for expected_key in key_list:
-                assert expected_key in actual_response_dict[0], \
-                    "The response does not contain the key '" + expected_key + "'"
-                assert actual_response_dict[0][expected_key] == expected_response[0][expected_key], \
-                    "The value for the key '" + expected_key + "' doesn't match the response:" + \
-                    "\nExpected: " + expected_response[0][expected_key] + \
-                    "\nActual: " + actual_response_dict[0][expected_key]
+                if expected_key not in actual_response_dict[0]:
+                    zoomba.fail("The response does not contain the key '" + expected_key + "'")
+                    continue
+                if actual_response_dict[0][expected_key] != expected_response[0][expected_key]:
+                    zoomba.fail("The value for the key '" + expected_key + "' doesn't match the response:" + \
+                                "\nExpected: " + expected_response[0][expected_key] + \
+                                "\nActual: " + actual_response_dict[0][expected_key])
             return
 
     def validate_response_contains_correct_number_of_items(self, json_actual_response, number_of_items):

@@ -47,6 +47,38 @@ class TestInternal(unittest.TestCase):
         library.validate_response_contains_correct_number_of_items('{"a":1}', 1)
         fail.assert_called_with("The response is not a list:\nActual Response:\n{'a': 1}")
 
+    def test_validate_response_contains_expected_response_only_keys_listed_simple(self):
+        library = APILibrary()
+        library.validate_response_contains_expected_response_only_keys_listed('{"a":1}', {"a":1}, ["a"])
+
+    @patch('robot.libraries.BuiltIn.BuiltIn.fail')
+    def test_validate_response_contains_expected_response_only_keys_listed_response_missing_key(self, fail):
+        library = APILibrary()
+        library.validate_response_contains_expected_response_only_keys_listed('{"b":"1"}', {"b":"1"}, ["a"])
+        fail.assert_called_with("The response does not contain the key 'a'")
+
+    @patch('robot.libraries.BuiltIn.BuiltIn.fail')
+    def test_validate_response_contains_expected_response_only_keys_listed_response_value_diff(self, fail):
+        library = APILibrary()
+        library.validate_response_contains_expected_response_only_keys_listed('{"a":"2"}', {"a":"1"}, ["a"])
+        fail.assert_called_with("The value for the key 'a' doesn't match the response:\nExpected: 1\nActual: 2")
+
+    def test_validate_response_contains_expected_response_only_keys_listed_list_simple(self):
+        library = APILibrary()
+        library.validate_response_contains_expected_response_only_keys_listed('[{"a":1}]', [{"a":1}], ["a"])
+
+    @patch('robot.libraries.BuiltIn.BuiltIn.fail')
+    def test_validate_response_contains_expected_response_only_keys_listed_list_response_missing_key(self, fail):
+        library = APILibrary()
+        library.validate_response_contains_expected_response_only_keys_listed('[{"b":"1"}]', [{"b":"1"}], ["a"])
+        fail.assert_called_with("The response does not contain the key 'a'")
+
+    @patch('robot.libraries.BuiltIn.BuiltIn.fail')
+    def test_validate_response_contains_expected_response_only_keys_listed_list_response_value_diff(self, fail):
+        library = APILibrary()
+        library.validate_response_contains_expected_response_only_keys_listed('[{"a":"2"}]', [{"a":"1"}], ["a"])
+        fail.assert_called_with("The value for the key 'a' doesn't match the response:\nExpected: 1\nActual: 2")
+
 
 
 
