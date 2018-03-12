@@ -227,14 +227,18 @@ class APILibrary(object):
             number_of_items = number_of_items.upper()
             if number_of_items == "IGNORE":
                 return True
-            else:
-                assert False, "Passed a unicode or string value, function expects a number or string 'IGNORE'."
+        elif type(number_of_items) is int:
+            pass
+        else:
+            zoomba.fail("Did not pass number or string value, function expects a number or string 'IGNORE'.")
+            return
 
         if type(actual_response_dict) is list:
-            assert len(actual_response_dict) == number_of_items, 'API is returning ' + str(
-                len(actual_response_dict)) + ' instead of the expected ' + str(number_of_items) + ' result(s).'
+            if len(actual_response_dict) != number_of_items:
+                zoomba.fail('API is returning ' + str(
+                    len(actual_response_dict)) + ' instead of the expected ' + str(number_of_items) + ' result(s).')
         else:
-            raise TypeError("The response is not a list:\nActual Response:\n" + str(actual_response_dict))
+            zoomba.fail("The response is not a list:\nActual Response:\n" + str(actual_response_dict))
 
     def key_by_key_validator(self, actual_dictionary, expected_dictionary, ignored_keys=None, unmatched_keys_list=None,
                              **kwargs):
