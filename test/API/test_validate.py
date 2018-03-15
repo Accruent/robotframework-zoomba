@@ -98,7 +98,7 @@ class TestInternal(unittest.TestCase):
         library.key_by_key_validator({"a":["1", "2"]}, {"a":["1", "2"]})
 
     @unittest.expectedFailure
-    def test_key_by_key_validator_simple_list(self):
+    def test_key_by_key_validator_list_int_expected_failure(self):
         library = APILibrary()
         library.key_by_key_validator({"a":[1]}, {"a":[1]})
 
