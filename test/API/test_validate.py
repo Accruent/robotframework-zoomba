@@ -158,9 +158,14 @@ class TestInternal(unittest.TestCase):
         library.key_by_key_validator({"a":"a"}, {"a":"b"}, unmatched_keys_list=unmatched)
         assert unmatched == [('------------------\nKey: a', 'Expected: b', 'Actual: a')]
 
+    def test_validate_response_contains_expected_response_simple(self):
+        library = APILibrary()
+        library.validate_response_contains_expected_response('{"a":{"b":1}}', {"a":{"b":1}})
 
-
-
-
+    @patch('robot.libraries.BuiltIn.BuiltIn.fail')
+    def test_validate_response_contains_expected_response_simple_fail(self, fail):
+        library = APILibrary()
+        library.validate_response_contains_expected_response(None, {"a":{"b":1}})
+        fail.assert_called_with("The Actual Response is Empty.")
 
 

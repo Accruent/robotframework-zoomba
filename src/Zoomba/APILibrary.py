@@ -146,13 +146,14 @@ class APILibrary(object):
             return: There is no actual returned output, other than error messages when comparisons fail.\n
         """
         if not json_actual_response:
-            assert False, "The Actual Response is Empty."
+            zoomba.fail("The Actual Response is Empty.")
+            return
         else:
             actual_response_dict = json.loads(json_actual_response)
             unmatched_keys_list = []
         if type(actual_response_dict) is not list and actual_response_dict:
             if actual_response_dict == expected_response_dict:
-                assert True
+                return
             else:
                 self.key_by_key_validator(actual_response_dict, expected_response_dict, ignored_keys,
                                           unmatched_keys_list, **kwargs)
@@ -161,15 +162,15 @@ class APILibrary(object):
         elif type(actual_response_dict) is list and actual_response_dict:
             if full_list_validation:
                 if actual_response_dict == expected_response_dict:
-                    assert True
+                    return
                 else:
                     for actual_item, expected_item in zip(actual_response_dict, expected_response_dict):
                         self.key_by_key_validator(actual_item, expected_item, ignored_keys, unmatched_keys_list,
                                                   **kwargs)
                     if len(unmatched_keys_list) > 0:
-                        BuiltIn().log("Responses didn't match:"
+                        zoomba.fail("Responses didn't match:"
                                       "\nActual:\n" + str(actual_response_dict) +
-                                      "\nExpected:\n" + str(expected_response_dict) + "\n", console=True)
+                                      "\nExpected:\n" + str(expected_response_dict) + "\n")
                         self.generate_unmatched_keys_error_message(unmatched_keys_list)
                     return
             else:
@@ -181,11 +182,12 @@ class APILibrary(object):
                             self.generate_unmatched_keys_error_message(unmatched_keys_list)
                             break
                         elif actual_response_dict[-1] == actual_item:
-                            assert False, 'Item was not within the response:\n' + str(exp_item)
+                            zoomba.fail('Item was not within the response:\n' + str(exp_item))
+                            continue
                         else:
                             continue
         else:
-            assert False, "The Actual Response is Empty."
+            zoomba.fail("The Actual Response is Empty.")
 
     def validate_response_contains_expected_response_only_keys_listed(self, json_actual_response, expected_response,
                                                                       key_list):
