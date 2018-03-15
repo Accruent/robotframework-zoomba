@@ -227,3 +227,10 @@ class TestInternal(unittest.TestCase):
                                                              identity_key="a")
         fail.assert_called_with("Item was not within the response:\n{'a': 1, 'c': 3}")
 
+    @patch('robot.libraries.BuiltIn.BuiltIn.fail')
+    def test_validate_response_contains_expected_response_list_unmatched_identity_key_continue_simple(self, fail):
+        library = APILibrary()
+        library.validate_response_contains_expected_response('[{"a":2,"c":2}, {"a":1,"c":2}]', [{"a":1, "c":3}],
+                                                             identity_key="a")
+        fail.assert_called_with('Key(s) Did Not Match:\n------------------\nKey: c\nExpected: '
+                                '3\nActual: 2\n\nPlease see differing value(s)')
