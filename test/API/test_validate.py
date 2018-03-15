@@ -168,4 +168,38 @@ class TestInternal(unittest.TestCase):
         library.validate_response_contains_expected_response(None, {"a":{"b":1}})
         fail.assert_called_with("The Actual Response is Empty.")
 
+    @patch('robot.libraries.BuiltIn.BuiltIn.fail')
+    def test_validate_response_contains_expected_response_empty_dict_fail(self, fail):
+        library = APILibrary()
+        library.validate_response_contains_expected_response('{}', {"a": {"b": 1}})
+        fail.assert_called_with("The Actual Response is Empty.")
+
+    def test_validate_response_contains_expected_response_ignored(self):
+        library = APILibrary()
+        library.validate_response_contains_expected_response('{"a":{"b":1},"c":2}', {"a":{"b":1}, "c":3},
+                                                             ignored_keys=["c"])
+
+    @patch('robot.libraries.BuiltIn.BuiltIn.fail')
+    def test_validate_response_contains_expected_response_unmatched(self, fail):
+        library = APILibrary()
+        library.validate_response_contains_expected_response('{"a":{"b":1},"c":2}', {"a":{"b":1}, "c":3})
+        fail.assert_called_with('Key(s) Did Not Match:\n------------------\nKey: c\nExpected: '
+                                '3\nActual: 2\n\nPlease see differing value(s)')
+
+    def test_validate_response_contains_expected_response_full_list(self):
+        library = APILibrary()
+        library.validate_response_contains_expected_response('[{"a":{"b":1}}]', [{"a":{"b":1}}],
+                                                             full_list_validation=True)
+
+    @patch('robot.libraries.BuiltIn.BuiltIn.fail')
+    def test_validate_response_contains_expected_response_empty_list_fail(self, fail):
+        library = APILibrary()
+        library.validate_response_contains_expected_response('[]', {"a": {"b": 1}})
+        fail.assert_called_with("The Actual Response is Empty.")
+
+
+
+
+
+
 

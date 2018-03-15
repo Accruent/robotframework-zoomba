@@ -168,9 +168,9 @@ class APILibrary(object):
                         self.key_by_key_validator(actual_item, expected_item, ignored_keys, unmatched_keys_list,
                                                   **kwargs)
                     if len(unmatched_keys_list) > 0:
-                        zoomba.fail("Responses didn't match:"
+                        BuiltIn().log("Responses didn't match:"
                                       "\nActual:\n" + str(actual_response_dict) +
-                                      "\nExpected:\n" + str(expected_response_dict) + "\n")
+                                      "\nExpected:\n" + str(expected_response_dict) + "\n", console=True)
                         self.generate_unmatched_keys_error_message(unmatched_keys_list)
                     return
             else:
@@ -183,7 +183,7 @@ class APILibrary(object):
                             break
                         elif actual_response_dict[-1] == actual_item:
                             zoomba.fail('Item was not within the response:\n' + str(exp_item))
-                            continue
+                            return
                         else:
                             continue
         else:
