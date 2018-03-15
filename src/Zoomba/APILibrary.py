@@ -256,31 +256,40 @@ class APILibrary(object):
             return: (boolean) If the method completes successfully, it returns True. Appropriate error messages are
             returned otherwise.\n
         """
-        assert len(actual_dictionary) == len(expected_dictionary), "Collections not the same length:"\
-                                                                   "\nActual length: " + str(len(actual_dictionary)) +\
-                                                                   "\nExpected length " + str(len(expected_dictionary))
+        if len(actual_dictionary) != len(expected_dictionary):
+            zoomba.fail("Collections not the same length:"\
+                        "\nActual length: " + str(len(actual_dictionary)) +\
+                        "\nExpected length " + str(len(expected_dictionary)))
+            return
         for key, value in expected_dictionary.items():
             if ignored_keys and key in ignored_keys:
                 continue
             else:
-                assert key in actual_dictionary,\
-                    "Key not found in Actual : " + str(actual_dictionary) + " Key: " + str(key)
+                if key not in actual_dictionary:
+                    zoomba.fail("Key not found in Actual : " + str(actual_dictionary) + " Key: " + str(key))
+                    continue
                 if isinstance(value, list):
-                    assert len(value) == len(actual_dictionary[key]), "Arrays not the same length:" + \
-                                                                      "\nExpected: " + str(value) + \
-                                                                      "\nActual: " + str(actual_dictionary[key])
+                    if len(value) != len(actual_dictionary[key]):
+                        zoomba.fail("Arrays not the same length:" + \
+                                    "\nExpected: " + str(value) + \
+                                    "\nActual: " + str(actual_dictionary[key]))
+                        continue
                     for item in value:
                         if isinstance(item, str):
-                            assert value == actual_dictionary[key],   "Arrays do not match:" + \
-                                                                      "\nExpected: " + str(value) + \
-                                                                      "\nActual: " + str(actual_dictionary[key])
+                            if value != actual_dictionary[key]:
+                                zoomba.fail("Arrays do not match:" + \
+                                            "\nExpected: " + str(value) + \
+                                            "\nActual: " + str(actual_dictionary[key]))
+                                continue
                             continue
                         actual_item = actual_dictionary[key][value.index(item)]
                         self.key_by_key_validator(actual_item, item, ignored_keys, unmatched_keys_list, **kwargs)
                 elif isinstance(value, dict):
-                    assert len(value) == len(actual_dictionary[key]), "Dicts do not match:" + \
-                                                                      "\nExpected: " + str(value) + \
-                                                                      "\nActual: " + str(actual_dictionary[key])
+                    if len(value) != len(actual_dictionary[key]):
+                        zoomba.fail("Dicts do not match:" + \
+                                    "\nExpected: " + str(value) + \
+                                    "\nActual: " + str(actual_dictionary[key]))
+                        continue
                     self.key_by_key_validator(actual_dictionary[key], expected_dictionary[key],
                                               ignored_keys, unmatched_keys_list, **kwargs)
                 elif isinstance(expected_dictionary[key], str) and not expected_dictionary[key].isdigit():

@@ -79,6 +79,31 @@ class TestInternal(unittest.TestCase):
         library.validate_response_contains_expected_response_only_keys_listed('[{"a":"2"}]', [{"a":"1"}], ["a"])
         fail.assert_called_with("The value for the key 'a' doesn't match the response:\nExpected: 1\nActual: 2")
 
+    def test_key_by_key_validator_simple(self):
+        library = APILibrary()
+        library.key_by_key_validator({"a":1}, {"a":1})
+
+    @patch('robot.libraries.BuiltIn.BuiltIn.fail')
+    def test_key_by_key_validator_collection_len_fail(self, fail):
+        library = APILibrary()
+        library.key_by_key_validator([{"a":1}, {"b":2}], {"a":1})
+        fail.assert_called_with('Collections not the same length:\nActual length: 2\nExpected length 1')
+
+    def test_key_by_key_validator_simple_list(self):
+        library = APILibrary()
+        library.key_by_key_validator({"a":["1"]}, {"a":["1"]})
+
+    @unittest.expectedFailure
+    def test_key_by_key_validator_simple_list(self):
+        library = APILibrary()
+        library.key_by_key_validator({"a":[1]}, {"a":[1]})
+
+
+
+
+
+
+
 
 
 
