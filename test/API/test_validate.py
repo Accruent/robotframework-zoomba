@@ -89,6 +89,12 @@ class TestInternal(unittest.TestCase):
         library.key_by_key_validator([{"a":1}, {"b":2}], {"a":1})
         fail.assert_called_with('Collections not the same length:\nActual length: 2\nExpected length 1')
 
+    def test_key_by_key_validator_simple_value_fail(self):
+        library = APILibrary()
+        unmatched = []
+        library.key_by_key_validator({"a":2}, {"a":1}, unmatched_keys_list=unmatched)
+        assert unmatched == [('------------------\nKey: a', 'Expected: 1', 'Actual: 2')]
+
     def test_key_by_key_validator_simple_list(self):
         library = APILibrary()
         library.key_by_key_validator({"a":["1"]}, {"a":["1"]})
