@@ -138,4 +138,23 @@ class TestInternal(unittest.TestCase):
         library.key_by_key_validator({"a":{"b":1,"c":1}}, {"a":{"b":1}})
         fail.assert_called_with("Dicts do not match:\nExpected: {'b': 1}\nActual: {'b': 1, 'c': 1}")
 
+    def test_key_by_key_validator_simple_date(self):
+        library = APILibrary()
+        library.key_by_key_validator({"a":"2017-08-08T05:05:05"}, {"a":"2017-08-08T05:05:05"})
+
+    def test_key_by_key_validator_simple_date_parse_except(self):
+        library = APILibrary()
+        library.key_by_key_validator({"a":"a"}, {"a":"a"})
+
+    def test_key_by_key_validator_date_parse_except_fail(self):
+        library = APILibrary()
+        unmatched = []
+        library.key_by_key_validator({"a":"a"}, {"a":"b"}, unmatched_keys_list=unmatched)
+        assert unmatched == [('------------------\nKey: a', 'Expected: b', 'Actual: a')]
+
+
+
+
+
+
 

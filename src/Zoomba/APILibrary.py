@@ -281,9 +281,9 @@ class APILibrary(object):
                                             "\nExpected: " + str(value) + \
                                             "\nActual: " + str(actual_dictionary[key]))
                                 continue
-                            continue
-                        actual_item = actual_dictionary[key][value.index(item)]
-                        self.key_by_key_validator(actual_item, item, ignored_keys, unmatched_keys_list, **kwargs)
+                        else:
+                            actual_item = actual_dictionary[key][value.index(item)]
+                            self.key_by_key_validator(actual_item, item, ignored_keys, unmatched_keys_list, **kwargs)
                 elif isinstance(value, dict):
                     if len(value) != len(actual_dictionary[key]):
                         zoomba.fail("Dicts do not match:" + \
