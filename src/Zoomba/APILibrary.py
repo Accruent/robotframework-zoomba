@@ -167,25 +167,25 @@ class APILibrary(object):
                     for actual_item, expected_item in zip(actual_response_dict, expected_response_dict):
                         self.key_by_key_validator(actual_item, expected_item, ignored_keys, unmatched_keys_list,
                                                   **kwargs)
-                    if len(unmatched_keys_list) > 0:
-                        BuiltIn().log("Responses didn't match:"
-                                      "\nActual:\n" + str(actual_response_dict) +
-                                      "\nExpected:\n" + str(expected_response_dict) + "\n", console=True)
                         self.generate_unmatched_keys_error_message(unmatched_keys_list)
                     return
             else:
                 for exp_item in expected_response_dict:
                     for actual_item in actual_response_dict:
-                        if exp_item[identity_key] == actual_item[identity_key]:
-                            self.key_by_key_validator(actual_item, exp_item, ignored_keys, unmatched_keys_list,
-                                                      **kwargs)
-                            self.generate_unmatched_keys_error_message(unmatched_keys_list)
+                        try:
+                            if exp_item[identity_key] == actual_item[identity_key]:
+                                self.key_by_key_validator(actual_item, exp_item, ignored_keys, unmatched_keys_list,
+                                                          **kwargs)
+                                self.generate_unmatched_keys_error_message(unmatched_keys_list)
+                                break
+                            elif actual_response_dict[-1] == actual_item:
+                                zoomba.fail('Item was not within the response:\n' + str(exp_item))
+                                return
+                            else:
+                                continue
+                        except KeyError:
+                            zoomba.fail('KeyError: "' + identity_key + '" Key was not in the response')
                             break
-                        elif actual_response_dict[-1] == actual_item:
-                            zoomba.fail('Item was not within the response:\n' + str(exp_item))
-                            return
-                        else:
-                            continue
         else:
             zoomba.fail("The Actual Response is Empty.")
 

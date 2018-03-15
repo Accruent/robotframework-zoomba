@@ -370,7 +370,7 @@ not_match_date_4 = "Key(s) Did Not Match:" \
                    "\nDate: 1234-11-30" \
                    "\n\nPlease see differing value(s)"
 
-id_key_err = "KeyError: 'what'"
+id_key_err = 'KeyError: "what" Key was not in the response'
 
 id_key_err_2 = "Item was not within the response:" \
                "\n{'pear': 'fish', 'apple': 'elephant', 'banana': 'dog'}"

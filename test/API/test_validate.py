@@ -197,9 +197,33 @@ class TestInternal(unittest.TestCase):
         library.validate_response_contains_expected_response('[]', {"a": {"b": 1}})
         fail.assert_called_with("The Actual Response is Empty.")
 
+    @patch('robot.libraries.BuiltIn.BuiltIn.fail')
+    def test_validate_response_contains_expected_response_list_unmatched(self, fail):
+        library = APILibrary()
+        library.validate_response_contains_expected_response('[{"a":{"b":1},"c":2}]', [{"a":{"b":1}, "c":3}],
+                                                             full_list_validation=True)
+        fail.assert_called_with('Key(s) Did Not Match:\n------------------\nKey: c\nExpected: '
+                                '3\nActual: 2\n\nPlease see differing value(s)')
 
+    @patch('robot.libraries.BuiltIn.BuiltIn.fail')
+    def test_validate_response_contains_expected_response_identity_key_simple(self, fail):
+        library = APILibrary()
+        library.validate_response_contains_expected_response('[{"a":{"b":1},"c":2}]', [{"a":{"b":1}, "c":3}],
+                                                             identity_key="a")
+        fail.assert_called_with('Key(s) Did Not Match:\n------------------\nKey: c\nExpected: '
+                                '3\nActual: 2\n\nPlease see differing value(s)')
 
+    @patch('robot.libraries.BuiltIn.BuiltIn.fail')
+    def test_validate_response_contains_expected_response_list_no_identity_key_fail(self, fail):
+        library = APILibrary()
+        library.validate_response_contains_expected_response('[{"a":{"b":1},"c":2}]', [{"a":{"b":1}, "c":3}],
+                                                             identity_key="string")
+        fail.assert_called_with('KeyError: "string" Key was not in the response')
 
-
-
+    @patch('robot.libraries.BuiltIn.BuiltIn.fail')
+    def test_validate_response_contains_expected_response_list_unmatched_identity_key_fail(self, fail):
+        library = APILibrary()
+        library.validate_response_contains_expected_response('[{"a":2,"c":2}]', [{"a":1, "c":3}],
+                                                             identity_key="a")
+        fail.assert_called_with("Item was not within the response:\n{'a': 1, 'c': 3}")
 
