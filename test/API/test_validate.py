@@ -93,6 +93,10 @@ class TestInternal(unittest.TestCase):
         library = APILibrary()
         library.key_by_key_validator({"a":["1"]}, {"a":["1"]})
 
+    def test_key_by_key_validator_simple_list_multiple_values(self):
+        library = APILibrary()
+        library.key_by_key_validator({"a":["1", "2"]}, {"a":["1", "2"]})
+
     @unittest.expectedFailure
     def test_key_by_key_validator_simple_list(self):
         library = APILibrary()
@@ -115,13 +119,23 @@ class TestInternal(unittest.TestCase):
         fail.assert_called_with("Arrays not the same length:\nExpected: ['1']\nActual: ['1', '2']")
 
     @patch('robot.libraries.BuiltIn.BuiltIn.fail')
-    def test_key_by_key_validator_list_not_same_length_fail(self, fail):
+    def test_key_by_key_validator_list_do_not_match(self, fail):
         library = APILibrary()
         library.key_by_key_validator({"a": ["1", "2"]}, {"a": ["1", "3"]})
         fail.assert_called_with("Arrays do not match:\nExpected: ['1', '3']\nActual: ['1', '2']")
 
+    def test_key_by_key_validator_simple_dict(self):
+        library = APILibrary()
+        library.key_by_key_validator({"a":{"b":1}}, {"a":{"b":1}})
 
+    def test_key_by_key_validator_simple_dict_multiple_values(self):
+        library = APILibrary()
+        library.key_by_key_validator({"a":{"b":1,"c":1}}, {"a":{"b":1,"c":1}})
 
-
+    @patch('robot.libraries.BuiltIn.BuiltIn.fail')
+    def test_key_by_key_validator_dict_len_fail(self, fail):
+        library = APILibrary()
+        library.key_by_key_validator({"a":{"b":1,"c":1}}, {"a":{"b":1}})
+        fail.assert_called_with("Dicts do not match:\nExpected: {'b': 1}\nActual: {'b': 1, 'c': 1}")
 
 
