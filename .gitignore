@@ -1,2 +1,16 @@
 # IntelliJ project files
 .idea
+MANIFEST
+
+.cache/*
+dist/*
+src/Zoomba/__pycache__/*
+src/robotframework_zoomba.egg-info/PKG-INFO
+*.pyc
+test/*/*.html
+test/*/*.xml
+*.log
+*.png
+src/zoomba.egg-info/*
+src/robotframework_zoomba.egg-info/*
+.vscode/*
