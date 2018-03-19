@@ -12,7 +12,7 @@ class TestInternal(unittest.TestCase):
     def test_generate_unmatched_keys_error_message_simple(self, fail):
         library = APILibrary()
         library.generate_unmatched_keys_error_message('a')
-        assert fail.called_with("""Key(s) Did Not Match: a Please see differing value(s)""")
+        fail.assert_called_with("Key(s) Did Not Match:\na\n\nPlease see differing value(s)")
 
     def test_validate_response_contains_correct_number_of_items_simple(self):
         library = APILibrary()
