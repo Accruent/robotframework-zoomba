@@ -5,7 +5,6 @@ sys.path.insert(0, os.path.abspath( os.path.join(os.path.dirname(__file__), '../
 from Zoomba.APILibrary import APILibrary
 import unittest
 from unittest.mock import patch
-from unittest.mock import PropertyMock
 
 
 class TestInternal(unittest.TestCase):
@@ -202,8 +201,9 @@ class TestInternal(unittest.TestCase):
         library = APILibrary()
         library.validate_response_contains_expected_response('[{"a":{"b":1},"c":2}]', [{"a":{"b":1}, "c":3}],
                                                              full_list_validation=True)
-        fail.assert_called_with('Key(s) Did Not Match:\n------------------\nKey: c\nExpected: '
-                                '3\nActual: 2\n\nPlease see differing value(s)')
+        fail.assert_called_with("Key(s) Did Not Match:\n------------------\nKey: c\nExpected: 3\nActual: 2"
+                                "\n------------------\nFull List Breakdown:\nExpected: [{'a': {'b': 1}, 'c': 3}]"
+                                "\nActual: [{'a': {'b': 1}, 'c': 2}]\n\nPlease see differing value(s)")
 
     @patch('robot.libraries.BuiltIn.BuiltIn.fail')
     def test_validate_response_contains_expected_response_identity_key_simple(self, fail):

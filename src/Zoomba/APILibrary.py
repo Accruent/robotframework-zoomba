@@ -167,6 +167,10 @@ class APILibrary(object):
                     for actual_item, expected_item in zip(actual_response_dict, expected_response_dict):
                         self.key_by_key_validator(actual_item, expected_item, ignored_keys, unmatched_keys_list,
                                                   **kwargs)
+                    if len(unmatched_keys_list) > 0:
+                        unmatched_keys_list.append(("------------------\n" + "Full List Breakdown:",
+                                                    "Expected: " + str(expected_response_dict),
+                                                    "Actual: " + str(actual_response_dict)))
                         self.generate_unmatched_keys_error_message(unmatched_keys_list)
                     return
             else:

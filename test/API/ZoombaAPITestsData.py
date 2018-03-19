@@ -325,6 +325,10 @@ not_match2 = "Key(s) Did Not Match:" \
              "\nKey: pear" \
              "\nExpected: fish" \
              "\nActual: bird" \
+             "\n------------------" \
+             "\nFull List Breakdown:" \
+             "\nExpected: [{'apple': 'cat', 'banana': 'dog', 'pear': 'fish'}, {'apple': 'cat', 'banana': 'mice', 'pear': 'bird'}, {'apple': 'dog', 'banana': 'mice', 'pear': 'cat'}]" \
+             "\nActual: [{'apple': 'cat', 'banana': 'dog', 'pear': 'bird'}]" \
              "\n\nPlease see differing value(s)"
 not_match3 = "Key(s) Did Not Match:" \
             "\n------------------" \
@@ -379,6 +383,10 @@ top_only_err = "Key(s) Did Not Match:" \
                "\nKey: size" \
                "\nExpected: large" \
                "\nActual: small" \
+               "\n------------------" \
+               "\nFull List Breakdown:" \
+               "\nExpected: [{'apple': 'cat', 'banana': 'dog', 'pear': {'color': 'green', 'size': 'large'}}]" \
+               "\nActual: [{'apple': 'cat', 'banana': 'dog', 'pear': {'color': 'green', 'size': 'small'}}]" \
                "\n\nPlease see differing value(s)"
 
 list_dict_err = "Collections not the same length:" \
