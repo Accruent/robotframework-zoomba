@@ -325,6 +325,10 @@ not_match2 = "Key(s) Did Not Match:" \
              "\nKey: pear" \
              "\nExpected: fish" \
              "\nActual: bird" \
+             "\n------------------" \
+             "\nFull List Breakdown:" \
+             "\nExpected: [{'apple': 'cat', 'banana': 'dog', 'pear': 'fish'}, {'apple': 'cat', 'banana': 'mice', 'pear': 'bird'}, {'apple': 'dog', 'banana': 'mice', 'pear': 'cat'}]" \
+             "\nActual: [{'apple': 'cat', 'banana': 'dog', 'pear': 'bird'}]" \
              "\n\nPlease see differing value(s)"
 not_match3 = "Key(s) Did Not Match:" \
             "\n------------------" \
@@ -370,7 +374,7 @@ not_match_date_4 = "Key(s) Did Not Match:" \
                    "\nDate: 1234-11-30" \
                    "\n\nPlease see differing value(s)"
 
-id_key_err = "KeyError: 'what'"
+id_key_err = 'KeyError: "what" Key was not in the response'
 
 id_key_err_2 = "Item was not within the response:" \
                "\n{'pear': 'fish', 'apple': 'elephant', 'banana': 'dog'}"
@@ -379,6 +383,10 @@ top_only_err = "Key(s) Did Not Match:" \
                "\nKey: size" \
                "\nExpected: large" \
                "\nActual: small" \
+               "\n------------------" \
+               "\nFull List Breakdown:" \
+               "\nExpected: [{'apple': 'cat', 'banana': 'dog', 'pear': {'color': 'green', 'size': 'large'}}]" \
+               "\nActual: [{'apple': 'cat', 'banana': 'dog', 'pear': {'color': 'green', 'size': 'small'}}]" \
                "\n\nPlease see differing value(s)"
 
 list_dict_err = "Collections not the same length:" \
@@ -393,7 +401,7 @@ only_keys_err_2 = "The response does not contain the key 'orange'"
 
 no_items_err_1 = "API is returning 1 instead of the expected 2 result(s)."
 
-not_list_err_1 = "TypeError: The response is not a list:" \
+not_list_err_1 = "The response is not a list:" \
                  "\nActual Response:" \
                  "\n{'apple': 'cat', 'banana': 'dog', 'pear': 'fish'}"
 
