@@ -33,12 +33,19 @@ class TestObjectNamespace(unittest.TestCase):
     def test_no_tns_or_namespace_simple(self):
         mock_plugin = Mock()
         item = self.Simple()
+        item.document = b'<stuff xmlns="other">'
+        type(mock_plugin).defaultNamespace = b"string"
+        _ObjectNamespacePlugin.loaded(mock_plugin, item)
+        assert item.document == b'<stuff xmlns:tns="string" targetNamespace="string" xmlns="other">'
+
+    def test_no_tns_or_namespace_replace_type_namespace_simple(self):
+        mock_plugin = Mock()
+        item = self.Simple()
         item.document = b'<stuff xmlns="other"><something type="one">'
         type(mock_plugin).defaultNamespace = b"string"
         _ObjectNamespacePlugin.loaded(mock_plugin, item)
         assert item.document == b'<stuff xmlns:tns="string" targetNamespace="string" ' \
                                 b'xmlns="other"><something type="tns:one">'
-
 
 
 
