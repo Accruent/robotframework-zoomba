@@ -15,14 +15,20 @@ class TestObjectNamespace(unittest.TestCase):
     class Simple:
         pass
 
-    def test_should_be_equal_simple(self):
+    def test_loaded_namespace_simple(self):
         mock_plugin = Mock()
         item = self.Simple()
         item.document = b'<stuff xmlns:tns="string" targetNamespace="string" xmlns="other">'
         type(mock_plugin).defaultNamespace = PropertyMock(return_value=b"someNamespace")
         _ObjectNamespacePlugin.loaded(mock_plugin, item)
 
-
+    def test_no_default_namespace_simple(self):
+        mock_plugin = Mock()
+        item = self.Simple()
+        item.document = b'<stuff xmlns:tns="string" targetNamespace="string" xmlns="other">'
+        type(mock_plugin).defaultNamespace = None
+        _ObjectNamespacePlugin.loaded(mock_plugin, item)
+        assert mock_plugin.defaultNamespace == b'string'
 
 
 
