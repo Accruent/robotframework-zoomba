@@ -30,7 +30,14 @@ class TestObjectNamespace(unittest.TestCase):
         _ObjectNamespacePlugin.loaded(mock_plugin, item)
         assert mock_plugin.defaultNamespace == b'string'
 
-
+    def test_no_tns_or_namespace_simple(self):
+        mock_plugin = Mock()
+        item = self.Simple()
+        item.document = b'<stuff xmlns="other"><something type="one">'
+        type(mock_plugin).defaultNamespace = b"string"
+        _ObjectNamespacePlugin.loaded(mock_plugin, item)
+        assert item.document == b'<stuff xmlns:tns="string" targetNamespace="string" ' \
+                                b'xmlns="other"><something type="tns:one">'
 
 
 
