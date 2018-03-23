@@ -4,7 +4,7 @@ sys.path.insert(0, os.path.abspath( os.path.join(os.path.dirname(__file__), '../
 
 from Zoomba.SOAPLibrary import SOAPLibrary
 from Zoomba.SOAPLibrary import _ObjectNamespacePlugin
-from Zoomba import *
+from Zoomba.SOAPLibrary import *
 import unittest
 from unittest.mock import patch
 from unittest.mock import Mock
@@ -47,9 +47,14 @@ class TestObjectNamespace(unittest.TestCase):
         assert item.document == b'<stuff xmlns:tns="string" targetNamespace="string" ' \
                                 b'xmlns="other"><something type="tns:one">'
 
+class TestSoapLibrary(unittest.TestCase):
 
-
-
+    @patch('Zoomba.SOAPLibrary._build_dict_from_response')
+    def test_convert_soap(self, build_dict):
+        build_dict.return_value = {"a":"1"}
+        sl = SOAPLibrary()
+        response = sl.convert_soap_response_to_json({"a":"1"})
+        assert response == '{"a": "1"}'
 
 
 
