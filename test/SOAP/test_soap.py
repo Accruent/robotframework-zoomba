@@ -56,10 +56,23 @@ class TestSoapLibrary(unittest.TestCase):
         response = sl.convert_soap_response_to_json({"a":"1"})
         assert response == '{"a": "1"}'
 
+    @patch('Zoomba.SOAPLibrary.Client')
+    @patch('Zoomba.SOAPLibrary.BuiltIn')
+    @patch('Zoomba.SOAPLibrary._ObjectNamespacePlugin')
+    def test_create_soap_session_and_fix_wsdl_simple(self, obj_nsp, builtIn, client):
+        mock_soap = Mock()
+        obj_nsp.return_value = "string"
+        client.return_value = "accepted"
+        SOAPLibrary.create_soap_session_and_fix_wsdl(mock_soap, "host", "endpoint", "alias")
+        client.assert_called_with('hostendpoint?WSDL', plugins=['string'])
+        builtIn.return_value.get_library_instance.return_value._add_client.assert_called_with("accepted", "alias")
 
-
-
-
-
+    @patch('Zoomba.SOAPLibrary.Client')
+    @patch('Zoomba.SOAPLibrary.BuiltIn')
+    @patch('Zoomba.SOAPLibrary._ObjectNamespacePlugin')
+    def test_create_soap_session_and_fix_wsdl_simple(self, obj_nsp, builtIn, client):
+        mock_soap = Mock()
+        SOAPLibrary.create_soap_session_and_fix_wsdl(mock_soap, "host", "endpoint", "alias", set_location="place")
+        builtIn.return_value.get_library_instance.return_value.set_location.assert_called_with("place")
 
 
