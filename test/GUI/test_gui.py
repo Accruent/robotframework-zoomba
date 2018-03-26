@@ -54,7 +54,7 @@ class TestInternal(unittest.TestCase):
         mock_gui = Mock()
         GUILibrary.unselect_and_select_frame(mock_gui, "some_locator")
         mock_gui.wait_for_and_select_frame.assert_called_with("some_locator")
-        assert mock_gui.unselect_frame.called
+        mock_gui.unselect_frame.assert_called()
 
     def test_wait_for_and_select_from_list_simple(self):
         mock_gui = Mock()
@@ -120,7 +120,7 @@ class TestInternal(unittest.TestCase):
         mock_gui = Mock()
         mock_gui.execute_javascript = Mock(side_effect=[False, True, False, True])
         GUILibrary.wait_until_javascript_is_complete(mock_gui)
-        assert robot_call.called
+        robot_call.assert_called()
 
     @patch('SeleniumLibrary.ElementKeywords.get_text')
     def test_get_text_from_web_elements_list_simple(self, robot_call):
