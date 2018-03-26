@@ -62,6 +62,14 @@ class TestExternal(unittest.TestCase):
         library.call_get_request({"a": "Text"}, "Endpoint", "fullstring")
         assert disable_warnings.called
 
+    @patch('RequestsLibrary.RequestsKeywords.create_session')
+    @patch('RequestsLibrary.RequestsKeywords.get_request')
+    def test_get_with_cookies(self, create_session, get_request):
+        library = APILibrary()
+        library.call_get_request({"a": "Text"}, "Endpoint", "fullstring", "chocolate_chip")
+        assert get_request.called_with("getapi", "fullstring", "chocolate_chip")
+        assert create_session.called_with("getapi", "Endpoint", {"a": "Text"}, "chocolate_chip")
+
     def test_post_default(self):
         library = APILibrary()
         self.assertRaises(TypeError, library.call_post_request)
