@@ -205,10 +205,11 @@ class TestInternal(unittest.TestCase):
         mock_gui.driver.execute_script.assert_called()
 
     @patch('robot.libraries.BuiltIn.BuiltIn.log')
-    @patch('SeleniumLibrary.ElementKeywords.set_focus_to_element')
-    def test_scroll_element_into_view_fail(self, robot_call, set_focus):
+    def test_scroll_element_into_view_fail(self, robot_call):
         mock_gui = Mock()
+        mock_gui.find_element.return_value = "found it!"
         GUILibrary.scroll_element_into_view(mock_gui, "locator")
-        assert robot_call.called_with("This keyword has been deprecated: use Set Focus To Element instead.", "WARNING")
-        assert set_focus.called_with("locator")
+        robot_call.assert_called_with("Scrolling element 'locator' into view.", level='INFO')
+        mock_gui.find_element.assert_called_with(locator="locator")
+        mock_gui.driver.execute_script.assert_called_with('arguments[0].scrollIntoView()', "found it!")
 
