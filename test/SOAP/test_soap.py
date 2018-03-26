@@ -9,6 +9,7 @@ import unittest
 from unittest.mock import patch
 from unittest.mock import Mock
 from unittest.mock import PropertyMock
+from suds import WebFault
 
 class TestObjectNamespace(unittest.TestCase):
 
@@ -70,9 +71,68 @@ class TestSoapLibrary(unittest.TestCase):
     @patch('Zoomba.SOAPLibrary.Client')
     @patch('Zoomba.SOAPLibrary.BuiltIn')
     @patch('Zoomba.SOAPLibrary._ObjectNamespacePlugin')
-    def test_create_soap_session_and_fix_wsdl_simple(self, obj_nsp, builtIn, client):
+    def test_create_soap_session_and_fix_wsdl_and_set_location(self, obj_nsp, builtIn, client):
         mock_soap = Mock()
         SOAPLibrary.create_soap_session_and_fix_wsdl(mock_soap, "host", "endpoint", "alias", set_location="place")
         builtIn.return_value.get_library_instance.return_value.set_location.assert_called_with("place")
+
+    @patch('Zoomba.SOAPLibrary.BuiltIn')
+    def test_create_soap_session_simple(self, built):
+        mock_soap = Mock()
+        SOAPLibrary.create_soap_session(mock_soap, "host", "endpoint")
+        built.return_value.get_library_instance.return_value.create_soap_client.assert_called_with("hostendpoint?WSDL")
+
+    @patch('Zoomba.SOAPLibrary.BuiltIn')
+    def test_create_soap_session_simple(self, built):
+        mock_soap = Mock()
+        SOAPLibrary.create_soap_session(mock_soap, "host", "endpoint")
+        built.return_value.get_library_instance.return_value.create_soap_client.assert_called_with("hostendpoint?WSDL")
+
+    @patch('Zoomba.SOAPLibrary.BuiltIn')
+    def test_create_soap_session_alias(self, built):
+        mock_soap = Mock()
+        SOAPLibrary.create_soap_session(mock_soap, "host", "endpoint", "alias")
+        built.return_value.get_library_instance.return_value.create_soap_client.assert_called_with("hostendpoint?WSDL",
+                                                                                                   "alias")
+
+    @patch('Zoomba.SOAPLibrary.BuiltIn')
+    def test_create_soap_session__function_and_set_location(self, built):
+        mock_soap = Mock()
+        SOAPLibrary.create_soap_session(mock_soap, "host", "endpoint", set_location="here")
+        built.return_value.get_library_instance.return_value.create_soap_client.assert_called_with("hostendpoint?WSDL")
+        built.return_value.get_library_instance.return_value.set_location.assert_called_with("here")
+
+    def test_create_soap_session_and_set_location_simple(self):
+        mock_soap = Mock()
+        SOAPLibrary.create_soap_session_and_set_location(mock_soap, "host", "endpoint")
+        mock_soap.create_soap_session.assert_called_with("host", "endpoint", None, set_location="hostendpoint")
+
+    def test_create_soap_session_and_set_location_fix(self):
+        mock_soap = Mock()
+        SOAPLibrary.create_soap_session_and_set_location(mock_soap, "host", "endpoint", fix=True)
+        mock_soap.create_soap_session_and_fix_wsdl.assert_called_with("host", "endpoint", None,
+                                                                      set_location="hostendpoint")
+
+    @patch('Zoomba.SOAPLibrary.BuiltIn')
+    def test_call_soap_method_with_list_object_simple(self, built):
+        mock_soap = Mock()
+        SOAPLibrary.call_soap_method_with_list_object(mock_soap, "action", [1, 2])
+        built.return_value.get_library_instance.return_value.call_soap_method.assert_called_with('action', 1, 2)
+
+    @patch('Zoomba.SOAPLibrary.BuiltIn')
+    def test_call_soap_method_with_object_simple(self, built):
+        mock_soap = Mock()
+        err = WebFault(Mock(response=Mock(fault=None, document=None)), None)
+        type(err).fault = PropertyMock(return_value="fault")
+        built.return_value.get_library_instance.return_value._client.return_value.service.action = Mock(side_effect=err)
+        assert SOAPLibrary.call_soap_method_with_object(mock_soap, "action", item=2) == "fault"
+
+
+
+
+
+
+
+
 
 
