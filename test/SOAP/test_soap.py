@@ -4,7 +4,7 @@ sys.path.insert(0, os.path.abspath( os.path.join(os.path.dirname(__file__), '../
 
 from Zoomba.SOAPLibrary import SOAPLibrary
 from Zoomba.SOAPLibrary import _ObjectNamespacePlugin
-from Zoomba.SOAPLibrary import *
+from Zoomba.SOAPLibrary import _wsdl_sub_builder, _build_dict_from_response, _build_wsdl_objects
 import unittest
 from unittest.mock import patch
 from unittest.mock import Mock
@@ -96,7 +96,7 @@ class TestSoapLibrary(unittest.TestCase):
                                                                                                    "alias")
 
     @patch('Zoomba.SOAPLibrary.BuiltIn')
-    def test_create_soap_session__function_and_set_location(self, built):
+    def test_create_soap_session_function_and_set_location(self, built):
         mock_soap = Mock()
         SOAPLibrary.create_soap_session(mock_soap, "host", "endpoint", set_location="here")
         built.return_value.get_library_instance.return_value.create_soap_client.assert_called_with("hostendpoint?WSDL")
@@ -126,6 +126,68 @@ class TestSoapLibrary(unittest.TestCase):
         type(err).fault = PropertyMock(return_value="fault")
         built.return_value.get_library_instance.return_value._client.return_value.service.action = Mock(side_effect=err)
         assert SOAPLibrary.call_soap_method_with_object(mock_soap, "action", item=2) == "fault"
+
+    @patch('Zoomba.SOAPLibrary.BuiltIn')
+    @patch('Zoomba.SOAPLibrary._build_wsdl_objects')
+    def test_create_wsdl_objects_simple(self, wsdl, built):
+        mock_soap = Mock()
+        client = built.return_value.get_library_instance.return_value._client.return_value
+        client.factory.create.return_value = "create"
+        SOAPLibrary.create_wsdl_objects(mock_soap, "type", {1: 2})
+        client.factory.create.assert_called_with("type")
+        wsdl.assert_called_with(client, "create", {1: 2})
+
+
+class TestSoapPrivateMethods(unittest.TestCase):
+
+    class Simple:
+        pass
+
+    @patch('Zoomba.SOAPLibrary._build_wsdl_objects')
+    def test__wsdl_sub_builder_simple(self, wsdl):
+        mock_client = Mock()
+        mock_client.factory.create.return_value = "create"
+        _wsdl_sub_builder(mock_client, {'wsdl_object_type': 1, 'other': 2})
+        mock_client.factory.create.assert_called_with(1)
+        wsdl.assert_called_with(mock_client, "create", {'other': 2})
+
+    def test_build_wsdl_objects_simple(self):
+        simple = self.Simple()
+        _build_wsdl_objects(None, simple, {"test": 2})
+        assert simple.test == 2
+
+    def test_build_wsdl_objects_list(self):
+        simple = self.Simple()
+        _build_wsdl_objects(None, simple, {"test": [1,2]})
+        assert simple.test == [1, 2]
+
+    @patch('Zoomba.SOAPLibrary._wsdl_sub_builder')
+    def test_build_wsdl_objects_dict(self, wsdl):
+        simple = self.Simple()
+        wsdl.return_value = {"two": 2}
+        _build_wsdl_objects(None, simple, {"test": {"two": 2}})
+        assert simple.test == {"two": 2}
+
+    @patch('Zoomba.SOAPLibrary._wsdl_sub_builder')
+    def test_build_wsdl_objects_list_dict(self, wsdl):
+        simple = self.Simple()
+        wsdl.return_value = {"two": 2}
+        _build_wsdl_objects(None, simple, {"test": [{"two": 2}]})
+        assert simple.test == [{"two": 2}]
+
+    @patch('robot.libraries.BuiltIn.BuiltIn.log')
+    def test_build_wsdl_objects_dict(self, log):
+        simple = self.Simple()
+        _build_wsdl_objects(None, simple, {"test": {"two": 2}})
+        log.assert_called_with('Failed to define wsdl_object_type for child object. [test]', level='ERROR')
+
+
+
+
+
+
+
+
 
 
 
