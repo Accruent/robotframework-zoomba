@@ -140,7 +140,10 @@ class TestSoapLibrary(unittest.TestCase):
 
 class TestSoapPrivateMethods(unittest.TestCase):
 
-    class Simple:
+    class Simple(object):
+        pass
+
+    class sudsobject(object):
         pass
 
     @patch('Zoomba.SOAPLibrary._build_wsdl_objects')
@@ -151,50 +154,51 @@ class TestSoapPrivateMethods(unittest.TestCase):
         mock_client.factory.create.assert_called_with(1)
         wsdl.assert_called_with(mock_client, "create", {'other': 2})
 
-    def test_build_wsdl_objects_simple(self):
+    def test__build_wsdl_objects_simple(self):
         simple = self.Simple()
         _build_wsdl_objects(None, simple, {"test": 2})
         assert simple.test == 2
 
-    def test_build_wsdl_objects_list(self):
+    def test__build_wsdl_objects_list(self):
         simple = self.Simple()
         _build_wsdl_objects(None, simple, {"test": [1,2]})
         assert simple.test == [1, 2]
 
     @patch('Zoomba.SOAPLibrary._wsdl_sub_builder')
-    def test_build_wsdl_objects_dict(self, wsdl):
+    def test__build_wsdl_objects_dict(self, wsdl):
         simple = self.Simple()
         wsdl.return_value = {"two": 2}
         _build_wsdl_objects(None, simple, {"test": {"two": 2}})
         assert simple.test == {"two": 2}
 
     @patch('Zoomba.SOAPLibrary._wsdl_sub_builder')
-    def test_build_wsdl_objects_list_dict(self, wsdl):
+    def test__build_wsdl_objects_list_dict(self, wsdl):
         simple = self.Simple()
         wsdl.return_value = {"two": 2}
         _build_wsdl_objects(None, simple, {"test": [{"two": 2}]})
         assert simple.test == [{"two": 2}]
 
     @patch('robot.libraries.BuiltIn.BuiltIn.log')
-    def test_build_wsdl_objects_dict(self, log):
+    def test__build_wsdl_objects_dict_fail(self, log):
         simple = self.Simple()
         _build_wsdl_objects(None, simple, {"test": {"two": 2}})
         log.assert_called_with('Failed to define wsdl_object_type for child object. [test]', level='ERROR')
 
+    def test__build_dict_from_response_simple(self):
+        assert _build_dict_from_response({1: 2}) == {1: '2'}
 
+    @patch('robot.libraries.BuiltIn.BuiltIn.log')
+    def test__build_dict_from_response_not_iterable(self, log):
+        _build_dict_from_response(10)
+        log.assert_called_with(level='INFO', message='Argument Passed Was Not Iterable')
 
+    def test__build_dict_from_response_list(self):
+        assert _build_dict_from_response({1: [2, 3]}) == {1: ['2', '3']}
 
+    def test__build_dict_from_response_instance(self):
+        suds = self.sudsobject()
+        assert _build_dict_from_response({1: suds}) == {1: suds}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+    def test__build_dict_from_response_instance_list(self):
+        suds = self.sudsobject()
+        assert _build_dict_from_response({1: [suds]}) == {1: [suds]}
