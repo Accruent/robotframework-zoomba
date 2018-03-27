@@ -285,13 +285,11 @@ class GUILibrary(SeleniumLibrary):
 
     @keyword("Scroll Element Into View")
     def scroll_element_into_view(self, locator):
-        """Scrolls an element from given ``locator`` into view. This keyword was created in robotframework-extendedselenium2library.
-
+        """Scrolls an element from given ``locator`` into view.
         Arguments:
         - ``locator``: The locator to find requested element. Key attributes for
                        arbitrary elements are ``id`` and ``name``. See `introduction` for
                        details about locating elements.
-
         Examples:
         | Scroll Element Into View | css=div.class |
         """
