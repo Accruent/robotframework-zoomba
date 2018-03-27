@@ -47,11 +47,11 @@ class TestExternal(unittest.TestCase):
 
     @patch('RequestsLibrary.RequestsKeywords.create_session')
     @patch('RequestsLibrary.RequestsKeywords.get_request')
-    def test_get_called_with(self, create_session, get_request):
+    def test_get_called_with(self, get_request, create_session):
         library = APILibrary()
         library.call_get_request({"a": "Text"}, "Endpoint", "fullstring")
-        assert get_request.called_with("getapi", "fullstring")
-        assert create_session.called_with("getapi", "Endpoint", {"a": "Text"})
+        get_request.assert_called_with("getapi", "fullstring")
+        create_session.assert_called_with("getapi", "Endpoint", {"a": "Text"})
 
     @patch('RequestsLibrary.RequestsKeywords.create_session')
     @patch('RequestsLibrary.RequestsKeywords.get_request')
@@ -111,11 +111,11 @@ class TestExternal(unittest.TestCase):
 
     @patch('RequestsLibrary.RequestsKeywords.create_session')
     @patch('RequestsLibrary.RequestsKeywords.delete_request')
-    def test_delete_called_with(self, create_session, delete_request):
+    def test_delete_called_with(self, delete_request, create_session):
         library = APILibrary()
         library.call_delete_request({"a": "Text"}, "Endpoint", "fullstring")
-        assert delete_request.called_with("deleteapi", "fullstring")
-        assert create_session.called_with("deleteapi", "Endpoint", {"a": "Text"})
+        delete_request.assert_called_with("deleteapi", "fullstring", None)
+        create_session.assert_called_with("deleteapi", "Endpoint", {"a": "Text"})
 
     @patch('RequestsLibrary.RequestsKeywords.create_session')
     @patch('RequestsLibrary.RequestsKeywords.delete_request')
@@ -142,11 +142,11 @@ class TestExternal(unittest.TestCase):
 
     @patch('RequestsLibrary.RequestsKeywords.create_session')
     @patch('RequestsLibrary.RequestsKeywords.patch_request')
-    def test_patch_called_with(self, create_session, patch_request):
+    def test_patch_called_with(self, patch_request, create_session):
         library = APILibrary()
         library.call_patch_request({"a": "Text"}, "Endpoint", "fullstring")
-        assert patch_request.called_with("patchapi", "fullstring")
-        assert create_session.called_with("patchapi", "Endpoint", {"a": "Text"})
+        patch_request.assert_called_with("patchapi", "fullstring", None)
+        create_session.assert_called_with("patchapi", "Endpoint", {"a": "Text"})
 
     @patch('RequestsLibrary.RequestsKeywords.create_session')
     @patch('RequestsLibrary.RequestsKeywords.patch_request')
@@ -173,11 +173,11 @@ class TestExternal(unittest.TestCase):
 
     @patch('RequestsLibrary.RequestsKeywords.create_session')
     @patch('RequestsLibrary.RequestsKeywords.put_request')
-    def test_put_called_with(self, create_session, put_request):
+    def test_put_called_with(self, put_request, create_session):
         library = APILibrary()
         library.call_put_request({"a": "Text"}, "Endpoint", "fullstring")
-        assert put_request.called_with("putapi", "fullstring")
-        assert create_session.called_with("putapi", "Endpoint", {"a": "Text"})
+        put_request.assert_called_with("putapi", "fullstring", None)
+        create_session.assert_called_with("putapi", "Endpoint", {"a": "Text"})
 
     @patch('RequestsLibrary.RequestsKeywords.create_session')
     @patch('RequestsLibrary.RequestsKeywords.put_request')
