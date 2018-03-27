@@ -51,24 +51,24 @@ class TestExternal(unittest.TestCase):
         library = APILibrary()
         library.call_get_request({"a": "Text"}, "Endpoint", "fullstring")
         get_request.assert_called_with("getapi", "fullstring")
-        create_session.assert_called_with("getapi", "Endpoint", {"a": "Text"})
+        create_session.assert_called_with("getapi", "Endpoint", {"a": "Text"}, cookies=None)
 
     @patch('RequestsLibrary.RequestsKeywords.create_session')
     @patch('RequestsLibrary.RequestsKeywords.get_request')
     @patch('requests.packages.urllib3.disable_warnings')
-    def test_get_insecure_request(self, create_session, get_request, disable_warnings):
+    def test_get_insecure_request(self, get_request, create_session, disable_warnings):
         library = APILibrary()
         library.suppress_insecure_request_warnings()
         library.call_get_request({"a": "Text"}, "Endpoint", "fullstring")
-        assert disable_warnings.called
+        disable_warnings.assert_called()
 
     @patch('RequestsLibrary.RequestsKeywords.create_session')
     @patch('RequestsLibrary.RequestsKeywords.get_request')
-    def test_get_with_cookies(self, create_session, get_request):
+    def test_get_with_cookies(self, get_request, create_session):
         library = APILibrary()
         library.call_get_request({"a": "Text"}, "Endpoint", "fullstring", "chocolate_chip")
-        assert get_request.called_with("getapi", "fullstring", "chocolate_chip")
-        assert create_session.called_with("getapi", "Endpoint", {"a": "Text"}, "chocolate_chip")
+        assert get_request.called_with("getapi", "fullstring")
+        assert create_session.called_with("getapi", "Endpoint", {"a": "Text"}, cookies="chocolate_chip")
 
     def test_post_default(self):
         library = APILibrary()
@@ -97,11 +97,23 @@ class TestExternal(unittest.TestCase):
     @patch('RequestsLibrary.RequestsKeywords.create_session')
     @patch('RequestsLibrary.RequestsKeywords.post_request')
     @patch('requests.packages.urllib3.disable_warnings')
-    def test_post_insecure_request(self, create_session, post_request, disable_warnings):
+    def test_post_insecure_request(self, post_request, create_session, disable_warnings):
         library = APILibrary()
         library.suppress_insecure_request_warnings()
         r = library.call_post_request({"a": "Text"}, "Endpoint", "fullstring")
-        assert disable_warnings.called
+        disable_warnings.assert_called()
+
+    @patch('RequestsLibrary.RequestsKeywords.create_session')
+    @patch('RequestsLibrary.RequestsKeywords.post_request')
+    def test_post_with_cookies(self, post_request, create_session):
+        library = APILibrary()
+        r = library.call_post_request({"a": "Text"}, "Endpoint", "fullstring", None, "chocolate_chip")
+        type(r).text = PropertyMock(return_value="success")
+        type(r).status_code = PropertyMock(return_value=200)
+        type(r).cookies = PropertyMock(return_value={"chocolate_chip": "tasty"})
+        assert r.text == "success"
+        assert r.status_code == 200
+        assert r.cookies["chocolate_chip"] == "tasty"
 
     def test_delete_default(self):
         library = APILibrary()
@@ -123,17 +135,25 @@ class TestExternal(unittest.TestCase):
         library = APILibrary()
         library.call_delete_request({"a": "Text"}, "Endpoint", "fullstring")
         delete_request.assert_called_with("deleteapi", "fullstring", None)
-        create_session.assert_called_with("deleteapi", "Endpoint", {"a": "Text"})
+        create_session.assert_called_with("deleteapi", "Endpoint", {"a": "Text"}, cookies=None)
 
     @patch('RequestsLibrary.RequestsKeywords.create_session')
     @patch('RequestsLibrary.RequestsKeywords.delete_request')
     @patch('requests.packages.urllib3.disable_warnings')
-    def test_delete_insecure_request(self, create_session, delete_request, disable_warnings):
+    def test_delete_insecure_request(self, delete_request, create_session, disable_warnings):
         library = APILibrary()
         library.suppress_insecure_request_warnings()
         library.call_delete_request({"a": "Text"}, "Endpoint", "fullstring")
-        assert disable_warnings.called
-        
+        disable_warnings.assert_called()
+
+    @patch('RequestsLibrary.RequestsKeywords.create_session')
+    @patch('RequestsLibrary.RequestsKeywords.delete_request')
+    def test_delete_with_cookies(self, delete_request, create_session):
+        library = APILibrary()
+        library.call_delete_request({"a": "Text"}, "Endpoint", "fullstring", None, "chocolate_chip")
+        delete_request.assert_called_with("deleteapi", "fullstring", None)
+        create_session.assert_called_with("deleteapi", "Endpoint", {"a": "Text"}, cookies="chocolate_chip")
+
     def test_patch_default(self):
         library = APILibrary()
         self.assertRaises(TypeError, library.call_patch_request)
@@ -154,17 +174,25 @@ class TestExternal(unittest.TestCase):
         library = APILibrary()
         library.call_patch_request({"a": "Text"}, "Endpoint", "fullstring")
         patch_request.assert_called_with("patchapi", "fullstring", None)
-        create_session.assert_called_with("patchapi", "Endpoint", {"a": "Text"})
+        create_session.assert_called_with("patchapi", "Endpoint", {"a": "Text"}, cookies=None)
 
     @patch('RequestsLibrary.RequestsKeywords.create_session')
     @patch('RequestsLibrary.RequestsKeywords.patch_request')
     @patch('requests.packages.urllib3.disable_warnings')
-    def test_patch_insecure_request(self, create_session, patch_request, disable_warnings):
+    def test_patch_insecure_request(self, patch_request, create_session, disable_warnings):
         library = APILibrary()
         library.suppress_insecure_request_warnings()
         library.call_patch_request({"a": "Text"}, "Endpoint", "fullstring")
-        assert disable_warnings.called
-        
+        disable_warnings.assert_called()
+
+    @patch('RequestsLibrary.RequestsKeywords.create_session')
+    @patch('RequestsLibrary.RequestsKeywords.patch_request')
+    def test_patch_with_cookies(self, patch_request, create_session):
+        library = APILibrary()
+        library.call_patch_request({"a": "Text"}, "Endpoint", "fullstring", None, "chocolate_chip")
+        patch_request.assert_called_with("patchapi", "fullstring", None)
+        create_session.assert_called_with("patchapi", "Endpoint", {"a": "Text"}, cookies="chocolate_chip")
+
     def test_put_default(self):
         library = APILibrary()
         self.assertRaises(TypeError, library.call_put_request)
@@ -185,16 +213,24 @@ class TestExternal(unittest.TestCase):
         library = APILibrary()
         library.call_put_request({"a": "Text"}, "Endpoint", "fullstring")
         put_request.assert_called_with("putapi", "fullstring", None)
-        create_session.assert_called_with("putapi", "Endpoint", {"a": "Text"})
+        create_session.assert_called_with("putapi", "Endpoint", {"a": "Text"}, cookies=None)
 
     @patch('RequestsLibrary.RequestsKeywords.create_session')
     @patch('RequestsLibrary.RequestsKeywords.put_request')
     @patch('requests.packages.urllib3.disable_warnings')
-    def test_put_insecure_request(self, create_session, put_request, disable_warnings):
+    def test_put_insecure_request(self, put_request, create_session, disable_warnings):
         library = APILibrary()
         library.suppress_insecure_request_warnings()
         library.call_put_request({"a": "Text"}, "Endpoint", "fullstring")
-        assert disable_warnings.called
+        disable_warnings.assert_called()
+
+    @patch('RequestsLibrary.RequestsKeywords.create_session')
+    @patch('RequestsLibrary.RequestsKeywords.put_request')
+    def test_put_with_cookies(self, put_request, create_session):
+        library = APILibrary()
+        library.call_put_request({"a": "Text"}, "Endpoint", "fullstring", None, "chocolate_chip")
+        put_request.assert_called_with("putapi", "fullstring", None)
+        create_session.assert_called_with("putapi", "Endpoint", {"a": "Text"}, cookies="chocolate_chip")
 
     def test_create_connection_default(self):
         library = APILibrary()
@@ -227,4 +263,16 @@ class TestExternal(unittest.TestCase):
         library = APILibrary()
         library.suppress_insecure_request_warnings()
         library.create_connection({"a": "Text"}, "Endpoint", "fullstring")
-        assert disable_warnings.called
+        disable_warnings.assert_called()
+
+    @patch('RequestsLibrary.RequestsKeywords.create_session')
+    @patch('RequestsLibrary.RequestsKeywords.post_request')
+    def test_create_connection_with_cookies(self, create_session, post_request):
+        library = APILibrary()
+        r = library.create_connection({"a": "Text"}, "Endpoint", "fullstring", None, "chocolate_chip")
+        type(r).text = PropertyMock(return_value="success")
+        type(r).status_code = PropertyMock(return_value=200)
+        type(r).cookies = PropertyMock(return_value={"chocolate_chip": "tasty"})
+        assert r.text == "success"
+        assert r.status_code == 200
+        assert r.cookies["chocolate_chip"] == "tasty"
