@@ -160,9 +160,11 @@ def _build_dict_from_response(soap_response=None):
         if isinstance(value, list):
             temp_list = []
             for item in value:
-                temp_item = _build_dict_from_response(item)
-                temp_list.append(temp_item)
-
+                if str(type(item)) == "<type 'instance'>" or 'sudsobject' in str(type(item)):
+                    temp_item = _build_dict_from_response(item)
+                    temp_list.append(temp_item)
+                else:
+                    temp_list.append(str(item))
             new_response[key] = temp_list
         elif str(type(value)) == "<type 'instance'>" or 'sudsobject' in str(type(value)):
             temp_dict = _build_dict_from_response(value)
