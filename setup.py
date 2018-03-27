@@ -42,9 +42,7 @@ setup(name         = 'robotframework-zoomba',
           "robotframework-sudslibrary-aljcalandra",
           "requests==2.18.4",
           "selenium==3.8.1",
-          "python-dateutil",
-          "pytest-cov",
-          "python-coveralls"
+          "python-dateutil"
       ],
       classifiers  = CLASSIFIERS,
       package_dir  = {'' : 'src'},
