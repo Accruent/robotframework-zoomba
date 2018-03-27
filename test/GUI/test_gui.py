@@ -189,7 +189,9 @@ class TestInternal(unittest.TestCase):
     @patch('robot.libraries.BuiltIn.BuiltIn.log')
     def test_scroll_element_into_view_fail(self, robot_call):
         mock_gui = Mock()
+        mock_gui.find_element.return_value = "found it!"
         GUILibrary.scroll_element_into_view(mock_gui, "locator")
-        robot_call.assert_called_with("This keyword has been deprecated: use Set Focus To Element instead.", "WARNING")
-        mock_gui.set_focus_to_element.assert_called_with("locator")
+        robot_call.assert_called_with("Scrolling element 'locator' into view.", level='INFO')
+        mock_gui.find_element.assert_called_with(locator="locator")
+        mock_gui.driver.execute_script.assert_called_with('arguments[0].scrollIntoView()', "found it!")
 

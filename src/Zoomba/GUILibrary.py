@@ -285,7 +285,15 @@ class GUILibrary(SeleniumLibrary):
 
     @keyword("Scroll Element Into View")
     def scroll_element_into_view(self, locator):
-        """This keyword has been deprecated: use Set Focus To Element instead
+        """Scrolls an element from given ``locator`` into view.
+        Arguments:
+        - ``locator``: The locator to find requested element. Key attributes for
+                       arbitrary elements are ``id`` and ``name``. See `introduction` for
+                       details about locating elements.
+        Examples:
+        | Scroll Element Into View | css=div.class |
         """
-        zoomba.log("This keyword has been deprecated: use Set Focus To Element instead.", "WARNING")
-        self.set_focus_to_element(locator)
+        zoomba.log("Scrolling element '%s' into view." % locator, level='INFO')
+        element = self.find_element(locator=locator)
+        script = 'arguments[0].scrollIntoView()'
+        self.driver.execute_script(script, element)
