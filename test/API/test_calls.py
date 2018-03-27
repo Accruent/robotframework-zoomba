@@ -56,7 +56,7 @@ class TestExternal(unittest.TestCase):
     @patch('RequestsLibrary.RequestsKeywords.create_session')
     @patch('RequestsLibrary.RequestsKeywords.get_request')
     @patch('requests.packages.urllib3.disable_warnings')
-    def test_get_insecure_request(self, get_request, create_session, disable_warnings):
+    def test_get_insecure_request(self, disable_warnings, get_request, create_session):
         library = APILibrary()
         library.suppress_insecure_request_warnings()
         library.call_get_request({"a": "Text"}, "Endpoint", "fullstring")
@@ -97,7 +97,7 @@ class TestExternal(unittest.TestCase):
     @patch('RequestsLibrary.RequestsKeywords.create_session')
     @patch('RequestsLibrary.RequestsKeywords.post_request')
     @patch('requests.packages.urllib3.disable_warnings')
-    def test_post_insecure_request(self, post_request, create_session, disable_warnings):
+    def test_post_insecure_request(self, disable_warnings, post_request, create_session):
         library = APILibrary()
         library.suppress_insecure_request_warnings()
         r = library.call_post_request({"a": "Text"}, "Endpoint", "fullstring")
@@ -140,7 +140,7 @@ class TestExternal(unittest.TestCase):
     @patch('RequestsLibrary.RequestsKeywords.create_session')
     @patch('RequestsLibrary.RequestsKeywords.delete_request')
     @patch('requests.packages.urllib3.disable_warnings')
-    def test_delete_insecure_request(self, delete_request, create_session, disable_warnings):
+    def test_delete_insecure_request(self, disable_warnings, delete_request, create_session):
         library = APILibrary()
         library.suppress_insecure_request_warnings()
         library.call_delete_request({"a": "Text"}, "Endpoint", "fullstring")
@@ -179,7 +179,7 @@ class TestExternal(unittest.TestCase):
     @patch('RequestsLibrary.RequestsKeywords.create_session')
     @patch('RequestsLibrary.RequestsKeywords.patch_request')
     @patch('requests.packages.urllib3.disable_warnings')
-    def test_patch_insecure_request(self, patch_request, create_session, disable_warnings):
+    def test_patch_insecure_request(self, disable_warnings, patch_request, create_session):
         library = APILibrary()
         library.suppress_insecure_request_warnings()
         library.call_patch_request({"a": "Text"}, "Endpoint", "fullstring")
@@ -218,7 +218,7 @@ class TestExternal(unittest.TestCase):
     @patch('RequestsLibrary.RequestsKeywords.create_session')
     @patch('RequestsLibrary.RequestsKeywords.put_request')
     @patch('requests.packages.urllib3.disable_warnings')
-    def test_put_insecure_request(self, put_request, create_session, disable_warnings):
+    def test_put_insecure_request(self, disable_warnings, put_request, create_session):
         library = APILibrary()
         library.suppress_insecure_request_warnings()
         library.call_put_request({"a": "Text"}, "Endpoint", "fullstring")
@@ -259,7 +259,7 @@ class TestExternal(unittest.TestCase):
     @patch('RequestsLibrary.RequestsKeywords.create_session')
     @patch('RequestsLibrary.RequestsKeywords.post_request')
     @patch('requests.packages.urllib3.disable_warnings')
-    def test_create_connection_insecure_request(self, create_session, post_request, disable_warnings):
+    def test_create_connection_insecure_request(self, disable_warnings, create_session, post_request):
         library = APILibrary()
         library.suppress_insecure_request_warnings()
         library.create_connection({"a": "Text"}, "Endpoint", "fullstring")
