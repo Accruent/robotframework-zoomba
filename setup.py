@@ -10,7 +10,7 @@ except ImportError:
     from distutils.core import setup
 
 VERSION = """
-1.4.3
+1.5.0
 """.strip()
 
 DESCRIPTION = """
@@ -36,12 +36,12 @@ setup(name         = 'robotframework-zoomba',
       keywords     = 'Robot Framework',
       platforms    = 'any',
       install_requires= [
-          "robotframework==3.0.2",
-          "robotframework-requests==0.4.7",
-          "robotframework-seleniumlibrary==3.0.1",
+          "robotframework>=3.0.2",
+          "robotframework-requests>=0.4.7",
+          "robotframework-seleniumlibrary>=3.0.1",
           "robotframework-sudslibrary-aljcalandra",
-          "requests==2.18.4",
-          "selenium==3.8.1",
+          "requests>=2.18.4",
+          "selenium>=3.8.1",
           "python-dateutil"
       ],
       classifiers  = CLASSIFIERS,
