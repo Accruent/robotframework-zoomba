@@ -112,6 +112,12 @@ class TestInternal(unittest.TestCase):
         library.key_by_key_validator({"a":["1"]}, {"a":["1"]}, ["a"])
 
     @patch('robot.libraries.BuiltIn.BuiltIn.fail')
+    def test_key_by_key_validator_simple_empty_dict(self, fail):
+        library = APILibrary()
+        library.key_by_key_validator({"a":None}, {"a":{"b": "2"}})
+        fail.assert_called_with("Dicts do not match:\nExpected: {'b': '2'}\nActual is not a valid dictionary.")
+
+    @patch('robot.libraries.BuiltIn.BuiltIn.fail')
     def test_key_by_key_validator_key_not_in_actual_fail(self, fail):
         library = APILibrary()
         library.key_by_key_validator({"b":2, "c":3}, {"a":1, "c":3})
