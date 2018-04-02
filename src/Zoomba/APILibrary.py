@@ -289,7 +289,10 @@ class APILibrary(object):
                                 continue
                         else:
                             actual_item = actual_dictionary[key][value.index(item)]
-                            self.key_by_key_validator(actual_item, item, ignored_keys, unmatched_keys_list, **kwargs)
+                            temp_actual_dict = {key: actual_item}
+                            temp_expected_dict = {key: item}
+                            self.key_by_key_validator(temp_actual_dict, temp_expected_dict,
+                                                      ignored_keys, unmatched_keys_list, **kwargs)
                 elif isinstance(value, dict):
                     try:
                         if len(value) != len(actual_dictionary[key]):

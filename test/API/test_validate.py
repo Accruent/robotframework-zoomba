@@ -102,14 +102,19 @@ class TestInternal(unittest.TestCase):
         library = APILibrary()
         library.key_by_key_validator({"a":["1", "2"]}, {"a":["1", "2"]})
 
-    @unittest.expectedFailure
-    def test_key_by_key_validator_list_int_expected_failure(self):
+    def test_key_by_key_validator_list_int(self):
         library = APILibrary()
         library.key_by_key_validator({"a":[1]}, {"a":[1]})
 
     def test_key_by_key_validator_simple_ignored_key(self):
         library = APILibrary()
         library.key_by_key_validator({"a":["1"]}, {"a":["1"]}, ["a"])
+
+    def test_key_by_key_validator_list_int_fail(self):
+        library = APILibrary()
+        unmatched = []
+        library.key_by_key_validator({"a":[1]}, {"a":[2]}, unmatched_keys_list=unmatched)
+        assert unmatched == [('------------------\nKey: a', 'Expected: 2', 'Actual: 1')]
 
     @patch('robot.libraries.BuiltIn.BuiltIn.fail')
     def test_key_by_key_validator_simple_empty_dict(self, fail):
