@@ -114,7 +114,34 @@ class TestInternal(unittest.TestCase):
         library = APILibrary()
         unmatched = []
         library.key_by_key_validator({"a":[1]}, {"a":[2]}, unmatched_keys_list=unmatched)
-        assert unmatched == [('------------------\nKey: a', 'Expected: 2', 'Actual: 1')]
+        assert unmatched == [('------------------\nKey: a[0]', 'Expected: 2', 'Actual: 1')]
+
+    def test_key_by_key_validator_list_dict_fail(self):
+        library = APILibrary()
+        unmatched = []
+        library.key_by_key_validator({"a":[{"b": 3}]}, {"a":[{"b": 4}]}, unmatched_keys_list=unmatched)
+        assert unmatched == [('------------------\nKey: a[0].b', 'Expected: 4', 'Actual: 3')]
+
+    def test_key_by_key_validator_list_dict_embedded_fail(self):
+        library = APILibrary()
+        unmatched = []
+        library.key_by_key_validator({"a":[{"b": [{"c": 4}]}]}, {"a":[{"b": [{"c": 5}]}]},
+                                     unmatched_keys_list=unmatched)
+        assert unmatched == [('------------------\nKey: a[0].b[0].c', 'Expected: 5', 'Actual: 4')]
+
+    def test_key_by_key_validator_list_list_embedded_list_fail(self):
+        library = APILibrary()
+        unmatched = []
+        library.key_by_key_validator({"a":[[1], [2, [3]]]}, {"a":[[1], [2, [7]]]},
+                                     unmatched_keys_list=unmatched)
+        assert unmatched == [('------------------\nKey: a[1][0]', 'Expected: 7', 'Actual: 3')]
+
+    def test_key_by_key_validator_list_dict_embedded_list_fail(self):
+        library = APILibrary()
+        unmatched = []
+        library.key_by_key_validator({"a":[{"b": [{"c": [4, 5]}]}]}, {"a":[{"b": [{"c": [5, 5]}]}]},
+                                     unmatched_keys_list=unmatched)
+        assert unmatched == [('------------------\nKey: a[0].b[0].c', 'Expected: 5', 'Actual: 4')]
 
     @patch('robot.libraries.BuiltIn.BuiltIn.fail')
     def test_key_by_key_validator_simple_empty_dict(self, fail):

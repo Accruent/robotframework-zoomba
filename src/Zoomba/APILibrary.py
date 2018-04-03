@@ -1,5 +1,6 @@
 import datetime
 import json
+import re
 
 from RequestsLibrary import RequestsLibrary
 from dateutil.parser import parse
@@ -249,7 +250,7 @@ class APILibrary(object):
             zoomba.fail("The response is not a list:\nActual Response:\n" + str(actual_response_dict))
 
     def key_by_key_validator(self, actual_dictionary, expected_dictionary, ignored_keys=None, unmatched_keys_list=None,
-                             **kwargs):
+                             parent_key=None, **kwargs):
         """ This method is used to find and verify the value of every key in the expectedItem dictionary when compared
             against a single dictionary actual_item, unless any keys are included on the ignored_keys array./n
 
@@ -280,7 +281,7 @@ class APILibrary(object):
                                     "\nExpected: " + str(value) + \
                                     "\nActual: " + str(actual_dictionary[key]))
                         continue
-                    for item in value:
+                    for index, item in enumerate(value):
                         if isinstance(item, str):
                             if value != actual_dictionary[key]:
                                 zoomba.fail("Arrays do not match:" + \
@@ -288,11 +289,20 @@ class APILibrary(object):
                                             "\nActual: " + str(actual_dictionary[key]))
                                 continue
                         else:
-                            actual_item = actual_dictionary[key][value.index(item)]
+                            actual_item = actual_dictionary[key][index]
                             temp_actual_dict = {key: actual_item}
                             temp_expected_dict = {key: item}
+                            if unmatched_keys_list is None:
+                                current_unmatched_length = 0
+                            else:
+                                current_unmatched_length = len(unmatched_keys_list)
                             self.key_by_key_validator(temp_actual_dict, temp_expected_dict,
-                                                      ignored_keys, unmatched_keys_list, **kwargs)
+                                                      ignored_keys, unmatched_keys_list, parent_key=key, **kwargs)
+                            if unmatched_keys_list is None:
+                                continue
+                            else:
+                                _unmatched_list_check(unmatched_keys_list, current_unmatched_length,
+                                                      key, index, parent_key, is_list=True)
                 elif isinstance(value, dict):
                     try:
                         if len(value) != len(actual_dictionary[key]):
@@ -305,8 +315,16 @@ class APILibrary(object):
                                     "\nExpected: " + str(value) + \
                                     "\nActual is not a valid dictionary.")
                         continue
+                    if unmatched_keys_list is None:
+                        current_unmatched_length = 0
+                    else:
+                        current_unmatched_length = len(unmatched_keys_list)
                     self.key_by_key_validator(actual_dictionary[key], expected_dictionary[key],
-                                              ignored_keys, unmatched_keys_list, **kwargs)
+                                              ignored_keys, unmatched_keys_list, parent_key=key, **kwargs)
+                    if unmatched_keys_list is None:
+                        continue
+                    else:
+                        _unmatched_list_check(unmatched_keys_list, current_unmatched_length, key)
                 elif isinstance(expected_dictionary[key], str) and not expected_dictionary[key].isdigit():
                     try:
                         parse(expected_dictionary[key])
@@ -379,6 +397,52 @@ class APILibrary(object):
                 for key_error in key_error_tuple:
                     keys_error_msg += str(key_error) + "\n"
             zoomba.fail(keys_error_msg + "\nPlease see differing value(s)")
+
+
+def _unmatched_list_check(unmatched_keys_list, current_unmatched_length, key, index=None, parent_key=None,
+                          is_list=False):
+    if len(unmatched_keys_list) > current_unmatched_length and parent_key == key:
+        for new_index in range(len(unmatched_keys_list) - current_unmatched_length):
+            reverse_index = -1 * (new_index + 1)
+            unmatched_tuple = unmatched_keys_list[reverse_index]
+            split_key_string = unmatched_tuple[0].split("Key: " + parent_key)
+            if len(split_key_string) > 1:
+                new_key_string = split_key_string[0] + "Key: " + parent_key + "[" + str(index) + "]" + split_key_string[1]
+            else:
+                new_key_string = split_key_string[0] + "Key: " + parent_key + "[" + str(index) + "]"
+            unmatched_keys_list[reverse_index] = (new_key_string, *unmatched_tuple[1:])
+    elif len(unmatched_keys_list) > current_unmatched_length and parent_key is not None:
+        for new_index in range(len(unmatched_keys_list) - current_unmatched_length):
+            reverse_index = -1 * (new_index + 1)
+            unmatched_tuple = unmatched_keys_list[reverse_index]
+            if "Key: " + str(key) not in unmatched_tuple[0]:
+                split_key_string = unmatched_tuple[0].split("Key: ")
+                if is_list:
+                    if len(split_key_string) > 1:
+                        new_key_string = split_key_string[0] + "Key: " + key + "[" + str(index) + "]." + split_key_string[1]
+                    else:
+                        new_key_string = split_key_string[0] + "Key: " + key + "[" + str(index) + "]"
+                else:
+                    if len(split_key_string) > 1 :
+                        new_key_string = split_key_string[0] + "Key: " + key + "." + split_key_string[1]
+                    else:
+                        new_key_string = split_key_string[0] + "Key: " + key
+                unmatched_keys_list[reverse_index] = (new_key_string, *unmatched_tuple[1:])
+    elif len(unmatched_keys_list) > current_unmatched_length and is_list:
+        for new_index in range(len(unmatched_keys_list) - current_unmatched_length):
+            reverse_index = -1 * (new_index + 1)
+            unmatched_tuple = unmatched_keys_list[reverse_index]
+            if str(key) + "[" + str(index) + "]" not in unmatched_tuple[0]:
+                split_key_string = unmatched_tuple[0].split("Key: ")
+                if len(split_key_string) > 1:
+                    if key == split_key_string[1]:
+                        new_key_string = split_key_string[0] + "Key: " + key + "[" + str(index) + "]"
+                    else:
+                        new_key_string = split_key_string[0] + "Key: " + key + "[" + str(index) + "]" + \
+                                         "." + split_key_string[1]
+                else:
+                    new_key_string = split_key_string[0] + "Key: " + key + "[" + str(index) + "]"
+                unmatched_keys_list[reverse_index] = (new_key_string, *unmatched_tuple[1:])
 
 
 def _date_format(date_string, key, unmatched_keys_list, date_type, date_format=None):
