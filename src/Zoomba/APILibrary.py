@@ -1,6 +1,5 @@
 import datetime
 import json
-import re
 
 from RequestsLibrary import RequestsLibrary
 from dateutil.parser import parse
