@@ -406,10 +406,7 @@ def _unmatched_list_check(unmatched_keys_list, current_unmatched_length, key, in
             reverse_index = -1 * (new_index + 1)
             unmatched_tuple = unmatched_keys_list[reverse_index]
             split_key_string = unmatched_tuple[0].split("Key: " + parent_key)
-            if len(split_key_string) > 1:
-                new_key_string = split_key_string[0] + "Key: " + parent_key + "[" + str(index) + "]" + split_key_string[1]
-            else:
-                new_key_string = split_key_string[0] + "Key: " + parent_key + "[" + str(index) + "]"
+            new_key_string = split_key_string[0] + "Key: " + parent_key + "[" + str(index) + "]" + split_key_string[1]
             unmatched_keys_list[reverse_index] = (new_key_string, *unmatched_tuple[1:])
     elif len(unmatched_keys_list) > current_unmatched_length and parent_key is not None:
         for new_index in range(len(unmatched_keys_list) - current_unmatched_length):
@@ -418,15 +415,9 @@ def _unmatched_list_check(unmatched_keys_list, current_unmatched_length, key, in
             if "Key: " + str(key) not in unmatched_tuple[0]:
                 split_key_string = unmatched_tuple[0].split("Key: ")
                 if is_list:
-                    if len(split_key_string) > 1:
-                        new_key_string = split_key_string[0] + "Key: " + key + "[" + str(index) + "]." + split_key_string[1]
-                    else:
-                        new_key_string = split_key_string[0] + "Key: " + key + "[" + str(index) + "]"
+                    new_key_string = split_key_string[0] + "Key: " + key + "[" + str(index) + "]." + split_key_string[1]
                 else:
-                    if len(split_key_string) > 1 :
-                        new_key_string = split_key_string[0] + "Key: " + key + "." + split_key_string[1]
-                    else:
-                        new_key_string = split_key_string[0] + "Key: " + key
+                    new_key_string = split_key_string[0] + "Key: " + key + "." + split_key_string[1]
                 unmatched_keys_list[reverse_index] = (new_key_string, *unmatched_tuple[1:])
     elif len(unmatched_keys_list) > current_unmatched_length and is_list:
         for new_index in range(len(unmatched_keys_list) - current_unmatched_length):
@@ -434,14 +425,11 @@ def _unmatched_list_check(unmatched_keys_list, current_unmatched_length, key, in
             unmatched_tuple = unmatched_keys_list[reverse_index]
             if str(key) + "[" + str(index) + "]" not in unmatched_tuple[0]:
                 split_key_string = unmatched_tuple[0].split("Key: ")
-                if len(split_key_string) > 1:
-                    if key == split_key_string[1]:
-                        new_key_string = split_key_string[0] + "Key: " + key + "[" + str(index) + "]"
-                    else:
-                        new_key_string = split_key_string[0] + "Key: " + key + "[" + str(index) + "]" + \
-                                         "." + split_key_string[1]
-                else:
+                if key == split_key_string[1]:
                     new_key_string = split_key_string[0] + "Key: " + key + "[" + str(index) + "]"
+                else:
+                    new_key_string = split_key_string[0] + "Key: " + key + "[" + str(index) + "]" + \
+                                     "." + split_key_string[1]
                 unmatched_keys_list[reverse_index] = (new_key_string, *unmatched_tuple[1:])
 
 

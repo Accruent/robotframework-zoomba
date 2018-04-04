@@ -5,6 +5,7 @@ sys.path.insert(0, os.path.abspath( os.path.join(os.path.dirname(__file__), '../
 from Zoomba.APILibrary import APILibrary
 import unittest
 from unittest.mock import patch
+from Zoomba.APILibrary import _unmatched_list_check
 
 
 class TestInternal(unittest.TestCase):
@@ -142,6 +143,12 @@ class TestInternal(unittest.TestCase):
         library.key_by_key_validator({"a":[{"b": [{"c": [4, 5]}]}]}, {"a":[{"b": [{"c": [5, 5]}]}]},
                                      unmatched_keys_list=unmatched)
         assert unmatched == [('------------------\nKey: a[0].b[0].c', 'Expected: 5', 'Actual: 4')]
+
+    def test__unmatched_list_check_parent_not_list_not_equal(self):
+        library = APILibrary()
+        unmatched = [('------------------\nKey: c', 'Expected: 5', 'Actual: 4')]
+        _unmatched_list_check(unmatched, 0, "a", index=None, parent_key="b", is_list=False)
+        assert unmatched == [('------------------\nKey: a.c', 'Expected: 5', 'Actual: 4')]
 
     @patch('robot.libraries.BuiltIn.BuiltIn.fail')
     def test_key_by_key_validator_simple_empty_dict(self, fail):
