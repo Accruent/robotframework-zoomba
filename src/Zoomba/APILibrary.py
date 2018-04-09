@@ -291,10 +291,10 @@ class APILibrary(object):
                             actual_item = actual_dictionary[key][index]
                             temp_actual_dict = {key: actual_item}
                             temp_expected_dict = {key: item}
-                            if unmatched_keys_list is None:
-                                current_unmatched_length = 0
-                            else:
+                            if unmatched_keys_list:
                                 current_unmatched_length = len(unmatched_keys_list)
+                            else:
+                                current_unmatched_length = 0
                             self.key_by_key_validator(temp_actual_dict, temp_expected_dict,
                                                       ignored_keys, unmatched_keys_list, parent_key=key, **kwargs)
                             if unmatched_keys_list is None:

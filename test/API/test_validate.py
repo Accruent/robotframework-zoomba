@@ -151,7 +151,7 @@ class TestInternal(unittest.TestCase):
         assert unmatched == [('------------------\nKey: a.c', 'Expected: 5', 'Actual: 4')]
 
     @patch('robot.libraries.BuiltIn.BuiltIn.fail')
-    def test_key_by_key_validator_simple_empty_dict(self, fail):
+    def test_key_by_key_validator_simple_none_dict(self, fail):
         library = APILibrary()
         library.key_by_key_validator({"a":None}, {"a":{"b": "2"}})
         fail.assert_called_with("Dicts do not match:\nExpected: {'b': '2'}\nActual is not a valid dictionary.")
