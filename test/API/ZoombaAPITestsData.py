@@ -301,12 +301,12 @@ unmatched_keys_8 = [('------------------\nDates Not Close Enough\nKey: AssignedD
                      'Expected: 2015-12-16 14:21:58', 'Actual: 2015-12-16 14:10:58')]
 unmatched_keys_9 = \
             [
-                ('------------------\nKey: dog', 'Expected: 9854', 'Actual: wags'),
-                ('------------------\nKey: cat', 'Expected: purr', 'Actual: meow')
+                ('------------------\nKey: strawberry[0].dog', 'Expected: 9854', 'Actual: wags'),
+                ('------------------\nKey: strawberry[0].cat', 'Expected: purr', 'Actual: meow')
             ]
 unmatched_keys_10 = \
             [
-                ('------------------\nKey: dog', 'Expected: 9854', 'Actual: wags')
+                ('------------------\nKey: strawberry[0].dog', 'Expected: 9854', 'Actual: wags')
             ]
 unmatched_keys_11 = [('------------------\nKey: SomeDate', 'Date Not Correct Format:',
                      'Expected Formats: %Y-%m-%dT%H:%M:%S', '                  %Y-%m-%dT%H:%M:%SZ',
