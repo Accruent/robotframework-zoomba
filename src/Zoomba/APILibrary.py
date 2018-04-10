@@ -6,6 +6,7 @@ from dateutil.parser import parse
 from urllib3.exceptions import InsecureRequestWarning
 from requests.packages import urllib3
 from robot.libraries.BuiltIn import BuiltIn
+from robot.utils.dotdict import DotDict
 
 zoomba = BuiltIn()
 
@@ -44,7 +45,7 @@ class APILibrary(object):
         requests_lib = RequestsLibrary()
         requests_lib.create_session("getapi", endpoint, headers, cookies=cookies)
         resp = requests_lib.get_request("getapi", fullstring)
-        return resp
+        return _convert_resp_to_dict(resp)
 
     def call_post_request(self, headers=None, endpoint=None, fullstring=None, data=None, files=None, cookies=None):
         """ Generate a POST Request. This Keyword is basically a wrapper for post_request from the RequestsLibrary.\n
@@ -61,7 +62,7 @@ class APILibrary(object):
         requests_lib = RequestsLibrary()
         requests_lib.create_session("postapi", endpoint, headers, cookies=cookies)
         resp = requests_lib.post_request("postapi", fullstring, data, files=files)
-        return resp
+        return _convert_resp_to_dict(resp)
 
     def call_delete_request(self, headers=None, endpoint=None, fullstring=None, data=None, cookies=None):
         """ Generate a DELETE Request. This Keyword is basically a wrapper for delete_request from the RequestsLibrary.\n
@@ -77,7 +78,7 @@ class APILibrary(object):
         requests_lib = RequestsLibrary()
         requests_lib.create_session("deleteapi", endpoint, headers, cookies=cookies)
         resp = requests_lib.delete_request("deleteapi", fullstring, data)
-        return resp
+        return _convert_resp_to_dict(resp)
 
     def call_patch_request(self, headers=None, endpoint=None, fullstring=None, data=None, cookies=None):
         """ Generate a PATCH Request. This Keyword is basically a wrapper for patch_request from the RequestsLibrary.\n
@@ -93,7 +94,7 @@ class APILibrary(object):
         requests_lib = RequestsLibrary()
         requests_lib.create_session("patchapi", endpoint, headers, cookies=cookies)
         resp = requests_lib.patch_request("patchapi", fullstring, data)
-        return resp
+        return _convert_resp_to_dict(resp)
 
     def call_put_request(self, headers=None, endpoint=None, fullstring=None, data=None, cookies = None):
         """ Generate a PUT Request. This Keyword is basically a wrapper for put_request from the RequestsLibrary.\n
@@ -109,7 +110,7 @@ class APILibrary(object):
         requests_lib = RequestsLibrary()
         requests_lib.create_session("putapi", endpoint, headers, cookies=cookies)
         resp = requests_lib.put_request("putapi", fullstring, data)
-        return resp
+        return _convert_resp_to_dict(resp)
 
     def create_connection(self, endpoint, method, data, headers=None, cookies=None):
         """ Opens a connection to an Application Endpoint. This Keyword is used commonly as part of a Login or Initial
@@ -127,7 +128,7 @@ class APILibrary(object):
         requests_lib = RequestsLibrary()
         requests_lib.create_session("postapi", endpoint, headers, cookies=cookies)
         resp = requests_lib.post_request("postapi", method, data)
-        return resp
+        return _convert_resp_to_dict(resp)
 
     def validate_response_contains_expected_response(self, json_actual_response, expected_response_dict,
                                                      ignored_keys=None, full_list_validation=False, identity_key="",
@@ -464,3 +465,11 @@ def _date_format(date_string, key, unmatched_keys_list, date_type, date_format=N
                                         "Expected Format: " + date_format,
                                         "Date: " + str(date_string)))
     return formatted_date
+
+
+def _convert_resp_to_dict(response):
+    new_response = {}
+    for item in dir(response):
+        if item[0] != '_':
+            new_response[item] = getattr(response, item)
+    return DotDict(new_response)
