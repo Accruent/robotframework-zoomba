@@ -466,6 +466,7 @@ def _date_format(date_string, key, unmatched_keys_list, date_type, date_format=N
                                         "Date: " + str(date_string)))
     return formatted_date
 
+
 def _convert_resp_to_dict(response):
     new_response = {}
     for item in dir(response):
