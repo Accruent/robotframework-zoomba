@@ -282,18 +282,3 @@ class GUILibrary(SeleniumLibrary):
         if load_jquery:
             driver.execute_async_script(load_jquery_js, None)
         driver.execute_script(js, source, target)
-
-    @keyword("Scroll Element Into View")
-    def scroll_element_into_view(self, locator):
-        """Scrolls an element from given ``locator`` into view.
-        Arguments:
-        - ``locator``: The locator to find requested element. Key attributes for
-                       arbitrary elements are ``id`` and ``name``. See `introduction` for
-                       details about locating elements.
-        Examples:
-        | Scroll Element Into View | css=div.class |
-        """
-        zoomba.log("Scrolling element '%s' into view." % locator, level='INFO')
-        element = self.find_element(locator=locator)
-        script = 'arguments[0].scrollIntoView()'
-        self.driver.execute_script(script, element)
