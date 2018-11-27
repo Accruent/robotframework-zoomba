@@ -186,12 +186,3 @@ class TestInternal(unittest.TestCase):
         mock_gui.driver.execute_async_script.assert_not_called()
         mock_gui.driver.execute_script.assert_called()
 
-    @patch('robot.libraries.BuiltIn.BuiltIn.log')
-    def test_scroll_element_into_view_fail(self, robot_call):
-        mock_gui = Mock()
-        mock_gui.find_element.return_value = "found it!"
-        GUILibrary.scroll_element_into_view(mock_gui, "locator")
-        robot_call.assert_called_with("Scrolling element 'locator' into view.", level='INFO')
-        mock_gui.find_element.assert_called_with(locator="locator")
-        mock_gui.driver.execute_script.assert_called_with('arguments[0].scrollIntoView()', "found it!")
-
