@@ -9,8 +9,8 @@ branches:
 
 install:
   - pip install .
-  - pip install pytest-cov
   - pip install python-coveralls
+  - pip install pytest-cov
 
 script:
   - pytest --cov src -v
