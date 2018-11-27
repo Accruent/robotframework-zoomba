@@ -12,7 +12,7 @@ zoomba_collections = Collections()
 class GUILibrary(SeleniumLibrary):
     """Zoomba GUI Library
 
-    This class inherits from the Selenium2Library Class, and expands it with some commonly used keywords.
+    This class inherits from the SeleniumLibrary Class, and expands it with some commonly used keywords.
     """
     @keyword("Element Value Should Be Equal")
     def element_value_should_be_equal(self, locator, expected_value):
