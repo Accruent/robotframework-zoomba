@@ -36,7 +36,7 @@ setup(name         = 'robotframework-zoomba',
       keywords     = 'Robot Framework',
       platforms    = 'any',
       install_requires= [
-          "robotframework=3.0.4",
+          "robotframework>=3.0.4,<3.1.0",
           "robotframework-requests>=0.5.0",
           "robotframework-seleniumlibrary>=3.2.0",
           "robotframework-sudslibrary-aljcalandra",
