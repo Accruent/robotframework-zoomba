@@ -32,27 +32,29 @@ class APILibrary(object):
         else:
             self.suppress_warnings = True
 
-    def call_get_request(self, headers=None, endpoint=None, fullstring=None, cookies=None):
+    def call_get_request(self, headers=None, endpoint=None, fullstring=None, cookies=None, timeout=None):
         """ Generate a GET Request. This Keyword is basically a wrapper for get_request from the RequestsLibrary.\n
             headers: (dictionary) The headers to be sent as part of the request.\n
             endpoint: (string) The string that identifies the url endpoint of the App that receives API requests.\n
             fullstring: (string) A string that contains the rest of the url that identifies a specific API/Webservice\n
+            timeout: (float) Time in seconds for the api to respond\n
             return: (response object) Returns the request response object, which includes headers, content, etc.
             along with any query parameters.
         """
         if self.suppress_warnings:
             urllib3.disable_warnings(InsecureRequestWarning)
         requests_lib = RequestsLibrary()
-        requests_lib.create_session("getapi", endpoint, headers, cookies=cookies)
-        resp = requests_lib.get_request("getapi", fullstring)
+        requests_lib.create_session("getapi", endpoint, headers, cookies=cookies, timeout=timeout)
+        resp = requests_lib.get_request("getapi", fullstring, timeout=timeout)
         return _convert_resp_to_dict(resp)
 
-    def call_post_request(self, headers=None, endpoint=None, fullstring=None, data=None, files=None, cookies=None):
+    def call_post_request(self, headers=None, endpoint=None, fullstring=None, data=None, files=None, cookies=None, timeout=None):
         """ Generate a POST Request. This Keyword is basically a wrapper for post_request from the RequestsLibrary.\n
             headers: (dictionary) The headers to be sent as part of the request.\n
             endpoint: (string) The string that identifies the url endpoint of the App that receives API requests.\n
             fullstring: (string) A string that contains the rest of the url that identifies a specific API/Webservice
             along with any query parameters.\n
+            timeout: (float) Time in seconds for the api to respond\n
             data: (json) The JSON object to be sent on the body of the request to be used by the specific Web service.\n
             files: (json) A JSON object that sends in the body of the request to be used by the specific Web service.\n
             return: (response object) Returns the request response object, which includes headers, content, etc.
@@ -60,59 +62,62 @@ class APILibrary(object):
         if self.suppress_warnings:
             urllib3.disable_warnings(InsecureRequestWarning)
         requests_lib = RequestsLibrary()
-        requests_lib.create_session("postapi", endpoint, headers, cookies=cookies)
-        resp = requests_lib.post_request("postapi", fullstring, data, files=files)
+        requests_lib.create_session("postapi", endpoint, headers, cookies=cookies, timeout=timeout)
+        resp = requests_lib.post_request("postapi", fullstring, data, files=files, timeout=timeout)
         return _convert_resp_to_dict(resp)
 
-    def call_delete_request(self, headers=None, endpoint=None, fullstring=None, data=None, cookies=None):
+    def call_delete_request(self, headers=None, endpoint=None, fullstring=None, data=None, cookies=None, timeout=None):
         """ Generate a DELETE Request. This Keyword is basically a wrapper for delete_request from the RequestsLibrary.\n
             headers: (dictionary) The headers to be sent as part of the request.\n
             endpoint: (string) The string that identifies the url endpoint of the App that receives API requests.\n
             fullstring: (string) A string that contains the rest of the url that identifies a specific API/Webservice
             along with any query parameters.\n
+            timeout: (float) Time in seconds for the api to respond\n
             data: (json) The JSON object to be sent on the body of the request to be used by the specific Web service.\n
             return: (response object) Returns the request response object, which includes headers, content, etc.
         """
         if self.suppress_warnings:
             urllib3.disable_warnings(InsecureRequestWarning)
         requests_lib = RequestsLibrary()
-        requests_lib.create_session("deleteapi", endpoint, headers, cookies=cookies)
-        resp = requests_lib.delete_request("deleteapi", fullstring, data)
+        requests_lib.create_session("deleteapi", endpoint, headers, cookies=cookies, timeout=timeout)
+        resp = requests_lib.delete_request("deleteapi", fullstring, data, timeout=timeout)
         return _convert_resp_to_dict(resp)
 
-    def call_patch_request(self, headers=None, endpoint=None, fullstring=None, data=None, cookies=None):
+    def call_patch_request(self, headers=None, endpoint=None, fullstring=None, data=None, cookies=None, timeout=None):
         """ Generate a PATCH Request. This Keyword is basically a wrapper for patch_request from the RequestsLibrary.\n
             headers: (dictionary) The headers to be sent as part of the request.\n
             endpoint: (string) The string that identifies the url endpoint of the App that receives API requests.\n
             fullstring: (string) A string that contains the rest of the url that identifies a specific API/Webservice
             along with any query parameters.\n
+            timeout: (float) Time in seconds for the api to respond\n
             data: (json) The JSON object to be sent on the body of the request to be used by the specific Web service.\n
             return: (response object) Returns the request response object, which includes headers, content, etc.
         """
         if self.suppress_warnings:
             urllib3.disable_warnings(InsecureRequestWarning)
         requests_lib = RequestsLibrary()
-        requests_lib.create_session("patchapi", endpoint, headers, cookies=cookies)
-        resp = requests_lib.patch_request("patchapi", fullstring, data)
+        requests_lib.create_session("patchapi", endpoint, headers, cookies=cookies, timeout=timeout)
+        resp = requests_lib.patch_request("patchapi", fullstring, data, timeout=timeout)
         return _convert_resp_to_dict(resp)
 
-    def call_put_request(self, headers=None, endpoint=None, fullstring=None, data=None, cookies = None):
+    def call_put_request(self, headers=None, endpoint=None, fullstring=None, data=None, cookies=None, timeout=None):
         """ Generate a PUT Request. This Keyword is basically a wrapper for put_request from the RequestsLibrary.\n
             headers: (dictionary) The headers to be sent as part of the request.\n
             endpoint: (string) The string that identifies the url endpoint of the App that receives API requests.\n
             fullstring: (string) A string that contains the rest of the url that identifies a specific API/Webservice
             along with any query parameters.\n
+            timeout: (float) Time in seconds for the api to respond\n
             data: (json) The JSON object to be sent on the body of the request to be used by the specific Web service.\n
             return: (response object) Returns the request response object, which includes headers, content, etc.
         """
         if self.suppress_warnings:
             urllib3.disable_warnings(InsecureRequestWarning)
         requests_lib = RequestsLibrary()
-        requests_lib.create_session("putapi", endpoint, headers, cookies=cookies)
-        resp = requests_lib.put_request("putapi", fullstring, data)
+        requests_lib.create_session("putapi", endpoint, headers, cookies=cookies, timeout=timeout)
+        resp = requests_lib.put_request("putapi", fullstring, data, timeout=timeout)
         return _convert_resp_to_dict(resp)
 
-    def create_connection(self, endpoint, method, data, headers=None, cookies=None):
+    def create_connection(self, endpoint, method, data, headers=None, cookies=None, timeout=None):
         """ Opens a connection to an Application Endpoint. This Keyword is used commonly as part of a Login or Initial
             Authentication request. Given it's similarities to a pure post request, this could be deprecated in the near
             future.\n
@@ -120,14 +125,15 @@ class APILibrary(object):
             endpoint: (string) The string that identifies the url endpoint of the App that receives API requests.\n
             fullstring: (string) A string that contains the rest of the url that identifies a specific API/Webservice
             along with any query parameters.\n
+            timeout: (float) Time in seconds for the connection to respond\n
             data: (json) The JSON object to be sent on the body of the request to be used by the specific Web service.\n
             return: (response object) Returns the request response object, which includes headers, content, etc.\n
         """
         if self.suppress_warnings:
             urllib3.disable_warnings(InsecureRequestWarning)
         requests_lib = RequestsLibrary()
-        requests_lib.create_session("postapi", endpoint, headers, cookies=cookies)
-        resp = requests_lib.post_request("postapi", method, data)
+        requests_lib.create_session("postapi", endpoint, headers, cookies=cookies, timeout=timeout)
+        resp = requests_lib.post_request("postapi", method, data, timeout=timeout)
         return _convert_resp_to_dict(resp)
 
     def validate_response_contains_expected_response(self, json_actual_response, expected_response_dict,
