@@ -50,8 +50,8 @@ class TestExternal(unittest.TestCase):
     def test_get_called_with(self, get_request, create_session):
         library = APILibrary()
         library.call_get_request({"a": "Text"}, "Endpoint", "fullstring")
-        get_request.assert_called_with("getapi", "fullstring")
-        create_session.assert_called_with("getapi", "Endpoint", {"a": "Text"}, cookies=None)
+        get_request.assert_called_with("getapi", "fullstring", timeout=None)
+        create_session.assert_called_with("getapi", "Endpoint", {"a": "Text"}, cookies=None, timeout=None)
 
     @patch('RequestsLibrary.RequestsKeywords.create_session')
     @patch('RequestsLibrary.RequestsKeywords.get_request')
@@ -134,8 +134,8 @@ class TestExternal(unittest.TestCase):
     def test_delete_called_with(self, delete_request, create_session):
         library = APILibrary()
         library.call_delete_request({"a": "Text"}, "Endpoint", "fullstring")
-        delete_request.assert_called_with("deleteapi", "fullstring", None)
-        create_session.assert_called_with("deleteapi", "Endpoint", {"a": "Text"}, cookies=None)
+        delete_request.assert_called_with("deleteapi", "fullstring", None, timeout=None)
+        create_session.assert_called_with("deleteapi", "Endpoint", {"a": "Text"}, cookies=None, timeout=None)
 
     @patch('RequestsLibrary.RequestsKeywords.create_session')
     @patch('RequestsLibrary.RequestsKeywords.delete_request')
@@ -151,8 +151,8 @@ class TestExternal(unittest.TestCase):
     def test_delete_with_cookies(self, delete_request, create_session):
         library = APILibrary()
         library.call_delete_request({"a": "Text"}, "Endpoint", "fullstring", None, "chocolate_chip")
-        delete_request.assert_called_with("deleteapi", "fullstring", None)
-        create_session.assert_called_with("deleteapi", "Endpoint", {"a": "Text"}, cookies="chocolate_chip")
+        delete_request.assert_called_with("deleteapi", "fullstring", None, timeout=None)
+        create_session.assert_called_with("deleteapi", "Endpoint", {"a": "Text"}, cookies="chocolate_chip", timeout=None)
 
     def test_patch_default(self):
         library = APILibrary()
@@ -173,8 +173,8 @@ class TestExternal(unittest.TestCase):
     def test_patch_called_with(self, patch_request, create_session):
         library = APILibrary()
         library.call_patch_request({"a": "Text"}, "Endpoint", "fullstring")
-        patch_request.assert_called_with("patchapi", "fullstring", None)
-        create_session.assert_called_with("patchapi", "Endpoint", {"a": "Text"}, cookies=None)
+        patch_request.assert_called_with("patchapi", "fullstring", None, timeout=None)
+        create_session.assert_called_with("patchapi", "Endpoint", {"a": "Text"}, cookies=None, timeout=None)
 
     @patch('RequestsLibrary.RequestsKeywords.create_session')
     @patch('RequestsLibrary.RequestsKeywords.patch_request')
@@ -190,8 +190,8 @@ class TestExternal(unittest.TestCase):
     def test_patch_with_cookies(self, patch_request, create_session):
         library = APILibrary()
         library.call_patch_request({"a": "Text"}, "Endpoint", "fullstring", None, "chocolate_chip")
-        patch_request.assert_called_with("patchapi", "fullstring", None)
-        create_session.assert_called_with("patchapi", "Endpoint", {"a": "Text"}, cookies="chocolate_chip")
+        patch_request.assert_called_with("patchapi", "fullstring", None, timeout=None)
+        create_session.assert_called_with("patchapi", "Endpoint", {"a": "Text"}, cookies="chocolate_chip", timeout=None)
 
     def test_put_default(self):
         library = APILibrary()
@@ -212,8 +212,8 @@ class TestExternal(unittest.TestCase):
     def test_put_called_with(self, put_request, create_session):
         library = APILibrary()
         library.call_put_request({"a": "Text"}, "Endpoint", "fullstring")
-        put_request.assert_called_with("putapi", "fullstring", None)
-        create_session.assert_called_with("putapi", "Endpoint", {"a": "Text"}, cookies=None)
+        put_request.assert_called_with("putapi", "fullstring", None, timeout=None)
+        create_session.assert_called_with("putapi", "Endpoint", {"a": "Text"}, cookies=None, timeout=None)
 
     @patch('RequestsLibrary.RequestsKeywords.create_session')
     @patch('RequestsLibrary.RequestsKeywords.put_request')
@@ -229,8 +229,8 @@ class TestExternal(unittest.TestCase):
     def test_put_with_cookies(self, put_request, create_session):
         library = APILibrary()
         library.call_put_request({"a": "Text"}, "Endpoint", "fullstring", None, "chocolate_chip")
-        put_request.assert_called_with("putapi", "fullstring", None)
-        create_session.assert_called_with("putapi", "Endpoint", {"a": "Text"}, cookies="chocolate_chip")
+        put_request.assert_called_with("putapi", "fullstring", None, timeout=None)
+        create_session.assert_called_with("putapi", "Endpoint", {"a": "Text"}, cookies="chocolate_chip", timeout=None)
 
     def test_create_connection_default(self):
         library = APILibrary()
