@@ -36,6 +36,11 @@ you can install Zoomba by running the following from the *root directory*:
 pip install .
 ```
 
+Additionally if you run the following command new documentation will be generated on each commit :
+```python
+git config core.hooksPath .githooks
+```
+
 Contributing
 ------------
 
