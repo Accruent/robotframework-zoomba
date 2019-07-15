@@ -49,5 +49,3 @@ class WebdriverRemoteMock(mock.Mock, unittest.TestCase):
             self._myData = base64.b64decode(data)
         else:
             self._myData = data
-
-

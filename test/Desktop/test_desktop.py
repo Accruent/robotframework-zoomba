@@ -13,4 +13,3 @@ class TestInternal(unittest.TestCase):
         self.assertFalse(am._cache.current)
         am.open_application('remote_url')
         self.assertTrue(am._cache.current)
-

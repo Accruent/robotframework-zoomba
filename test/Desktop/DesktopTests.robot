@@ -1,5 +1,5 @@
 *** Settings ***
-Documentation   Zoomba Desktop Library Tests
+Documentation   Zoomba Desktop Library Tests. Requires Appium Server running on port 4723.
 Library         ../../src/Zoomba/DesktopLibrary.py
 
 *** Variables ***
