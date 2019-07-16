@@ -29,21 +29,20 @@ class DesktopLibrary(AppiumLibrary):
             # global application
             application = webdriver.Remote(str(remote_url), desired_caps)
         except:
+            """ 
+            If the app has a splash screen the above code will start the application but will fail. This is because
+            the application it opened is no longer available. The next piece of code searches the desktop for the 
+            created window and attaches the webdriver to it.
+            """
             if window_name:
                 desktop_capabilities = dict()
-                desktop_capabilities["app"] = "Root"
-                desktop_capabilities["platformName"] = "Windows"
-                desktop_capabilities["deviceName"] = "WindowsPC"
+                desktop_capabilities.update({"app": "Root", "platformName": "Windows", "deviceName": "WindowsPC"})
                 desktop_session = webdriver.Remote(str(remote_url), desktop_capabilities)
                 window = desktop_session.find_element_by_name(window_name)
                 window = hex(int(window.get_attribute("NativeWindowHandle")))
-                try:
-                    if desired_caps["app"]:
-                        del desired_caps["app"]
-                except:
-                    pass
+                if "app" in desired_caps:
+                    del desired_caps["app"]
                 desired_caps["appTopLevelWindow"] = window
-                # global application
                 application = webdriver.Remote(str(remote_url), desired_caps)
 
         self._debug('Opened application with session id %s' % application.session_id)
