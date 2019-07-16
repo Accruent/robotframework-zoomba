@@ -14,7 +14,7 @@ logger.addHandler(stream_handler)
 
 
 class WebdriverRemoteMock(mock.Mock, unittest.TestCase):
-    #def __init__(self, *args, **kwargs):
+    # def __init__(self, *args, **kwargs):
     def __init__(self, command_executor='http://127.0.0.1:4444/wd/hub', desired_capabilities=None):
         super(WebdriverRemoteMock, self).__init__()
         self._appiumUrl = command_executor
