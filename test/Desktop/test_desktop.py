@@ -22,16 +22,16 @@ class TestInternal(unittest.TestCase):
         self.assertTrue(am._cache.current)
         self.assertTrue(am.maximize_window())
 
-    # def test_open_application_splash_successful(self):
-    #     am = DesktopLibrary()
-    #     appium.webdriver.Remote = WebdriverRemoteMock
-    #     # am.open_application = MagicMock(side_effect=Exception)
-    #     # am.open_application = MagicMock(side_effect=Exception())
-    #     # am.open_application.side_effect = Exception()
-    #     am.open_application('zzzz', window_name='test')
-    #     # self.assertRaises(KeyError, am.open_application, 'zzzz', window_name='test')
-    #     # with am.raises(Exception()) as e:
-    #     #     self.assertEqual(Exception(), e)
-    #     # self.assertEqual(am.open_application('remote_url', 'window_name=test'), 'WebDriverException')
-    #
-    #     # self.assertTrue(am._cache.current)
+    def test_open_application_splash_successful(self):
+        am = DesktopLibrary()
+        appium.webdriver.Remote = WebdriverRemoteMock.quit(self)
+        # am.open_application = MagicMock(side_effect=Exception)
+        # am.open_application = MagicMock(side_effect=Exception())
+        # am.open_application.side_effect = Exception()
+        # am.open_application('zzzz', window_name='test')
+        self.assertRaises(TypeError, am.open_application, 'zzzz', window_name='test')
+        # with am.raises(Exception()) as e:
+        #     self.assertEqual(Exception(), e)
+        # self.assertEqual(am.open_application('remote_url', 'window_name=test'), 'WebDriverException')
+
+        # self.assertTrue(am._cache.current)
