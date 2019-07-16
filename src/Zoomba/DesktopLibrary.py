@@ -58,3 +58,4 @@ class DesktopLibrary(AppiumLibrary):
         """
         driver = self._current_application()
         driver.maximize_window()
+        return True
