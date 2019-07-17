@@ -1,7 +1,9 @@
 from AppiumLibrary import AppiumLibrary
+from selenium.common.exceptions import WebDriverException
 from appium import webdriver
 from robot.api.deco import keyword
 from robot.libraries.BuiltIn import BuiltIn
+from contextlib import suppress
 
 zoomba = BuiltIn()
 
@@ -30,10 +32,9 @@ class DesktopLibrary(AppiumLibrary):
             If the app has a splash screen we need to supply the window_name of the final window. This code path will 
             start the application and then attach to the correct window via the window_name.
             """
-            try:
+            with suppress(WebDriverException):
+                # Ignore WebDriverException if the app has a splash screen
                 webdriver.Remote(str(remote_url), desired_caps)
-            except:
-                pass
             desktop_capabilities = dict()
             desktop_capabilities.update({"app": "Root", "platformName": "Windows", "deviceName": "WindowsPC"})
             desktop_session = webdriver.Remote(str(remote_url), desktop_capabilities)

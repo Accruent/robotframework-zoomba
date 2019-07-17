@@ -1,7 +1,5 @@
 from Zoomba.DesktopLibrary import DesktopLibrary
 import unittest
-from unittest.mock import patch
-from unittest.mock import MagicMock
 import appium
 from webdriverremotemock import WebdriverRemoteMock
 
@@ -18,7 +16,7 @@ class TestInternal(unittest.TestCase):
         am = DesktopLibrary()
         appium.webdriver.Remote = WebdriverRemoteMock
         self.assertFalse(am._cache.current)
-        am.open_application('remote_url', window_name='test')
+        am.open_application('remote_url', window_name='test', app='testApp')
         self.assertTrue(am._cache.current)
 
     def test_maximize_window_successful(self):
