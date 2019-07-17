@@ -78,3 +78,16 @@ class DesktopLibrary(AppiumLibrary):
         self.wait_until_page_contains_element(locator)
         self.click_element(locator)
 
+    @keyword("Wait For And Click Text")
+    def wait_for_and_click_text(self, text, exact_match=False):
+        """Waits for and clicks text identified by ``text``.
+
+        By default tries to click first text involves given ``text``, if you would
+        like to click exactly matching text, then set ``exact_match`` to `True`.
+
+        If there are multiple use  of ``text`` and you do not want first one,
+        use `locator` with `Get Web Elements` instead.
+
+        """
+        self.wait_until_page_contains_text(text)
+        self.click_text(text, exact_match)
