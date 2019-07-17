@@ -61,10 +61,20 @@ class DesktopLibrary(AppiumLibrary):
 
     @keyword("Wait For And Clear Text")
     def wait_for_and_clear_text(self, locator):
-        """Clears the text field identified by `locator`.
+        """Waits for and then clears the text field identified by `locator`.
 
         See `introduction` for details about locating elements.
         """
         self.wait_until_page_contains_element(locator)
         self.clear_text(locator)
+
+    @keyword("Wait For And Click Element")
+    def wait_for_and_click_element(self, locator):
+        """Waits for and clicks the element identified by `locator`.
+
+        Key attributes for arbitrary elements are `index` and `name`. See
+        `introduction` for details about locating elements.
+        """
+        self.wait_until_page_contains_element(locator)
+        self.click_element(locator)
 
