@@ -91,3 +91,24 @@ class DesktopLibrary(AppiumLibrary):
         """
         self.wait_until_page_contains_text(text)
         self.click_text(text, exact_match)
+
+    @keyword("Wait For And Input Password")
+    def wait_for_and_input_password(self, locator, text):
+        """Waits for and types the given password into the text field identified by `locator`.
+
+        The difference between this keyword and `Input Text` is that this keyword
+        does not log the given password. See `introduction` for details about
+        locating elements.
+        """
+        self.wait_until_page_contains_element(locator)
+        self.input_password(locator, text)
+
+    @keyword("Wait For And Input Text")
+    def wait_for_and_input_text(self, locator, text):
+        """Waits for and types the given `text` into text field identified by `locator`.
+
+        See `introduction` for details about locating elements.
+        """
+        self.wait_until_page_contains_element(locator)
+        self.input_text(locator, text)
+

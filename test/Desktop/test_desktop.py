@@ -39,3 +39,27 @@ class TestInternal(unittest.TestCase):
         appium.webdriver.Remote = WebdriverRemoteMock
         DesktopLibrary.open_application(mock_desk, 'remote_url')
         DesktopLibrary.wait_for_and_click_element(mock_desk, "some_locator")
+
+    def test_wait_for_and_click_text(self):
+        mock_desk = MagicMock()
+        appium.webdriver.Remote = WebdriverRemoteMock
+        DesktopLibrary.open_application(mock_desk, 'remote_url')
+        DesktopLibrary.wait_for_and_click_text(mock_desk, "some_text")
+
+    def test_wait_for_and_click_text_exact(self):
+        mock_desk = MagicMock()
+        appium.webdriver.Remote = WebdriverRemoteMock
+        DesktopLibrary.open_application(mock_desk, 'remote_url')
+        DesktopLibrary.wait_for_and_click_text(mock_desk, "some_text", True)
+
+    def test_wait_for_and_input_password(self):
+        mock_desk = MagicMock()
+        appium.webdriver.Remote = WebdriverRemoteMock
+        DesktopLibrary.open_application(mock_desk, 'remote_url')
+        DesktopLibrary.wait_for_and_input_password(mock_desk, "some_locator", "some_text")
+
+    def test_wait_for_and_input_text(self):
+        mock_desk = MagicMock()
+        appium.webdriver.Remote = WebdriverRemoteMock
+        DesktopLibrary.open_application(mock_desk, 'remote_url')
+        DesktopLibrary.wait_for_and_input_text(mock_desk, "some_locator", "some_text")
