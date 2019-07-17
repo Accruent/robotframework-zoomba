@@ -1,7 +1,7 @@
 import os
 from robot import libdoc
 
-libraries = ['APILibrary.py', 'GUILibrary.py', 'SOAPLibrary.py']
+libraries = ['APILibrary.py', 'GUILibrary.py', 'SOAPLibrary.py', 'DesktopLibrary.py']
 curr_dir = os.path.dirname(os.path.realpath(__file__)).replace('docs', '')
 for file in libraries:
     libdoc.libdoc(curr_dir+'src/Zoomba/'+file, curr_dir+'docs/'+file.replace('.py', 'Documentation.html'),

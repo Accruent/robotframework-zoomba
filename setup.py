@@ -42,8 +42,14 @@ setup(name         = 'robotframework-zoomba',
           "robotframework-sudslibrary-aljcalandra",
           "requests>=2.20.1",
           "selenium>=3.141.0",
-          "python-dateutil"
+          "python-dateutil",
+          "robotframework-appiumlibrary",
       ],
+      extras_require={
+        'testing': [
+          'Appium-Python-Client'
+        ]
+      },
       classifiers  = CLASSIFIERS,
       package_dir  = {'' : 'src'},
       packages     = ['Zoomba']
