@@ -17,7 +17,7 @@ class TestInternal(unittest.TestCase):
         dl = DesktopLibrary()
         appium.webdriver.Remote = WebdriverRemoteMock
         self.assertFalse(dl._cache.current)
-        dl.open_application('remote_url', window_ndle='test', app='testApp')
+        dl.open_application('remote_url', window_name='test', app='testApp')
         self.assertTrue(dl._cache.current)
 
     def test_maximize_window_successful(self):
@@ -33,3 +33,9 @@ class TestInternal(unittest.TestCase):
         appium.webdriver.Remote = WebdriverRemoteMock
         DesktopLibrary.open_application(mock_desk, 'remote_url')
         DesktopLibrary.wait_for_and_clear_text(mock_desk, "some_locator")
+
+    def test_wait_for_and_click_element(self):
+        mock_desk = MagicMock()
+        appium.webdriver.Remote = WebdriverRemoteMock
+        DesktopLibrary.open_application(mock_desk, 'remote_url')
+        DesktopLibrary.wait_for_and_click_element(mock_desk, "some_locator")
