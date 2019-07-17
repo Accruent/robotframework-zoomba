@@ -63,3 +63,9 @@ class TestInternal(unittest.TestCase):
         appium.webdriver.Remote = WebdriverRemoteMock
         DesktopLibrary.open_application(mock_desk, 'remote_url')
         DesktopLibrary.wait_for_and_input_text(mock_desk, "some_locator", "some_text")
+
+    def test_wait_for_and_long_press(self):
+        mock_desk = MagicMock()
+        appium.webdriver.Remote = WebdriverRemoteMock
+        DesktopLibrary.open_application(mock_desk, 'remote_url')
+        DesktopLibrary.wait_for_and_long_press(mock_desk, "some_locator", 1000)

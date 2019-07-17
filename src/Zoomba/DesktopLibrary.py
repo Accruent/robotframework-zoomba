@@ -61,7 +61,7 @@ class DesktopLibrary(AppiumLibrary):
 
     @keyword("Wait For And Clear Text")
     def wait_for_and_clear_text(self, locator):
-        """Waits for and then clears the text field identified by `locator`.
+        """Wait for and then clear the text field identified by `locator`.
 
         See `introduction` for details about locating elements.
         """
@@ -70,7 +70,7 @@ class DesktopLibrary(AppiumLibrary):
 
     @keyword("Wait For And Click Element")
     def wait_for_and_click_element(self, locator):
-        """Waits for and clicks the element identified by `locator`.
+        """Wait for and click the element identified by `locator`.
 
         Key attributes for arbitrary elements are `index` and `name`. See
         `introduction` for details about locating elements.
@@ -80,7 +80,7 @@ class DesktopLibrary(AppiumLibrary):
 
     @keyword("Wait For And Click Text")
     def wait_for_and_click_text(self, text, exact_match=False):
-        """Waits for and clicks text identified by ``text``.
+        """Wait for and click text identified by ``text``.
 
         By default tries to click first text involves given ``text``, if you would
         like to click exactly matching text, then set ``exact_match`` to `True`.
@@ -94,7 +94,7 @@ class DesktopLibrary(AppiumLibrary):
 
     @keyword("Wait For And Input Password")
     def wait_for_and_input_password(self, locator, text):
-        """Waits for and types the given password into the text field identified by `locator`.
+        """Wait for and type the given password into the text field identified by `locator`.
 
         The difference between this keyword and `Input Text` is that this keyword
         does not log the given password. See `introduction` for details about
@@ -105,10 +105,16 @@ class DesktopLibrary(AppiumLibrary):
 
     @keyword("Wait For And Input Text")
     def wait_for_and_input_text(self, locator, text):
-        """Waits for and types the given `text` into text field identified by `locator`.
+        """Wait for and type the given `text` into text field identified by `locator`.
 
         See `introduction` for details about locating elements.
         """
         self.wait_until_page_contains_element(locator)
         self.input_text(locator, text)
+
+    @keyword("Wait For And Long Press")
+    def wait_for_and_long_press(self, locator, duration=10000):
+        """Wait for and long press the element with optional duration """
+        self.wait_until_page_contains_element(locator)
+        self.long_press(locator, duration)
 
