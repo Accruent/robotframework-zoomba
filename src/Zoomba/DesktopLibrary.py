@@ -14,6 +14,16 @@ class DesktopLibrary(AppiumLibrary):
         Appium. This Library uses and extends the robotframework-appiumlibrary.
     """
 
+    @keyword("Maximize Window")
+    def maximize_window(self):
+        """Maximizes the current application window.
+
+        Windows Only.
+        """
+        driver = self._current_application()
+        driver.maximize_window()
+        return True
+
     @keyword("Open Application")
     def open_application(self, remote_url, alias=None, window_name=None, **kwargs):
         """Opens a new application to given Appium server.
@@ -49,12 +59,12 @@ class DesktopLibrary(AppiumLibrary):
 
         return self._cache.register(application, alias)
 
-    @keyword("Maximize Window")
-    def maximize_window(self):
-        """Maximizes the current application window.
+    @keyword("Wait For And Clear Text")
+    def wait_for_and_clear_text(self, locator):
+        """Clears the text field identified by `locator`.
 
-        Windows Only.
+        See `introduction` for details about locating elements.
         """
-        driver = self._current_application()
-        driver.maximize_window()
-        return True
+        self.wait_until_page_contains_element(locator)
+        self.clear_text(locator)
+
