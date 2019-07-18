@@ -36,24 +36,25 @@ class DesktopLibrary(AppiumLibrary):
         This function restricts the keywords used in the library. This is to prevent incompatible keywords from imported
         libraries from being referenced and used.
         """
-        return ['maximize_window', 'open_application', 'wait_for_and_clear_text', 'wait_for_and_click_element',
-                'wait_for_and_click_text', 'wait_for_and_input_password', 'wait_for_and_input_text',
-                'wait_for_and_long_press',
-                # External Libraries
-                'capture_page_screenshot', 'clear_text', 'click_a_point', 'click_button', 'click_element',
-                'click_element_at_coordinates', 'click_text', 'close_all_applications', 'close_application',
-                'element_attribute_should_match', 'element_should_be_disabled', "element_should_be_enabled",
-                'element_should_be_visible', 'element_should_contain_text', 'element_should_not_contain_text',
-                'element_text_should_be', 'get_appium_sessionId', 'get_appium_timeout', 'get_capability',
-                'get_element_attribute', 'get_element_location', 'get_element_size', 'get_source', 'get_webelement',
-                'get_webelements', 'get_window_height', 'get_window_width', 'go_back', 'input_password', 'input_text',
-                'launch_application', 'log_source', 'long_press', 'page_should_contain_element',
-                'page_should_contain_text','page_should_not_contain_element', 'page_should_not_contain_text',
-                'quit_application', 'register_keyword_to_run_on_failure', 'set_appium_timeout', 'switch_application',
-                'text_should_be_visible','wait_until_element_is_visible', 'wait_until_page_contains',
-                'wait_until_page_contains_element', 'wait_until_page_does_not_contain',
-                'wait_until_page_does_not_contain_element', 'get_matching_xpath_count','xpath_should_match_x_times'
-                ]
+        return [
+            'maximize_window', 'open_application', 'wait_for_and_clear_text', 'wait_for_and_click_element',
+            'wait_for_and_click_text', 'wait_for_and_input_password', 'wait_for_and_input_text',
+            'wait_for_and_long_press',
+            # External Libraries
+            'capture_page_screenshot', 'clear_text', 'click_a_point', 'click_button', 'click_element',
+            'click_element_at_coordinates', 'click_text', 'close_all_applications', 'close_application',
+            'element_attribute_should_match', 'element_should_be_disabled', "element_should_be_enabled",
+            'element_should_be_visible', 'element_should_contain_text', 'element_should_not_contain_text',
+            'element_text_should_be', 'get_appium_sessionId', 'get_appium_timeout', 'get_capability',
+            'get_element_attribute', 'get_element_location', 'get_element_size', 'get_source', 'get_webelement',
+            'get_webelements', 'get_window_height', 'get_window_width', 'go_back', 'input_password', 'input_text',
+            'launch_application', 'log_source', 'long_press', 'page_should_contain_element', 'page_should_contain_text',
+            'page_should_not_contain_element', 'page_should_not_contain_text', 'quit_application',
+            'register_keyword_to_run_on_failure', 'set_appium_timeout', 'switch_application', 'text_should_be_visible',
+            'wait_until_element_is_visible', 'wait_until_page_contains', 'wait_until_page_contains_element',
+            'wait_until_page_does_not_contain', 'wait_until_page_does_not_contain_element', 'get_matching_xpath_count',
+            'xpath_should_match_x_times'
+        ]
 
     @keyword("Maximize Window")
     def maximize_window(self):
