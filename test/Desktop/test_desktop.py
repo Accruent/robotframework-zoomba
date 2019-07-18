@@ -6,6 +6,9 @@ from webdriverremotemock import WebdriverRemoteMock
 
 
 class TestInternal(unittest.TestCase):
+    def test_get_keyword_names_successful(self):
+        DesktopLibrary().get_keyword_names()
+
     def test_open_application_successful(self):
         dl = DesktopLibrary()
         appium.webdriver.Remote = WebdriverRemoteMock
