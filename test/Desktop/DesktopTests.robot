@@ -40,6 +40,11 @@ Wait For And Long Press Keyword Test
 
 Wait For And Input Password Keyword Test
     Wait For And Input Password        accessibility_id=CalculatorResults       12345
-    Wait Until Page Contains       12,345
+    Wait Until Element Contains       accessibility_id=CalculatorResults      12,345
+    Wait Until Element Does Not Contain   accessibility_id=CalculatorResults      0
+
+Wait Until Element is Enabled / Disabled Keyword Test
+    Wait Until Element Is Enabled       accessibility_id=MemPlus
+    Wait Until Element Is Disabled       accessibility_id=MemRecall
 
 
