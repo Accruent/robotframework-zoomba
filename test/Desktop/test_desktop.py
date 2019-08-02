@@ -1,7 +1,7 @@
 from Zoomba.DesktopLibrary import DesktopLibrary
 import unittest
 import appium
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 from webdriverremotemock import WebdriverRemoteMock
 
 
@@ -16,8 +16,10 @@ class TestInternal(unittest.TestCase):
         dl.open_application('remote_url')
         self.assertTrue(dl._cache.current)
 
-    def test_open_application_splash_catch(self):
+    @patch('os.startfile')
+    def test_open_application_splash_catch(self, os_call):
         dl = DesktopLibrary()
+        os_call.startfile = MagicMock(return_value=True)
         appium.webdriver.Remote = WebdriverRemoteMock
         self.assertFalse(dl._cache.current)
         dl.open_application('remote_url', window_name='test', app='testApp')
@@ -72,3 +74,27 @@ class TestInternal(unittest.TestCase):
         appium.webdriver.Remote = WebdriverRemoteMock
         DesktopLibrary.open_application(mock_desk, 'remote_url')
         DesktopLibrary.wait_for_and_long_press(mock_desk, "some_locator", 1000)
+
+    def test_wait_until_element_contains(self):
+        mock_desk = MagicMock()
+        appium.webdriver.Remote = WebdriverRemoteMock
+        DesktopLibrary.open_application(mock_desk, 'remote_url')
+        DesktopLibrary.wait_until_element_contains(mock_desk, "some_locator", 'test_text')
+
+    def test_wait_until_element_does_not_contain(self):
+        mock_desk = MagicMock()
+        appium.webdriver.Remote = WebdriverRemoteMock
+        DesktopLibrary.open_application(mock_desk, 'remote_url')
+        DesktopLibrary.wait_until_element_does_not_contain(mock_desk, "some_locator", 'test_text')
+
+    def test_wait_until_element_is_enabled(self):
+        mock_desk = MagicMock()
+        appium.webdriver.Remote = WebdriverRemoteMock
+        DesktopLibrary.open_application(mock_desk, 'remote_url')
+        DesktopLibrary.wait_until_element_is_enabled(mock_desk, "some_locator", 'test_text')
+
+    def test_wait_until_element_is_disabled(self):
+        mock_desk = MagicMock()
+        appium.webdriver.Remote = WebdriverRemoteMock
+        DesktopLibrary.open_application(mock_desk, 'remote_url')
+        DesktopLibrary.wait_until_element_is_disabled(mock_desk, "some_locator", 'test_text')

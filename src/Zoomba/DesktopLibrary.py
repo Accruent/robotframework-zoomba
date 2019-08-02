@@ -1,9 +1,8 @@
 from AppiumLibrary import AppiumLibrary
-from selenium.common.exceptions import WebDriverException
 from appium import webdriver
 from robot.api.deco import keyword
 from robot.libraries.BuiltIn import BuiltIn
-from contextlib import suppress
+import os
 
 zoomba = BuiltIn()
 
@@ -39,7 +38,8 @@ class DesktopLibrary(AppiumLibrary):
         return [
             'maximize_window', 'open_application', 'wait_for_and_clear_text', 'wait_for_and_click_element',
             'wait_for_and_click_text', 'wait_for_and_input_password', 'wait_for_and_input_text',
-            'wait_for_and_long_press',
+            'wait_for_and_long_press', 'wait_until_element_contains', 'wait_until_element_does_not_contain',
+            'wait_until_element_is_enabled', 'wait_until_element_is_disabled',
             # External Libraries
             'capture_page_screenshot', 'clear_text', 'click_a_point', 'click_button', 'click_element',
             'click_element_at_coordinates', 'click_text', 'close_all_applications', 'close_application',
@@ -80,74 +80,181 @@ class DesktopLibrary(AppiumLibrary):
         """
         desired_caps = kwargs
         if window_name:
-            """ 
-            If the app has a splash screen we need to supply the window_name of the final window. This code path will 
-            start the application and then attach to the correct window via the window_name.
-            """
-            with suppress(WebDriverException):
-                # Ignore WebDriverException if the app has a splash screen
-                webdriver.Remote(str(remote_url), desired_caps)
-            desktop_capabilities = dict()
-            desktop_capabilities.update({"app": "Root", "platformName": "Windows", "deviceName": "WindowsPC"})
-            desktop_session = webdriver.Remote(str(remote_url), desktop_capabilities)
-            window = desktop_session.find_element_by_name(window_name)
-            window = hex(int(window.get_attribute("NativeWindowHandle")))
-            if "app" in desired_caps:
-                del desired_caps["app"]
-            desired_caps["appTopLevelWindow"] = window
+            # """
+            # If the app has a splash screen we need to supply the window_name of the final window. This code path will
+            # start the application and then attach to the correct window via the window_name.
+            # """
+            os.startfile(desired_caps['app'])
+            return self.switch_application_by_name(remote_url, alias=alias, window_name=window_name, **kwargs)
+        else:
+            # global application
+            application = webdriver.Remote(str(remote_url), desired_caps)
+            self._debug('Opened application with session id %s' % application.session_id)
+
+            return self._cache.register(application, alias)
+
+    @keyword("Switch Application By Name")
+    def switch_application_by_name(self, remote_url, window_name, alias=None, **kwargs):
+        """Opens a new application to given Appium server.
+        Capabilities of appium server, Windows,
+        Please check http://appium.io/docs/en/drivers/windows
+        | *Option*            | *Man.* | *Description*     |
+        | remote_url          | Yes    | Appium server url |
+        | alias               | no     | alias             |
+
+        Examples:
+        | Open Application | http://localhost:4723/wd/hub | alias=Myapp1         | platformName=Windows            | deviceName=Windows           | app=your.app          |
+        """
+        # print('Start ' + str(datetime.datetime.now()))
+        desired_caps = kwargs
+        desktop_capabilities = dict()
+        desktop_capabilities.update({"app": "Root", "platformName": "Windows", "deviceName": "WindowsPC"})
+        desktop_session = webdriver.Remote(str(remote_url), desktop_capabilities)
+        # self.switch_application('root')
+        # print('Desktop Session Start ' + str(datetime.datetime.now()))
+        window = desktop_session.find_element_by_name(window_name)
+        # print('FOUND ' + str(datetime.datetime.now()))
+        window = hex(int(window.get_attribute("NativeWindowHandle")))
+        desktop_session.quit()
+        if "app" in desired_caps:
+            del desired_caps["app"]
+        desired_caps["appTopLevelWindow"] = window
+        # print('Desktop Session Closed ' + str(datetime.datetime.now()))
         # global application
         application = webdriver.Remote(str(remote_url), desired_caps)
+        # print('Webdriver activated ' + str(datetime.datetime.now()))
         self._debug('Opened application with session id %s' % application.session_id)
 
         return self._cache.register(application, alias)
 
     @keyword("Wait For And Clear Text")
-    def wait_for_and_clear_text(self, locator):
+    def wait_for_and_clear_text(self, locator, timeout=None, error=None):
         """Wait for and then clear the text field identified by `locator`.
 
+        Fails if `timeout` expires before the element appears.
+
+        `error` can be used to override the default error message.
+
         See `introduction` for details about locating elements."""
-        self.wait_until_page_contains_element(locator)
+        self.wait_until_page_contains_element(locator, timeout, error)
         self.clear_text(locator)
 
     @keyword("Wait For And Click Element")
-    def wait_for_and_click_element(self, locator):
+    def wait_for_and_click_element(self, locator, timeout=None, error=None):
         """Wait for and click the element identified by `locator`.
 
+        Fails if `timeout` expires before the element appears.
+
+        `error` can be used to override the default error message.
+
         See `introduction` for details about locating elements."""
-        self.wait_until_page_contains_element(locator)
+        self.wait_until_page_contains_element(locator, timeout, error)
         self.click_element(locator)
 
     @keyword("Wait For And Click Text")
-    def wait_for_and_click_text(self, text, exact_match=False):
+    def wait_for_and_click_text(self, text, exact_match=False, timeout=None, error=None):
         """Wait for and click text identified by ``text``.
+
+        Fails if `timeout` expires before the element appears.
+
+        `error` can be used to override the default error message.
 
         By default tries to click first text involves given ``text``, if you would
         like to click exactly matching text, then set ``exact_match`` to `True`."""
-        self.wait_until_page_contains(text)
+        self.wait_until_page_contains(text, timeout, error)
         self.click_text(text, exact_match)
 
     @keyword("Wait For And Input Password")
-    def wait_for_and_input_password(self, locator, text):
+    def wait_for_and_input_password(self, locator, text, timeout=None, error=None):
         """Wait for and type the given password into the text field identified by `locator`.
+
+        Fails if `timeout` expires before the element appears.
+
+        `error` can be used to override the default error message.
 
         The difference between this keyword and `Wait For And Input Text` is that this keyword
         does not log the given password. See `introduction` for details about locating elements."""
-        self.wait_until_page_contains_element(locator)
+        self.wait_until_page_contains_element(locator, timeout, error)
         self.input_password(locator, text)
 
     @keyword("Wait For And Input Text")
-    def wait_for_and_input_text(self, locator, text):
+    def wait_for_and_input_text(self, locator, text, timeout=None, error=None):
         """Wait for and type the given `text` into text field identified by `locator`.
 
+        Fails if `timeout` expires before the element appears.
+
+        `error` can be used to override the default error message.
+
         See `introduction` for details about locating elements."""
-        self.wait_until_page_contains_element(locator)
+        self.wait_until_page_contains_element(locator, timeout, error)
         self.input_text(locator, text)
 
     @keyword("Wait For And Long Press")
-    def wait_for_and_long_press(self, locator, duration=10000):
+    def wait_for_and_long_press(self, locator, duration=10000, timeout=None, error=None):
         """Wait for and long press the element identified by `locator` with optional duration.
 
+        Fails if `timeout` expires before the element appears.
+
+        `error` can be used to override the default error message.
+
         See `introduction` for details about locating elements."""
-        self.wait_until_page_contains_element(locator)
+        self.wait_until_page_contains_element(locator, timeout, error)
         self.long_press(locator, duration)
+
+    @keyword("Wait Until Element Contains")
+    def wait_until_element_contains(self, locator, text, timeout=None, error=None):
+        """Waits until element specified with `locator` contains 'text'.
+
+        Fails if `timeout` expires before the element appears.
+
+        `error` can be used to override the default error message.
+
+        See also `Wait Until Page Contains`,
+        `Wait Until Page Does Not Contain`
+        `Wait Until Page Does Not Contain Element`
+        """
+        self.wait_until_page_contains_element(locator, timeout, error)
+        self.element_should_contain_text(locator, text, error)
+
+    @keyword("Wait Until Element Does Not Contain")
+    def wait_until_element_does_not_contain(self, locator, text, timeout=None, error=None):
+        """Waits until element specified with `locator` does not contain 'text'.
+
+        Fails if `timeout` expires before the element appears.
+
+        `error` can be used to override the default error message.
+
+        See also 'Wait Until Element Contains,
+        `Wait Until Page Contains`,
+        `Wait Until Page Does Not Contain`
+        `Wait Until Page Does Not Contain Element`
+        """
+        self.wait_until_page_contains_element(locator, timeout, error)
+        self.element_should_not_contain_text(locator, text, error)
+
+    @keyword("Wait Until Element Is Enabled")
+    def wait_until_element_is_enabled(self, locator, timeout=None, error=None):
+        """Waits until element specified with `locator` is enabled.
+
+        Fails if `timeout` expires before the element appears.
+
+        `error` can be used to override the default error message.
+
+        See also 'Wait Until Element Is Disabled'
+        """
+        self.wait_until_page_contains_element(locator, timeout, error)
+        self.element_should_be_enabled(locator)
+
+    @keyword("Wait Until Element Is Disabled")
+    def wait_until_element_is_disabled(self, locator, timeout=None, error=None):
+        """Waits until element specified with `locator` is disabled.
+
+        Fails if `timeout` expires before the element appears.
+
+        `error` can be used to override the default error message.
+
+        See also 'Wait Until Element Is Disabled'
+        """
+        self.wait_until_page_contains_element(locator, timeout, error)
+        self.element_should_be_disabled(locator)
 
