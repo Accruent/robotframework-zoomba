@@ -20,6 +20,7 @@ class TestInternal(unittest.TestCase):
     @patch('os.startfile')
     def test_open_application_splash_catch(self, os_call):
         dl = DesktopLibrary()
+        os_call.startfile = MagicMock(return_value=True)
         appium.webdriver.Remote = WebdriverRemoteMock
         self.assertFalse(dl._cache.current)
         dl.open_application('remote_url', window_name='test', app='testApp')
