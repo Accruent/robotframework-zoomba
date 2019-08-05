@@ -2,7 +2,7 @@ from Zoomba.DesktopLibrary import DesktopLibrary
 import unittest
 import appium
 import os
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
 from webdriverremotemock import WebdriverRemoteMock
 
 
@@ -17,7 +17,6 @@ class TestInternal(unittest.TestCase):
         dl.open_application('remote_url')
         self.assertTrue(dl._cache.current)
 
-    # @patch('os.startfile')
     def test_open_application_splash_catch(self):
         dl = DesktopLibrary()
         os.startfile = MagicMock(return_value=True)
@@ -25,7 +24,6 @@ class TestInternal(unittest.TestCase):
         self.assertFalse(dl._cache.current)
         dl.open_application('remote_url', window_name='test', app='testApp')
         self.assertTrue(dl._cache.current)
-        # self.assertTrue(os_call)
 
     def test_maximize_window_successful(self):
         dl = DesktopLibrary()
