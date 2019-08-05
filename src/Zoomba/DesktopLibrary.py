@@ -77,6 +77,7 @@ class DesktopLibrary(AppiumLibrary):
 
         Examples:
         | Open Application | http://localhost:4723/wd/hub | alias=Myapp1         | platformName=Windows            | deviceName=Windows           | app=your.app          |
+        | Open Application | http://localhost:4723/wd/hub | alias=Myapp1         | platformName=Windows            | deviceName=Windows           | app=your.app          | window_name=MyApplication          |
         """
         desired_caps = kwargs
         if window_name:
@@ -95,7 +96,7 @@ class DesktopLibrary(AppiumLibrary):
 
     @keyword("Switch Application By Name")
     def switch_application_by_name(self, remote_url, window_name, alias=None, **kwargs):
-        """Opens a new application to given Appium server.
+        """Switches to a currently opened window by name.
         Capabilities of appium server, Windows,
         Please check http://appium.io/docs/en/drivers/windows
         | *Option*            | *Man.* | *Description*     |
@@ -103,26 +104,20 @@ class DesktopLibrary(AppiumLibrary):
         | alias               | no     | alias             |
 
         Examples:
-        | Open Application | http://localhost:4723/wd/hub | alias=Myapp1         | platformName=Windows            | deviceName=Windows           | app=your.app          |
+        | Switch Application By Name | http://localhost:4723/wd/hub | alias=Myapp1         | platformName=Windows            | deviceName=Windows           | window_name=MyApplication         |
         """
-        # print('Start ' + str(datetime.datetime.now()))
         desired_caps = kwargs
         desktop_capabilities = dict()
         desktop_capabilities.update({"app": "Root", "platformName": "Windows", "deviceName": "WindowsPC"})
         desktop_session = webdriver.Remote(str(remote_url), desktop_capabilities)
-        # self.switch_application('root')
-        # print('Desktop Session Start ' + str(datetime.datetime.now()))
         window = desktop_session.find_element_by_name(window_name)
-        # print('FOUND ' + str(datetime.datetime.now()))
         window = hex(int(window.get_attribute("NativeWindowHandle")))
         desktop_session.quit()
         if "app" in desired_caps:
             del desired_caps["app"]
         desired_caps["appTopLevelWindow"] = window
-        # print('Desktop Session Closed ' + str(datetime.datetime.now()))
         # global application
         application = webdriver.Remote(str(remote_url), desired_caps)
-        # print('Webdriver activated ' + str(datetime.datetime.now()))
         self._debug('Opened application with session id %s' % application.session_id)
 
         return self._cache.register(application, alias)
