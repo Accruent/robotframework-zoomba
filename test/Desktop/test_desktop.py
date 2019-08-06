@@ -1,6 +1,7 @@
 from Zoomba.DesktopLibrary import DesktopLibrary
 import unittest
 import appium
+import os
 from unittest.mock import MagicMock
 from webdriverremotemock import WebdriverRemoteMock
 
@@ -18,6 +19,7 @@ class TestInternal(unittest.TestCase):
 
     def test_open_application_splash_catch(self):
         dl = DesktopLibrary()
+        os.startfile = MagicMock(return_value=True)
         appium.webdriver.Remote = WebdriverRemoteMock
         self.assertFalse(dl._cache.current)
         dl.open_application('remote_url', window_name='test', app='testApp')
