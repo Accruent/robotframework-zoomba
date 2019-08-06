@@ -28,6 +28,13 @@ class DesktopLibrary(AppiumLibrary):
 
     Example tests using the windows calculator are located in the tests directory.
 
+    = Use of Wait Keywords =
+
+    When using a modern Windows application there should be no issue with using the 'Wait For And' keywords. However if
+    you are using an older WinForm, Win32, or a larger application it may be necessary to simply use the non-waiting
+    version of keywords. Then you would simply add your waits in manually where necessary using something like
+    `Wait Until Page Contains` or `Wait Until Page Contains Element`.
+
     """
 
     def get_keyword_names(self):
@@ -39,7 +46,7 @@ class DesktopLibrary(AppiumLibrary):
             'maximize_window', 'open_application', 'wait_for_and_clear_text', 'wait_for_and_click_element',
             'wait_for_and_click_text', 'wait_for_and_input_password', 'wait_for_and_input_text',
             'wait_for_and_long_press', 'wait_until_element_contains', 'wait_until_element_does_not_contain',
-            'wait_until_element_is_enabled', 'wait_until_element_is_disabled',
+            'wait_until_element_is_enabled', 'wait_until_element_is_disabled', 'switch_application_by_name',
             # External Libraries
             'capture_page_screenshot', 'clear_text', 'click_a_point', 'click_button', 'click_element',
             'click_element_at_coordinates', 'click_text', 'close_all_applications', 'close_application',
@@ -69,11 +76,13 @@ class DesktopLibrary(AppiumLibrary):
     @keyword("Open Application")
     def open_application(self, remote_url, alias=None, window_name=None, **kwargs):
         """Opens a new application to given Appium server.
-        Capabilities of appium server, Windows,
+        If your application has a splash screen please supply the window name of the final window that will appear.
+        For the capabilities of appium server and Windows,
         Please check http://appium.io/docs/en/drivers/windows
-        | *Option*            | *Man.* | *Description*     |
-        | remote_url          | Yes    | Appium server url |
-        | alias               | no     | alias             |
+        | *Option*            | *Man.* | *Description*                                                        |
+        | remote_url          | Yes    | Appium server url                                                    |
+        | alias               | No     | Alias                                                                |
+        | window_name         | No     | Window name you wish to attach, usually after a splash screen        |
 
         Examples:
         | Open Application | http://localhost:4723/wd/hub | alias=Myapp1         | platformName=Windows            | deviceName=Windows           | app=your.app          |
@@ -97,11 +106,12 @@ class DesktopLibrary(AppiumLibrary):
     @keyword("Switch Application By Name")
     def switch_application_by_name(self, remote_url, window_name, alias=None, **kwargs):
         """Switches to a currently opened window by name.
-        Capabilities of appium server, Windows,
+        For the capabilities of appium server and Windows,
         Please check http://appium.io/docs/en/drivers/windows
-        | *Option*            | *Man.* | *Description*     |
-        | remote_url          | Yes    | Appium server url |
-        | alias               | no     | alias             |
+        | *Option*            | *Man.* | *Description*                         |
+        | remote_url          | Yes    | Appium server url                     |
+        | window_name         | Yes    | Window name you wish to attach        |
+        | alias               | No     | alias                                 |
 
         Examples:
         | Switch Application By Name | http://localhost:4723/wd/hub | alias=Myapp1         | platformName=Windows            | deviceName=Windows           | window_name=MyApplication         |
