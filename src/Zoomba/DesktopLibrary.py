@@ -1,9 +1,8 @@
 from AppiumLibrary import AppiumLibrary
-from selenium.common.exceptions import WebDriverException
 from appium import webdriver
 from robot.api.deco import keyword
 from robot.libraries.BuiltIn import BuiltIn
-from contextlib import suppress
+import os
 
 zoomba = BuiltIn()
 
@@ -29,6 +28,13 @@ class DesktopLibrary(AppiumLibrary):
 
     Example tests using the windows calculator are located in the tests directory.
 
+    = Use of Wait Keywords =
+
+    When using a modern Windows application there should be no issue with using the 'Wait For And' keywords. However if
+    you are using an older WinForm, Win32, or a larger application it may be necessary to simply use the non-waiting
+    version of keywords. Then you would simply add your waits in manually where necessary using something like
+    `Wait Until Page Contains` or `Wait Until Page Contains Element`.
+
     """
 
     def get_keyword_names(self):
@@ -40,7 +46,7 @@ class DesktopLibrary(AppiumLibrary):
             'maximize_window', 'open_application', 'wait_for_and_clear_text', 'wait_for_and_click_element',
             'wait_for_and_click_text', 'wait_for_and_input_password', 'wait_for_and_input_text',
             'wait_for_and_long_press', 'wait_until_element_contains', 'wait_until_element_does_not_contain',
-            'wait_until_element_is_enabled', 'wait_until_element_is_disabled',
+            'wait_until_element_is_enabled', 'wait_until_element_is_disabled', 'switch_application_by_name',
             # External Libraries
             'capture_page_screenshot', 'clear_text', 'click_a_point', 'click_button', 'click_element',
             'click_element_at_coordinates', 'click_text', 'close_all_applications', 'close_application',
@@ -70,32 +76,56 @@ class DesktopLibrary(AppiumLibrary):
     @keyword("Open Application")
     def open_application(self, remote_url, alias=None, window_name=None, **kwargs):
         """Opens a new application to given Appium server.
-        Capabilities of appium server, Windows,
+        If your application has a splash screen please supply the window name of the final window that will appear.
+        For the capabilities of appium server and Windows,
         Please check http://appium.io/docs/en/drivers/windows
-        | *Option*            | *Man.* | *Description*     |
-        | remote_url          | Yes    | Appium server url |
-        | alias               | no     | alias             |
+        | *Option*            | *Man.* | *Description*                                                        |
+        | remote_url          | Yes    | Appium server url                                                    |
+        | alias               | No     | Alias                                                                |
+        | window_name         | No     | Window name you wish to attach, usually after a splash screen        |
 
         Examples:
         | Open Application | http://localhost:4723/wd/hub | alias=Myapp1         | platformName=Windows            | deviceName=Windows           | app=your.app          |
+        | Open Application | http://localhost:4723/wd/hub | alias=Myapp1         | platformName=Windows            | deviceName=Windows           | app=your.app          | window_name=MyApplication          |
         """
         desired_caps = kwargs
         if window_name:
-            """ 
-            If the app has a splash screen we need to supply the window_name of the final window. This code path will 
-            start the application and then attach to the correct window via the window_name.
-            """
-            with suppress(WebDriverException):
-                # Ignore WebDriverException if the app has a splash screen
-                webdriver.Remote(str(remote_url), desired_caps)
-            desktop_capabilities = dict()
-            desktop_capabilities.update({"app": "Root", "platformName": "Windows", "deviceName": "WindowsPC"})
-            desktop_session = webdriver.Remote(str(remote_url), desktop_capabilities)
-            window = desktop_session.find_element_by_name(window_name)
-            window = hex(int(window.get_attribute("NativeWindowHandle")))
-            if "app" in desired_caps:
-                del desired_caps["app"]
-            desired_caps["appTopLevelWindow"] = window
+            # """
+            # If the app has a splash screen we need to supply the window_name of the final window. This code path will
+            # start the application and then attach to the correct window via the window_name.
+            # """
+            os.startfile(desired_caps['app'])
+            return self.switch_application_by_name(remote_url, alias=alias, window_name=window_name, **kwargs)
+        else:
+            # global application
+            application = webdriver.Remote(str(remote_url), desired_caps)
+            self._debug('Opened application with session id %s' % application.session_id)
+
+            return self._cache.register(application, alias)
+
+    @keyword("Switch Application By Name")
+    def switch_application_by_name(self, remote_url, window_name, alias=None, **kwargs):
+        """Switches to a currently opened window by name.
+        For the capabilities of appium server and Windows,
+        Please check http://appium.io/docs/en/drivers/windows
+        | *Option*            | *Man.* | *Description*                         |
+        | remote_url          | Yes    | Appium server url                     |
+        | window_name         | Yes    | Window name you wish to attach        |
+        | alias               | No     | alias                                 |
+
+        Examples:
+        | Switch Application By Name | http://localhost:4723/wd/hub | alias=Myapp1         | platformName=Windows            | deviceName=Windows           | window_name=MyApplication         |
+        """
+        desired_caps = kwargs
+        desktop_capabilities = dict()
+        desktop_capabilities.update({"app": "Root", "platformName": "Windows", "deviceName": "WindowsPC"})
+        desktop_session = webdriver.Remote(str(remote_url), desktop_capabilities)
+        window = desktop_session.find_element_by_name(window_name)
+        window = hex(int(window.get_attribute("NativeWindowHandle")))
+        desktop_session.quit()
+        if "app" in desired_caps:
+            del desired_caps["app"]
+        desired_caps["appTopLevelWindow"] = window
         # global application
         application = webdriver.Remote(str(remote_url), desired_caps)
         self._debug('Opened application with session id %s' % application.session_id)
