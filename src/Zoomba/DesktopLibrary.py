@@ -47,8 +47,8 @@ class DesktopLibrary(AppiumLibrary):
             'element_attribute_should_match', 'element_should_be_disabled', "element_should_be_enabled",
             'element_should_be_visible', 'element_should_contain_text', 'element_should_not_contain_text',
             'element_text_should_be', 'get_appium_sessionId', 'get_appium_timeout', 'get_capability',
-            'get_element_attribute', 'get_element_location', 'get_element_size', 'get_source', 'get_webelement',
-            'get_webelements', 'get_window_height', 'get_window_width', 'go_back', 'input_password', 'input_text',
+            'get_element_attribute', 'get_element_location', 'get_element_size', 'get_webelement',
+            'get_webelements', 'get_window_height', 'get_window_width', 'input_password', 'input_text',
             'launch_application', 'log_source', 'long_press', 'page_should_contain_element', 'page_should_contain_text',
             'page_should_not_contain_element', 'page_should_not_contain_text', 'quit_application',
             'register_keyword_to_run_on_failure', 'set_appium_timeout', 'switch_application', 'text_should_be_visible',
@@ -232,4 +232,17 @@ class DesktopLibrary(AppiumLibrary):
         """
         self.wait_until_page_contains_element(locator, timeout, error)
         self.element_should_be_disabled(locator)
+
+    # @keyword("Mouse Over Element")
+    # def mouse_over_element(self, locator, timeout=None, error=None):
+    #     """Waits until element specified with `locator` is disabled.
+    #
+    #     Fails if `timeout` expires before the element appears.
+    #
+    #     `error` can be used to override the default error message.
+    #
+    #     See also 'Wait Until Element Is Disabled'
+    #     """
+    #     location = webdriver.Remote.find_element_by_accessibility_id(locator)
+    #     webdriver.Remote.Mouse
 
