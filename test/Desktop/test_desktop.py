@@ -158,7 +158,7 @@ class TestInternal(unittest.TestCase):
         appium.webdriver.Remote = WebdriverRemoteMock
         ActionChains.move_to_element = MagicMock(return_value=True)
         DesktopLibrary.open_application(mock_desk, 'remote_url')
-        DesktopLibrary.mouse_over_and_click_text(mock_desk, "some_text", True)
+        DesktopLibrary.mouse_over_and_click_text(mock_desk, "some_text", True, double_click=True)
 
     def test_wait_for_and_mouse_over_text(self):
         mock_desk = MagicMock()
@@ -176,4 +176,4 @@ class TestInternal(unittest.TestCase):
         mock_desk = MagicMock()
         appium.webdriver.Remote = WebdriverRemoteMock
         DesktopLibrary.open_application(mock_desk, 'remote_url')
-        DesktopLibrary.wait_for_and_mouse_over_and_click_text(mock_desk, "some_text", True)
+        DesktopLibrary.wait_for_and_mouse_over_and_click_text(mock_desk, "some_text", True, double_click=True)
