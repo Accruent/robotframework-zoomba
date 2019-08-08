@@ -3,8 +3,8 @@ Documentation   Zoomba Desktop Library Tests. Requires Appium Server running on 
 Library         ../../src/Zoomba/DesktopLibrary.py
 Suite Setup     Start App
 Test Setup      Launch Application
-#Test Teardown   Quit Application
-#Suite Teardown    Close All Applications
+Test Teardown   Quit Application
+Suite Teardown    Close All Applications
 
 *** Variables ***
 ${REMOTE_URL}           http://localhost:4723/wd/hub
@@ -48,9 +48,25 @@ Start App
 #Wait Until Element is Enabled / Disabled Keyword Test
 #    Wait Until Element Is Enabled       accessibility_id=MemPlus
 #    Wait Until Element Is Disabled       accessibility_id=MemRecall
+#
+#Mouse Over Element/Text Keyword Test
+#    Mouse Over Element     name=Two
+#    Mouse Over Text      Memory
+#    Mouse Over Text      Memory    True
 
-Mouse Over Element/Text Keyword Test
-    Mouse Over Element     name=Two
-    Mouse Over Text      Memory    True
+#Mouse Over And Click Element/Text Keyword Test
+#    Mouse Over And Click Element     name=Two
+#    Mouse Over And Click Text      Memory
+#    Mouse Over And Click Text      Memory    True
+
+#Mouse Over And Double Click Element/Text Keyword Test
+#    Mouse Over And Click Element     name=Two    double_click=True
+#    Mouse Over And Click Text      Memory    double_click=True
+#    Mouse Over And Click Text      Memory    True    True
+
+#Wait For And Mouse Over And Click Element/Text Keyword Test
+#    Wait For And Mouse Over And Click Element     name=Two
+#    Wait For And Mouse Over And Click Text      Memory
+#    Wait For And Mouse Over And Click Text      Memory    True
 
 

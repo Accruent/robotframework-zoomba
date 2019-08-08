@@ -309,14 +309,11 @@ class DesktopLibrary(AppiumLibrary):
     def mouse_over_text(self, text, exact_match=False):
         """Moves the mouse over the given text.
         """
-        self.mouse_over_element('name=' + text)
-        # driver = self._current_application()
-        # element = self._element_find_by_text(text, exact_match)
-        # actions = ActionChains(driver)
-        # print('before element move')
-        # actions.move_to_element(element)
-        # print('after element move')
-        # actions.perform()
+        driver = self._current_application()
+        element = self._element_find_by_text(text, exact_match)
+        actions = ActionChains(driver)
+        actions.move_to_element(element)
+        actions.perform()
 
     @keyword("Wait For And Mouse Over Text")
     def wait_for_and_mouse_over_text(self, text, exact_match=False, timeout=None, error=None):
@@ -347,20 +344,9 @@ class DesktopLibrary(AppiumLibrary):
         self.wait_until_page_contains(text, timeout, error)
         self.mouse_over_and_click_text(text, exact_match, double_click)
 
-    # def _element_find_by_text(self, text, exact_match=False):
-    #     # if self._get_platform() == 'ios':
-    #     #     element = self._element_find(text, True, False)
-    #     #     if element:
-    #     #         return element
-    #     #     else:
-    #     #         if exact_match:
-    #     #             _xpath = u'//*[@value="{}" or @label="{}"]'.format(text, text)
-    #     #         else:
-    #     #             _xpath = u'//*[contains(@label,"{}") or contains(@value, "{}")]'.format(text, text)
-    #     #         return self._element_find(_xpath, True, True)
-    #
-    #     if exact_match:
-    #         _xpath = u'//*[@{}="{}"]'.format('Name', text)
-    #     else:
-    #         _xpath = u'//*[contains(@{},"{}")]'.format('Name', text)
-    #     return self._element_find(_xpath, True, True)
+    def _element_find_by_text(self, text, exact_match=False):
+        if exact_match:
+            _xpath = u'//*[@{}="{}"]'.format('Name', text)
+        else:
+            _xpath = u'//*[contains(@{},"{}")]'.format('Name', text)
+        return self._element_find(_xpath, True, True)
