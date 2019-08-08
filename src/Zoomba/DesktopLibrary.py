@@ -109,7 +109,7 @@ class DesktopLibrary(AppiumLibrary):
 
     @keyword("Switch Application By Name")
     def switch_application_by_name(self, remote_url, window_name, alias=None, **kwargs):
-        """Switches to a currently opened window by name.
+        """Switches to a currently opened window by ``window_name``.
         For the capabilities of appium server and Windows,
         Please check http://appium.io/docs/en/drivers/windows
         | *Option*            | *Man.* | *Description*                         |
@@ -138,11 +138,11 @@ class DesktopLibrary(AppiumLibrary):
 
     @keyword("Wait For And Clear Text")
     def wait_for_and_clear_text(self, locator, timeout=None, error=None):
-        """Wait for and then clear the text field identified by `locator`.
+        """Wait for and then clear the text field identified by ``locator``.
 
-        Fails if `timeout` expires before the element appears.
+        Fails if ``timeout`` expires before the element appears.
 
-        `error` can be used to override the default error message.
+        ``error`` can be used to override the default error message.
 
         See `introduction` for details about locating elements."""
         self.wait_until_page_contains_element(locator, timeout, error)
@@ -150,11 +150,11 @@ class DesktopLibrary(AppiumLibrary):
 
     @keyword("Wait For And Click Element")
     def wait_for_and_click_element(self, locator, timeout=None, error=None):
-        """Wait for and click the element identified by `locator`.
+        """Wait for and click the element identified by ``locator``.
 
-        Fails if `timeout` expires before the element appears.
+        Fails if ``timeout`` expires before the element appears.
 
-        `error` can be used to override the default error message.
+        ``error`` can be used to override the default error message.
 
         See `introduction` for details about locating elements."""
         self.wait_until_page_contains_element(locator, timeout, error)
@@ -164,9 +164,9 @@ class DesktopLibrary(AppiumLibrary):
     def wait_for_and_click_text(self, text, exact_match=False, timeout=None, error=None):
         """Wait for and click text identified by ``text``.
 
-        Fails if `timeout` expires before the element appears.
+        Fails if ``timeout`` expires before the element appears.
 
-        `error` can be used to override the default error message.
+        ``error`` can be used to override the default error message.
 
         By default tries to click first text involves given ``text``, if you would
         like to click exactly matching text, then set ``exact_match`` to `True`."""
@@ -175,11 +175,11 @@ class DesktopLibrary(AppiumLibrary):
 
     @keyword("Wait For And Input Password")
     def wait_for_and_input_password(self, locator, text, timeout=None, error=None):
-        """Wait for and type the given password into the text field identified by `locator`.
+        """Wait for and type the given password into the text field identified by ``locator``.
 
-        Fails if `timeout` expires before the element appears.
+        Fails if ``timeout`` expires before the element appears.
 
-        `error` can be used to override the default error message.
+        ``error`` can be used to override the default error message.
 
         The difference between this keyword and `Wait For And Input Text` is that this keyword
         does not log the given password. See `introduction` for details about locating elements."""
@@ -188,11 +188,11 @@ class DesktopLibrary(AppiumLibrary):
 
     @keyword("Wait For And Input Text")
     def wait_for_and_input_text(self, locator, text, timeout=None, error=None):
-        """Wait for and type the given `text` into text field identified by `locator`.
+        """Wait for and type the given ``locator`` into text field identified by ``locator``.
 
-        Fails if `timeout` expires before the element appears.
+        Fails if ``timeout`` expires before the element appears.
 
-        `error` can be used to override the default error message.
+        ``error`` can be used to override the default error message.
 
         See `introduction` for details about locating elements."""
         self.wait_until_page_contains_element(locator, timeout, error)
@@ -200,11 +200,11 @@ class DesktopLibrary(AppiumLibrary):
 
     @keyword("Wait For And Long Press")
     def wait_for_and_long_press(self, locator, duration=10000, timeout=None, error=None):
-        """Wait for and long press the element identified by `locator` with optional duration.
+        """Wait for and long press the element identified by ``locator`` with optional duration.
 
-        Fails if `timeout` expires before the element appears.
+        Fails if ``timeout`` expires before the element appears.
 
-        `error` can be used to override the default error message.
+        ``error`` can be used to override the default error message.
 
         See `introduction` for details about locating elements."""
         self.wait_until_page_contains_element(locator, timeout, error)
@@ -212,11 +212,11 @@ class DesktopLibrary(AppiumLibrary):
 
     @keyword("Wait Until Element Contains")
     def wait_until_element_contains(self, locator, text, timeout=None, error=None):
-        """Waits until element specified with `locator` contains 'text'.
+        """Waits until element specified with ``locator`` contains ``text``.
 
-        Fails if `timeout` expires before the element appears.
+        Fails if ``timeout`` expires before the element appears.
 
-        `error` can be used to override the default error message.
+        ``error`` can be used to override the default error message.
 
         See also `Wait Until Page Contains`,
         `Wait Until Page Does Not Contain`
@@ -227,13 +227,13 @@ class DesktopLibrary(AppiumLibrary):
 
     @keyword("Wait Until Element Does Not Contain")
     def wait_until_element_does_not_contain(self, locator, text, timeout=None, error=None):
-        """Waits until element specified with `locator` does not contain 'text'.
+        """Waits until element specified with ``locator`` does not contain ``text``.
 
-        Fails if `timeout` expires before the element appears.
+        Fails if ``timeout`` expires before the element appears.
 
-        `error` can be used to override the default error message.
+        ``error`` can be used to override the default error message.
 
-        See also 'Wait Until Element Contains,
+        See also `Wait Until Element Contains`,
         `Wait Until Page Contains`,
         `Wait Until Page Does Not Contain`
         `Wait Until Page Does Not Contain Element`
@@ -243,33 +243,35 @@ class DesktopLibrary(AppiumLibrary):
 
     @keyword("Wait Until Element Is Enabled")
     def wait_until_element_is_enabled(self, locator, timeout=None, error=None):
-        """Waits until element specified with `locator` is enabled.
+        """Waits until element specified with ``locator`` is enabled.
 
-        Fails if `timeout` expires before the element appears.
+        Fails if ``timeout`` expires before the element appears.
 
-        `error` can be used to override the default error message.
+        ``error`` can be used to override the default error message.
 
-        See also 'Wait Until Element Is Disabled'
+        See also `Wait Until Element Is Disabled`
         """
         self.wait_until_page_contains_element(locator, timeout, error)
         self.element_should_be_enabled(locator)
 
     @keyword("Wait Until Element Is Disabled")
     def wait_until_element_is_disabled(self, locator, timeout=None, error=None):
-        """Waits until element specified with `locator` is disabled.
+        """Waits until element specified with ``locator`` is disabled.
 
-        Fails if `timeout` expires before the element appears.
+        Fails if ``timeout`` expires before the element appears.
 
-        `error` can be used to override the default error message.
+        ``error`` can be used to override the default error message.
 
-        See also 'Wait Until Element Is Disabled'
+        See also `Wait Until Element Is Disabled`
         """
         self.wait_until_page_contains_element(locator, timeout, error)
         self.element_should_be_disabled(locator)
 
     @keyword("Mouse Over Element")
     def mouse_over_element(self, locator):
-        """Moves the mouse over the given locator.
+        """Moves the mouse over the given ``locator``.
+
+        See also 'Mouse Over Text'
         """
         driver = self._current_application()
         element = self._element_find(locator, True, True)
@@ -279,14 +281,24 @@ class DesktopLibrary(AppiumLibrary):
 
     @keyword("Wait For And Mouse Over Element")
     def wait_for_and_mouse_over_element(self, locator, timeout=None, error=None):
-        """Waits for and moves the mouse over the given locator.
+        """Waits for and moves the mouse over the given ``locator``.
+
+        Fails if ``timeout`` expires before the element appears.
+
+        ``error`` can be used to override the default error message.
+
+        See also 'Wait For And Mouse Over Text'
         """
         self.wait_until_page_contains_element(locator, timeout, error)
         self.mouse_over_element(locator)
 
     @keyword("Mouse Over And Click Element")
     def mouse_over_and_click_element(self, locator, double_click=False):
-        """Moves the mouse over and clicks the given locator.
+        """Moves the mouse over and clicks the given ``locator``.
+
+        ``double_click`` can be used to click twice.
+
+        See also 'Mouse Over And Click Text'
         """
         driver = self._current_application()
         element = self._element_find(locator, True, True)
@@ -300,14 +312,24 @@ class DesktopLibrary(AppiumLibrary):
 
     @keyword("Wait For And Mouse Over And Click Element")
     def wait_for_and_mouse_over_and_click_element(self, locator, timeout=None, error=None, double_click=False):
-        """Waits for, moves the mouse over, and clicks the given locator.
+        """Waits for, moves the mouse over, and clicks the given ``locator``.
+
+        Fails if ``timeout`` expires before the element appears.
+
+        ``error`` can be used to override the default error message.
+
+        ``double_click`` can be used to click twice.
+
+        See also 'Wait For And Mouse Over And Click Text'
         """
         self.wait_until_page_contains_element(locator, timeout, error)
         self.mouse_over_and_click_element(locator, double_click)
 
     @keyword("Mouse Over Text")
     def mouse_over_text(self, text, exact_match=False):
-        """Moves the mouse over the given text.
+        """Moves the mouse over the given ``locator``.
+
+        See also 'Mouse Over Element'
         """
         driver = self._current_application()
         element = self._element_find_by_text(text, exact_match)
@@ -317,14 +339,24 @@ class DesktopLibrary(AppiumLibrary):
 
     @keyword("Wait For And Mouse Over Text")
     def wait_for_and_mouse_over_text(self, text, exact_match=False, timeout=None, error=None):
-        """Moves the mouse over the given text.
+        """Moves the mouse over the given ``locator``.
+
+        Fails if ``timeout`` expires before the element appears.
+
+        ``error`` can be used to override the default error message.
+
+        See also 'Wait For And Mouse Over Element'
         """
         self.wait_until_page_contains(text, timeout, error)
         self.mouse_over_text(text, exact_match)
 
     @keyword("Mouse Over And Click Text")
     def mouse_over_and_click_text(self, text, exact_match=False, double_click=False):
-        """Moves the mouse over  and clicks the given text.
+        """Moves the mouse over and clicks the given ``locator``.
+
+        ``double_click`` can be used to click twice.
+
+        See also 'Mouse Over And Click Element'
         """
         driver = self._current_application()
         element = self._element_find_by_text(text, exact_match)
@@ -339,10 +371,20 @@ class DesktopLibrary(AppiumLibrary):
     @keyword("Wait For And Mouse Over And Click Text")
     def wait_for_and_mouse_over_and_click_text(self, text, exact_match=False, timeout=None, error=None,
                                                double_click=False):
-        """Moves the mouse over the given text.
+        """Moves the mouse over the given ``locator``.
+
+        Fails if ``timeout`` expires before the element appears.
+
+        ``error`` can be used to override the default error message.
+
+        ``double_click`` can be used to click twice.
+
+        See also 'Wait For And Mouse Over And Click Element'
         """
         self.wait_until_page_contains(text, timeout, error)
         self.mouse_over_and_click_text(text, exact_match, double_click)
+
+    # Private
 
     def _element_find_by_text(self, text, exact_match=False):
         if exact_match:
