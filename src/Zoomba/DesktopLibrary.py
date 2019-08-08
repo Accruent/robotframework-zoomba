@@ -3,6 +3,7 @@ from appium import webdriver
 from robot.api.deco import keyword
 from robot.libraries.BuiltIn import BuiltIn
 import os
+from selenium.webdriver.common.action_chains import ActionChains
 
 zoomba = BuiltIn()
 
@@ -47,6 +48,9 @@ class DesktopLibrary(AppiumLibrary):
             'wait_for_and_click_text', 'wait_for_and_input_password', 'wait_for_and_input_text',
             'wait_for_and_long_press', 'wait_until_element_contains', 'wait_until_element_does_not_contain',
             'wait_until_element_is_enabled', 'wait_until_element_is_disabled', 'switch_application_by_name',
+            'mouse_over_element', 'wait_for_and_mouse_over_element', 'mouse_over_and_click_element',
+            'wait_for_and_mouse_over_and_click_element','mouse_over_text', 'wait_for_and_mouse_over_text',
+            'mouse_over_and_click_text', 'wait_for_and_mouse_over_and_click_text',
             # External Libraries
             'capture_page_screenshot', 'clear_text', 'click_a_point', 'click_button', 'click_element',
             'click_element_at_coordinates', 'click_text', 'close_all_applications', 'close_application',
@@ -263,16 +267,100 @@ class DesktopLibrary(AppiumLibrary):
         self.wait_until_page_contains_element(locator, timeout, error)
         self.element_should_be_disabled(locator)
 
-    # @keyword("Mouse Over Element")
-    # def mouse_over_element(self, locator, timeout=None, error=None):
-    #     """Waits until element specified with `locator` is disabled.
-    #
-    #     Fails if `timeout` expires before the element appears.
-    #
-    #     `error` can be used to override the default error message.
-    #
-    #     See also 'Wait Until Element Is Disabled'
-    #     """
-    #     location = webdriver.Remote.find_element_by_accessibility_id(locator)
-    #     webdriver.Remote.Mouse
+    @keyword("Mouse Over Element")
+    def mouse_over_element(self, locator):
+        """Moves the mouse over the given locator.
+        """
+        driver = self._current_application()
+        element = self._element_find(locator, True, True)
+        actions = ActionChains(driver)
+        actions.move_to_element(element)
+        actions.perform()
 
+    @keyword("Wait For And Mouse Over Element")
+    def wait_for_and_mouse_over_element(self, locator, timeout=None, error=None):
+        """Waits for and moves the mouse over the given locator.
+        """
+        self.wait_until_page_contains_element(locator, timeout, error)
+        self.mouse_over_element(locator)
+
+    @keyword("Mouse Over And Click Element")
+    def mouse_over_and_click_element(self, locator, double_click=False):
+        """Moves the mouse over and clicks the given locator.
+        """
+        driver = self._current_application()
+        element = self._element_find(locator, True, True)
+        actions = ActionChains(driver)
+        actions.move_to_element(element)
+        if double_click:
+            actions.double_click()
+        else:
+            actions.click()
+        actions.perform()
+
+    @keyword("Wait For And Mouse Over And Click Element")
+    def wait_for_and_mouse_over_and_click_element(self, locator, timeout=None, error=None, double_click=False):
+        """Waits for, moves the mouse over, and clicks the given locator.
+        """
+        self.wait_until_page_contains_element(locator, timeout, error)
+        self.mouse_over_and_click_element(locator, double_click)
+
+    @keyword("Mouse Over Text")
+    def mouse_over_text(self, text, exact_match=False):
+        """Moves the mouse over the given text.
+        """
+        self.mouse_over_element('name=' + text)
+        # driver = self._current_application()
+        # element = self._element_find_by_text(text, exact_match)
+        # actions = ActionChains(driver)
+        # print('before element move')
+        # actions.move_to_element(element)
+        # print('after element move')
+        # actions.perform()
+
+    @keyword("Wait For And Mouse Over Text")
+    def wait_for_and_mouse_over_text(self, text, exact_match=False, timeout=None, error=None):
+        """Moves the mouse over the given text.
+        """
+        self.wait_until_page_contains(text, timeout, error)
+        self.mouse_over_text(text, exact_match)
+
+    @keyword("Mouse Over And Click Text")
+    def mouse_over_and_click_text(self, text, exact_match=False, double_click=False):
+        """Moves the mouse over  and clicks the given text.
+        """
+        driver = self._current_application()
+        element = self._element_find_by_text(text, exact_match)
+        actions = ActionChains(driver)
+        actions.move_to_element(element)
+        if double_click:
+            actions.double_click()
+        else:
+            actions.click()
+        actions.perform()
+
+    @keyword("Wait For And Mouse Over And Click Text")
+    def wait_for_and_mouse_over_and_click_text(self, text, exact_match=False, timeout=None, error=None,
+                                               double_click=False):
+        """Moves the mouse over the given text.
+        """
+        self.wait_until_page_contains(text, timeout, error)
+        self.mouse_over_and_click_text(text, exact_match, double_click)
+
+    # def _element_find_by_text(self, text, exact_match=False):
+    #     # if self._get_platform() == 'ios':
+    #     #     element = self._element_find(text, True, False)
+    #     #     if element:
+    #     #         return element
+    #     #     else:
+    #     #         if exact_match:
+    #     #             _xpath = u'//*[@value="{}" or @label="{}"]'.format(text, text)
+    #     #         else:
+    #     #             _xpath = u'//*[contains(@label,"{}") or contains(@value, "{}")]'.format(text, text)
+    #     #         return self._element_find(_xpath, True, True)
+    #
+    #     if exact_match:
+    #         _xpath = u'//*[@{}="{}"]'.format('Name', text)
+    #     else:
+    #         _xpath = u'//*[contains(@{},"{}")]'.format('Name', text)
+    #     return self._element_find(_xpath, True, True)

@@ -4,6 +4,7 @@ import appium
 import os
 from unittest.mock import MagicMock
 from webdriverremotemock import WebdriverRemoteMock
+from selenium.webdriver.common.action_chains import ActionChains
 
 
 class TestInternal(unittest.TestCase):
@@ -98,3 +99,81 @@ class TestInternal(unittest.TestCase):
         appium.webdriver.Remote = WebdriverRemoteMock
         DesktopLibrary.open_application(mock_desk, 'remote_url')
         DesktopLibrary.wait_until_element_is_disabled(mock_desk, "some_locator", 'test_text')
+
+    def test_mouse_over_element(self):
+        mock_desk = MagicMock()
+        appium.webdriver.Remote = WebdriverRemoteMock
+        ActionChains.move_to_element = MagicMock(return_value=True)
+        DesktopLibrary.open_application(mock_desk, 'remote_url')
+        DesktopLibrary.mouse_over_element(mock_desk, "some_locator")
+
+    def test_mouse_over_and_click_element(self):
+        mock_desk = MagicMock()
+        appium.webdriver.Remote = WebdriverRemoteMock
+        ActionChains.move_to_element = MagicMock(return_value=True)
+        DesktopLibrary.open_application(mock_desk, 'remote_url')
+        DesktopLibrary.mouse_over_and_click_element(mock_desk, "some_locator")
+
+    def test_mouse_over_and_click_element_with_double_click(self):
+        mock_desk = MagicMock()
+        appium.webdriver.Remote = WebdriverRemoteMock
+        ActionChains.move_to_element = MagicMock(return_value=True)
+        DesktopLibrary.open_application(mock_desk, 'remote_url')
+        DesktopLibrary.mouse_over_and_click_element(mock_desk, "some_locator", True)
+
+    def test_wait_for_and_mouse_over_element(self):
+        mock_desk = MagicMock()
+        appium.webdriver.Remote = WebdriverRemoteMock
+        DesktopLibrary.open_application(mock_desk, 'remote_url')
+        DesktopLibrary.wait_for_and_mouse_over_element(mock_desk, "some_locator")
+
+    def test_wait_for_and_mouse_over_and_click_element(self):
+        mock_desk = MagicMock()
+        appium.webdriver.Remote = WebdriverRemoteMock
+        DesktopLibrary.open_application(mock_desk, 'remote_url')
+        DesktopLibrary.wait_for_and_mouse_over_and_click_element(mock_desk, "some_locator")
+
+    def test_wait_for_and_mouse_over_and_click_element_with_double_click(self):
+        mock_desk = MagicMock()
+        appium.webdriver.Remote = WebdriverRemoteMock
+        DesktopLibrary.open_application(mock_desk, 'remote_url')
+        DesktopLibrary.wait_for_and_mouse_over_and_click_element(mock_desk, "some_locator", True)
+
+    def test_mouse_over_text(self):
+        mock_desk = MagicMock()
+        appium.webdriver.Remote = WebdriverRemoteMock
+        ActionChains.move_to_element = MagicMock(return_value=True)
+        DesktopLibrary.open_application(mock_desk, 'remote_url')
+        DesktopLibrary.mouse_over_text(mock_desk, "some_text")
+
+    def test_mouse_over_and_click_text(self):
+        mock_desk = MagicMock()
+        appium.webdriver.Remote = WebdriverRemoteMock
+        ActionChains.move_to_element = MagicMock(return_value=True)
+        DesktopLibrary.open_application(mock_desk, 'remote_url')
+        DesktopLibrary.mouse_over_and_click_text(mock_desk, "some_text")
+
+    def test_mouse_over_and_click_text_with_double_click(self):
+        mock_desk = MagicMock()
+        appium.webdriver.Remote = WebdriverRemoteMock
+        ActionChains.move_to_element = MagicMock(return_value=True)
+        DesktopLibrary.open_application(mock_desk, 'remote_url')
+        DesktopLibrary.mouse_over_and_click_text(mock_desk, "some_text", True)
+
+    def test_wait_for_and_mouse_over_text(self):
+        mock_desk = MagicMock()
+        appium.webdriver.Remote = WebdriverRemoteMock
+        DesktopLibrary.open_application(mock_desk, 'remote_url')
+        DesktopLibrary.wait_for_and_mouse_over_text(mock_desk, "some_text")
+
+    def test_wait_for_and_mouse_over_and_click_text(self):
+        mock_desk = MagicMock()
+        appium.webdriver.Remote = WebdriverRemoteMock
+        DesktopLibrary.open_application(mock_desk, 'remote_url')
+        DesktopLibrary.wait_for_and_mouse_over_and_click_text(mock_desk, "some_text")
+
+    def test_wait_for_and_mouse_over_and_click_text_with_double_click(self):
+        mock_desk = MagicMock()
+        appium.webdriver.Remote = WebdriverRemoteMock
+        DesktopLibrary.open_application(mock_desk, 'remote_url')
+        DesktopLibrary.wait_for_and_mouse_over_and_click_text(mock_desk, "some_text", True)

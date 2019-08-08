@@ -3,8 +3,8 @@ Documentation   Zoomba Desktop Library Tests. Requires Appium Server running on 
 Library         ../../src/Zoomba/DesktopLibrary.py
 Suite Setup     Start App
 Test Setup      Launch Application
-Test Teardown   Quit Application
-Suite Teardown    Close All Applications
+#Test Teardown   Quit Application
+#Suite Teardown    Close All Applications
 
 *** Variables ***
 ${REMOTE_URL}           http://localhost:4723/wd/hub
@@ -17,36 +17,40 @@ Start App
     Quit Application
 
 *** Test Cases ***
-Wait For And Click Element By Id Keyword Test
-    Wait For And Click Element       accessibility_id=num2Button
-    Wait Until Page Contains      2
+#Wait For And Click Element By Id Keyword Test
+#    Wait For And Click Element       accessibility_id=num2Button
+#    Wait Until Page Contains      2
+#
+#Wait For And Click Element By Name Keyword Test
+#    Wait For And Click Element       name=Two
+#    Wait Until Page Contains      2
+#
+#Wait For And Click Element By Class Keyword Test
+#    Wait For And Click Element       class=Button
+#
+#Wait For And Input Text By Id Keyword Test
+#    Wait For And Input Text        accessibility_id=CalculatorResults       12345
+#    Wait Until Page Contains       12,345
+#
+#Wait For And Input Text By Name Keyword Test
+#    Wait For And Input Text        name=Display is 0       12345
+#    Wait Until Page Contains       12,345
+#
+#Wait For And Long Press Keyword Test
+#    Wait For And Long Press       accessibility_id=num2Button
+#    Wait Until Page Contains      2
+#
+#Wait For And Input Password Keyword Test
+#    Wait For And Input Password        accessibility_id=CalculatorResults       12345
+#    Wait Until Element Contains       accessibility_id=CalculatorResults      12,345
+#    Wait Until Element Does Not Contain   accessibility_id=CalculatorResults      0
+#
+#Wait Until Element is Enabled / Disabled Keyword Test
+#    Wait Until Element Is Enabled       accessibility_id=MemPlus
+#    Wait Until Element Is Disabled       accessibility_id=MemRecall
 
-Wait For And Click Element By Name Keyword Test
-    Wait For And Click Element       name=Two
-    Wait Until Page Contains      2
-
-Wait For And Click Element By Class Keyword Test
-    Wait For And Click Element       class=Button
-
-Wait For And Input Text By Id Keyword Test
-    Wait For And Input Text        accessibility_id=CalculatorResults       12345
-    Wait Until Page Contains       12,345
-
-Wait For And Input Text By Name Keyword Test
-    Wait For And Input Text        name=Display is 0       12345
-    Wait Until Page Contains       12,345
-
-Wait For And Long Press Keyword Test
-    Wait For And Long Press       accessibility_id=num2Button
-    Wait Until Page Contains      2
-
-Wait For And Input Password Keyword Test
-    Wait For And Input Password        accessibility_id=CalculatorResults       12345
-    Wait Until Element Contains       accessibility_id=CalculatorResults      12,345
-    Wait Until Element Does Not Contain   accessibility_id=CalculatorResults      0
-
-Wait Until Element is Enabled / Disabled Keyword Test
-    Wait Until Element Is Enabled       accessibility_id=MemPlus
-    Wait Until Element Is Disabled       accessibility_id=MemRecall
+Mouse Over Element/Text Keyword Test
+    Mouse Over Element     name=Two
+    Mouse Over Text      Memory    True
 
 
