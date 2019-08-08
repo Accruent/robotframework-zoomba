@@ -17,56 +17,56 @@ Start App
     Quit Application
 
 *** Test Cases ***
-#Wait For And Click Element By Id Keyword Test
-#    Wait For And Click Element       accessibility_id=num2Button
-#    Wait Until Page Contains      2
-#
-#Wait For And Click Element By Name Keyword Test
-#    Wait For And Click Element       name=Two
-#    Wait Until Page Contains      2
-#
-#Wait For And Click Element By Class Keyword Test
-#    Wait For And Click Element       class=Button
-#
-#Wait For And Input Text By Id Keyword Test
-#    Wait For And Input Text        accessibility_id=CalculatorResults       12345
-#    Wait Until Page Contains       12,345
-#
-#Wait For And Input Text By Name Keyword Test
-#    Wait For And Input Text        name=Display is 0       12345
-#    Wait Until Page Contains       12,345
-#
-#Wait For And Long Press Keyword Test
-#    Wait For And Long Press       accessibility_id=num2Button
-#    Wait Until Page Contains      2
-#
-#Wait For And Input Password Keyword Test
-#    Wait For And Input Password        accessibility_id=CalculatorResults       12345
-#    Wait Until Element Contains       accessibility_id=CalculatorResults      12,345
-#    Wait Until Element Does Not Contain   accessibility_id=CalculatorResults      0
-#
-#Wait Until Element is Enabled / Disabled Keyword Test
-#    Wait Until Element Is Enabled       accessibility_id=MemPlus
-#    Wait Until Element Is Disabled       accessibility_id=MemRecall
-#
-#Mouse Over Element/Text Keyword Test
-#    Mouse Over Element     name=Two
-#    Mouse Over Text      Memory
-#    Mouse Over Text      Memory    True
+Wait For And Click Element By Id Keyword Test
+    Wait For And Click Element       accessibility_id=num2Button
+    Wait Until Page Contains      2
 
-#Mouse Over And Click Element/Text Keyword Test
-#    Mouse Over And Click Element     name=Two
-#    Mouse Over And Click Text      Memory
-#    Mouse Over And Click Text      Memory    True
+Wait For And Click Element By Name Keyword Test
+    Wait For And Click Element       name=Two
+    Wait Until Page Contains      2
 
-#Mouse Over And Double Click Element/Text Keyword Test
-#    Mouse Over And Click Element     name=Two    double_click=True
-#    Mouse Over And Click Text      Memory    double_click=True
-#    Mouse Over And Click Text      Memory    True    True
+Wait For And Click Element By Class Keyword Test
+    Wait For And Click Element       class=Button
 
-#Wait For And Mouse Over And Click Element/Text Keyword Test
-#    Wait For And Mouse Over And Click Element     name=Two
-#    Wait For And Mouse Over And Click Text      Memory
-#    Wait For And Mouse Over And Click Text      Memory    True
+Wait For And Input Text By Id Keyword Test
+    Wait For And Input Text        accessibility_id=CalculatorResults       12345
+    Wait Until Page Contains       12,345
+
+Wait For And Input Text By Name Keyword Test
+    Wait For And Input Text        name=Display is 0       12345
+    Wait Until Page Contains       12,345
+
+Wait For And Long Press Keyword Test
+    Wait For And Long Press       accessibility_id=num2Button
+    Wait Until Page Contains      2
+
+Wait For And Input Password Keyword Test
+    Wait For And Input Password        accessibility_id=CalculatorResults       12345
+    Wait Until Element Contains       accessibility_id=CalculatorResults      12,345
+    Wait Until Element Does Not Contain   accessibility_id=CalculatorResults      0
+
+Wait Until Element is Enabled / Disabled Keyword Test
+    Wait Until Element Is Enabled       accessibility_id=MemPlus
+    Wait Until Element Is Disabled       accessibility_id=MemRecall
+
+Mouse Over Element/Text Keyword Test
+    Mouse Over Element     name=Two
+    Mouse Over Text      Memory
+    Mouse Over Text      Memory    True
+
+Mouse Over And Click Element/Text Keyword Test
+    Mouse Over And Click Element     name=Two
+    Mouse Over And Click Text      Memory
+    Mouse Over And Click Text      Memory    True
+
+Mouse Over And Double Click Element/Text Keyword Test
+    Mouse Over And Click Element     name=Two    double_click=True
+    Mouse Over And Click Text      Memory    double_click=True
+    Mouse Over And Click Text      Memory    True    True
+
+Wait For And Mouse Over And Click Element/Text Keyword Test
+    Wait For And Mouse Over And Click Element     name=Two
+    Wait For And Mouse Over And Click Text      Memory
+    Wait For And Mouse Over And Click Text      Memory    True
 
 
