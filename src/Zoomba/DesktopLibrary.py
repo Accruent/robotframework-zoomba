@@ -51,6 +51,7 @@ class DesktopLibrary(AppiumLibrary):
             'mouse_over_element', 'wait_for_and_mouse_over_element', 'mouse_over_and_click_element',
             'wait_for_and_mouse_over_and_click_element','mouse_over_text', 'wait_for_and_mouse_over_text',
             'mouse_over_and_click_text', 'wait_for_and_mouse_over_and_click_text',
+            'mouse_over_and_context_click_element', 'mouse_over_and_context_click_text',
             # External Libraries
             'capture_page_screenshot', 'clear_text', 'click_a_point', 'click_button', 'click_element',
             'click_element_at_coordinates', 'click_text', 'close_all_applications', 'close_application',
@@ -310,6 +311,19 @@ class DesktopLibrary(AppiumLibrary):
             actions.click()
         actions.perform()
 
+    @keyword("Mouse Over And Context Click Element")
+    def mouse_over_and_context_click_element(self, locator):
+        """Moves the mouse over and right-clicks the given ``locator``.
+
+        See also 'Mouse Over And Click Element'
+        """
+        driver = self._current_application()
+        element = self._element_find(locator, True, True)
+        actions = ActionChains(driver)
+        actions.move_to_element(element)
+        actions.context_click()
+        actions.perform()
+
     @keyword("Wait For And Mouse Over And Click Element")
     def wait_for_and_mouse_over_and_click_element(self, locator, timeout=None, error=None, double_click=False):
         """Waits for, moves the mouse over, and clicks the given ``locator``.
@@ -366,6 +380,19 @@ class DesktopLibrary(AppiumLibrary):
             actions.double_click()
         else:
             actions.click()
+        actions.perform()
+
+    @keyword("Mouse Over And Context Click Text")
+    def mouse_over_and_context_click_text(self, text, exact_match=False):
+        """Moves the mouse over and right-clicks the given ``locator``.
+
+        See also 'Mouse Over And Click Text'
+        """
+        driver = self._current_application()
+        element = self._element_find_by_text(text, exact_match)
+        actions = ActionChains(driver)
+        actions.move_to_element(element)
+        actions.context_click()
         actions.perform()
 
     @keyword("Wait For And Mouse Over And Click Text")
