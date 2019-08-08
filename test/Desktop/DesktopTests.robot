@@ -59,6 +59,11 @@ Mouse Over And Click Element/Text Keyword Test
     Mouse Over And Click Text      Memory
     Mouse Over And Click Text      Memory    True
 
+Mouse Over And Context Click Element/Text Keyword Test
+    Mouse Over And Context Click Element     name=Two
+    Mouse Over And Context Click Text      Memory
+    Mouse Over And Context Click Text      Memory    True
+
 Mouse Over And Double Click Element/Text Keyword Test
     Mouse Over And Click Element     name=Two    double_click=True
     Mouse Over And Click Text      Memory    double_click=True
