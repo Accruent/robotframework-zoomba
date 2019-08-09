@@ -49,12 +49,13 @@ class DesktopLibrary(AppiumLibrary):
             'wait_for_and_long_press', 'wait_until_element_contains', 'wait_until_element_does_not_contain',
             'wait_until_element_is_enabled', 'wait_until_element_is_disabled', 'switch_application_by_name',
             'mouse_over_element', 'wait_for_and_mouse_over_element', 'mouse_over_and_click_element',
-            'wait_for_and_mouse_over_and_click_element','mouse_over_text', 'wait_for_and_mouse_over_text',
+            'wait_for_and_mouse_over_and_click_element', 'mouse_over_text', 'wait_for_and_mouse_over_text',
             'mouse_over_and_click_text', 'wait_for_and_mouse_over_and_click_text',
-            'mouse_over_and_context_click_element', 'mouse_over_and_context_click_text',
+            'mouse_over_and_context_click_element', 'mouse_over_and_context_click_text', 'mouse_over_point',
+            'mouse_over_and_click_point', 'mouse_over_and_context_click_point',
             # External Libraries
-            'capture_page_screenshot', 'clear_text', 'click_a_point', 'click_button', 'click_element',
-            'click_element_at_coordinates', 'click_text', 'close_all_applications', 'close_application',
+            'capture_page_screenshot', 'clear_text', 'click_button', 'click_element',
+            'click_text', 'close_all_applications', 'close_application',
             'element_attribute_should_match', 'element_should_be_disabled', "element_should_be_enabled",
             'element_should_be_visible', 'element_should_contain_text', 'element_should_not_contain_text',
             'element_text_should_be', 'get_appium_sessionId', 'get_appium_timeout', 'get_capability',
@@ -157,7 +158,9 @@ class DesktopLibrary(AppiumLibrary):
 
         ``error`` can be used to override the default error message.
 
-        See `introduction` for details about locating elements."""
+        See `introduction` for details about locating elements.
+        
+        Use `Wait For And Mouse Over And Click Element` if this keyword gives issues in the application."""
         self.wait_until_page_contains_element(locator, timeout, error)
         self.click_element(locator)
 
@@ -170,7 +173,9 @@ class DesktopLibrary(AppiumLibrary):
         ``error`` can be used to override the default error message.
 
         By default tries to click first text involves given ``text``, if you would
-        like to click exactly matching text, then set ``exact_match`` to `True`."""
+        like to click exactly matching text, then set ``exact_match`` to `True`.
+        
+        Use `Wait For And Mouse Over And Click Text` if this keyword gives issues in the application."""
         self.wait_until_page_contains(text, timeout, error)
         self.click_text(text, exact_match)
 
@@ -398,7 +403,7 @@ class DesktopLibrary(AppiumLibrary):
     @keyword("Wait For And Mouse Over And Click Text")
     def wait_for_and_mouse_over_and_click_text(self, text, exact_match=False, timeout=None, error=None,
                                                double_click=False):
-        """Moves the mouse over the given ``locator``.
+        """Waits for, moves the mouse over, and clicks the given ``locator``.
 
         Fails if ``timeout`` expires before the element appears.
 
@@ -410,6 +415,49 @@ class DesktopLibrary(AppiumLibrary):
         """
         self.wait_until_page_contains(text, timeout, error)
         self.mouse_over_and_click_text(text, exact_match, double_click)
+
+    @keyword("Mouse Over Point")
+    def mouse_over_point(self, locator, x, y):
+        """Moves the mouse over the given coordinates.
+
+        ``locator`` is used as the starting point and then ``x`` and ``y`` are used as an offset.
+        """
+        driver = self._current_application()
+        element = self._element_find(locator, True, True)
+        actions = ActionChains(driver)
+        actions.move_to_element_with_offset(element, x, y)
+        actions.perform()
+
+    @keyword("Mouse Over And Click Point")
+    def mouse_over_and_click_point(self, locator, x, y, double_click=False):
+        """Moves the mouse over and clicks the given point.
+
+        ``locator`` is used as the starting point and then ``x`` and ``y`` are used as an offset.
+        
+        ``double_click`` can be used to click twice.
+        """
+        driver = self._current_application()
+        element = self._element_find(locator, True, True)
+        actions = ActionChains(driver)
+        actions.move_to_element_with_offset(element, x, y)
+        if double_click:
+            actions.double_click()
+        else:
+            actions.click()
+        actions.perform()
+        
+    @keyword("Mouse Over And Context Click Point")
+    def mouse_over_and_context_click_point(self, locator, x, y):
+        """Moves the mouse over and right-clicks the given point.
+
+        ``locator`` is used as the starting point and then ``x`` and ``y`` are used as an offset.
+        """
+        driver = self._current_application()
+        element = self._element_find(locator, True, True)
+        actions = ActionChains(driver)
+        actions.move_to_element_with_offset(element, x, y)
+        actions.context_click()
+        actions.perform()
 
     # Private
 
