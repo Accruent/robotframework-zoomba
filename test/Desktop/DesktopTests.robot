@@ -53,9 +53,10 @@ Mouse Over Element/Text Keyword Test
     Mouse Over Element     name=Two
     Mouse Over Text      Memory
     Mouse Over Text      Memory    True
-
+#
 Mouse Over And Click Element/Text Keyword Test
     Mouse Over And Click Element     name=Two
+    Mouse Over And Click Element     name=Two     x_offset=400   y_offset=100
     Mouse Over And Click Text      Memory
     Mouse Over And Click Text      Memory    True
 
@@ -74,14 +75,10 @@ Wait For And Mouse Over And Click Element/Text Keyword Test
     Wait For And Mouse Over And Click Text      Memory
     Wait For And Mouse Over And Click Text      Memory    True
 
-Mouse Over Point Keyword Test
-    Mouse Over Point   name=Two   400   100
+#Click A Point Keyword Test
+#    Click A Point
+##    Click A Point     100    200
+##    Click A Point     double_click=True
 
-Mouse Over And Click Point Keyword Test
-    Mouse Over And Click Point   name=Two   400   100
-    Mouse Over And Context Click Point   name=Two   400   100
-
-Mouse Over And Double Click Point Keyword Test
-    Mouse Over And Click Point   name=Two   400   100   double_click=True
 
 

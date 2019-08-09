@@ -103,28 +103,49 @@ class TestInternal(unittest.TestCase):
     def test_mouse_over_element(self):
         mock_desk = MagicMock()
         webdriver.Remote = WebdriverRemoteMock
-        ActionChains.move_to_element = MagicMock(return_value=True)
+        ActionChains.move_to_element_with_offset = MagicMock(return_value=True)
         DesktopLibrary.open_application(mock_desk, 'remote_url')
         DesktopLibrary.mouse_over_element(mock_desk, "some_locator")
+
+    def test_mouse_over_element_with_offset(self):
+        mock_desk = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        ActionChains.move_to_element_with_offset = MagicMock(return_value=True)
+        DesktopLibrary.open_application(mock_desk, 'remote_url')
+        DesktopLibrary.mouse_over_element(mock_desk, "some_locator", x_offset=100, y_offset=100)
 
     def test_mouse_over_and_click_element(self):
         mock_desk = MagicMock()
         webdriver.Remote = WebdriverRemoteMock
-        ActionChains.move_to_element = MagicMock(return_value=True)
+        ActionChains.move_to_element_with_offset = MagicMock(return_value=True)
         DesktopLibrary.open_application(mock_desk, 'remote_url')
         DesktopLibrary.mouse_over_and_click_element(mock_desk, "some_locator")
+
+    def test_mouse_over_and_click_element_with_offset(self):
+        mock_desk = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        ActionChains.move_to_element_with_offset = MagicMock(return_value=True)
+        DesktopLibrary.open_application(mock_desk, 'remote_url')
+        DesktopLibrary.mouse_over_and_click_element(mock_desk, "some_locator", x_offset=100, y_offset=100)
 
     def test_mouse_over_and_context_click_element(self):
         mock_desk = MagicMock()
         webdriver.Remote = WebdriverRemoteMock
-        ActionChains.move_to_element = MagicMock(return_value=True)
+        ActionChains.move_to_element_with_offset = MagicMock(return_value=True)
         DesktopLibrary.open_application(mock_desk, 'remote_url')
         DesktopLibrary.mouse_over_and_context_click_element(mock_desk, "some_locator")
+
+    def test_mouse_over_and_context_click_element_with_offset(self):
+        mock_desk = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        ActionChains.move_to_element_with_offset = MagicMock(return_value=True)
+        DesktopLibrary.open_application(mock_desk, 'remote_url')
+        DesktopLibrary.mouse_over_and_context_click_element(mock_desk, "some_locator", x_offset=100, y_offset=100)
 
     def test_mouse_over_and_click_element_with_double_click(self):
         mock_desk = MagicMock()
         webdriver.Remote = WebdriverRemoteMock
-        ActionChains.move_to_element = MagicMock(return_value=True)
+        ActionChains.move_to_element_with_offset = MagicMock(return_value=True)
         DesktopLibrary.open_application(mock_desk, 'remote_url')
         DesktopLibrary.mouse_over_and_click_element(mock_desk, "some_locator", True)
 
@@ -134,11 +155,23 @@ class TestInternal(unittest.TestCase):
         DesktopLibrary.open_application(mock_desk, 'remote_url')
         DesktopLibrary.wait_for_and_mouse_over_element(mock_desk, "some_locator")
 
+    def test_wait_for_and_mouse_over_element_with_offset(self):
+        mock_desk = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        DesktopLibrary.open_application(mock_desk, 'remote_url')
+        DesktopLibrary.wait_for_and_mouse_over_element(mock_desk, "some_locator", x_offset=100, y_offset=100)
+
     def test_wait_for_and_mouse_over_and_click_element(self):
         mock_desk = MagicMock()
         webdriver.Remote = WebdriverRemoteMock
         DesktopLibrary.open_application(mock_desk, 'remote_url')
         DesktopLibrary.wait_for_and_mouse_over_and_click_element(mock_desk, "some_locator")
+
+    def test_wait_for_and_mouse_over_and_click_element_with_offset(self):
+        mock_desk = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        DesktopLibrary.open_application(mock_desk, 'remote_url')
+        DesktopLibrary.wait_for_and_mouse_over_and_click_element(mock_desk, "some_locator", x_offset=100, y_offset=100)
 
     def test_wait_for_and_mouse_over_and_click_element_with_double_click(self):
         mock_desk = MagicMock()
@@ -149,28 +182,49 @@ class TestInternal(unittest.TestCase):
     def test_mouse_over_text(self):
         mock_desk = MagicMock()
         webdriver.Remote = WebdriverRemoteMock
-        ActionChains.move_to_element = MagicMock(return_value=True)
+        ActionChains.move_to_element_with_offset = MagicMock(return_value=True)
         DesktopLibrary.open_application(mock_desk, 'remote_url')
         DesktopLibrary.mouse_over_text(mock_desk, "some_text")
+
+    def test_mouse_over_text_with_offset(self):
+        mock_desk = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        ActionChains.move_to_element_with_offset = MagicMock(return_value=True)
+        DesktopLibrary.open_application(mock_desk, 'remote_url')
+        DesktopLibrary.mouse_over_text(mock_desk, "some_text", True, x_offset=100, y_offset=100)
 
     def test_mouse_over_and_click_text(self):
         mock_desk = MagicMock()
         webdriver.Remote = WebdriverRemoteMock
-        ActionChains.move_to_element = MagicMock(return_value=True)
+        ActionChains.move_to_element_with_offset = MagicMock(return_value=True)
         DesktopLibrary.open_application(mock_desk, 'remote_url')
         DesktopLibrary.mouse_over_and_click_text(mock_desk, "some_text")
+
+    def test_mouse_over_and_click_text_with_offset(self):
+        mock_desk = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        ActionChains.move_to_element_with_offset = MagicMock(return_value=True)
+        DesktopLibrary.open_application(mock_desk, 'remote_url')
+        DesktopLibrary.mouse_over_and_click_text(mock_desk, "some_text", x_offset=100, y_offset=100)
 
     def test_mouse_over_and_context_click_text(self):
         mock_desk = MagicMock()
         webdriver.Remote = WebdriverRemoteMock
-        ActionChains.move_to_element = MagicMock(return_value=True)
+        ActionChains.move_to_element_with_offset = MagicMock(return_value=True)
         DesktopLibrary.open_application(mock_desk, 'remote_url')
         DesktopLibrary.mouse_over_and_context_click_text(mock_desk, "some_text")
+
+    def test_mouse_over_and_context_click_text_with_offset(self):
+        mock_desk = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        ActionChains.move_to_element_with_offset = MagicMock(return_value=True)
+        DesktopLibrary.open_application(mock_desk, 'remote_url')
+        DesktopLibrary.mouse_over_and_context_click_text(mock_desk, "some_text", x_offset=100, y_offset=100)
 
     def test_mouse_over_and_click_text_with_double_click(self):
         mock_desk = MagicMock()
         webdriver.Remote = WebdriverRemoteMock
-        ActionChains.move_to_element = MagicMock(return_value=True)
+        ActionChains.move_to_element_with_offset = MagicMock(return_value=True)
         DesktopLibrary.open_application(mock_desk, 'remote_url')
         DesktopLibrary.mouse_over_and_click_text(mock_desk, "some_text", True, double_click=True)
 
@@ -180,11 +234,23 @@ class TestInternal(unittest.TestCase):
         DesktopLibrary.open_application(mock_desk, 'remote_url')
         DesktopLibrary.wait_for_and_mouse_over_text(mock_desk, "some_text")
 
+    def test_wait_for_and_mouse_over_text_with_offset(self):
+        mock_desk = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        DesktopLibrary.open_application(mock_desk, 'remote_url')
+        DesktopLibrary.wait_for_and_mouse_over_text(mock_desk, "some_text", x_offset=100, y_offset=100)
+
     def test_wait_for_and_mouse_over_and_click_text(self):
         mock_desk = MagicMock()
         webdriver.Remote = WebdriverRemoteMock
         DesktopLibrary.open_application(mock_desk, 'remote_url')
         DesktopLibrary.wait_for_and_mouse_over_and_click_text(mock_desk, "some_text")
+
+    def test_wait_for_and_mouse_over_and_click_text_with_offset(self):
+        mock_desk = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        DesktopLibrary.open_application(mock_desk, 'remote_url')
+        DesktopLibrary.wait_for_and_mouse_over_and_click_text(mock_desk, "some_text", x_offset=100, y_offset=100)
 
     def test_wait_for_and_mouse_over_and_click_text_with_double_click(self):
         mock_desk = MagicMock()
@@ -204,30 +270,41 @@ class TestInternal(unittest.TestCase):
         DesktopLibrary.open_application(mock_desk, 'remote_url')
         DesktopLibrary._element_find_by_text(mock_desk, "some_text", True)
 
-    def test_mouse_over_point(self):
+    def test_mouse_over_by_offset(self):
         mock_desk = MagicMock()
         webdriver.Remote = WebdriverRemoteMock
         ActionChains.move_to_element_with_offset = MagicMock(return_value=True)
         DesktopLibrary.open_application(mock_desk, 'remote_url')
-        DesktopLibrary.mouse_over_point(mock_desk, "some_locator", 100, 100)
+        DesktopLibrary.mouse_over_by_offset(mock_desk, 100, 100)
 
-    def test_mouse_over_and_click_point(self):
+    def test_click_a_point(self):
         mock_desk = MagicMock()
         webdriver.Remote = WebdriverRemoteMock
-        ActionChains.move_to_element_with_offset = MagicMock(return_value=True)
         DesktopLibrary.open_application(mock_desk, 'remote_url')
-        DesktopLibrary.mouse_over_and_click_point(mock_desk, "some_locator", 100, 100)
+        DesktopLibrary.click_a_point(mock_desk)
 
-    def test_mouse_over_and_context_click_point(self):
+    def test_click_a_point_with_offset(self):
         mock_desk = MagicMock()
         webdriver.Remote = WebdriverRemoteMock
-        ActionChains.move_to_element_with_offset = MagicMock(return_value=True)
+        ActionChains.move_by_offset = MagicMock(return_value=True)
         DesktopLibrary.open_application(mock_desk, 'remote_url')
-        DesktopLibrary.mouse_over_and_context_click_point(mock_desk, "some_locator", 100, 100)
+        DesktopLibrary.click_a_point(mock_desk, 100, 100)
 
-    def test_mouse_over_and_click_text_with_double_point(self):
-        mock_desk = MagicMock()
-        webdriver.Remote = WebdriverRemoteMock
-        ActionChains.move_to_element_with_offset = MagicMock(return_value=True)
-        DesktopLibrary.open_application(mock_desk, 'remote_url')
-        DesktopLibrary.mouse_over_and_click_point(mock_desk, "some_locator", 100, 100, double_click=True)
+    # def test_click_a_point_with_double_click(self):
+    #     mock_desk = MagicMock()
+    #     webdriver.Remote = WebdriverRemoteMock
+    #     DesktopLibrary.open_application(mock_desk, 'remote_url')
+    #     DesktopLibrary.click_a_point(mock_desk, double_click=True)
+    #
+    # def test_context_click_a_point(self):
+    #     mock_desk = MagicMock()
+    #     webdriver.Remote = WebdriverRemoteMock
+    #     DesktopLibrary.open_application(mock_desk, 'remote_url')
+    #     DesktopLibrary.context_click_a_point(mock_desk)
+    #
+    # def test_context_click_a_point_with_offset(self):
+    #     mock_desk = MagicMock()
+    #     webdriver.Remote = WebdriverRemoteMock
+    #     ActionChains.move_by_offset = MagicMock(return_value=True)
+    #     DesktopLibrary.open_application(mock_desk, 'remote_url')
+    #     DesktopLibrary.context_click_a_point(mock_desk, -400, -400)

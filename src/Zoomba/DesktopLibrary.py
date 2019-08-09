@@ -51,8 +51,7 @@ class DesktopLibrary(AppiumLibrary):
             'mouse_over_element', 'wait_for_and_mouse_over_element', 'mouse_over_and_click_element',
             'wait_for_and_mouse_over_and_click_element', 'mouse_over_text', 'wait_for_and_mouse_over_text',
             'mouse_over_and_click_text', 'wait_for_and_mouse_over_and_click_text',
-            'mouse_over_and_context_click_element', 'mouse_over_and_context_click_text', 'mouse_over_point',
-            'mouse_over_and_click_point', 'mouse_over_and_context_click_point',
+            'mouse_over_and_context_click_element', 'mouse_over_and_context_click_text', 'mouse_over_by_offset',
             # External Libraries
             'capture_page_screenshot', 'clear_text', 'click_button', 'click_element',
             'click_text', 'close_all_applications', 'close_application',
@@ -274,42 +273,46 @@ class DesktopLibrary(AppiumLibrary):
         self.element_should_be_disabled(locator)
 
     @keyword("Mouse Over Element")
-    def mouse_over_element(self, locator):
+    def mouse_over_element(self, locator, x_offset=0, y_offset=0):
         """Moves the mouse over the given ``locator``.
+
+        ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
 
         See also 'Mouse Over Text'
         """
         driver = self._current_application()
         element = self._element_find(locator, True, True)
         actions = ActionChains(driver)
-        actions.move_to_element(element)
+        self._move_to_element(actions, element, x_offset, y_offset)
         actions.perform()
 
     @keyword("Wait For And Mouse Over Element")
-    def wait_for_and_mouse_over_element(self, locator, timeout=None, error=None):
+    def wait_for_and_mouse_over_element(self, locator, timeout=None, error=None, x_offset=0, y_offset=0):
         """Waits for and moves the mouse over the given ``locator``.
 
         Fails if ``timeout`` expires before the element appears.
 
         ``error`` can be used to override the default error message.
+        ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
 
         See also 'Wait For And Mouse Over Text'
         """
         self.wait_until_page_contains_element(locator, timeout, error)
-        self.mouse_over_element(locator)
+        self.mouse_over_element(locator, x_offset, y_offset)
 
     @keyword("Mouse Over And Click Element")
-    def mouse_over_and_click_element(self, locator, double_click=False):
+    def mouse_over_and_click_element(self, locator, double_click=False, x_offset=0, y_offset=0):
         """Moves the mouse over and clicks the given ``locator``.
 
         ``double_click`` can be used to click twice.
+        ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
 
         See also 'Mouse Over And Click Text'
         """
         driver = self._current_application()
         element = self._element_find(locator, True, True)
         actions = ActionChains(driver)
-        actions.move_to_element(element)
+        self._move_to_element(actions, element, x_offset, y_offset)
         if double_click:
             actions.double_click()
         else:
@@ -317,70 +320,77 @@ class DesktopLibrary(AppiumLibrary):
         actions.perform()
 
     @keyword("Mouse Over And Context Click Element")
-    def mouse_over_and_context_click_element(self, locator):
+    def mouse_over_and_context_click_element(self, locator, x_offset=0, y_offset=0):
         """Moves the mouse over and right-clicks the given ``locator``.
+
+        ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
 
         See also 'Mouse Over And Click Element'
         """
         driver = self._current_application()
         element = self._element_find(locator, True, True)
         actions = ActionChains(driver)
-        actions.move_to_element(element)
+        self._move_to_element(actions, element, x_offset, y_offset)
         actions.context_click()
         actions.perform()
 
     @keyword("Wait For And Mouse Over And Click Element")
-    def wait_for_and_mouse_over_and_click_element(self, locator, timeout=None, error=None, double_click=False):
+    def wait_for_and_mouse_over_and_click_element(self, locator, timeout=None, error=None, double_click=False,
+                                                  x_offset=0, y_offset=0):
         """Waits for, moves the mouse over, and clicks the given ``locator``.
 
         Fails if ``timeout`` expires before the element appears.
 
         ``error`` can be used to override the default error message.
-
         ``double_click`` can be used to click twice.
+        ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
 
         See also 'Wait For And Mouse Over And Click Text'
         """
         self.wait_until_page_contains_element(locator, timeout, error)
-        self.mouse_over_and_click_element(locator, double_click)
+        self.mouse_over_and_click_element(locator, double_click, x_offset, y_offset)
 
     @keyword("Mouse Over Text")
-    def mouse_over_text(self, text, exact_match=False):
+    def mouse_over_text(self, text, exact_match=False, x_offset=0, y_offset=0):
         """Moves the mouse over the given ``locator``.
+
+        ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
 
         See also 'Mouse Over Element'
         """
         driver = self._current_application()
         element = self._element_find_by_text(text, exact_match)
         actions = ActionChains(driver)
-        actions.move_to_element(element)
+        self._move_to_element(actions, element, x_offset, y_offset)
         actions.perform()
 
     @keyword("Wait For And Mouse Over Text")
-    def wait_for_and_mouse_over_text(self, text, exact_match=False, timeout=None, error=None):
+    def wait_for_and_mouse_over_text(self, text, exact_match=False, timeout=None, error=None, x_offset=0, y_offset=0):
         """Moves the mouse over the given ``locator``.
 
         Fails if ``timeout`` expires before the element appears.
 
         ``error`` can be used to override the default error message.
+        ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
 
         See also 'Wait For And Mouse Over Element'
         """
         self.wait_until_page_contains(text, timeout, error)
-        self.mouse_over_text(text, exact_match)
+        self.mouse_over_text(text, exact_match, x_offset, y_offset)
 
     @keyword("Mouse Over And Click Text")
-    def mouse_over_and_click_text(self, text, exact_match=False, double_click=False):
+    def mouse_over_and_click_text(self, text, exact_match=False, double_click=False, x_offset=0, y_offset=0):
         """Moves the mouse over and clicks the given ``locator``.
 
         ``double_click`` can be used to click twice.
+        ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
 
         See also 'Mouse Over And Click Element'
         """
         driver = self._current_application()
         element = self._element_find_by_text(text, exact_match)
         actions = ActionChains(driver)
-        actions.move_to_element(element)
+        self._move_to_element(actions, element, x_offset, y_offset)
         if double_click:
             actions.double_click()
         else:
@@ -388,76 +398,79 @@ class DesktopLibrary(AppiumLibrary):
         actions.perform()
 
     @keyword("Mouse Over And Context Click Text")
-    def mouse_over_and_context_click_text(self, text, exact_match=False):
+    def mouse_over_and_context_click_text(self, text, exact_match=False, x_offset=0, y_offset=0):
         """Moves the mouse over and right-clicks the given ``locator``.
+
+        ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
 
         See also 'Mouse Over And Click Text'
         """
         driver = self._current_application()
         element = self._element_find_by_text(text, exact_match)
         actions = ActionChains(driver)
-        actions.move_to_element(element)
+        self._move_to_element(actions, element, x_offset, y_offset)
         actions.context_click()
         actions.perform()
 
     @keyword("Wait For And Mouse Over And Click Text")
     def wait_for_and_mouse_over_and_click_text(self, text, exact_match=False, timeout=None, error=None,
-                                               double_click=False):
+                                               double_click=False, x_offset=0, y_offset=0):
         """Waits for, moves the mouse over, and clicks the given ``locator``.
 
         Fails if ``timeout`` expires before the element appears.
 
         ``error`` can be used to override the default error message.
-
         ``double_click`` can be used to click twice.
+        ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
 
         See also 'Wait For And Mouse Over And Click Element'
         """
         self.wait_until_page_contains(text, timeout, error)
-        self.mouse_over_and_click_text(text, exact_match, double_click)
+        self.mouse_over_and_click_text(text, exact_match, double_click, x_offset, y_offset)
 
-    @keyword("Mouse Over Point")
-    def mouse_over_point(self, locator, x, y):
-        """Moves the mouse over the given coordinates.
-
-        ``locator`` is used as the starting point and then ``x`` and ``y`` are used as an offset.
+    @keyword("Mouse Over By Offset")
+    def mouse_over_by_offset(self, x_offset=0, y_offset=0):
+        """Moves the mouse from its current location by the given ``x_offset`` and ``y_offset``.
         """
         driver = self._current_application()
-        element = self._element_find(locator, True, True)
         actions = ActionChains(driver)
-        actions.move_to_element_with_offset(element, x, y)
+        actions.move_by_offset(x_offset, y_offset)
         actions.perform()
 
-    @keyword("Mouse Over And Click Point")
-    def mouse_over_and_click_point(self, locator, x, y, double_click=False):
-        """Moves the mouse over and clicks the given point.
+# TODO: Need to see if I can get this to move to a specified point or not
+    # @keyword("Click A Point")
+    # def click_a_point(self, x=0, y=0, double_click=False):
+    #     """Clicks the current mouse location.
+    #
+    #     ``x`` and ``y`` can be applied to give an offset.
+    #
+    #     ``double_click`` can be used to click twice.
+    #     """
+    #     driver = self._current_application()
+    #     # print(self.get_window_height())
+    #     # print(self.get_window_width())
+    #     actions = ActionChains(driver)
+    #     if x != 0 or y != 0:
+    #         actions.
+    #         actions.move_by_offset(x, y)
+    #     if double_click:
+    #         actions.double_click()
+    #     else:
+    #         actions.click()
+    #     actions.perform()
 
-        ``locator`` is used as the starting point and then ``x`` and ``y`` are used as an offset.
-        
-        ``double_click`` can be used to click twice.
-        """
-        driver = self._current_application()
-        element = self._element_find(locator, True, True)
-        actions = ActionChains(driver)
-        actions.move_to_element_with_offset(element, x, y)
-        if double_click:
-            actions.double_click()
-        else:
-            actions.click()
-        actions.perform()
-        
-    @keyword("Mouse Over And Context Click Point")
-    def mouse_over_and_context_click_point(self, locator, x, y):
-        """Moves the mouse over and right-clicks the given point.
-
-        ``locator`` is used as the starting point and then ``x`` and ``y`` are used as an offset.
-        """
-        driver = self._current_application()
-        element = self._element_find(locator, True, True)
-        actions = ActionChains(driver)
-        actions.move_to_element_with_offset(element, x, y)
-        actions.context_click()
-        actions.perform()
+    # @keyword("Context Click A Point")
+    # def context_click_a_point(self, x=0, y=0):
+    #     """Right-clicks the current mouse location.
+    #
+    #     ``x`` and ``y`` can be applied to give an offset.
+    #     """
+    #     driver = self._current_application()
+    #     actions = ActionChains(driver)
+    #     if x != 0 or y != 0:
+    #         actions.move_by_offset(x, y)
+    #     actions.context_click()
+    #     actions.perform()
 
     # Private
 
@@ -467,3 +480,10 @@ class DesktopLibrary(AppiumLibrary):
         else:
             _xpath = u'//*[contains(@{},"{}")]'.format('Name', text)
         return self._element_find(_xpath, True, True)
+
+    @staticmethod
+    def _move_to_element(actions, element, x_offset, y_offset):
+        if x_offset != 0 or y_offset != 0:
+            actions.move_to_element_with_offset(element, x_offset, y_offset)
+        else:
+            actions.move_to_element(element)
