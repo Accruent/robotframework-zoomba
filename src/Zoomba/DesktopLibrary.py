@@ -278,7 +278,7 @@ class DesktopLibrary(AppiumLibrary):
 
         ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
 
-        See also 'Mouse Over Text'
+        See also `Mouse Over Text`
         """
         driver = self._current_application()
         element = self._element_find(locator, True, True)
@@ -295,7 +295,7 @@ class DesktopLibrary(AppiumLibrary):
         ``error`` can be used to override the default error message.
         ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
 
-        See also 'Wait For And Mouse Over Text'
+        See also `Wait For And Mouse Over Text`
         """
         self.wait_until_page_contains_element(locator, timeout, error)
         self.mouse_over_element(locator, x_offset, y_offset)
@@ -307,7 +307,7 @@ class DesktopLibrary(AppiumLibrary):
         ``double_click`` can be used to click twice.
         ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
 
-        See also 'Mouse Over And Click Text'
+        See also `Mouse Over And Click Text`
         """
         driver = self._current_application()
         element = self._element_find(locator, True, True)
@@ -325,7 +325,7 @@ class DesktopLibrary(AppiumLibrary):
 
         ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
 
-        See also 'Mouse Over And Click Element'
+        See also `Mouse Over And Click Element`
         """
         driver = self._current_application()
         element = self._element_find(locator, True, True)
@@ -345,7 +345,7 @@ class DesktopLibrary(AppiumLibrary):
         ``double_click`` can be used to click twice.
         ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
 
-        See also 'Wait For And Mouse Over And Click Text'
+        See also `Wait For And Mouse Over And Click Text`
         """
         self.wait_until_page_contains_element(locator, timeout, error)
         self.mouse_over_and_click_element(locator, double_click, x_offset, y_offset)
@@ -356,7 +356,7 @@ class DesktopLibrary(AppiumLibrary):
 
         ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
 
-        See also 'Mouse Over Element'
+        See also `Mouse Over Element`
         """
         driver = self._current_application()
         element = self._element_find_by_text(text, exact_match)
@@ -373,7 +373,7 @@ class DesktopLibrary(AppiumLibrary):
         ``error`` can be used to override the default error message.
         ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
 
-        See also 'Wait For And Mouse Over Element'
+        See also `Wait For And Mouse Over Element`
         """
         self.wait_until_page_contains(text, timeout, error)
         self.mouse_over_text(text, exact_match, x_offset, y_offset)
@@ -385,7 +385,7 @@ class DesktopLibrary(AppiumLibrary):
         ``double_click`` can be used to click twice.
         ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
 
-        See also 'Mouse Over And Click Element'
+        See also `Mouse Over And Click Element`
         """
         driver = self._current_application()
         element = self._element_find_by_text(text, exact_match)
@@ -403,7 +403,7 @@ class DesktopLibrary(AppiumLibrary):
 
         ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
 
-        See also 'Mouse Over And Click Text'
+        See also `Mouse Over And Click Text`
         """
         driver = self._current_application()
         element = self._element_find_by_text(text, exact_match)
@@ -423,7 +423,7 @@ class DesktopLibrary(AppiumLibrary):
         ``double_click`` can be used to click twice.
         ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
 
-        See also 'Wait For And Mouse Over And Click Element'
+        See also `Wait For And Mouse Over And Click Element`
         """
         self.wait_until_page_contains(text, timeout, error)
         self.mouse_over_and_click_text(text, exact_match, double_click, x_offset, y_offset)

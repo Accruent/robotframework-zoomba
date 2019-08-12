@@ -290,6 +290,14 @@ class TestInternal(unittest.TestCase):
         DesktopLibrary.open_application(mock_desk, 'remote_url')
         DesktopLibrary.click_a_point(mock_desk, 100, 100)
 
+    def test_move_to_element(self):
+        actions = MagicMock()
+        DesktopLibrary._move_to_element(actions, "some_element", 0, 0)
+
+    def test_move_to_element_with_offset(self):
+        actions = MagicMock()
+        DesktopLibrary._move_to_element(actions, "some_element", 100, 100)
+
     # def test_click_a_point_with_double_click(self):
     #     mock_desk = MagicMock()
     #     webdriver.Remote = WebdriverRemoteMock
