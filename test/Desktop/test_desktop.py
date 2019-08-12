@@ -288,7 +288,7 @@ class TestInternal(unittest.TestCase):
         webdriver.Remote = WebdriverRemoteMock
         ActionChains.move_by_offset = MagicMock(return_value=True)
         DesktopLibrary.open_application(mock_desk, 'remote_url')
-        DesktopLibrary.click_a_point(mock_desk, 100, 100)
+        DesktopLibrary.click_a_point(mock_desk, x_offset=100, y_offset=100)
 
     def test_click_a_point_with_double_click(self):
         mock_desk = MagicMock()
@@ -307,7 +307,7 @@ class TestInternal(unittest.TestCase):
         webdriver.Remote = WebdriverRemoteMock
         ActionChains.move_by_offset = MagicMock(return_value=True)
         DesktopLibrary.open_application(mock_desk, 'remote_url')
-        DesktopLibrary.context_click_a_point(mock_desk, -400, -400)
+        DesktopLibrary.context_click_a_point(mock_desk, x_offset=-400, y_offset=-400)
 
     def test_move_to_element(self):
         actions = MagicMock()
