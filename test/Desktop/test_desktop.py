@@ -309,6 +309,20 @@ class TestInternal(unittest.TestCase):
         DesktopLibrary.open_application(mock_desk, 'remote_url')
         DesktopLibrary.context_click_a_point(mock_desk, x_offset=-400, y_offset=-400)
 
+    def test_drag_and_drop(self):
+        mock_desk = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        ActionChains.drag_and_drop = MagicMock()
+        DesktopLibrary.open_application(mock_desk, 'remote_url')
+        DesktopLibrary.drag_and_drop(mock_desk, "some_locator", "some_other_locator")
+
+    def test_drag_and_drop_with_offset(self):
+        mock_desk = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        ActionChains.drag_and_drop_by_offset = MagicMock()
+        DesktopLibrary.open_application(mock_desk, 'remote_url')
+        DesktopLibrary.drag_and_drop_by_offset(mock_desk, "some_locator", x_offset=100, y_offset=100)
+
     def test_move_to_element(self):
         actions = MagicMock()
         DesktopLibrary._move_to_element(actions, "some_element", 0, 0)

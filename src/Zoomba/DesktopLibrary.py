@@ -52,7 +52,7 @@ class DesktopLibrary(AppiumLibrary):
             'wait_for_and_mouse_over_and_click_element', 'mouse_over_text', 'wait_for_and_mouse_over_text',
             'mouse_over_and_click_text', 'wait_for_and_mouse_over_and_click_text', 'click_a_point',
             'context_click_a_point', 'mouse_over_and_context_click_element', 'mouse_over_and_context_click_text',
-            'mouse_over_by_offset',
+            'mouse_over_by_offset', 'drag_and_drop', 'drag_and_drop_by_offset',
             # External Libraries
             'capture_page_screenshot', 'clear_text', 'click_button', 'click_element',
             'click_text', 'close_all_applications', 'close_application',
@@ -479,6 +479,25 @@ class DesktopLibrary(AppiumLibrary):
         actions.context_click()
         self._info("Right-clicking on a point (%s,%s)." % (x_offset, y_offset))
         actions.perform()
+
+    @keyword("Drag And Drop")
+    def drag_and_drop(self, source, target):
+        """Drags the element found with the locator  ``source`` to the element found with the locator ``target``.
+        """
+        driver = self._current_application()
+        source_element = self._element_find(source, True, True)
+        target_element = self._element_find(target, True, True)
+        actions = ActionChains(driver)
+        actions.drag_and_drop(source_element, target_element).perform()
+
+    @keyword("Drag And Drop By Offset")
+    def drag_and_drop_by_offset(self, locator, x_offset=0, y_offset=0):
+        """Drags the element found with ``locator`` to the given ``x_offset`` and ``y_offset`` coordinates.
+        """
+        driver = self._current_application()
+        element = self._element_find(locator, True, True)
+        actions = ActionChains(driver)
+        actions.drag_and_drop_by_offset(element, x_offset, y_offset).perform()
 
     # Private
 
