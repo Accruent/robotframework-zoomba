@@ -50,8 +50,9 @@ class DesktopLibrary(AppiumLibrary):
             'wait_until_element_is_enabled', 'wait_until_element_is_disabled', 'switch_application_by_name',
             'mouse_over_element', 'wait_for_and_mouse_over_element', 'mouse_over_and_click_element',
             'wait_for_and_mouse_over_and_click_element', 'mouse_over_text', 'wait_for_and_mouse_over_text',
-            'mouse_over_and_click_text', 'wait_for_and_mouse_over_and_click_text',
-            'mouse_over_and_context_click_element', 'mouse_over_and_context_click_text', 'mouse_over_by_offset',
+            'mouse_over_and_click_text', 'wait_for_and_mouse_over_and_click_text', 'click_a_point',
+            'context_click_a_point', 'mouse_over_and_context_click_element', 'mouse_over_and_context_click_text',
+            'mouse_over_by_offset',
             # External Libraries
             'capture_page_screenshot', 'clear_text', 'click_button', 'click_element',
             'click_text', 'close_all_applications', 'close_application',
@@ -171,7 +172,7 @@ class DesktopLibrary(AppiumLibrary):
 
         ``error`` can be used to override the default error message.
 
-        By default tries to click first text involves given ``text``, if you would
+        By default tries to click first text involves given ``text``. If you would
         like to click exactly matching text, then set ``exact_match`` to `True`.
         
         Use `Wait For And Mouse Over And Click Text` if this keyword gives issues in the application."""
@@ -293,6 +294,7 @@ class DesktopLibrary(AppiumLibrary):
         Fails if ``timeout`` expires before the element appears.
 
         ``error`` can be used to override the default error message.
+
         ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
 
         See also `Wait For And Mouse Over Text`
@@ -305,6 +307,7 @@ class DesktopLibrary(AppiumLibrary):
         """Moves the mouse over and clicks the given ``locator``.
 
         ``double_click`` can be used to click twice.
+
         ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
 
         See also `Mouse Over And Click Text`
@@ -342,7 +345,9 @@ class DesktopLibrary(AppiumLibrary):
         Fails if ``timeout`` expires before the element appears.
 
         ``error`` can be used to override the default error message.
+
         ``double_click`` can be used to click twice.
+
         ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
 
         See also `Wait For And Mouse Over And Click Text`
@@ -371,6 +376,7 @@ class DesktopLibrary(AppiumLibrary):
         Fails if ``timeout`` expires before the element appears.
 
         ``error`` can be used to override the default error message.
+
         ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
 
         See also `Wait For And Mouse Over Element`
@@ -383,6 +389,7 @@ class DesktopLibrary(AppiumLibrary):
         """Moves the mouse over and clicks the given ``locator``.
 
         ``double_click`` can be used to click twice.
+
         ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
 
         See also `Mouse Over And Click Element`
@@ -420,7 +427,9 @@ class DesktopLibrary(AppiumLibrary):
         Fails if ``timeout`` expires before the element appears.
 
         ``error`` can be used to override the default error message.
+
         ``double_click`` can be used to click twice.
+
         ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
 
         See also `Wait For And Mouse Over And Click Element`
@@ -435,42 +444,41 @@ class DesktopLibrary(AppiumLibrary):
         driver = self._current_application()
         actions = ActionChains(driver)
         actions.move_by_offset(x_offset, y_offset)
+        self._info("Mouse Over (%s,%s)." % (x_offset, y_offset))
         actions.perform()
 
-# TODO: Need to see if I can get this to move to a specified point or not
-    # @keyword("Click A Point")
-    # def click_a_point(self, x=0, y=0, double_click=False):
-    #     """Clicks the current mouse location.
-    #
-    #     ``x`` and ``y`` can be applied to give an offset.
-    #
-    #     ``double_click`` can be used to click twice.
-    #     """
-    #     driver = self._current_application()
-    #     # print(self.get_window_height())
-    #     # print(self.get_window_width())
-    #     actions = ActionChains(driver)
-    #     if x != 0 or y != 0:
-    #         actions.
-    #         actions.move_by_offset(x, y)
-    #     if double_click:
-    #         actions.double_click()
-    #     else:
-    #         actions.click()
-    #     actions.perform()
+    @keyword("Click A Point")
+    def click_a_point(self, x_offset=0, y_offset=0, double_click=False):
+        """Clicks the current mouse location.
 
-    # @keyword("Context Click A Point")
-    # def context_click_a_point(self, x=0, y=0):
-    #     """Right-clicks the current mouse location.
-    #
-    #     ``x`` and ``y`` can be applied to give an offset.
-    #     """
-    #     driver = self._current_application()
-    #     actions = ActionChains(driver)
-    #     if x != 0 or y != 0:
-    #         actions.move_by_offset(x, y)
-    #     actions.context_click()
-    #     actions.perform()
+        ``x_offset`` and ``y_offset`` can be applied to give an offset.
+
+        ``double_click`` can be used to click twice.
+        """
+        driver = self._current_application()
+        actions = ActionChains(driver)
+        if x_offset != 0 or y_offset != 0:
+            actions.move_by_offset(x_offset, y_offset)
+        if double_click:
+            actions.double_click()
+        else:
+            actions.click()
+        self._info("Clicking on a point (%s,%s)." % (x_offset, y_offset))
+        actions.perform()
+
+    @keyword("Context Click A Point")
+    def context_click_a_point(self, x_offset=0, y_offset=0):
+        """Right-clicks the current mouse location.
+
+        ``x_offset`` and ``y_offset`` can be applied to give an offset.
+        """
+        driver = self._current_application()
+        actions = ActionChains(driver)
+        if x_offset != 0 or y_offset != 0:
+            actions.move_by_offset(x_offset, y_offset)
+        actions.context_click()
+        self._info("Right-clicking on a point (%s,%s)." % (x_offset, y_offset))
+        actions.perform()
 
     # Private
 

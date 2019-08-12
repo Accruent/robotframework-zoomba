@@ -75,10 +75,19 @@ Wait For And Mouse Over And Click Element/Text Keyword Test
     Wait For And Mouse Over And Click Text      Memory
     Wait For And Mouse Over And Click Text      Memory    True
 
-#Click A Point Keyword Test
-#    Click A Point
-##    Click A Point     100    200
-##    Click A Point     double_click=True
+Mouse Over by Offset Keyword Test
+    Mouse Over Element     name=Three
+    Mouse Over By Offset    100    -200
 
+Click A Point Keyword Test
+    Mouse Over Element     name=Three
+    Click A Point
+    Click A Point     100    -200
+    Click A Point     double_click=True
+
+Context Click A Point Keyword Test
+    Mouse Over Element     name=Three
+    Context Click A Point
+    Context Click A Point     100    -200
 
 
