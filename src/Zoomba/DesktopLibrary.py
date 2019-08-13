@@ -3,6 +3,7 @@ from appium import webdriver
 from robot.api.deco import keyword
 from robot.libraries.BuiltIn import BuiltIn
 import os
+from selenium.webdriver.common.action_chains import ActionChains
 
 zoomba = BuiltIn()
 
@@ -47,14 +48,19 @@ class DesktopLibrary(AppiumLibrary):
             'wait_for_and_click_text', 'wait_for_and_input_password', 'wait_for_and_input_text',
             'wait_for_and_long_press', 'wait_until_element_contains', 'wait_until_element_does_not_contain',
             'wait_until_element_is_enabled', 'wait_until_element_is_disabled', 'switch_application_by_name',
+            'mouse_over_element', 'wait_for_and_mouse_over_element', 'mouse_over_and_click_element',
+            'wait_for_and_mouse_over_and_click_element', 'mouse_over_text', 'wait_for_and_mouse_over_text',
+            'mouse_over_and_click_text', 'wait_for_and_mouse_over_and_click_text', 'click_a_point',
+            'context_click_a_point', 'mouse_over_and_context_click_element', 'mouse_over_and_context_click_text',
+            'mouse_over_by_offset', 'drag_and_drop', 'drag_and_drop_by_offset',
             # External Libraries
-            'capture_page_screenshot', 'clear_text', 'click_a_point', 'click_button', 'click_element',
-            'click_element_at_coordinates', 'click_text', 'close_all_applications', 'close_application',
+            'capture_page_screenshot', 'clear_text', 'click_button', 'click_element',
+            'click_text', 'close_all_applications', 'close_application',
             'element_attribute_should_match', 'element_should_be_disabled', "element_should_be_enabled",
             'element_should_be_visible', 'element_should_contain_text', 'element_should_not_contain_text',
             'element_text_should_be', 'get_appium_sessionId', 'get_appium_timeout', 'get_capability',
-            'get_element_attribute', 'get_element_location', 'get_element_size', 'get_source', 'get_webelement',
-            'get_webelements', 'get_window_height', 'get_window_width', 'go_back', 'input_password', 'input_text',
+            'get_element_attribute', 'get_element_location', 'get_element_size', 'get_webelement',
+            'get_webelements', 'get_window_height', 'get_window_width', 'input_password', 'input_text',
             'launch_application', 'log_source', 'long_press', 'page_should_contain_element', 'page_should_contain_text',
             'page_should_not_contain_element', 'page_should_not_contain_text', 'quit_application',
             'register_keyword_to_run_on_failure', 'set_appium_timeout', 'switch_application', 'text_should_be_visible',
@@ -105,7 +111,7 @@ class DesktopLibrary(AppiumLibrary):
 
     @keyword("Switch Application By Name")
     def switch_application_by_name(self, remote_url, window_name, alias=None, **kwargs):
-        """Switches to a currently opened window by name.
+        """Switches to a currently opened window by ``window_name``.
         For the capabilities of appium server and Windows,
         Please check http://appium.io/docs/en/drivers/windows
         | *Option*            | *Man.* | *Description*                         |
@@ -134,11 +140,11 @@ class DesktopLibrary(AppiumLibrary):
 
     @keyword("Wait For And Clear Text")
     def wait_for_and_clear_text(self, locator, timeout=None, error=None):
-        """Wait for and then clear the text field identified by `locator`.
+        """Wait for and then clear the text field identified by ``locator``.
 
-        Fails if `timeout` expires before the element appears.
+        Fails if ``timeout`` expires before the element appears.
 
-        `error` can be used to override the default error message.
+        ``error`` can be used to override the default error message.
 
         See `introduction` for details about locating elements."""
         self.wait_until_page_contains_element(locator, timeout, error)
@@ -146,13 +152,15 @@ class DesktopLibrary(AppiumLibrary):
 
     @keyword("Wait For And Click Element")
     def wait_for_and_click_element(self, locator, timeout=None, error=None):
-        """Wait for and click the element identified by `locator`.
+        """Wait for and click the element identified by ``locator``.
 
-        Fails if `timeout` expires before the element appears.
+        Fails if ``timeout`` expires before the element appears.
 
-        `error` can be used to override the default error message.
+        ``error`` can be used to override the default error message.
 
-        See `introduction` for details about locating elements."""
+        See `introduction` for details about locating elements.
+        
+        Use `Wait For And Mouse Over And Click Element` if this keyword gives issues in the application."""
         self.wait_until_page_contains_element(locator, timeout, error)
         self.click_element(locator)
 
@@ -160,22 +168,24 @@ class DesktopLibrary(AppiumLibrary):
     def wait_for_and_click_text(self, text, exact_match=False, timeout=None, error=None):
         """Wait for and click text identified by ``text``.
 
-        Fails if `timeout` expires before the element appears.
+        Fails if ``timeout`` expires before the element appears.
 
-        `error` can be used to override the default error message.
+        ``error`` can be used to override the default error message.
 
-        By default tries to click first text involves given ``text``, if you would
-        like to click exactly matching text, then set ``exact_match`` to `True`."""
+        By default tries to click first text involves given ``text``. If you would
+        like to click exactly matching text, then set ``exact_match`` to `True`.
+        
+        Use `Wait For And Mouse Over And Click Text` if this keyword gives issues in the application."""
         self.wait_until_page_contains(text, timeout, error)
         self.click_text(text, exact_match)
 
     @keyword("Wait For And Input Password")
     def wait_for_and_input_password(self, locator, text, timeout=None, error=None):
-        """Wait for and type the given password into the text field identified by `locator`.
+        """Wait for and type the given password into the text field identified by ``locator``.
 
-        Fails if `timeout` expires before the element appears.
+        Fails if ``timeout`` expires before the element appears.
 
-        `error` can be used to override the default error message.
+        ``error`` can be used to override the default error message.
 
         The difference between this keyword and `Wait For And Input Text` is that this keyword
         does not log the given password. See `introduction` for details about locating elements."""
@@ -184,11 +194,11 @@ class DesktopLibrary(AppiumLibrary):
 
     @keyword("Wait For And Input Text")
     def wait_for_and_input_text(self, locator, text, timeout=None, error=None):
-        """Wait for and type the given `text` into text field identified by `locator`.
+        """Wait for and type the given ``locator`` into text field identified by ``locator``.
 
-        Fails if `timeout` expires before the element appears.
+        Fails if ``timeout`` expires before the element appears.
 
-        `error` can be used to override the default error message.
+        ``error`` can be used to override the default error message.
 
         See `introduction` for details about locating elements."""
         self.wait_until_page_contains_element(locator, timeout, error)
@@ -196,11 +206,11 @@ class DesktopLibrary(AppiumLibrary):
 
     @keyword("Wait For And Long Press")
     def wait_for_and_long_press(self, locator, duration=10000, timeout=None, error=None):
-        """Wait for and long press the element identified by `locator` with optional duration.
+        """Wait for and long press the element identified by ``locator`` with optional duration.
 
-        Fails if `timeout` expires before the element appears.
+        Fails if ``timeout`` expires before the element appears.
 
-        `error` can be used to override the default error message.
+        ``error`` can be used to override the default error message.
 
         See `introduction` for details about locating elements."""
         self.wait_until_page_contains_element(locator, timeout, error)
@@ -208,11 +218,11 @@ class DesktopLibrary(AppiumLibrary):
 
     @keyword("Wait Until Element Contains")
     def wait_until_element_contains(self, locator, text, timeout=None, error=None):
-        """Waits until element specified with `locator` contains 'text'.
+        """Waits until element specified with ``locator`` contains ``text``.
 
-        Fails if `timeout` expires before the element appears.
+        Fails if ``timeout`` expires before the element appears.
 
-        `error` can be used to override the default error message.
+        ``error`` can be used to override the default error message.
 
         See also `Wait Until Page Contains`,
         `Wait Until Page Does Not Contain`
@@ -223,13 +233,13 @@ class DesktopLibrary(AppiumLibrary):
 
     @keyword("Wait Until Element Does Not Contain")
     def wait_until_element_does_not_contain(self, locator, text, timeout=None, error=None):
-        """Waits until element specified with `locator` does not contain 'text'.
+        """Waits until element specified with ``locator`` does not contain ``text``.
 
-        Fails if `timeout` expires before the element appears.
+        Fails if ``timeout`` expires before the element appears.
 
-        `error` can be used to override the default error message.
+        ``error`` can be used to override the default error message.
 
-        See also 'Wait Until Element Contains,
+        See also `Wait Until Element Contains`,
         `Wait Until Page Contains`,
         `Wait Until Page Does Not Contain`
         `Wait Until Page Does Not Contain Element`
@@ -239,27 +249,268 @@ class DesktopLibrary(AppiumLibrary):
 
     @keyword("Wait Until Element Is Enabled")
     def wait_until_element_is_enabled(self, locator, timeout=None, error=None):
-        """Waits until element specified with `locator` is enabled.
+        """Waits until element specified with ``locator`` is enabled.
 
-        Fails if `timeout` expires before the element appears.
+        Fails if ``timeout`` expires before the element appears.
 
-        `error` can be used to override the default error message.
+        ``error`` can be used to override the default error message.
 
-        See also 'Wait Until Element Is Disabled'
+        See also `Wait Until Element Is Disabled`
         """
         self.wait_until_page_contains_element(locator, timeout, error)
         self.element_should_be_enabled(locator)
 
     @keyword("Wait Until Element Is Disabled")
     def wait_until_element_is_disabled(self, locator, timeout=None, error=None):
-        """Waits until element specified with `locator` is disabled.
+        """Waits until element specified with ``locator`` is disabled.
 
-        Fails if `timeout` expires before the element appears.
+        Fails if ``timeout`` expires before the element appears.
 
-        `error` can be used to override the default error message.
+        ``error`` can be used to override the default error message.
 
-        See also 'Wait Until Element Is Disabled'
+        See also `Wait Until Element Is Disabled`
         """
         self.wait_until_page_contains_element(locator, timeout, error)
         self.element_should_be_disabled(locator)
 
+    @keyword("Mouse Over Element")
+    def mouse_over_element(self, locator, x_offset=0, y_offset=0):
+        """Moves the mouse over the given ``locator``.
+
+        ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
+
+        See also `Mouse Over Text`
+        """
+        driver = self._current_application()
+        element = self._element_find(locator, True, True)
+        actions = ActionChains(driver)
+        self._move_to_element(actions, element, x_offset, y_offset)
+        actions.perform()
+
+    @keyword("Wait For And Mouse Over Element")
+    def wait_for_and_mouse_over_element(self, locator, timeout=None, error=None, x_offset=0, y_offset=0):
+        """Waits for and moves the mouse over the given ``locator``.
+
+        Fails if ``timeout`` expires before the element appears.
+
+        ``error`` can be used to override the default error message.
+
+        ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
+
+        See also `Wait For And Mouse Over Text`
+        """
+        self.wait_until_page_contains_element(locator, timeout, error)
+        self.mouse_over_element(locator, x_offset, y_offset)
+
+    @keyword("Mouse Over And Click Element")
+    def mouse_over_and_click_element(self, locator, double_click=False, x_offset=0, y_offset=0):
+        """Moves the mouse over and clicks the given ``locator``.
+
+        ``double_click`` can be used to click twice.
+
+        ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
+
+        See also `Mouse Over And Click Text`
+        """
+        driver = self._current_application()
+        element = self._element_find(locator, True, True)
+        actions = ActionChains(driver)
+        self._move_to_element(actions, element, x_offset, y_offset)
+        if double_click:
+            actions.double_click()
+        else:
+            actions.click()
+        actions.perform()
+
+    @keyword("Mouse Over And Context Click Element")
+    def mouse_over_and_context_click_element(self, locator, x_offset=0, y_offset=0):
+        """Moves the mouse over and right-clicks the given ``locator``.
+
+        ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
+
+        See also `Mouse Over And Click Element`
+        """
+        driver = self._current_application()
+        element = self._element_find(locator, True, True)
+        actions = ActionChains(driver)
+        self._move_to_element(actions, element, x_offset, y_offset)
+        actions.context_click()
+        actions.perform()
+
+    @keyword("Wait For And Mouse Over And Click Element")
+    def wait_for_and_mouse_over_and_click_element(self, locator, timeout=None, error=None, double_click=False,
+                                                  x_offset=0, y_offset=0):
+        """Waits for, moves the mouse over, and clicks the given ``locator``.
+
+        Fails if ``timeout`` expires before the element appears.
+
+        ``error`` can be used to override the default error message.
+
+        ``double_click`` can be used to click twice.
+
+        ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
+
+        See also `Wait For And Mouse Over And Click Text`
+        """
+        self.wait_until_page_contains_element(locator, timeout, error)
+        self.mouse_over_and_click_element(locator, double_click, x_offset, y_offset)
+
+    @keyword("Mouse Over Text")
+    def mouse_over_text(self, text, exact_match=False, x_offset=0, y_offset=0):
+        """Moves the mouse over the given ``locator``.
+
+        ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
+
+        See also `Mouse Over Element`
+        """
+        driver = self._current_application()
+        element = self._element_find_by_text(text, exact_match)
+        actions = ActionChains(driver)
+        self._move_to_element(actions, element, x_offset, y_offset)
+        actions.perform()
+
+    @keyword("Wait For And Mouse Over Text")
+    def wait_for_and_mouse_over_text(self, text, exact_match=False, timeout=None, error=None, x_offset=0, y_offset=0):
+        """Moves the mouse over the given ``locator``.
+
+        Fails if ``timeout`` expires before the element appears.
+
+        ``error`` can be used to override the default error message.
+
+        ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
+
+        See also `Wait For And Mouse Over Element`
+        """
+        self.wait_until_page_contains(text, timeout, error)
+        self.mouse_over_text(text, exact_match, x_offset, y_offset)
+
+    @keyword("Mouse Over And Click Text")
+    def mouse_over_and_click_text(self, text, exact_match=False, double_click=False, x_offset=0, y_offset=0):
+        """Moves the mouse over and clicks the given ``locator``.
+
+        ``double_click`` can be used to click twice.
+
+        ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
+
+        See also `Mouse Over And Click Element`
+        """
+        driver = self._current_application()
+        element = self._element_find_by_text(text, exact_match)
+        actions = ActionChains(driver)
+        self._move_to_element(actions, element, x_offset, y_offset)
+        if double_click:
+            actions.double_click()
+        else:
+            actions.click()
+        actions.perform()
+
+    @keyword("Mouse Over And Context Click Text")
+    def mouse_over_and_context_click_text(self, text, exact_match=False, x_offset=0, y_offset=0):
+        """Moves the mouse over and right-clicks the given ``locator``.
+
+        ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
+
+        See also `Mouse Over And Click Text`
+        """
+        driver = self._current_application()
+        element = self._element_find_by_text(text, exact_match)
+        actions = ActionChains(driver)
+        self._move_to_element(actions, element, x_offset, y_offset)
+        actions.context_click()
+        actions.perform()
+
+    @keyword("Wait For And Mouse Over And Click Text")
+    def wait_for_and_mouse_over_and_click_text(self, text, exact_match=False, timeout=None, error=None,
+                                               double_click=False, x_offset=0, y_offset=0):
+        """Waits for, moves the mouse over, and clicks the given ``locator``.
+
+        Fails if ``timeout`` expires before the element appears.
+
+        ``error`` can be used to override the default error message.
+
+        ``double_click`` can be used to click twice.
+
+        ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
+
+        See also `Wait For And Mouse Over And Click Element`
+        """
+        self.wait_until_page_contains(text, timeout, error)
+        self.mouse_over_and_click_text(text, exact_match, double_click, x_offset, y_offset)
+
+    @keyword("Mouse Over By Offset")
+    def mouse_over_by_offset(self, x_offset=0, y_offset=0):
+        """Moves the mouse from its current location by the given ``x_offset`` and ``y_offset``.
+        """
+        driver = self._current_application()
+        actions = ActionChains(driver)
+        actions.move_by_offset(x_offset, y_offset)
+        self._info("Mouse Over (%s,%s)." % (x_offset, y_offset))
+        actions.perform()
+
+    @keyword("Click A Point")
+    def click_a_point(self, x_offset=0, y_offset=0, double_click=False):
+        """Clicks the current mouse location.
+
+        ``x_offset`` and ``y_offset`` can be applied to give an offset.
+
+        ``double_click`` can be used to click twice.
+        """
+        driver = self._current_application()
+        actions = ActionChains(driver)
+        if x_offset != 0 or y_offset != 0:
+            actions.move_by_offset(x_offset, y_offset)
+        if double_click:
+            actions.double_click()
+        else:
+            actions.click()
+        self._info("Clicking on a point (%s,%s)." % (x_offset, y_offset))
+        actions.perform()
+
+    @keyword("Context Click A Point")
+    def context_click_a_point(self, x_offset=0, y_offset=0):
+        """Right-clicks the current mouse location.
+
+        ``x_offset`` and ``y_offset`` can be applied to give an offset.
+        """
+        driver = self._current_application()
+        actions = ActionChains(driver)
+        if x_offset != 0 or y_offset != 0:
+            actions.move_by_offset(x_offset, y_offset)
+        actions.context_click()
+        self._info("Right-clicking on a point (%s,%s)." % (x_offset, y_offset))
+        actions.perform()
+
+    @keyword("Drag And Drop")
+    def drag_and_drop(self, source, target):
+        """Drags the element found with the locator  ``source`` to the element found with the locator ``target``.
+        """
+        driver = self._current_application()
+        source_element = self._element_find(source, True, True)
+        target_element = self._element_find(target, True, True)
+        actions = ActionChains(driver)
+        actions.drag_and_drop(source_element, target_element).perform()
+
+    @keyword("Drag And Drop By Offset")
+    def drag_and_drop_by_offset(self, locator, x_offset=0, y_offset=0):
+        """Drags the element found with ``locator`` to the given ``x_offset`` and ``y_offset`` coordinates.
+        """
+        driver = self._current_application()
+        element = self._element_find(locator, True, True)
+        actions = ActionChains(driver)
+        actions.drag_and_drop_by_offset(element, x_offset, y_offset).perform()
+
+    # Private
+
+    def _element_find_by_text(self, text, exact_match=False):
+        if exact_match:
+            _xpath = u'//*[@{}="{}"]'.format('Name', text)
+        else:
+            _xpath = u'//*[contains(@{},"{}")]'.format('Name', text)
+        return self._element_find(_xpath, True, True)
+
+    @staticmethod
+    def _move_to_element(actions, element, x_offset, y_offset):
+        if x_offset != 0 or y_offset != 0:
+            actions.move_to_element_with_offset(element, x_offset, y_offset)
+        else:
+            actions.move_to_element(element)
