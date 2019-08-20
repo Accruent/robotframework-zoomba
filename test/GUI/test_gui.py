@@ -1,12 +1,12 @@
 import os
 import sys
 sys.path.insert(0, os.path.abspath( os.path.join(os.path.dirname(__file__), '../../src/') ))
-
 from Zoomba.GUILibrary import GUILibrary
 import unittest
 from unittest.mock import patch
 from unittest.mock import Mock
 from unittest.mock import PropertyMock
+
 
 class TestInternal(unittest.TestCase):
     @patch('robot.libraries.BuiltIn.BuiltIn.should_be_equal')
