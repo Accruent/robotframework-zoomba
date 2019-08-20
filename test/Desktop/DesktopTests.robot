@@ -5,6 +5,7 @@ Suite Setup     Start App
 Test Setup      Launch Application
 Test Teardown   Quit Application
 Suite Teardown    Close All Applications
+Force Tags        Windows
 
 *** Variables ***
 ${REMOTE_URL}           http://localhost:4723/wd/hub

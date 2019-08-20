@@ -1,22 +1,27 @@
 language: python
-
 python:
   - "3.6"
-
 branches:
   except:
     - /^(documentation).*$/i
-
+sudo: required
+dist: trusty
+addons:
+  chrome: stable
+cache: pip
 install:
   - pip install .
   - pip install python-coveralls
   - pip install pytest-cov
-
+before_script:
+  - wget "http://chromedriver.storage.googleapis.com/76.0.3809.12/chromedriver_linux64.zip"
+  - unzip chromedriver_linux64.zip
+  - sudo mv chromedriver /usr/local/bin
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+  - sleep 3 # give xvfb some time to start
 script:
   - pytest --cov src -v
-
-notifications:
-  webhooks: https://outlook.office.com/webhook/d21bbd8c-15d5-438d-b677-ec46b5a9d206@e9539418-46f3-4813-b93b-c9fe957bf3ae/TravisCI/2de9ea9854e347af912768a4736e7ea2/f936d851-4113-4039-bebb-0f3d095e4d0d
-
+  - robot -e BrokenORWindows test
 after_success:
   - coveralls
