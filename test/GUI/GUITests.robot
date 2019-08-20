@@ -104,4 +104,4 @@ Scroll To Bottom of Page Test
     wait until element is visible                   //div[@id='res']
     scroll to bottom of page
     ${position} =                Execute Javascript        return window.pageYOffset
-    should be equal              "1040"         "${position}"
+    should be equal              "767"         "${position}"
