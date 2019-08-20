@@ -2,7 +2,7 @@ Zoomba
 ===========
 [![PyPI version](https://badge.fury.io/py/robotframework-zoomba.svg)](https://badge.fury.io/py/robotframework-zoomba)
 [![Build Status](https://travis-ci.org/Accruent/robotframework-zoomba.svg?branch=master)](https://travis-ci.org/Accruent/robotframework-zoomba)
-[![Coverage Status](https://coveralls.io/repos/github/Accruent/zoomba/badge.svg?branch=master)](https://coveralls.io/github/Accruent/zoomba?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/Accruent/robotframework-zoomba/badge.svg?branch=master)](https://coveralls.io/github/Accruent/robotframework-zoomba?branch=master)
 
 Introduction
 -----------
