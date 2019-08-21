@@ -9,8 +9,7 @@ try:
 except ImportError:
     from distutils.core import setup
 
-VERSION = """
-1.7.0
+VERSION = """2.0.0
 """.strip()
 
 DESCRIPTION = """
@@ -33,7 +32,7 @@ setup(name         = 'robotframework-zoomba',
       maintainer   = 'Alex Calandra, Michael Hintz, Keith Smoland, Matthew Giardina, Brandon Wolfe',
       maintainer_email= 'robosquad@accruent.com',
       license      = 'apache',
-      keywords     = 'Robot Framework',
+      keywords     = 'Robot Framework robot-framework selenium requests appium soap',
       platforms    = 'any',
       install_requires= [
           "robotframework>=3.1.1",
