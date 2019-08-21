@@ -17,8 +17,8 @@ extends AppiumLibrary functionality to support Windows desktop automation.
 As a team beginning the journey of automation with Robot Framework - we found that there was some time spent ramping up our libraries and
 Zoomba aims to make that process easier for new projects.
 
-See the **Keyword Documentation** for the [API](docs/APILibraryDocumentation.html), [SOAP](docs/SOAPLibrarydocumentation.html),
-[GUI](docs/GUILibraryDocumentation.html), or [Desktop](docs/DesktopLibraryDocumentation.html) library for more specific information about the functionality.
+See the **Keyword Documentation** for the [API](https://accruent.github.io/robotframework-zoomba/docs/APILibraryDocumentation.html), [SOAP](https://accruent.github.io/robotframework-zoomba/docs/SOAPLibrarydocumentation.html),
+[GUI](https://accruent.github.io/robotframework-zoomba/docs/GUILibraryDocumentation.html), or [Desktop](https://accruent.github.io/robotframework-zoomba/docs/DesktopLibrarydocumentation.html) library for more specific information about the functionality.
 
 
 Getting Started
