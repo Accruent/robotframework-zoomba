@@ -7,7 +7,6 @@ from selenium.webdriver.common.action_chains import ActionChains
 
 zoomba = BuiltIn()
 
-
 class DesktopLibrary(AppiumLibrary):
     """Zoomba Desktop Library
         This class is the base Library used to generate automated Desktop Tests in the Robot Automation Framework using

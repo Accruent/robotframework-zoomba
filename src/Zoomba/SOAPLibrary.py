@@ -3,8 +3,6 @@ from robot.libraries.BuiltIn import BuiltIn
 from suds.plugin import DocumentPlugin
 from suds.client import Client
 from suds import WebFault
-from SudsLibrary import SudsLibrary
-
 
 zoomba = BuiltIn()
 

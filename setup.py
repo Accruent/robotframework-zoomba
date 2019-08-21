@@ -2,6 +2,7 @@
 
 import sys
 from os.path import join, dirname
+from version import VERSION
 
 sys.path.append(join(dirname(__file__), 'src'))
 try:
@@ -9,9 +10,7 @@ try:
 except ImportError:
     from distutils.core import setup
 
-VERSION = """
-1.7.0
-""".strip()
+VERSION = VERSION
 
 DESCRIPTION = """
 Zoomba
@@ -33,7 +32,7 @@ setup(name         = 'robotframework-zoomba',
       maintainer   = 'Alex Calandra, Michael Hintz, Keith Smoland, Matthew Giardina, Brandon Wolfe',
       maintainer_email= 'robosquad@accruent.com',
       license      = 'apache',
-      keywords     = 'Robot Framework',
+      keywords     = 'Robot Framework robot-framework selenium requests appium soap',
       platforms    = 'any',
       install_requires= [
           "robotframework>=3.1.1",
