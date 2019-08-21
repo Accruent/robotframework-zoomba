@@ -2,6 +2,7 @@
 
 import sys
 from os.path import join, dirname
+from version import VERSION
 
 sys.path.append(join(dirname(__file__), 'src'))
 try:
@@ -9,8 +10,7 @@ try:
 except ImportError:
     from distutils.core import setup
 
-VERSION = """2.0.0
-""".strip()
+VERSION = VERSION
 
 DESCRIPTION = """
 Zoomba

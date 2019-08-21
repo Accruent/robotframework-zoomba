@@ -2,11 +2,9 @@ from SeleniumLibrary import SeleniumLibrary
 from robot.libraries.BuiltIn import BuiltIn
 from robot.api.deco import keyword
 from robot.libraries.Collections import Collections
-from version import VERSION
 
 zoomba = BuiltIn()
 zoomba_collections = Collections()
-__version__ = VERSION
 
 
 class GUILibrary(SeleniumLibrary):
