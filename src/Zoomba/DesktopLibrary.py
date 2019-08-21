@@ -4,9 +4,10 @@ from robot.api.deco import keyword
 from robot.libraries.BuiltIn import BuiltIn
 import os
 from selenium.webdriver.common.action_chains import ActionChains
+from version import VERSION
 
 zoomba = BuiltIn()
-
+__version__ = VERSION
 
 class DesktopLibrary(AppiumLibrary):
     """Zoomba Desktop Library

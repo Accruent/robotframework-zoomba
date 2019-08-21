@@ -7,8 +7,10 @@ from urllib3.exceptions import InsecureRequestWarning
 from requests.packages import urllib3
 from robot.libraries.BuiltIn import BuiltIn
 from robot.utils.dotdict import DotDict
+from version import VERSION
 
 zoomba = BuiltIn()
+__version__ = VERSION
 
 
 class APILibrary(object):

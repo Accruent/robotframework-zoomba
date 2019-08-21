@@ -3,10 +3,10 @@ from robot.libraries.BuiltIn import BuiltIn
 from suds.plugin import DocumentPlugin
 from suds.client import Client
 from suds import WebFault
-from SudsLibrary import SudsLibrary
-
+from version import VERSION
 
 zoomba = BuiltIn()
+__version__ = VERSION
 
 
 class _ObjectNamespacePlugin(DocumentPlugin):

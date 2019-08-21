@@ -1,12 +1,12 @@
 from SeleniumLibrary import SeleniumLibrary
-from selenium.webdriver.remote.webelement import WebElement
 from robot.libraries.BuiltIn import BuiltIn
-from robot.api import logger
 from robot.api.deco import keyword
 from robot.libraries.Collections import Collections
+from version import VERSION
 
 zoomba = BuiltIn()
 zoomba_collections = Collections()
+__version__ = VERSION
 
 
 class GUILibrary(SeleniumLibrary):
