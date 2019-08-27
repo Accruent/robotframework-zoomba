@@ -2,7 +2,7 @@
 
 import sys
 from os.path import join, dirname
-from version import VERSION
+import version
 
 sys.path.append(join(dirname(__file__), 'src'))
 try:
@@ -10,7 +10,7 @@ try:
 except ImportError:
     from distutils.core import setup
 
-VERSION = VERSION
+VERSION = version.VERSION
 
 DESCRIPTION = """
 Zoomba

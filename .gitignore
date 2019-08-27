@@ -3,6 +3,7 @@
 MANIFEST
 
 .cache/*
+build/*
 dist/*
 src/Zoomba/__pycache__/*
 src/robotframework_zoomba.egg-info/PKG-INFO
