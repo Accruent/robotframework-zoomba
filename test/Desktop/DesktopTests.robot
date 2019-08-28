@@ -91,4 +91,8 @@ Context Click A Point Keyword Test
     Context Click A Point
     Context Click A Point     100    -200
 
+Send Keys keyword Test
+    Send Keys    24     \ue025     2      \ue007
+    Page Should Contain Text    26
+
 
