@@ -497,9 +497,10 @@ class DesktopLibrary(AppiumLibrary):
 
     @keyword("Send Keys")
     def send_keys(self, *argv):
-        """Sends the desired keys in ``*argv``.
+        """Sends the desired keys in ``argv``.
 
-        A list of special key codes can be found [here|https://seleniumhq.github.io/selenium/docs/api/py/webdriver/selenium.webdriver.common.keys.html]
+        A list of special key codes can be found
+        [https://seleniumhq.github.io/selenium/docs/api/py/webdriver/selenium.webdriver.common.keys.html|here]
         """
         driver = self._current_application()
         actions = ActionChains(driver)
@@ -512,9 +513,10 @@ class DesktopLibrary(AppiumLibrary):
 
     @keyword("Send Keys To Element")
     def send_keys_to_element(self, locator, *argv):
-        """Sends the desired keys in ``*argv`` to ``locator``.
+        """Sends the desired keys in ``argv`` to ``locator``.
 
-        A list of special key codes can be found [here|https://seleniumhq.github.io/selenium/docs/api/py/webdriver/selenium.webdriver.common.keys.html]
+        A list of special key codes can be found
+        [https://seleniumhq.github.io/selenium/docs/api/py/webdriver/selenium.webdriver.common.keys.html|here]
         """
         driver = self._current_application()
         actions = ActionChains(driver)
