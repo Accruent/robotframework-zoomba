@@ -347,3 +347,20 @@ class TestInternal(unittest.TestCase):
         DesktopLibrary.send_keys(mock_desk)
         fail.assert_called_with('No key arguments specified.')
 
+    def test_send_keys_to_element(self):
+        mock_desk = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        ActionChains.move_to_element = MagicMock()
+        ActionChains.send_keys = MagicMock()
+        DesktopLibrary.open_application(mock_desk, 'remote_url')
+        DesktopLibrary.send_keys_to_element(mock_desk, 'some_element', 'test', '\ue007')
+
+    @patch('robot.libraries.BuiltIn.BuiltIn.fail')
+    def test_send_keys_to_element_without_args(self, fail):
+        mock_desk = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        ActionChains.send_keys = MagicMock()
+        DesktopLibrary.open_application(mock_desk, 'remote_url')
+        DesktopLibrary.send_keys_to_element(mock_desk, 'some_locator')
+        fail.assert_called_with('No key arguments specified.')
+

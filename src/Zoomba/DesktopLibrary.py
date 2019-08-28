@@ -49,7 +49,7 @@ class DesktopLibrary(AppiumLibrary):
             'wait_for_and_mouse_over_and_click_element', 'mouse_over_text', 'wait_for_and_mouse_over_text',
             'mouse_over_and_click_text', 'wait_for_and_mouse_over_and_click_text', 'click_a_point',
             'context_click_a_point', 'mouse_over_and_context_click_element', 'mouse_over_and_context_click_text',
-            'mouse_over_by_offset', 'drag_and_drop', 'drag_and_drop_by_offset', 'send_keys',
+            'mouse_over_by_offset', 'drag_and_drop', 'drag_and_drop_by_offset', 'send_keys', 'send_keys_to_element',
             # External Libraries
             'capture_page_screenshot', 'clear_text', 'click_button', 'click_element',
             'click_text', 'close_all_applications', 'close_application',
@@ -497,7 +497,7 @@ class DesktopLibrary(AppiumLibrary):
 
     @keyword("Send Keys")
     def send_keys(self, *argv):
-        """Sends the desired keys in ``*argv``
+        """Sends the desired keys in ``*argv``.
 
         A list of special key codes can be found [here|https://seleniumhq.github.io/selenium/docs/api/py/webdriver/selenium.webdriver.common.keys.html]
         """
@@ -506,6 +506,22 @@ class DesktopLibrary(AppiumLibrary):
         if argv:
             for each in argv:
                 actions.send_keys(each)
+        else:
+            zoomba.fail('No key arguments specified.')
+        actions.perform()
+
+    @keyword("Send Keys To Element")
+    def send_keys_to_element(self, locator, *argv):
+        """Sends the desired keys in ``*argv`` to ``locator``.
+
+        A list of special key codes can be found [here|https://seleniumhq.github.io/selenium/docs/api/py/webdriver/selenium.webdriver.common.keys.html]
+        """
+        driver = self._current_application()
+        actions = ActionChains(driver)
+        element = self._element_find(locator, True, True)
+        if argv:
+            for each in argv:
+                actions.send_keys_to_element(element, each)
         else:
             zoomba.fail('No key arguments specified.')
         actions.perform()
