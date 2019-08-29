@@ -10,31 +10,17 @@ try:
 except ImportError:
     from distutils.core import setup
 
-VERSION = version.VERSION
-
-DESCRIPTION = """
-Zoomba
-""".strip()
-
-CLASSIFIERS  = """
-Development Status :: 5 - Production/Stable
-Operating System :: OS Independent
-Programming Language :: Python :: 3
-Topic :: Software Development :: Testing
-Framework :: Robot Framework :: Library
-""".strip().splitlines()
-
-setup(name         = 'robotframework-zoomba',
-      version      = VERSION,
-      description  = 'Robot Framework mini-framework.',
-      long_description = DESCRIPTION,
-      url          = 'https://github.com/Accruent/zoomba',
-      maintainer   = 'Alex Calandra, Michael Hintz, Keith Smoland, Matthew Giardina, Brandon Wolfe',
-      maintainer_email= 'robosquad@accruent.com',
-      license      = 'apache',
-      keywords     = 'Robot Framework robot-framework selenium requests appium soap',
-      platforms    = 'any',
-      install_requires= [
+setup(name='robotframework-zoomba',
+      version=version.VERSION,
+      description='Robot Framework mini-framework.',
+      long_description='Zoomba',
+      url='https://github.com/Accruent/zoomba',
+      maintainer='Alex Calandra, Michael Hintz, Keith Smoland, Matthew Giardina, Brandon Wolfe',
+      maintainer_email='robosquad@accruent.com',
+      license='apache',
+      keywords='Robot Framework robot-framework selenium requests appium soap',
+      platforms='any',
+      install_requires=[
           "robotframework>=3.1.1",
           "robotframework-requests>=0.5.0",
           "robotframework-seleniumlibrary>=3.3.1",
@@ -49,7 +35,13 @@ setup(name         = 'robotframework-zoomba',
           'Appium-Python-Client'
         ]
       },
-      classifiers  = CLASSIFIERS,
-      package_dir  = {'' : 'src'},
-      packages     = ['Zoomba']
+      classifiers="""
+        Development Status :: 5 - Production/Stable
+        Operating System :: OS Independent
+        Programming Language :: Python :: 3
+        Topic :: Software Development :: Testing
+        Framework :: Robot Framework :: Library
+        """.strip().splitlines(),
+      package_dir={'': 'src'},
+      packages=['Zoomba']
       )
