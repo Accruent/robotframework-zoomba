@@ -91,4 +91,12 @@ Context Click A Point Keyword Test
     Context Click A Point
     Context Click A Point     100    -200
 
+Send Keys Keyword Test
+    Send Keys    24     \ue025     2      \ue007
+    Page Should Contain Text    26
+
+Send Keys To Element Keyword Test
+    Send Keys To Element   name=Display is 0    24     \ue025     2      \ue007
+    Page Should Contain Text    26
+
 
