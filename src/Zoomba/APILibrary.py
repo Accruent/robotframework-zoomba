@@ -269,7 +269,58 @@ class APILibrary(object):
                         "\nActual length: " + str(len(actual_dictionary)) +\
                         "\nExpected length " + str(len(expected_dictionary)))
             return
-        self._key_by_key_check(expected_dictionary, actual_dictionary, unmatched_keys_list, ignored_keys, parent_key, **kwargs)
+        for key, value in expected_dictionary.items():
+            if ignored_keys and key in ignored_keys:
+                continue
+            else:
+                if key not in actual_dictionary:
+                    zoomba.fail("Key not found in Actual : " + str(actual_dictionary) + " Key: " + str(key))
+                    continue
+                if isinstance(value, list):
+                    if len(value) != len(actual_dictionary[key]):
+                        zoomba.fail("Arrays not the same length:" + \
+                                    "\nExpected: " + str(value) + \
+                                    "\nActual: " + str(actual_dictionary[key]))
+                        continue
+                    self._key_by_key_list(key, value, actual_dictionary, unmatched_keys_list, ignored_keys, parent_key, **kwargs)
+                elif isinstance(value, dict):
+                    try:
+                        if len(value) != len(actual_dictionary[key]):
+                            zoomba.fail("Dicts do not match:" + \
+                                        "\nExpected: " + str(value) + \
+                                        "\nActual: " + str(actual_dictionary[key]))
+                            continue
+                    except TypeError:
+                        zoomba.fail("Dicts do not match:" + \
+                                    "\nExpected: " + str(value) + \
+                                    "\nActual is not a valid dictionary.")
+                        continue
+                    if unmatched_keys_list is None:
+                        current_unmatched_length = 0
+                    else:
+                        current_unmatched_length = len(unmatched_keys_list)
+                    self.key_by_key_validator(actual_dictionary[key], expected_dictionary[key],
+                                              ignored_keys, unmatched_keys_list, parent_key=key, **kwargs)
+                    if unmatched_keys_list is None:
+                        continue
+                    else:
+                        _unmatched_list_check(unmatched_keys_list, current_unmatched_length, key)
+                elif isinstance(expected_dictionary[key], str) and not expected_dictionary[key].isdigit():
+                    try:
+                        parse(expected_dictionary[key])
+                        APILibrary.date_string_comparator(value, actual_dictionary[key], key, unmatched_keys_list, **kwargs)
+                    except (ValueError, TypeError):
+                        if value == actual_dictionary[key]:
+                            continue
+                        else:
+                            unmatched_keys_list.append(("------------------\n" + "Key: " + str(key),
+                                                        "Expected: " + str(value),
+                                                        "Actual: " + str(actual_dictionary[key])))
+                elif value == actual_dictionary[key]:
+                    continue
+                else:
+                    unmatched_keys_list.append(("------------------\n" + "Key: " + str(key), "Expected: " + str(value),
+                                                "Actual: " + str(actual_dictionary[key])))
         return True
 
     def date_string_comparator(self, expected_date, actual_date, key, unmatched_keys_list, **kwargs):
@@ -325,80 +376,29 @@ class APILibrary(object):
                     keys_error_msg += str(key_error) + "\n"
             zoomba.fail(keys_error_msg + "\nPlease see differing value(s)")
 
-    def _key_by_key_check(self, expected_dictionary, actual_dictionary, unmatched_keys_list=None, ignored_keys=None, parent_key=None, **kwargs):
-        for key, value in expected_dictionary.items():
-            if ignored_keys and key in ignored_keys:
-                continue
-            else:
-                if key not in actual_dictionary:
-                    zoomba.fail("Key not found in Actual : " + str(actual_dictionary) + " Key: " + str(key))
+    def _key_by_key_list(self, key, value, actual_dictionary, unmatched_keys_list=None, ignored_keys=None, parent_key=None, **kwargs):
+        for index, item in enumerate(value):
+            if isinstance(item, str):
+                if value != actual_dictionary[key]:
+                    zoomba.fail("Arrays do not match:" + \
+                                "\nExpected: " + str(value) + \
+                                "\nActual: " + str(actual_dictionary[key]))
                     continue
-                if isinstance(value, list):
-                    if len(value) != len(actual_dictionary[key]):
-                        zoomba.fail("Arrays not the same length:" + \
-                                    "\nExpected: " + str(value) + \
-                                    "\nActual: " + str(actual_dictionary[key]))
-                        continue
-                    for index, item in enumerate(value):
-                        if isinstance(item, str):
-                            if value != actual_dictionary[key]:
-                                zoomba.fail("Arrays do not match:" + \
-                                            "\nExpected: " + str(value) + \
-                                            "\nActual: " + str(actual_dictionary[key]))
-                                continue
-                        else:
-                            actual_item = actual_dictionary[key][index]
-                            temp_actual_dict = {key: actual_item}
-                            temp_expected_dict = {key: item}
-                            if unmatched_keys_list:
-                                current_unmatched_length = len(unmatched_keys_list)
-                            else:
-                                current_unmatched_length = 0
-                            self.key_by_key_validator(temp_actual_dict, temp_expected_dict,
-                                                      ignored_keys, unmatched_keys_list, parent_key=key, **kwargs)
-                            if unmatched_keys_list is None:
-                                continue
-                            else:
-                                _unmatched_list_check(unmatched_keys_list, current_unmatched_length,
-                                                      key, index, parent_key, is_list=True)
-                elif isinstance(value, dict):
-                    try:
-                        if len(value) != len(actual_dictionary[key]):
-                            zoomba.fail("Dicts do not match:" + \
-                                        "\nExpected: " + str(value) + \
-                                        "\nActual: " + str(actual_dictionary[key]))
-                            continue
-                    except TypeError:
-                        zoomba.fail("Dicts do not match:" + \
-                                    "\nExpected: " + str(value) + \
-                                    "\nActual is not a valid dictionary.")
-                        continue
-                    if unmatched_keys_list is None:
-                        current_unmatched_length = 0
-                    else:
-                        current_unmatched_length = len(unmatched_keys_list)
-                    self.key_by_key_validator(actual_dictionary[key], expected_dictionary[key],
-                                              ignored_keys, unmatched_keys_list, parent_key=key, **kwargs)
-                    if unmatched_keys_list is None:
-                        continue
-                    else:
-                        _unmatched_list_check(unmatched_keys_list, current_unmatched_length, key)
-                elif isinstance(expected_dictionary[key], str) and not expected_dictionary[key].isdigit():
-                    try:
-                        parse(expected_dictionary[key])
-                        APILibrary.date_string_comparator(value, actual_dictionary[key], key, unmatched_keys_list, **kwargs)
-                    except (ValueError, TypeError):
-                        if value == actual_dictionary[key]:
-                            continue
-                        else:
-                            unmatched_keys_list.append(("------------------\n" + "Key: " + str(key),
-                                                        "Expected: " + str(value),
-                                                        "Actual: " + str(actual_dictionary[key])))
-                elif value == actual_dictionary[key]:
+            else:
+                actual_item = actual_dictionary[key][index]
+                temp_actual_dict = {key: actual_item}
+                temp_expected_dict = {key: item}
+                if unmatched_keys_list:
+                    current_unmatched_length = len(unmatched_keys_list)
+                else:
+                    current_unmatched_length = 0
+                self.key_by_key_validator(temp_actual_dict, temp_expected_dict,
+                                          ignored_keys, unmatched_keys_list, parent_key=key, **kwargs)
+                if unmatched_keys_list is None:
                     continue
                 else:
-                    unmatched_keys_list.append(("------------------\n" + "Key: " + str(key), "Expected: " + str(value),
-                                                "Actual: " + str(actual_dictionary[key])))
+                    _unmatched_list_check(unmatched_keys_list, current_unmatched_length,
+                                          key, index, parent_key, is_list=True)
 
 
 def _unmatched_list_check(unmatched_keys_list, current_unmatched_length, key, index=None, parent_key=None,
