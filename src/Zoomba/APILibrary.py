@@ -164,7 +164,7 @@ class APILibrary(object):
                                       unmatched_keys_list, **kwargs)
             self.generate_unmatched_keys_error_message(unmatched_keys_list)
             return
-        elif isinstance(actual_response_dict, list) and actual_response_dict:
+        if isinstance(actual_response_dict, list) and actual_response_dict:
             if full_list_validation:
                 if actual_response_dict == expected_response_dict:
                     return
@@ -177,23 +177,22 @@ class APILibrary(object):
                                                 "Actual: " + str(actual_response_dict)))
                     self.generate_unmatched_keys_error_message(unmatched_keys_list)
                 return
-            else:
-                for exp_item in expected_response_dict:
-                    for actual_item in actual_response_dict:
-                        try:
-                            if exp_item[identity_key] == actual_item[identity_key]:
-                                self.key_by_key_validator(actual_item, exp_item, ignored_keys, unmatched_keys_list,
-                                                          **kwargs)
-                                self.generate_unmatched_keys_error_message(unmatched_keys_list)
-                                break
-                            elif actual_response_dict[-1] == actual_item:
-                                zoomba.fail('Item was not within the response:\n' + str(exp_item))
-                                return
-                            else:
-                                continue
-                        except KeyError:
-                            zoomba.fail('KeyError: "' + identity_key + '" Key was not in the response')
+            for exp_item in expected_response_dict:
+                for actual_item in actual_response_dict:
+                    try:
+                        if exp_item[identity_key] == actual_item[identity_key]:
+                            self.key_by_key_validator(actual_item, exp_item, ignored_keys, unmatched_keys_list,
+                                                      **kwargs)
+                            self.generate_unmatched_keys_error_message(unmatched_keys_list)
                             break
+                        elif actual_response_dict[-1] == actual_item:
+                            zoomba.fail('Item was not within the response:\n' + str(exp_item))
+                            return
+                        else:
+                            continue
+                    except KeyError:
+                        zoomba.fail('KeyError: "' + identity_key + '" Key was not in the response')
+                        break
         else:
             zoomba.fail("The Actual Response is Empty.")
 
@@ -217,16 +216,15 @@ class APILibrary(object):
                                 "\nExpected: " + expected_response[expected_key] +\
                                 "\nActual: " + actual_response_dict[expected_key])
             return
-        elif isinstance(actual_response_dict, list):
-            for expected_key in key_list:
-                if expected_key not in actual_response_dict[0]:
-                    zoomba.fail("The response does not contain the key '" + expected_key + "'")
-                    continue
-                if actual_response_dict[0][expected_key] != expected_response[0][expected_key]:
-                    zoomba.fail("The value for the key '" + expected_key + "' doesn't match the response:" + \
-                                "\nExpected: " + expected_response[0][expected_key] + \
-                                "\nActual: " + actual_response_dict[0][expected_key])
-            return
+        for expected_key in key_list:
+            if expected_key not in actual_response_dict[0]:
+                zoomba.fail("The response does not contain the key '" + expected_key + "'")
+                continue
+            if actual_response_dict[0][expected_key] != expected_response[0][expected_key]:
+                zoomba.fail("The value for the key '" + expected_key + "' doesn't match the response:" + \
+                            "\nExpected: " + expected_response[0][expected_key] + \
+                            "\nActual: " + actual_response_dict[0][expected_key])
+        return
 
     def validate_response_contains_correct_number_of_items(self, json_actual_response, number_of_items):
         """ This keyword is used to validate the number of returned items on Request responses from an API.\n

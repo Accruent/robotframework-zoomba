@@ -34,9 +34,9 @@ class _ObjectNamespacePlugin(DocumentPlugin):
             for x in range(number_of_types):
                 end_type = context.document.find(b'"', start_location+len(b'type="'))
                 if b':' not in context.document[start_location:end_type]:
-                    changeType = context.document[start_location:end_type]
-                    changeType = changeType.replace(b'"', b'"tns:')
-                    context.document = context.document[:start_location] + changeType + context.document[end_type:]
+                    change_type = context.document[start_location:end_type]
+                    change_type = change_type.replace(b'"', b'"tns:')
+                    context.document = context.document[:start_location] + change_type + context.document[end_type:]
                 start_location = context.document.find(b'type="', start_location+1)
 
 
@@ -122,16 +122,16 @@ class SOAPLibrary(object):
         return received
 
     @staticmethod
-    def create_wsdl_objects(type=None, object_dict=None):
+    def create_wsdl_objects(wsdl_type=None, object_dict=None):
         """ Create Wsdl Objects. This Keyword utilizes the WSDL to create a WSDL object based on the information
             provided.\n
-            type: (string) Wsdl object to be created.\n
+            wsdl_type: (string) Wsdl object to be created.\n
             object_dict: (dict) Python Dictionary containing values and nested dictionaries with construction similar to
             wsdl defined objects.\n
             return: (response object) Returns the SOAP client object.\n
         """
         client = BuiltIn().get_library_instance("SudsLibrary")._client()
-        request_object = client.factory.create(type)
+        request_object = client.factory.create(wsdl_type)
         _build_wsdl_objects(client, request_object, object_dict)
         return request_object
 
