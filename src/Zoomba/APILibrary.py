@@ -166,16 +166,8 @@ class APILibrary(object):
             return
         if isinstance(actual_response_dict, list) and actual_response_dict:
             if full_list_validation:
-                if actual_response_dict == expected_response_dict:
-                    return
-                for actual_item, expected_item in zip(actual_response_dict, expected_response_dict):
-                    self.key_by_key_validator(actual_item, expected_item, ignored_keys, unmatched_keys_list,
-                                              **kwargs)
-                if unmatched_keys_list:
-                    unmatched_keys_list.append(("------------------\n" + "Full List Breakdown:",
-                                                "Expected: " + str(expected_response_dict),
-                                                "Actual: " + str(actual_response_dict)))
-                    self.generate_unmatched_keys_error_message(unmatched_keys_list)
+                self.full_list_validation(actual_response_dict, expected_response_dict, unmatched_keys_list,
+                                                     ignored_keys, **kwargs)
                 return
             for exp_item in expected_response_dict:
                 for actual_item in actual_response_dict:
@@ -403,6 +395,20 @@ class APILibrary(object):
         if unmatched_keys_list is None:
             return
         _unmatched_list_check(unmatched_keys_list, current_unmatched_length, key)
+
+    def full_list_validation(self, actual_response_dict, expected_response_dict, unmatched_keys_list,
+                                                     ignored_keys=None, **kwargs):
+        if actual_response_dict == expected_response_dict:
+            return
+        for actual_item, expected_item in zip(actual_response_dict, expected_response_dict):
+            self.key_by_key_validator(actual_item, expected_item, ignored_keys, unmatched_keys_list,
+                                      **kwargs)
+        if unmatched_keys_list:
+            unmatched_keys_list.append(("------------------\n" + "Full List Breakdown:",
+                                        "Expected: " + str(expected_response_dict),
+                                        "Actual: " + str(actual_response_dict)))
+            self.generate_unmatched_keys_error_message(unmatched_keys_list)
+        return
 
 
 def _unmatched_list_check(unmatched_keys_list, current_unmatched_length, key, index=None, parent_key=None,
