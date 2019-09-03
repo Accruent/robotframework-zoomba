@@ -166,9 +166,8 @@ class APILibrary(object):
             return
         if isinstance(actual_response_dict, list) and actual_response_dict:
             if full_list_validation:
-                self.full_list_validation(actual_response_dict, expected_response_dict, unmatched_keys_list,
-                                                     ignored_keys, **kwargs)
-                return
+                return self.full_list_validation(actual_response_dict, expected_response_dict, unmatched_keys_list,
+                                                 ignored_keys, **kwargs)
             for exp_item in expected_response_dict:
                 for actual_item in actual_response_dict:
                     try:
@@ -317,7 +316,8 @@ class APILibrary(object):
         if expected_utc and actual_utc:
             self.date_comparator(expected_utc, actual_utc, key, unmatched_keys_list, **kwargs)
 
-    def date_comparator(self, expected_date, actual_date, key, unmatched_keys_list, margin_type="minutes", margin_amt=10):
+    def date_comparator(self, expected_date, actual_date, key, unmatched_keys_list, margin_type="minutes",
+                        margin_amt=10):
         """This method compares two date values, given a certain margin type(minutes, seconds, etc),
         and a margin amount (int). If the two dates are not within the margin amount for the margin type, I.E. within
         10 minutes of difference, it asserts False, and returns an error message.
@@ -350,7 +350,8 @@ class APILibrary(object):
                     keys_error_msg += str(key_error) + "\n"
             zoomba.fail(keys_error_msg + "\nPlease see differing value(s)")
 
-    def _key_by_key_list(self, key, value, actual_dictionary, unmatched_keys_list=None, ignored_keys=None, parent_key=None, **kwargs):
+    def _key_by_key_list(self, key, value, actual_dictionary, unmatched_keys_list=None, ignored_keys=None,
+                         parent_key=None, **kwargs):
         for index, item in enumerate(value):
             if isinstance(item, str):
                 if value != actual_dictionary[key]:
@@ -374,7 +375,8 @@ class APILibrary(object):
                     _unmatched_list_check(unmatched_keys_list, current_unmatched_length,
                                           key, index, parent_key, is_list=True)
 
-    def _key_by_key_dict(self, key, value, actual_dictionary, expected_dictionary, unmatched_keys_list=None, ignored_keys=None, **kwargs):
+    def _key_by_key_dict(self, key, value, actual_dictionary, expected_dictionary, unmatched_keys_list=None,
+                         ignored_keys=None, **kwargs):
         try:
             if len(value) != len(actual_dictionary[key]):
                 zoomba.fail("Dicts do not match:" + \
@@ -396,8 +398,8 @@ class APILibrary(object):
             return
         _unmatched_list_check(unmatched_keys_list, current_unmatched_length, key)
 
-    def full_list_validation(self, actual_response_dict, expected_response_dict, unmatched_keys_list,
-                                                     ignored_keys=None, **kwargs):
+    def full_list_validation(self, actual_response_dict, expected_response_dict, unmatched_keys_list, ignored_keys=None,
+                             **kwargs):
         if actual_response_dict == expected_response_dict:
             return
         for actual_item, expected_item in zip(actual_response_dict, expected_response_dict):
