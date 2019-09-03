@@ -269,6 +269,63 @@ class APILibrary(object):
                         "\nActual length: " + str(len(actual_dictionary)) +\
                         "\nExpected length " + str(len(expected_dictionary)))
             return
+        self._key_by_key_check(expected_dictionary, actual_dictionary, unmatched_keys_list, ignored_keys, parent_key, **kwargs)
+        return True
+
+    def date_string_comparator(self, expected_date, actual_date, key, unmatched_keys_list, **kwargs):
+        """This Method is used to validate a single property on a JSON object of the Date Type.
+        It Validates for any the following Date Formats:
+        %Y-%m-%dT%H:%M:%S, %Y-%m-%dT%H:%M:%SZ, %Y-%m-%dT%H:%M:%S.%f, %Y-%m-%dT%H:%M:%S.%fZ
+
+        expected_date: (string) The Expected date string the key being validated.\n
+        actual_date: (string) The Actual date string of the key being validated.\n
+        key: (string) The key being validated.\n
+        unmatched_keys_list (list): List of keys that are unvalidated - to be passed to error handling method.
+        **kwargs: (dict) Currently supported kwargs are margin_type and margin_amt\n
+        margin_type: (string) The type of unit of time to be used to generate a delta for the date comparisons.\n
+        margin_amt: (string/#) The amount of units specified in margin_type to allot for difference between dates.\n
+        """
+        if expected_date == actual_date:
+            return
+        expected_utc = _date_format(expected_date, key, unmatched_keys_list, "Expected")
+        actual_utc = _date_format(actual_date, key, unmatched_keys_list, "Actual")
+        if expected_utc and actual_utc:
+            self.date_comparator(expected_utc, actual_utc, key, unmatched_keys_list, **kwargs)
+
+    def date_comparator(self, expected_date, actual_date, key, unmatched_keys_list, margin_type="minutes", margin_amt=10):
+        """This method compares two date values, given a certain margin type(minutes, seconds, etc),
+        and a margin amount (int). If the two dates are not within the margin amount for the margin type, I.E. within
+        10 minutes of difference, it asserts False, and returns an error message.
+
+        expected_date: (date) The Expected date value of the key being validated.\n
+        actual_date: (date) The Actual date value of the key being validated.\n
+        key: (string) The key being validated.\n
+        unmatched_keys_list: (list) List of Date keys that are not within the accepted margin_type
+        and margin_amt resolution\n
+        margin_type: (string) The type of unit of time to be used to generate a delta for the date comparisons.\n
+        margin_amt: (integer) The amount of units specified in margin_type to allot for difference between dates.\n
+        """
+        arg_dict = {margin_type: int(margin_amt)}
+        margin = datetime.timedelta(**arg_dict)
+        if expected_date - margin <= actual_date <= expected_date + margin:
+            return
+        unmatched_keys_list.append(("------------------\n" + "Dates Not Close Enough\nKey: " + str(key),
+                                    "Expected: " + str(expected_date),
+                                    "Actual: " + str(actual_date)))
+
+    def generate_unmatched_keys_error_message(self, unmatched_keys):
+        """ This method is only used as an internal call from other validating methods to generate an error string
+            containing every unmatched key when a validation fails.\n
+            unmatchedKeys: (array of key/value pairs) An array containing the unmatched keys during a validation.\n
+        """
+        if unmatched_keys:
+            keys_error_msg = "Key(s) Did Not Match:\n"
+            for key_error_tuple in unmatched_keys:
+                for key_error in key_error_tuple:
+                    keys_error_msg += str(key_error) + "\n"
+            zoomba.fail(keys_error_msg + "\nPlease see differing value(s)")
+
+    def _key_by_key_check(self, expected_dictionary, actual_dictionary, unmatched_keys_list=None, ignored_keys=None, parent_key=None, **kwargs):
         for key, value in expected_dictionary.items():
             if ignored_keys and key in ignored_keys:
                 continue
@@ -329,7 +386,7 @@ class APILibrary(object):
                 elif isinstance(expected_dictionary[key], str) and not expected_dictionary[key].isdigit():
                     try:
                         parse(expected_dictionary[key])
-                        self.date_string_comparator(value, actual_dictionary[key], key, unmatched_keys_list, **kwargs)
+                        APILibrary.date_string_comparator(value, actual_dictionary[key], key, unmatched_keys_list, **kwargs)
                     except (ValueError, TypeError):
                         if value == actual_dictionary[key]:
                             continue
@@ -342,60 +399,6 @@ class APILibrary(object):
                 else:
                     unmatched_keys_list.append(("------------------\n" + "Key: " + str(key), "Expected: " + str(value),
                                                 "Actual: " + str(actual_dictionary[key])))
-        return True
-
-    def date_string_comparator(self, expected_date, actual_date, key, unmatched_keys_list, **kwargs):
-        """This Method is used to validate a single property on a JSON object of the Date Type.
-        It Validates for any the following Date Formats:
-        %Y-%m-%dT%H:%M:%S, %Y-%m-%dT%H:%M:%SZ, %Y-%m-%dT%H:%M:%S.%f, %Y-%m-%dT%H:%M:%S.%fZ
-
-        expected_date: (string) The Expected date string the key being validated.\n
-        actual_date: (string) The Actual date string of the key being validated.\n
-        key: (string) The key being validated.\n
-        unmatched_keys_list (list): List of keys that are unvalidated - to be passed to error handling method.
-        **kwargs: (dict) Currently supported kwargs are margin_type and margin_amt\n
-        margin_type: (string) The type of unit of time to be used to generate a delta for the date comparisons.\n
-        margin_amt: (string/#) The amount of units specified in margin_type to allot for difference between dates.\n
-        """
-        if expected_date == actual_date:
-            return
-        expected_utc = _date_format(expected_date, key, unmatched_keys_list, "Expected")
-        actual_utc = _date_format(actual_date, key, unmatched_keys_list, "Actual")
-        if expected_utc and actual_utc:
-            self.date_comparator(expected_utc, actual_utc, key, unmatched_keys_list, **kwargs)
-
-    def date_comparator(self, expected_date, actual_date, key, unmatched_keys_list, margin_type="minutes", margin_amt=10):
-        """This method compares two date values, given a certain margin type(minutes, seconds, etc),
-        and a margin amount (int). If the two dates are not within the margin amount for the margin type, I.E. within
-        10 minutes of difference, it asserts False, and returns an error message.
-
-        expected_date: (date) The Expected date value of the key being validated.\n
-        actual_date: (date) The Actual date value of the key being validated.\n
-        key: (string) The key being validated.\n
-        unmatched_keys_list: (list) List of Date keys that are not within the accepted margin_type
-        and margin_amt resolution\n
-        margin_type: (string) The type of unit of time to be used to generate a delta for the date comparisons.\n
-        margin_amt: (integer) The amount of units specified in margin_type to allot for difference between dates.\n
-        """
-        arg_dict = {margin_type: int(margin_amt)}
-        margin = datetime.timedelta(**arg_dict)
-        if expected_date - margin <= actual_date <= expected_date + margin:
-            return
-        unmatched_keys_list.append(("------------------\n" + "Dates Not Close Enough\nKey: " + str(key),
-                                    "Expected: " + str(expected_date),
-                                    "Actual: " + str(actual_date)))
-
-    def generate_unmatched_keys_error_message(self, unmatched_keys):
-        """ This method is only used as an internal call from other validating methods to generate an error string
-            containing every unmatched key when a validation fails.\n
-            unmatchedKeys: (array of key/value pairs) An array containing the unmatched keys during a validation.\n
-        """
-        if unmatched_keys:
-            keys_error_msg = "Key(s) Did Not Match:\n"
-            for key_error_tuple in unmatched_keys:
-                for key_error in key_error_tuple:
-                    keys_error_msg += str(key_error) + "\n"
-            zoomba.fail(keys_error_msg + "\nPlease see differing value(s)")
 
 
 def _unmatched_list_check(unmatched_keys_list, current_unmatched_length, key, index=None, parent_key=None,
