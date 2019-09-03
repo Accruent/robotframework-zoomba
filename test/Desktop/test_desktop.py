@@ -1,7 +1,7 @@
 from Zoomba.DesktopLibrary import DesktopLibrary
 import unittest
 from appium import webdriver
-import os
+import subprocess
 from unittest.mock import MagicMock, patch
 from webdriverremotemock import WebdriverRemoteMock
 from selenium.webdriver.common.action_chains import ActionChains
@@ -20,7 +20,7 @@ class TestInternal(unittest.TestCase):
 
     def test_open_application_splash_catch(self):
         dl = DesktopLibrary()
-        os.startfile = MagicMock(return_value=True)
+        subprocess.call = MagicMock()
         webdriver.Remote = WebdriverRemoteMock
         self.assertFalse(dl._cache.current)
         dl.open_application('remote_url', window_name='test', app='testApp')
@@ -363,4 +363,3 @@ class TestInternal(unittest.TestCase):
         DesktopLibrary.open_application(mock_desk, 'remote_url')
         DesktopLibrary.send_keys_to_element(mock_desk, 'some_locator')
         fail.assert_called_with('No key arguments specified.')
-
