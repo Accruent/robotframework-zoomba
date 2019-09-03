@@ -4,7 +4,7 @@ import sys
 from os.path import join, dirname
 import version
 
-sys.path.append(join(dirname(__file__), 'src'))
+# sys.path.append(join(dirname(__file__), 'src'))
 try:
     from setuptools import setup
 except ImportError:

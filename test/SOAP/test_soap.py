@@ -1,7 +1,3 @@
-import os
-import sys
-sys.path.insert(0, os.path.abspath( os.path.join(os.path.dirname(__file__), '../../src/') ))
-
 from Zoomba.SOAPLibrary import SOAPLibrary
 from Zoomba.SOAPLibrary import _ObjectNamespacePlugin
 from Zoomba.SOAPLibrary import _wsdl_sub_builder, _build_dict_from_response, _build_wsdl_objects
@@ -10,6 +6,7 @@ from unittest.mock import patch
 from unittest.mock import Mock
 from unittest.mock import PropertyMock
 from suds import WebFault
+
 
 class TestObjectNamespace(unittest.TestCase):
 
@@ -48,6 +45,7 @@ class TestObjectNamespace(unittest.TestCase):
         assert item.document == b'<stuff xmlns:tns="string" targetNamespace="string" ' \
                                 b'xmlns="other"><something type="tns:one">'
 
+
 class TestSoapLibrary(unittest.TestCase):
 
     @patch('Zoomba.SOAPLibrary._build_dict_from_response')
@@ -75,12 +73,6 @@ class TestSoapLibrary(unittest.TestCase):
         mock_soap = Mock()
         SOAPLibrary.create_soap_session_and_fix_wsdl(mock_soap, "host", "endpoint", "alias", set_location="place")
         builtIn.return_value.get_library_instance.return_value.set_location.assert_called_with("place")
-
-    @patch('Zoomba.SOAPLibrary.BuiltIn')
-    def test_create_soap_session_simple(self, built):
-        mock_soap = Mock()
-        SOAPLibrary.create_soap_session(mock_soap, "host", "endpoint")
-        built.return_value.get_library_instance.return_value.create_soap_client.assert_called_with("hostendpoint?WSDL")
 
     @patch('Zoomba.SOAPLibrary.BuiltIn')
     def test_create_soap_session_simple(self, built):

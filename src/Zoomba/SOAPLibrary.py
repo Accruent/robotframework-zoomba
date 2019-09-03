@@ -148,9 +148,10 @@ def _build_dict_from_response(soap_response=None):
     """
     try:
         response_dictionary = dict(soap_response)
-    except:
-        zoomba.log(message='Argument Passed Was Not Iterable', level='INFO')
-        return soap_response
+    except BaseException as ex:
+        if ex:
+            zoomba.log(message='Argument Passed Was Not Iterable', level='INFO')
+            return soap_response
     new_response = {}
 
     for index in range(len(response_dictionary)):
@@ -184,8 +185,9 @@ def _build_wsdl_objects(client=None, request_object=None, object_dict=None):
             try:
                 temp_object = _wsdl_sub_builder(client, value)
                 request_object.__setattr__(key, temp_object)
-            except:
-                zoomba.log('Failed to define wsdl_object_type for child object. [' + key + ']', level='ERROR')
+            except BaseException as ex:
+                if ex:
+                    zoomba.log('Failed to define wsdl_object_type for child object. [' + key + ']', level='ERROR')
         elif isinstance(value, list):
             temp_list = []
             for item in value:
