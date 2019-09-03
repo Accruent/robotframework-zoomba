@@ -308,7 +308,7 @@ class APILibrary(object):
                 elif isinstance(expected_dictionary[key], str) and not expected_dictionary[key].isdigit():
                     try:
                         parse(expected_dictionary[key])
-                        APILibrary.date_string_comparator(value, actual_dictionary[key], key, unmatched_keys_list, **kwargs)
+                        self.date_string_comparator(value, actual_dictionary[key], key, unmatched_keys_list, **kwargs)
                     except (ValueError, TypeError):
                         if value == actual_dictionary[key]:
                             continue
