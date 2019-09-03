@@ -164,7 +164,7 @@ class APILibrary(object):
                                       unmatched_keys_list, **kwargs)
             self.generate_unmatched_keys_error_message(unmatched_keys_list)
             return
-        elif isinstance(actual_response_dict, list) and actual_response_dict:
+        if isinstance(actual_response_dict, list) and actual_response_dict:
             if full_list_validation:
                 if actual_response_dict == expected_response_dict:
                     return
