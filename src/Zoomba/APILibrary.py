@@ -157,7 +157,7 @@ class APILibrary(object):
             return
         actual_response_dict = json.loads(json_actual_response)
         unmatched_keys_list = []
-        if (not isinstance(actual_response_dict, list)) and actual_response_dict:
+        if not isinstance(actual_response_dict, list) and actual_response_dict:
             if actual_response_dict == expected_response_dict:
                 return
             self.key_by_key_validator(actual_response_dict, expected_response_dict, ignored_keys,
