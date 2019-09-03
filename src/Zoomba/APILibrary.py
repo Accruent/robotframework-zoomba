@@ -388,9 +388,7 @@ class APILibrary(object):
                         "\nExpected: " + str(value) + \
                         "\nActual is not a valid dictionary.")
             return
-        if unmatched_keys_list is None:
-            current_unmatched_length = 0
-        else:
+        if unmatched_keys_list is not None:
             current_unmatched_length = len(unmatched_keys_list)
         self.key_by_key_validator(actual_dictionary[key], expected_dictionary[key],
                                   ignored_keys, unmatched_keys_list, parent_key=key, **kwargs)
