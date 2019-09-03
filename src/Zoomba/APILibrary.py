@@ -155,31 +155,28 @@ class APILibrary(object):
         if not json_actual_response:
             zoomba.fail("The Actual Response is Empty.")
             return
-        else:
-            actual_response_dict = json.loads(json_actual_response)
-            unmatched_keys_list = []
-        if type(actual_response_dict) is not list and actual_response_dict:
+        actual_response_dict = json.loads(json_actual_response)
+        unmatched_keys_list = []
+        if not isinstance(actual_response_dict, list) and actual_response_dict:
             if actual_response_dict == expected_response_dict:
                 return
-            else:
-                self.key_by_key_validator(actual_response_dict, expected_response_dict, ignored_keys,
-                                          unmatched_keys_list, **kwargs)
-                self.generate_unmatched_keys_error_message(unmatched_keys_list)
-                return
-        elif type(actual_response_dict) is list and actual_response_dict:
+            self.key_by_key_validator(actual_response_dict, expected_response_dict, ignored_keys,
+                                      unmatched_keys_list, **kwargs)
+            self.generate_unmatched_keys_error_message(unmatched_keys_list)
+            return
+        elif isinstance(actual_response_dict, list) and actual_response_dict:
             if full_list_validation:
                 if actual_response_dict == expected_response_dict:
                     return
-                else:
-                    for actual_item, expected_item in zip(actual_response_dict, expected_response_dict):
-                        self.key_by_key_validator(actual_item, expected_item, ignored_keys, unmatched_keys_list,
-                                                  **kwargs)
-                    if len(unmatched_keys_list) > 0:
-                        unmatched_keys_list.append(("------------------\n" + "Full List Breakdown:",
-                                                    "Expected: " + str(expected_response_dict),
-                                                    "Actual: " + str(actual_response_dict)))
-                        self.generate_unmatched_keys_error_message(unmatched_keys_list)
-                    return
+                for actual_item, expected_item in zip(actual_response_dict, expected_response_dict):
+                    self.key_by_key_validator(actual_item, expected_item, ignored_keys, unmatched_keys_list,
+                                              **kwargs)
+                if unmatched_keys_list:
+                    unmatched_keys_list.append(("------------------\n" + "Full List Breakdown:",
+                                                "Expected: " + str(expected_response_dict),
+                                                "Actual: " + str(actual_response_dict)))
+                    self.generate_unmatched_keys_error_message(unmatched_keys_list)
+                return
             else:
                 for exp_item in expected_response_dict:
                     for actual_item in actual_response_dict:
@@ -210,7 +207,7 @@ class APILibrary(object):
             return: There is no actual returned output, other than error messages when comparisons fail.\n
         """
         actual_response_dict = json.loads(json_actual_response)
-        if type(actual_response_dict) is not list:
+        if not isinstance(actual_response_dict, list):
             for expected_key in key_list:
                 if expected_key not in actual_response_dict:
                     zoomba.fail("The response does not contain the key '" + expected_key + "'")
@@ -220,7 +217,7 @@ class APILibrary(object):
                                 "\nExpected: " + expected_response[expected_key] +\
                                 "\nActual: " + actual_response_dict[expected_key])
             return
-        elif type(actual_response_dict) is list:
+        elif isinstance(actual_response_dict, list):
             for expected_key in key_list:
                 if expected_key not in actual_response_dict[0]:
                     zoomba.fail("The response does not contain the key '" + expected_key + "'")
@@ -238,17 +235,17 @@ class APILibrary(object):
             return: There is no actual returned output, other than error messages when comparisons fail.\n
         """
         actual_response_dict = json.loads(json_actual_response)
-        if type(number_of_items) is str:
+        if isinstance(number_of_items, str):
             number_of_items = number_of_items.upper()
             if number_of_items == "IGNORE":
                 return True
-        elif type(number_of_items) is int:
+        elif isinstance(number_of_items, int):
             pass
         else:
             zoomba.fail("Did not pass number or string value, function expects a number or string 'IGNORE'.")
             return
 
-        if type(actual_response_dict) is list:
+        if isinstance(actual_response_dict, list):
             if len(actual_response_dict) != number_of_items:
                 zoomba.fail('API is returning ' + str(
                     len(actual_response_dict)) + ' instead of the expected ' + str(number_of_items) + ' result(s).')
@@ -364,11 +361,10 @@ class APILibrary(object):
         """
         if expected_date == actual_date:
             return
-        else:
-            expected_utc = _date_format(expected_date, key, unmatched_keys_list, "Expected")
-            actual_utc = _date_format(actual_date, key, unmatched_keys_list, "Actual")
-            if expected_utc and actual_utc:
-                self.date_comparator(expected_utc, actual_utc, key, unmatched_keys_list, **kwargs)
+        expected_utc = _date_format(expected_date, key, unmatched_keys_list, "Expected")
+        actual_utc = _date_format(actual_date, key, unmatched_keys_list, "Actual")
+        if expected_utc and actual_utc:
+            self.date_comparator(expected_utc, actual_utc, key, unmatched_keys_list, **kwargs)
 
     def date_comparator(self, expected_date, actual_date, key, unmatched_keys_list, margin_type="minutes", margin_amt=10):
         """This method compares two date values, given a certain margin type(minutes, seconds, etc),
@@ -385,19 +381,18 @@ class APILibrary(object):
         """
         arg_dict = {margin_type: int(margin_amt)}
         margin = datetime.timedelta(**arg_dict)
-        if expected_date - margin <= actual_date and actual_date <= expected_date + margin:
+        if expected_date - margin <= actual_date <= expected_date + margin:
             return
-        else:
-            unmatched_keys_list.append(("------------------\n" + "Dates Not Close Enough\nKey: " + str(key),
-                                        "Expected: " + str(expected_date),
-                                        "Actual: " + str(actual_date)))
+        unmatched_keys_list.append(("------------------\n" + "Dates Not Close Enough\nKey: " + str(key),
+                                    "Expected: " + str(expected_date),
+                                    "Actual: " + str(actual_date)))
 
     def generate_unmatched_keys_error_message(self, unmatched_keys):
         """ This method is only used as an internal call from other validating methods to generate an error string
             containing every unmatched key when a validation fails.\n
             unmatchedKeys: (array of key/value pairs) An array containing the unmatched keys during a validation.\n
         """
-        if len(unmatched_keys) > 0:
+        if unmatched_keys:
             keys_error_msg = "Key(s) Did Not Match:\n"
             for key_error_tuple in unmatched_keys:
                 for key_error in key_error_tuple:
