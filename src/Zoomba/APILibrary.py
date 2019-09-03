@@ -402,8 +402,7 @@ class APILibrary(object):
                                   ignored_keys, unmatched_keys_list, parent_key=key, **kwargs)
         if unmatched_keys_list is None:
             return
-        else:
-            _unmatched_list_check(unmatched_keys_list, current_unmatched_length, key)
+        _unmatched_list_check(unmatched_keys_list, current_unmatched_length, key)
 
 
 def _unmatched_list_check(unmatched_keys_list, current_unmatched_length, key, index=None, parent_key=None,
