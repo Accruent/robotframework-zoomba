@@ -254,29 +254,3 @@ class GUILibrary(SeleniumLibrary):
         """
         truncated_string = string[0:number_of_characters]
         return truncated_string
-
-    @keyword("Drag And Drop By JS")
-    def drag_and_drop_by_js(self, source, target, load_jquery=True):
-        """Loads a JS helper function to simulate a drag and drop event. jQuery is necessary for the function to work.\n
-        This method is a workaround for the Selenium 2 Library issue present in this issue:
-        https://github.com/seleniumhq/selenium-google-code-issue-archive/issues/3604
-
-        source: (string) Source element to be given as xpath.\n
-        target: (string) Target element to be given as xpath.\n
-        load_jquery: (boolean) When set to True loads jQuery library onto the page via url.
-
-        Examples:
-        | Drag And Drop by JS | source | target | | # Move source over target. |
-        | Drag And Drop by JS | source | target | False | # Move source over target. (No JQuery is loaded to the page) |
-        """
-        driver = self.driver
-        driver.set_script_timeout(30)
-
-        self.page_should_contain_element(source)
-        self.page_should_contain_element(target)
-        js = "(function( $ ) {$.fn.simulateDragDrop = function(options) {return this.each(function() {new $.simulateDragDrop(this, options); }); }; $.simulateDragDrop = function(elem, options) {this.options = options; this.simulateEvent(elem, options); }; $.extend($.simulateDragDrop.prototype, {simulateEvent: function(elem, options) {/*Simulating drag start*/ var type = 'dragstart'; var event = this.createEvent(type); this.dispatchEvent(elem, type, event); /*Simulating drop*/ type = 'drop'; var dropEvent = this.createEvent(type, {}); dropEvent.dataTransfer = event.dataTransfer; this.dispatchEvent($(options.dropTarget)[0], type, dropEvent); /*Simulating drag end*/ type = 'dragend'; var dragEndEvent = this.createEvent(type, {}); dragEndEvent.dataTransfer = event.dataTransfer; this.dispatchEvent(elem, type, dragEndEvent); }, createEvent: function(type) {var event = document.createEvent('CustomEvent'); event.initCustomEvent(type, true, true, null); event.dataTransfer = {data: {}, setData: function(type, val){this.data[type] = val; }, getData: function(type){return this.data[type]; } }; return event; }, dispatchEvent: function(elem, type, event) {if(elem.dispatchEvent) {elem.dispatchEvent(event); }else if( elem.fireEvent ) {elem.fireEvent('on'+type, event); } } }); })(jQuery);$(document.evaluate(arguments[0], document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue) .simulateDragDrop({ dropTarget: document.evaluate(arguments[1], document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue});"
-        load_jquery_js = "/** dynamically load jQuery */ (function(jqueryUrl, callback) { if (typeof jqueryUrl != 'string') { jqueryUrl = 'https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'; } if (typeof jQuery == 'undefined') { var script = document.createElement('script'); var head = document.getElementsByTagName('head')[0]; var done = false; script.onload = script.onreadystatechange = (function() { if (!done && (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete')) { done = true; script.onload = script.onreadystatechange = null; head.removeChild(script); callback(); } }); script.src = jqueryUrl; head.appendChild(script); } else { callback(); } })(arguments[0], arguments[arguments.length - 1]);"
-
-        if load_jquery:
-            driver.execute_async_script(load_jquery_js, None)
-        driver.execute_script(js, source, target)
