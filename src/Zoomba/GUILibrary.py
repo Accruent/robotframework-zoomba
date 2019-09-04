@@ -168,8 +168,9 @@ class GUILibrary(SeleniumLibrary):
         """
         try:
             height = self.execute_javascript("return window.outerHeight")
-        except:  # lgtm [py/catch-base-exception]
-            height = 20000
+        except BaseException as ex:  # lgtm [py/catch-base-exception]
+            if ex:
+                height = 20000
         self.execute_javascript(f"window.scrollTo(0,{height})")
 
     @keyword("Wait Until Javascript Is Complete")
