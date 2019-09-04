@@ -23,21 +23,21 @@ class _ObjectNamespacePlugin(DocumentPlugin):
         """
         if self.defaultNamespace is None:
             start = context.document.find(b'targetNamespace')
-            firstQuote = int(context.document.find(b'"', start)) + 1
-            secondQuote = int(context.document.find(b'"', firstQuote))
-            self.defaultNamespace = context.document[firstQuote:secondQuote]
+            first_quote = int(context.document.find(b'"', start)) + 1
+            second_quote = int(context.document.find(b'"', first_quote))
+            self.defaultNamespace = context.document[first_quote:second_quote]
         elif b'tns' not in context.document or b'targetNamespace' not in context.document:
-            documentSplit = context.document.split(b'xmlns', 1)
-            context.document = documentSplit[0]+b'xmlns:tns="'+self.defaultNamespace+b'" targetNamespace="' + self.defaultNamespace + b'" xmlns'+documentSplit[1]
-            numberOfTypes = context.document.count(b'type="')
-            startLocation = context.document.find(b'type="')
-            for x in range(numberOfTypes):
-                endType = context.document.find(b'"', startLocation+len(b'type="'))
-                if b':' not in context.document[startLocation:endType]:
-                    changeType = context.document[startLocation:endType]
-                    changeType = changeType.replace(b'"', b'"tns:')
-                    context.document = context.document[:startLocation] + changeType + context.document[endType:]
-                startLocation = context.document.find(b'type="', startLocation+1)
+            document_split = context.document.split(b'xmlns', 1)
+            context.document = document_split[0]+b'xmlns:tns="'+self.defaultNamespace+b'" targetNamespace="' + self.defaultNamespace + b'" xmlns'+document_split[1]
+            number_of_types = context.document.count(b'type="')
+            start_location = context.document.find(b'type="')
+            for x in range(number_of_types):
+                end_type = context.document.find(b'"', start_location+len(b'type="'))
+                if b':' not in context.document[start_location:end_type]:
+                    change_type = context.document[start_location:end_type]
+                    change_type = change_type.replace(b'"', b'"tns:')
+                    context.document = context.document[:start_location] + change_type + context.document[end_type:]
+                start_location = context.document.find(b'type="', start_location+1)
 
 
 class SOAPLibrary(object):
@@ -47,7 +47,8 @@ class SOAPLibrary(object):
 
     """
 
-    def create_soap_session_and_fix_wsdl(self, host=None, endpoint=None, alias=None, **kwargs):
+    @staticmethod
+    def create_soap_session_and_fix_wsdl(host=None, endpoint=None, alias=None, **kwargs):
         """Create Soap Session. This Keyword utilizes the WSDL and directly accesses calls from sudsLibrary.\n
             host: (string) The host url.\n
             endpoint: (string) SOAP API endpoint containing the actions to be referenced.\n
@@ -63,7 +64,8 @@ class SOAPLibrary(object):
         if 'set_location' in kwargs:
             suds_library.set_location(kwargs['set_location'])
 
-    def create_soap_session(self, host=None, endpoint=None, alias=None, **kwargs):
+    @staticmethod
+    def create_soap_session(host=None, endpoint=None, alias=None, **kwargs):
         """ Create Soap Session. This Keyword utilizes the WSDL to create a soap client.\n
             host: (string) The host url.\n
             endpoint: (string) SOAP API endpoint containing the actions to be referenced.\n
@@ -94,7 +96,8 @@ class SOAPLibrary(object):
         else:
             self.create_soap_session(host, endpoint, alias, set_location=set_location)
 
-    def call_soap_method_with_list_object(self, action=None, soap_object=None):
+    @staticmethod
+    def call_soap_method_with_list_object(action=None, soap_object=None):
         """ Call Soap Method. Calls soap method with list object \n
             action: (string) SOAP Action to be called.\n
             soap_object: (list) Soap Object in list format, list must be ordered wrt schema\n
@@ -103,7 +106,8 @@ class SOAPLibrary(object):
         response = suds_library.call_soap_method(action, *soap_object)
         return response
 
-    def call_soap_method_with_object(self, action=None, **soap_object):
+    @staticmethod
+    def call_soap_method_with_object(action=None, **soap_object):
         """ Call Soap Method with dictionary object. Calls soap method \n
             action: (string) SOAP Action to be called.\n
             soap_object: (dict) Soap Object in dict format, dict must contain all required parts of schema object. \n
@@ -111,27 +115,28 @@ class SOAPLibrary(object):
         suds_library = BuiltIn().get_library_instance("SudsLibrary")
         client = suds_library._client()
         method = getattr(client.service, action)
-        received = None
         try:
             received = method(**soap_object)
         except WebFault as e:
             received = e.fault
         return received
 
-    def create_wsdl_objects(self, type=None, object_dict=None):
+    @staticmethod
+    def create_wsdl_objects(wsdl_type=None, object_dict=None):
         """ Create Wsdl Objects. This Keyword utilizes the WSDL to create a WSDL object based on the information
             provided.\n
-            type: (string) Wsdl object to be created.\n
+            wsdl_type: (string) Wsdl object to be created.\n
             object_dict: (dict) Python Dictionary containing values and nested dictionaries with construction similar to
             wsdl defined objects.\n
             return: (response object) Returns the SOAP client object.\n
         """
         client = BuiltIn().get_library_instance("SudsLibrary")._client()
-        request_object = client.factory.create(type)
+        request_object = client.factory.create(wsdl_type)
         _build_wsdl_objects(client, request_object, object_dict)
         return request_object
 
-    def convert_soap_response_to_json(self, soap_response=None):
+    @staticmethod
+    def convert_soap_response_to_json(soap_response=None):
         """ Convert Soap Response To Dictionary: This keyword builds a dictionary from the sudsLibrary response\n
             json_actual_response: (request response object) The response from an API.\n
             return: There is no actual returned output, other than error messages when comparisons fail.\n
@@ -148,9 +153,10 @@ def _build_dict_from_response(soap_response=None):
     """
     try:
         response_dictionary = dict(soap_response)
-    except:
-        zoomba.log(message='Argument Passed Was Not Iterable', level='INFO')
-        return soap_response
+    except BaseException as ex:
+        if ex:
+            zoomba.log(message='Argument Passed Was Not Iterable', level='INFO')
+            return soap_response
     new_response = {}
 
     for index in range(len(response_dictionary)):
@@ -184,8 +190,9 @@ def _build_wsdl_objects(client=None, request_object=None, object_dict=None):
             try:
                 temp_object = _wsdl_sub_builder(client, value)
                 request_object.__setattr__(key, temp_object)
-            except:
-                zoomba.log('Failed to define wsdl_object_type for child object. [' + key + ']', level='ERROR')
+            except BaseException as ex:
+                if ex:
+                    zoomba.log('Failed to define wsdl_object_type for child object. [' + key + ']', level='ERROR')
         elif isinstance(value, list):
             temp_list = []
             for item in value:
