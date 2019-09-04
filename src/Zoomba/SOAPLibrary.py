@@ -153,10 +153,9 @@ def _build_dict_from_response(soap_response=None):
     """
     try:
         response_dictionary = dict(soap_response)
-    except BaseException as ex:
-        if ex:
-            zoomba.log(message='Argument Passed Was Not Iterable', level='INFO')
-            return soap_response
+    except:  # lgtm [py/catch-base-exception]
+        zoomba.log(message='Argument Passed Was Not Iterable', level='INFO')
+        return soap_response
     new_response = {}
 
     for index in range(len(response_dictionary)):
