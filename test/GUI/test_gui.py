@@ -173,15 +173,3 @@ class TestInternal(unittest.TestCase):
     def test_truncate_string_simple(self):
         mock_gui = Mock()
         assert GUILibrary.truncate_string(mock_gui, "string", 3) == "str"
-
-    def test_drag_and_drop_by_js_simple(self):
-        mock_gui = Mock()
-        GUILibrary.drag_and_drop_by_js(mock_gui, "source", "target", True)
-        mock_gui.driver.execute_async_script.assert_called()
-        mock_gui.driver.execute_script.assert_called()
-
-    def test_drag_and_drop_by_js_false(self):
-        mock_gui = Mock()
-        GUILibrary.drag_and_drop_by_js(mock_gui, "source", "target", False)
-        mock_gui.driver.execute_async_script.assert_not_called()
-        mock_gui.driver.execute_script.assert_called()
