@@ -185,4 +185,3 @@ class TestInternal(unittest.TestCase):
         GUILibrary.drag_and_drop_by_js(mock_gui, "source", "target", False)
         mock_gui.driver.execute_async_script.assert_not_called()
         mock_gui.driver.execute_script.assert_called()
-
