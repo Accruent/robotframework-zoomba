@@ -87,14 +87,6 @@ Truncate String Test
     ${actualTruncatedString2}=  truncate string     ${reallyLongTestString}    ${150}
     should be equal             ${reallyLongTestString}      ${actualTruncatedString2}
 
-Drag and Drop by JS Test
-    [Tags]          Broken
-    [Teardown]      Close All Browsers
-    Open Browser                        https://html5demos.com/drag/    browser=chrome
-    Maximize Browser Window
-    Drag and Drop by JS                 //a[@id='one']      //div[@id='bin']
-    Page Should Not Contain Element     //a[@id='one']
-
 Scroll To Bottom of Page Test
     [Teardown]      Close All Browsers
     Open Browser    http://www.google.com    browser=chrome
