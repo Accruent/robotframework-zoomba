@@ -66,7 +66,9 @@ class TestDates(unittest.TestCase):
 
     def test__date_format_unique_date_formats(self):
         date = datetime.datetime(2018, 5, 5, 5, 5, 5)
+        date_with_extra_ms = "2019-09-20T17:35:00.894400Z"
         assert date == _date_format("2018/05/05 05:05:05", "key", [], "string", "%Y/%m/%d %H:%M:%S")
+        assert date_with_extra_ms == _date_format("2019-09-20T17:35:00.8944008Z", "key", [], "string")
 
     def test__date_format_unique_date_formats_fail(self):
         unmatched = []
