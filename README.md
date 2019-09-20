@@ -16,8 +16,7 @@ These libraries are extensions of existing libraries [SeleniumLibrary](https://g
 Zoomba adds a significant amount of data validation support for REST and SOAP APIs, extends functionality for typical Web GUI automation, and
 extends AppiumLibrary functionality to support Windows desktop automation.
 
-As a team beginning the journey of automation with Robot Framework - we found that there was some time spent ramping up our libraries and
-Zoomba aims to make that process easier for new projects.
+As a team beginning the journey of automation with Robot Framework - we found that there was some time spent ramping up our libraries and Zoomba aims to make that process easier for new projects.
 
 See the **Keyword Documentation** for the [API](https://accruent.github.io/robotframework-zoomba/docs/APILibraryDocumentation.html), [SOAP](https://accruent.github.io/robotframework-zoomba/docs/SOAPLibraryDocumentation.html),
 [GUI](https://accruent.github.io/robotframework-zoomba/docs/GUILibraryDocumentation.html), or [Desktop](https://accruent.github.io/robotframework-zoomba/docs/DesktopLibraryDocumentation.html) library for more specific information about the functionality.
@@ -39,6 +38,18 @@ you can install Zoomba by running the following from the *root directory*:
 pip install .
 ```
 
+To access the keywords in the library simply add the following to your robot file settings (depending on what you need):
+```python
+*** Settings ***
+Library    Zoomba.APILibrary
+Library    Zoomba.GUILibrary
+Library    Zoomba.SOAPLibrary
+Library    Zoomba.DesktopLibrary
+```
+
+Additional Setup Information
+-----------
+
 If you plan to run Windows desktop automation you will need to have a running appium server. To do so first have [Node](https://nodejs.org/en/download/)
 installed and then run the following:
 ```python
@@ -46,11 +57,6 @@ npm install -g appium
 appium
 ```
 Alternatively [Appium Desktop](https://github.com/appium/appium-desktop/releases) can be used.
-
-Additionally if you run the following command new documentation will be generated on each commit :
-```python
-git config core.hooksPath .githooks
-```
 
 Examples
 -----------
@@ -62,6 +68,10 @@ Contributing
 
 To make contributions please refer to the [CONTRIBUTING](CONTRIBUTING.rst) guidelines.
 
+Additionally if you run the following command new documentation will be generated on each commit :
+```python
+git config core.hooksPath .githooks
+```
 
 Support
 --------
