@@ -460,13 +460,18 @@ def _date_format(date_string, key, unmatched_keys_list, date_type, date_format=N
                     try:
                         formatted_date = datetime.datetime.strptime(date_string, '%Y-%m-%dT%H:%M:%S.%fZ')
                     except ValueError:
-                        unmatched_keys_list.append(("------------------\nKey: " + str(key),
-                                                    date_type + " Date Not Correct Format:",
-                                                    "Expected Formats: %Y-%m-%dT%H:%M:%S",
-                                                    "                  %Y-%m-%dT%H:%M:%SZ",
-                                                    "                  %Y-%m-%dT%H:%M:%S.%f",
-                                                    "                  %Y-%m-%dT%H:%M:%S.%fZ",
-                                                    "Date: " + str(date_string)))
+                        try:
+                            formatted_date = parse(date_string, fuzzy=True)
+                            formatted_date = str(formatted_date).replace('+00:00', 'Z')
+                            formatted_date = formatted_date.replace(' ', 'T')
+                        except ValueError:
+                            unmatched_keys_list.append(("------------------\nKey: " + str(key),
+                                                        date_type + " Date Not Correct Format:",
+                                                        "Expected Formats: %Y-%m-%dT%H:%M:%S",
+                                                        "                  %Y-%m-%dT%H:%M:%SZ",
+                                                        "                  %Y-%m-%dT%H:%M:%S.%f",
+                                                        "                  %Y-%m-%dT%H:%M:%S.%fZ",
+                                                        "Date: " + str(date_string)))
 
     else:
         try:
