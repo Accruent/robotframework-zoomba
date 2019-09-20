@@ -61,7 +61,6 @@ Validate Response Date Negative Tests
     ${not_match_date_1}     ${json_wo_date_none}    ${wo_example}
     ${not_match_date_2}     ${json_wo_date_bad}     ${wo_example}
     ${not_match_date_3}     ${json_wo_date_long}    ${wo_example}
-    ${not_match_date_4}     ${json_wo_example}      ${wo_bad_date_example}
 
 Validate Response List Positive Tests
     [Template]      Validate Response Contains Expected Response

@@ -363,17 +363,6 @@ not_match_date_3 = "Key(s) Did Not Match:" \
                    "\nActual: 2015-12-16 14:10:58" \
                    "\n\nPlease see differing value(s)"
 
-not_match_date_4 = "Key(s) Did Not Match:" \
-                   "\n------------------" \
-                   "\nKey: AssignedDate" \
-                   "\nExpected Date Not Correct Format:" \
-                   "\nExpected Formats: %Y-%m-%dT%H:%M:%S" \
-                   "\n                  %Y-%m-%dT%H:%M:%SZ" \
-                   "\n                  %Y-%m-%dT%H:%M:%S.%f" \
-                   "\n                  %Y-%m-%dT%H:%M:%S.%fZ" \
-                   "\nDate: 1234-11-30" \
-                   "\n\nPlease see differing value(s)"
-
 id_key_err = 'KeyError: "what" Key was not in the response'
 
 id_key_err_2 = "Item was not within the response:" \
@@ -419,20 +408,6 @@ bad_array_err_1 = "Arrays do not match:" \
                 "\nExpected: ['str', 'aw', 'ber', 'ry']" \
                 "\nActual: ['dog', 'cat', 'bird', 'elephant']"
 # -------------- Date Methods Test Data --------------------------------------------------------------------------------
-json_wo_example = """
-    {
-        "AssignedDate": "2015-12-16T14:10:58Z",
-        "NoneField": null,
-        "CreateDate": "2015-12-16T14:21:58Z",
-        "CreatedByEmail": "",
-        "CreatedByExternalId": "360API_ExtID_User318",
-        "CreatedByFirstName": "MyCompanyOnlyRight",
-        "CreatedById": "318",
-        "CreatedByLastName": "GETWOUserWith",
-        "CreatedByPhone": "(444) 444-4444"
-    }
-"""
-
 json_wo_date_none = """
     {
         "AssignedDate": null,
@@ -492,19 +467,6 @@ wo_example = \
 wo_example_2 = \
 {
     "AssignedDate": "2015-12-16T16:21:58Z",
-    "NoneField": None,
-    "CreateDate": "2015-12-16T14:21:58Z",
-    "CreatedByEmail": "",
-    "CreatedByExternalId": "360API_ExtID_User318",
-    "CreatedByFirstName": "MyCompanyOnlyRight",
-    "CreatedById": "318",
-    "CreatedByLastName": "GETWOUserWith",
-    "CreatedByPhone": "(444) 444-4444"
-}
-
-wo_bad_date_example = \
-{
-    "AssignedDate": "1234-11-30",
     "NoneField": None,
     "CreateDate": "2015-12-16T14:21:58Z",
     "CreatedByEmail": "",
