@@ -23,7 +23,7 @@ class TestInternal(unittest.TestCase):
         subprocess.call = MagicMock()
         webdriver.Remote = WebdriverRemoteMock
         self.assertFalse(dl._cache.current)
-        dl.open_application('remote_url', window_name='test', app='testApp')
+        dl.open_application('remote_url', window_name='test', app='testApp', splash_delay=1)
         self.assertTrue(dl._cache.current)
 
     def test_maximize_window_successful(self):
