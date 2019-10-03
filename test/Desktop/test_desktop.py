@@ -20,7 +20,7 @@ class TestInternal(unittest.TestCase):
 
     def test_open_application_splash_catch(self):
         dl = DesktopLibrary()
-        subprocess.call = MagicMock()
+        subprocess.Popen = MagicMock()
         webdriver.Remote = WebdriverRemoteMock
         self.assertFalse(dl._cache.current)
         dl.open_application('remote_url', window_name='test', app='testApp', splash_delay=1)

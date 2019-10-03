@@ -4,6 +4,7 @@ from robot.api.deco import keyword
 from robot.libraries.BuiltIn import BuiltIn
 import subprocess
 from selenium.webdriver.common.action_chains import ActionChains
+from time import sleep
 
 zoomba = BuiltIn()
 
@@ -78,7 +79,7 @@ class DesktopLibrary(AppiumLibrary):
         return True
 
     @keyword("Open Application")
-    def open_application(self, remote_url, alias=None, window_name=None, **kwargs):
+    def open_application(self, remote_url, alias=None, window_name=None, splash_delay=0, **kwargs):
         """Opens a new application to given Appium server.
         If your application has a splash screen please supply the window name of the final window that will appear.
         For the capabilities of appium server and Windows,
@@ -98,7 +99,9 @@ class DesktopLibrary(AppiumLibrary):
             # If the app has a splash screen we need to supply the window_name of the final window. This code path will
             # start the application and then attach to the correct window via the window_name.
             # """
-            subprocess.call(desired_caps['app'])
+            subprocess.Popen(desired_caps['app'])
+            if splash_delay > 0:
+                sleep(splash_delay)
             return self.switch_application_by_name(remote_url, alias=alias, window_name=window_name, **kwargs)
         # global application
         application = webdriver.Remote(str(remote_url), desired_caps)
