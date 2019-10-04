@@ -88,10 +88,11 @@ class DesktopLibrary(AppiumLibrary):
         | remote_url          | Yes    | Appium server url                                                    |
         | alias               | No     | Alias                                                                |
         | window_name         | No     | Window name you wish to attach, usually after a splash screen        |
+        | splash_delay        | No     | Delay used when waiting for a splash screen to load, in seconds      |
 
         Examples:
         | Open Application | http://localhost:4723/wd/hub | alias=Myapp1         | platformName=Windows            | deviceName=Windows           | app=your.app          |
-        | Open Application | http://localhost:4723/wd/hub | alias=Myapp1         | platformName=Windows            | deviceName=Windows           | app=your.app          | window_name=MyApplication          |
+        | Open Application | http://localhost:4723/wd/hub | alias=Myapp1         | platformName=Windows            | deviceName=Windows           | app=your.app          | window_name=MyApplication          | splash_delay=5          |
         """
         desired_caps = kwargs
         if window_name:
