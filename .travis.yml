@@ -1,27 +1,36 @@
 language: python
 python:
-  - "3.6"
+- '3.6'
 branches:
   except:
-    - /^(documentation).*$/i
+  - "/^(documentation).*$/i"
 sudo: required
 dist: trusty
 addons:
   chrome: stable
 cache: pip
 install:
-  - pip install .
-  - pip install python-coveralls
-  - pip install pytest-cov
+- pip install .
+- pip install python-coveralls
+- pip install pytest-cov
 before_script:
-  - wget "http://chromedriver.storage.googleapis.com/76.0.3809.12/chromedriver_linux64.zip"
-  - unzip chromedriver_linux64.zip
-  - sudo mv chromedriver /usr/local/bin
-  - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"
-  - sleep 3 # give xvfb some time to start
+- wget "http://chromedriver.storage.googleapis.com/76.0.3809.12/chromedriver_linux64.zip"
+- unzip chromedriver_linux64.zip
+- sudo mv chromedriver /usr/local/bin
+- export DISPLAY=:99.0
+- sh -e /etc/init.d/xvfb start
+- sleep 3
 script:
-  - pytest --cov src -v
-  - robot -e BrokenORWindows test
+- pytest --cov src -v
+- robot -e BrokenORWindows test
 after_success:
-  - coveralls
+- coveralls
+deploy:
+  provider: pypi
+  user: __token__
+  password:
+    secure: qOQYJr57RCFXB/+F1rGWv+P2D1NpHgedk6WPTSQfwT6MeL7V5PCLBaEvewHLy67IdV5jc9AcNu8aSl1tc7y0toc8Zgg448JwW2xfl1eIU+rGTzKwHzFwVRGZaddegR+piAzlrNzF6UDouzjxnuceZOO/ynv4XYHUw6Etx2XkseUtq3EPthtdjK7eBnwEgr01farLPJgUmb8U9nRl9yfWabfxc3kH/Pj4xvfVMRvablntiksFByx+JRXfZnq78YyAvjI8ZRG9RPG6oC/MbS20ovGSaSOx75PYJFyekJUDdSoeMCuTNY71gHLVNxz8XrpwuvY6yCbMqLHy+SINhfrHz0DhiPW4ne4XtkQJ0vWOJMoVf7GY/dO5hiyK523UiBjF2TFMW3KOZfXqTyeu8rtslVYZIk/B53ziA6mdsy7gzHZGIF3AH1g9eElNDO/vzUjUBb2bLvZkqcfAh17SB1A0A9wzOXYHrfJtZCIepfAJiovb5seKefxMW6Kr769zpwe7QHK7GfOh5S+XMzU5F0FsdA2Su0KOMwz9Q3suVQiq1oSxQU/dQHMoWjVsMv4To2URz9WIXpd3tG00cUzIChJM7PKDLHQrWPTj6/hT2ub6rvFiCR6toGMpoAd+Nl2nftU69rVjC7qPhcORu9kxWYFN8B3yKQof5VRmlEVHaqoCxzo=
+  on:
+    branch: master
+    tags: true
+  skip_existing: true
