@@ -7,6 +7,9 @@ try:
 except ImportError:
     from distutils.core import setup
 
+with open('requirements.txt') as f:
+    requirements = f.read().splitlines()
+
 setup(name='robotframework-zoomba',
       version=version.VERSION,
       description='Robot Framework mini-framework.',
@@ -17,16 +20,7 @@ setup(name='robotframework-zoomba',
       license='apache',
       keywords='Robot Framework robot-framework selenium requests appium soap',
       platforms='any',
-      install_requires=[
-          "robotframework>=3.1.1",
-          "robotframework-requests>=0.5.0",
-          "robotframework-seleniumlibrary>=3.3.1",
-          "robotframework-sudslibrary-aljcalandra",
-          "requests>=2.20.1",
-          "selenium>=3.141.0",
-          "python-dateutil",
-          "robotframework-appiumlibrary",
-      ],
+      install_requires=requirements,
       extras_require={
         'testing': [
           'Appium-Python-Client'
