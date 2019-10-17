@@ -18,7 +18,9 @@ setup(name='robotframework-zoomba',
       maintainer='Alex Calandra, Michael Hintz, Keith Smoland, Matthew Giardina, Brandon Wolfe',
       maintainer_email='robosquad@accruent.com',
       license='apache',
-      keywords='Robot Framework robot-framework selenium requests appium soap',
+      keywords='Robot Framework robot-framework selenium requests appium soap winappdriver appium robotframework'
+               'desktop windows zoomba python robotframework-library appium-windows appiumlibrary api-rest api '
+               'soap-api',
       platforms='any',
       install_requires=requirements,
       extras_require={
