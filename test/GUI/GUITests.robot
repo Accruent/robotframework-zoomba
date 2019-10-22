@@ -2,26 +2,29 @@
 Documentation   Zoomba GUI Library Tests
 Library         ../../src/Zoomba/GUILibrary.py
 
+*** Variables ***
+${browser}     chrome
+
 *** Test Cases ***
 Wait for Keywords Test
     [Teardown]      Close All Browsers
-    Open Browser    https://github.com/    browser=chrome
+    Open Browser    https://github.com/    browser=${browser}
     Maximize Browser Window
     wait for and input text      //input[@name='q']      robotframework
-    press key                    //input[@name='q']      \\13
+    press keys                    //input[@name='q']      RETURN
     wait for and click element               //a[@href='/robotframework/robotframework']
     wait until page contains element         //div[@id='readme']
 
 Element value should be equal and not equal Test
     [Teardown]      Close All Browsers
-    Open Browser    http://www.google.com    browser=chrome
+    Open Browser    http://www.google.com    browser=${browser}
     Maximize Browser Window
     element value should be equal       btnK    Google Search
     element value should not be equal   btnK    Not Google Search
 
 Iframe keywords Test
     [Teardown]      Close All Browsers
-    Open Browser    https://www.w3schools.com/html/html_iframe.asp    browser=chrome
+    Open Browser    https://www.w3schools.com/html/html_iframe.asp    browser=${browser}
     Maximize Browser Window
     Page should not contain element     //a[@href='default.asp'][@class='active']
     wait for and select frame   //iframe[@src='default.asp']
@@ -31,7 +34,7 @@ Iframe keywords Test
 
 Mouse over Keywords Test
     [Teardown]      Close All Browsers
-    Open Browser    http://www.google.com    browser=chrome
+    Open Browser    http://www.google.com    browser=${browser}
     Maximize Browser Window
     wait for and mouse over                 //div[@class='FPdoLc VlcLAe']//input[@name='btnK']
     wait for and mouse over                 //a[contains(text(),'Gmail')]
@@ -40,7 +43,7 @@ Mouse over Keywords Test
 
 Wait Until Javascript Completes Test
     [Teardown]      Close All Browsers
-    Open Browser    https://jquery.com/    browser=chrome
+    Open Browser    https://jquery.com/    browser=${browser}
     Maximize Browser Window
     wait until page contains element       //a[@title='jQuery']
     wait until javascript is complete
@@ -48,10 +51,10 @@ Wait Until Javascript Completes Test
 
 Web Elements Text Test
     [Teardown]      Close All Browsers
-    Open Browser    http://www.google.com    browser=chrome
+    Open Browser    http://www.google.com    browser=${browser}
     Maximize Browser Window
     wait for and input text      //input[@name='q']      robot framework
-    press key                    //input[@name='q']      \\13
+    press keys                    //input[@name='q']      RETURN
     wait until element is visible                   //div[@id='res']
     ${resultsLinksList}=        Get Webelements     //div[@id='res']
     ${linksTextList}=           Get Text From Web Elements List     ${resultsLinksList}
@@ -59,10 +62,10 @@ Web Elements Text Test
 
 Web Elements Vertical Position Test
     [Teardown]      Close All Browsers
-    Open Browser    http://www.google.com    browser=chrome
+    Open Browser    http://www.google.com    browser=${browser}
     Maximize Browser Window
     wait for and input text      //input[@name='q']      robot framework
-    press key                    //input[@name='q']      \\13
+    press keys                    //input[@name='q']      RETURN
     wait until element is visible                       //div[@id='res']
     ${resultsLinksList}=            Get Webelements     //div[@id='res']
     ${linksPositionList}=           Get Vertical Position From Web Elements List        ${resultsLinksList}
@@ -89,10 +92,10 @@ Truncate String Test
 
 Scroll To Bottom of Page Test
     [Teardown]      Close All Browsers
-    Open Browser    http://www.google.com    browser=chrome
+    Open Browser    http://www.google.com    browser=${browser}
     Maximize Browser Window
     wait for and input text      //input[@name='q']      robot framework
-    press key                    //input[@name='q']      \\13
+    press keys                    //input[@name='q']      RETURN
     wait until element is visible                   //div[@id='res']
     scroll to bottom of page
     ${position} =                Execute Javascript        return window.pageYOffset
