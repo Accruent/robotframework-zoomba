@@ -2,6 +2,7 @@ from SeleniumLibrary import SeleniumLibrary
 from robot.libraries.BuiltIn import BuiltIn
 from robot.api.deco import keyword
 from robot.libraries.Collections import Collections
+from time import time
 
 zoomba = BuiltIn()
 zoomba_collections = Collections()
@@ -141,8 +142,14 @@ class GUILibrary(SeleniumLibrary):
         verify that the provided window title is among them.\n
         title: (string) The title of the window you are waiting for.
         """
-        titles = self.get_window_titles()
-        zoomba_collections.list_should_contain_value(titles, title)
+        timeout = time() + self.timeout
+        while time() < timeout:
+            titles = self.get_window_titles()
+            found = zoomba.run_keyword_and_return_status(zoomba_collections.list_should_contain_value(titles, title))
+            if found:
+                return
+            zoomba.sleep("0.5s")
+        zoomba.fail("Window with the title: " + title + " not found.")
 
     @keyword("Window Should Not Be Open")
     def window_should_not_be_open(self, title):
@@ -255,3 +262,4 @@ class GUILibrary(SeleniumLibrary):
         """
         truncated_string = string[0:number_of_characters]
         return truncated_string
+

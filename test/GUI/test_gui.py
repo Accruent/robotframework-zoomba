@@ -94,11 +94,14 @@ class TestInternal(unittest.TestCase):
         mock_gui.select_checkbox.assert_called_with("some_locator")
 
     @patch('robot.libraries.Collections.Collections.list_should_contain_value')
-    def test_wait_until_window_opens_simple(self, robot_call):
+    @patch('robot.libraries.BuiltIn._RunKeyword.run_keyword_and_return_status')
+    def test_wait_until_window_opens_simple(self, robot_call, robot_call_2):
         mock_gui = Mock()
+        mock_gui.timeout = 5
         mock_gui.get_window_titles = Mock(return_value=["title"])
         GUILibrary.wait_until_window_opens(mock_gui, "title")
-        robot_call.assert_called_with(["title"], "title")
+        robot_call.assert_called()
+        robot_call_2.assert_called_with(["title"], "title")
 
     @patch('robot.libraries.Collections.Collections.list_should_not_contain_value')
     def test_window_should_not_be_open_simple(self, robot_call):
