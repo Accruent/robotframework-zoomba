@@ -10,6 +10,7 @@ Wait for Keywords Test
     [Teardown]      Close All Browsers
     Open Browser    https://github.com/    browser=${browser}
     Maximize Browser Window
+    Set Selenium Speed    0.1s
     wait for and input text      //input[@name='q']      robotframework
     press keys                    //input[@name='q']      RETURN
     wait for and click element               //a[@href='/robotframework/robotframework']
@@ -100,3 +101,10 @@ Scroll To Bottom of Page Test
     scroll to bottom of page
     ${position} =                Execute Javascript        return window.pageYOffset
     should be equal              "767"         "${position}"
+
+Wait For and Select Window Test
+    [Teardown]                      Close All Browsers
+    Open Browser                    https://www.seleniumeasy.com/test/window-popup-modal-demo.html    browser=${browser}
+    Maximize Browser Window
+    Click Element                   //a[contains(text(),'Follow On Twitter')]
+    Wait For and Select Window      Selenium Easy (@seleniumeasy) on Twitter
