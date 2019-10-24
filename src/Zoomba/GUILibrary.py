@@ -166,7 +166,7 @@ class GUILibrary(SeleniumLibrary):
         title: (string) The title of the window you are waiting for.
         """
         zoomba.wait_until_keyword_succeeds(self.timeout, 1, "Wait Until Window Opens", title)
-        self.select_window(title)
+        self.switch_window(title)
 
     @keyword("Scroll To Bottom Of Page")
     def scroll_to_bottom_of_page(self):

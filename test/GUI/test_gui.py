@@ -116,7 +116,7 @@ class TestInternal(unittest.TestCase):
         type(mock_gui).timeout = PropertyMock(return_value=15)
         GUILibrary.wait_for_and_select_window(mock_gui, "title")
         robot_call.assert_called_with(15, 1, 'Wait Until Window Opens', 'title')
-        mock_gui.select_window.assert_called_with("title")
+        mock_gui.switch_window.assert_called_with("title")
 
     @patch('robot.libraries.BuiltIn.BuiltIn.sleep')
     def test_wait_until_javascript_is_complete_simple(self, robot_call):
