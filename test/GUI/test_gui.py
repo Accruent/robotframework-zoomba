@@ -103,7 +103,7 @@ class TestInternal(unittest.TestCase):
     # @patch('robot.libraries.Collections.Collections.list_should_contain_value')
     def test_wait_until_window_opens_simple(self):
         mock_gui = Mock()
-        mock_gui.timeout = 5
+        mock_gui.timeout = 15
         mock_gui.get_window_titles = Mock(return_value=["title"])
         GUILibrary.wait_until_window_opens(mock_gui, "title")
         # robot_call.assert_called_with(["title"], "title")
@@ -117,12 +117,11 @@ class TestInternal(unittest.TestCase):
         GUILibrary.window_should_not_be_open(mock_gui, "title")
         robot_call.assert_called_with(["main"], "title")
 
-    @patch('robot.libraries.BuiltIn.BuiltIn.wait_until_keyword_succeeds')
-    def test_wait_for_and_select_window_simple(self, robot_call):
+    def test_wait_for_and_select_window_simple(self):
         mock_gui = Mock()
-        type(mock_gui).timeout = PropertyMock(return_value=15)
+        mock_gui.timeout = 15
         GUILibrary.wait_for_and_select_window(mock_gui, "title")
-        robot_call.assert_called_with(15, 1, 'Wait Until Window Opens', 'title')
+        mock_gui.wait_until_window_opens.assert_called_with("title")
         mock_gui.switch_window.assert_called_with("title")
 
     @patch('robot.libraries.BuiltIn.BuiltIn.sleep')
