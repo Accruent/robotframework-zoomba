@@ -99,6 +99,11 @@ class TestInternal(unittest.TestCase):
         mock_gui.get_window_titles = Mock(return_value=["title"])
         GUILibrary.wait_until_window_opens(mock_gui, "title")
 
+    def test_wait_until_window_opens_with_timeout(self):
+        mock_gui = Mock()
+        mock_gui.get_window_titles = Mock(return_value=["title"])
+        GUILibrary.wait_until_window_opens(mock_gui, "title", 15)
+
     @patch('robot.libraries.BuiltIn.BuiltIn.fail')
     def test_wait_until_window_opens_with_error(self, fail):
         mock_gui = Mock()

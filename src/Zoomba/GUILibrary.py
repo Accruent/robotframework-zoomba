@@ -137,12 +137,16 @@ class GUILibrary(SeleniumLibrary):
         self.wait_until_element_is_visible(locator)
 
     @keyword("Wait Until Window Opens")
-    def wait_until_window_opens(self, title):
-        """This is a series of chained Selenium keywords, used to get the titles of the current browser windows, then
-        verify that the provided window title is among them.\n
-        title: (string) The title of the window you are waiting for.
+    def wait_until_window_opens(self, title, timeout=None):
+        """Used to get the titles of the current browser windows, then verify that the provided window title
+        is among them.\n
+        title: (string) The title of the window you are waiting for.\n
+        timeout: (float) Time in seconds to wait, will use global timeout if not set.
         """
-        timeout = time() + self.timeout
+        if timeout:
+            timeout = time() + float(timeout)
+        else:
+            timeout = time() + self.timeout
         while time() < timeout:
             titles = self.get_window_titles()
             if title in titles:
@@ -163,7 +167,6 @@ class GUILibrary(SeleniumLibrary):
         then it selects that window.\n
         title: (string) The title of the window you are waiting for.
         """
-        # zoomba.wait_until_keyword_succeeds(self.timeout, 1, "Wait Until Window Opens", title)
         self.wait_until_window_opens(title)
         self.switch_window(title)
 
