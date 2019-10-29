@@ -102,6 +102,13 @@ Scroll To Bottom of Page Test
     ${position} =                Execute Javascript        return window.pageYOffset
     should be equal              "767"         "${position}"
 
+Wait Until Window Opens Test
+    [Teardown]                      Close All Browsers
+    Open Browser                    https://www.seleniumeasy.com/test/window-popup-modal-demo.html    browser=${browser}
+    Maximize Browser Window
+    Click Element                   //a[contains(text(),'Follow On Twitter')]
+    Wait Until Window Opens         Selenium Easy (@seleniumeasy) on Twitter     10
+
 Wait For and Select Window Test
     [Teardown]                      Close All Browsers
     Open Browser                    https://www.seleniumeasy.com/test/window-popup-modal-demo.html    browser=${browser}

@@ -93,12 +93,24 @@ class TestInternal(unittest.TestCase):
         mock_gui.wait_for_and_focus_on_element.assert_called_with("some_locator")
         mock_gui.select_checkbox.assert_called_with("some_locator")
 
-    @patch('robot.libraries.Collections.Collections.list_should_contain_value')
-    def test_wait_until_window_opens_simple(self, robot_call):
+    def test_wait_until_window_opens_simple(self):
         mock_gui = Mock()
+        mock_gui.timeout = 15
         mock_gui.get_window_titles = Mock(return_value=["title"])
         GUILibrary.wait_until_window_opens(mock_gui, "title")
-        robot_call.assert_called_with(["title"], "title")
+
+    def test_wait_until_window_opens_with_timeout(self):
+        mock_gui = Mock()
+        mock_gui.get_window_titles = Mock(return_value=["title"])
+        GUILibrary.wait_until_window_opens(mock_gui, "title", 15)
+
+    @patch('robot.libraries.BuiltIn.BuiltIn.fail')
+    def test_wait_until_window_opens_with_error(self, fail):
+        mock_gui = Mock()
+        mock_gui.timeout = 0.0001
+        mock_gui.get_window_titles = Mock(return_value=["wrong_title"])
+        GUILibrary.wait_until_window_opens(mock_gui, "title")
+        fail.assert_called_with("Window with the title: 'title' not found.")
 
     @patch('robot.libraries.Collections.Collections.list_should_not_contain_value')
     def test_window_should_not_be_open_simple(self, robot_call):
@@ -107,12 +119,11 @@ class TestInternal(unittest.TestCase):
         GUILibrary.window_should_not_be_open(mock_gui, "title")
         robot_call.assert_called_with(["main"], "title")
 
-    @patch('robot.libraries.BuiltIn.BuiltIn.wait_until_keyword_succeeds')
-    def test_wait_for_and_select_window_simple(self, robot_call):
+    def test_wait_for_and_select_window_simple(self):
         mock_gui = Mock()
-        type(mock_gui).timeout = PropertyMock(return_value=15)
+        mock_gui.timeout = 15
         GUILibrary.wait_for_and_select_window(mock_gui, "title")
-        robot_call.assert_called_with(15, 1, 'Wait Until Window Opens', 'title')
+        mock_gui.wait_until_window_opens.assert_called_with("title")
         mock_gui.switch_window.assert_called_with("title")
 
     @patch('robot.libraries.BuiltIn.BuiltIn.sleep')
@@ -122,20 +133,17 @@ class TestInternal(unittest.TestCase):
         GUILibrary.wait_until_javascript_is_complete(mock_gui)
         robot_call.assert_called()
 
-    @patch('SeleniumLibrary.ElementKeywords.get_text')
-    def test_get_text_from_web_elements_list_simple(self, robot_call):
+    def test_get_text_from_web_elements_list_simple(self):
         mock_gui = Mock()
         mock_gui.get_text = Mock(side_effect=['a', 'b'])
         assert GUILibrary.get_text_from_web_elements_list(mock_gui, ['a', 'b']) == ['a', 'b']
 
-    @patch('SeleniumLibrary.ElementKeywords.get_value')
-    def test_get_values_from_web_elements_list_simple(self, robot_call):
+    def test_get_values_from_web_elements_list_simple(self):
         mock_gui = Mock()
         mock_gui.get_value = Mock(side_effect=['a', 'b'])
         assert GUILibrary.get_values_from_web_elements_list(mock_gui, ['a', 'b']) == ['a', 'b']
 
-    @patch('SeleniumLibrary.ElementKeywords.get_vertical_position')
-    def test_get_vertical_position_from_web_elements_list_simple(self, robot_call):
+    def test_get_vertical_position_from_web_elements_list_simple(self):
         mock_gui = Mock()
         mock_gui.get_vertical_position = Mock(side_effect=[1, 2])
         assert GUILibrary.get_vertical_position_from_web_elements_list(mock_gui, ['a', 'b']) == [1, 2]
