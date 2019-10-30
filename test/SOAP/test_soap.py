@@ -1,5 +1,6 @@
 import os
 import sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../src/')))
 import unittest
 from Zoomba.SOAPLibrary import SOAPLibrary
 from Zoomba.SOAPLibrary import _ObjectNamespacePlugin
@@ -8,8 +9,6 @@ from unittest.mock import patch
 from unittest.mock import Mock
 from unittest.mock import PropertyMock
 from suds import WebFault
-
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../src/')))
 
 
 class TestObjectNamespace(unittest.TestCase):

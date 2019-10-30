@@ -1,11 +1,10 @@
 import os
 import sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../src/')))
 import unittest
 from Zoomba.APILibrary import APILibrary
 from unittest.mock import patch
 from Zoomba.APILibrary import _unmatched_list_check
-
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../src/')))
 
 
 class TestInternal(unittest.TestCase):
