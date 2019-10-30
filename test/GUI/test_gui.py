@@ -1,11 +1,12 @@
 import os
 import sys
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../src/')))
-from Zoomba.GUILibrary import GUILibrary
 import unittest
+from Zoomba.GUILibrary import GUILibrary
 from unittest.mock import patch
 from unittest.mock import Mock
 from unittest.mock import PropertyMock
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../src/')))
 
 
 class TestInternal(unittest.TestCase):
@@ -258,14 +259,14 @@ class TestInternal(unittest.TestCase):
 
     def test_create_dictionary_from_keys_and_values_lists_simple(self):
         mock_gui = Mock()
-        assert GUILibrary.create_dictionary_from_keys_and_values_lists(mock_gui, [5], [6]) == {5:6}
+        assert GUILibrary.create_dictionary_from_keys_and_values_lists(mock_gui, [5], [6]) == {5: 6}
 
     @patch('robot.libraries.BuiltIn.BuiltIn.log')
     def test_create_dictionary_from_keys_and_values_lists_fail(self, robot_call):
         mock_gui = Mock()
         GUILibrary.create_dictionary_from_keys_and_values_lists(mock_gui, [5], [6, 7])
         robot_call.assert_called_with("The length of the keys and values lists is not the same: \nKeys Length: " +
-                             "1" + "\nValues Length: " + "2", "ERROR")
+                                      "1" + "\nValues Length: " + "2", "ERROR")
 
     def test_truncate_string_simple(self):
         mock_gui = Mock()

@@ -1,11 +1,11 @@
 import os
 import sys
-sys.path.insert(0, os.path.abspath( os.path.join(os.path.dirname(__file__), '../../src/') ))
-
-from Zoomba.APILibrary import APILibrary
 import unittest
+from Zoomba.APILibrary import APILibrary
 from unittest.mock import patch
 from unittest.mock import PropertyMock
+
+sys.path.insert(0, os.path.abspath( os.path.join(os.path.dirname(__file__), '../../src/')))
 
 
 class TestInternal(unittest.TestCase):
@@ -44,6 +44,8 @@ class TestExternal(unittest.TestCase):
         type(r).status_code = PropertyMock(return_value=200)
         assert r.text == "success"
         assert r.status_code == 200
+        create_session.assert_called_with("getapi", "fullstring", timeout=None)
+        get_request.assert_called_with("getapi", "Endpoint", {"a": "Text"}, cookies=None, timeout=None)
 
     @patch('RequestsLibrary.RequestsKeywords.create_session')
     @patch('RequestsLibrary.RequestsKeywords.get_request')
@@ -61,6 +63,8 @@ class TestExternal(unittest.TestCase):
         library.suppress_insecure_request_warnings()
         library.call_get_request({"a": "Text"}, "Endpoint", "fullstring")
         disable_warnings.assert_called()
+        get_request.assert_called_with("getapi", "fullstring", timeout=None)
+        create_session.assert_called_with("getapi", "Endpoint", {"a": "Text"}, cookies=None, timeout=None)
 
     @patch('RequestsLibrary.RequestsKeywords.create_session')
     @patch('RequestsLibrary.RequestsKeywords.get_request')
@@ -83,6 +87,8 @@ class TestExternal(unittest.TestCase):
         type(r).status_code = PropertyMock(return_value=200)
         assert r.text == "success"
         assert r.status_code == 200
+        create_session.assert_called_with('postapi', 'fullstring', None, files=None, timeout=None)
+        post_request.assert_called_with("postapi", "Endpoint", {"a": "Text"}, cookies=None, timeout=None)
 
     @patch('RequestsLibrary.RequestsKeywords.create_session')
     @patch('RequestsLibrary.RequestsKeywords.post_request')
@@ -93,6 +99,8 @@ class TestExternal(unittest.TestCase):
         type(r).status_code = PropertyMock(return_value=200)
         assert r.text == "success"
         assert r.status_code == 200
+        create_session.assert_called_with('postapi', 'fullstring', b'item', files=None, timeout=None)
+        post_request.assert_called_with("postapi", "Endpoint", {"a": "Text"}, cookies=None, timeout=None)
 
     @patch('RequestsLibrary.RequestsKeywords.create_session')
     @patch('RequestsLibrary.RequestsKeywords.post_request')
@@ -100,8 +108,10 @@ class TestExternal(unittest.TestCase):
     def test_post_insecure_request(self, disable_warnings, post_request, create_session):
         library = APILibrary()
         library.suppress_insecure_request_warnings()
-        r = library.call_post_request({"a": "Text"}, "Endpoint", "fullstring")
+        library.call_post_request({"a": "Text"}, "Endpoint", "fullstring")
         disable_warnings.assert_called()
+        post_request.assert_called_with('postapi', 'fullstring', None, files=None, timeout=None)
+        create_session.assert_called_with("postapi", "Endpoint", {"a": "Text"}, cookies=None, timeout=None)
 
     @patch('RequestsLibrary.RequestsKeywords.create_session')
     @patch('RequestsLibrary.RequestsKeywords.post_request')
@@ -114,6 +124,8 @@ class TestExternal(unittest.TestCase):
         assert r.text == "success"
         assert r.status_code == 200
         assert r.cookies["chocolate_chip"] == "tasty"
+        post_request.assert_called_with('postapi', 'fullstring', None, files='chocolate_chip', timeout=None)
+        create_session.assert_called_with("postapi", "Endpoint", {"a": "Text"}, cookies=None, timeout=None)
 
     def test_delete_default(self):
         library = APILibrary()
@@ -128,6 +140,8 @@ class TestExternal(unittest.TestCase):
         type(r).status_code = PropertyMock(return_value=200)
         assert r.text == "success"
         assert r.status_code == 200
+        delete_request.assert_called_with('deleteapi', 'Endpoint', {'a': 'Text'}, cookies=None, timeout=None)
+        create_session.assert_called_with('deleteapi', 'fullstring', None, timeout=None)
 
     @patch('RequestsLibrary.RequestsKeywords.create_session')
     @patch('RequestsLibrary.RequestsKeywords.delete_request')
@@ -145,6 +159,8 @@ class TestExternal(unittest.TestCase):
         library.suppress_insecure_request_warnings()
         library.call_delete_request({"a": "Text"}, "Endpoint", "fullstring")
         disable_warnings.assert_called()
+        create_session.assert_called_with('deleteapi', 'Endpoint', {'a': 'Text'}, cookies=None, timeout=None)
+        delete_request.assert_called_with('deleteapi', 'fullstring', None, timeout=None)
 
     @patch('RequestsLibrary.RequestsKeywords.create_session')
     @patch('RequestsLibrary.RequestsKeywords.delete_request')
@@ -167,6 +183,8 @@ class TestExternal(unittest.TestCase):
         type(r).status_code = PropertyMock(return_value=200)
         assert r.text == "success"
         assert r.status_code == 200
+        patch_request.assert_called_with('patchapi', 'Endpoint', {'a': 'Text'}, cookies=None, timeout=None)
+        create_session.assert_called_with('patchapi', 'fullstring', None, timeout=None)
 
     @patch('RequestsLibrary.RequestsKeywords.create_session')
     @patch('RequestsLibrary.RequestsKeywords.patch_request')
@@ -184,6 +202,8 @@ class TestExternal(unittest.TestCase):
         library.suppress_insecure_request_warnings()
         library.call_patch_request({"a": "Text"}, "Endpoint", "fullstring")
         disable_warnings.assert_called()
+        patch_request.assert_called_with("patchapi", "fullstring", None, timeout=None)
+        create_session.assert_called_with("patchapi", "Endpoint", {"a": "Text"}, cookies=None, timeout=None)
 
     @patch('RequestsLibrary.RequestsKeywords.create_session')
     @patch('RequestsLibrary.RequestsKeywords.patch_request')
@@ -206,6 +226,8 @@ class TestExternal(unittest.TestCase):
         type(r).status_code = PropertyMock(return_value=200)
         assert r.text == "success"
         assert r.status_code == 200
+        put_request.assert_called_with('putapi', 'Endpoint', {'a': 'Text'}, cookies=None, timeout=None)
+        create_session.assert_called_with('putapi', 'fullstring', None, timeout=None)
 
     @patch('RequestsLibrary.RequestsKeywords.create_session')
     @patch('RequestsLibrary.RequestsKeywords.put_request')
@@ -223,6 +245,8 @@ class TestExternal(unittest.TestCase):
         library.suppress_insecure_request_warnings()
         library.call_put_request({"a": "Text"}, "Endpoint", "fullstring")
         disable_warnings.assert_called()
+        create_session.assert_called_with('putapi', 'Endpoint', {'a': 'Text'}, cookies=None, timeout=None)
+        put_request.assert_called_with('putapi', 'fullstring', None, timeout=None)
 
     @patch('RequestsLibrary.RequestsKeywords.create_session')
     @patch('RequestsLibrary.RequestsKeywords.put_request')
@@ -245,6 +269,8 @@ class TestExternal(unittest.TestCase):
         type(r).status_code = PropertyMock(return_value=200)
         assert r.text == "success"
         assert r.status_code == 200
+        post_request.assert_called_with('postapi', {'a': 'Text'}, None, cookies=None, timeout=None)
+        create_session.assert_called_with('postapi', 'Endpoint', 'fullstring', timeout=None)
 
     @patch('RequestsLibrary.RequestsKeywords.create_session')
     @patch('RequestsLibrary.RequestsKeywords.post_request')
@@ -255,6 +281,8 @@ class TestExternal(unittest.TestCase):
         type(r).status_code = PropertyMock(return_value=200)
         assert r.text == "success"
         assert r.status_code == 200
+        post_request.assert_called_with('postapi', {'a': 'Text'}, b'item', cookies=None, timeout=None)
+        create_session.assert_called_with('postapi', 'Endpoint', 'fullstring', timeout=None)
 
     @patch('RequestsLibrary.RequestsKeywords.create_session')
     @patch('RequestsLibrary.RequestsKeywords.post_request')
@@ -264,6 +292,8 @@ class TestExternal(unittest.TestCase):
         library.suppress_insecure_request_warnings()
         library.create_connection({"a": "Text"}, "Endpoint", "fullstring")
         disable_warnings.assert_called()
+        post_request.assert_called_with('postapi', {'a': 'Text'}, None, cookies=None, timeout=None)
+        create_session.assert_called_with('postapi', 'Endpoint', 'fullstring', timeout=None)
 
     @patch('RequestsLibrary.RequestsKeywords.create_session')
     @patch('RequestsLibrary.RequestsKeywords.post_request')
@@ -276,3 +306,5 @@ class TestExternal(unittest.TestCase):
         assert r.text == "success"
         assert r.status_code == 200
         assert r.cookies["chocolate_chip"] == "tasty"
+        post_request.assert_called_with('postapi', {'a': 'Text'}, None, cookies='chocolate_chip', timeout=None)
+        create_session.assert_called_with('postapi', 'Endpoint', 'fullstring', timeout=None)

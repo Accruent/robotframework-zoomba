@@ -13,6 +13,7 @@ class GUILibrary(SeleniumLibrary):
 
     This class inherits from the SeleniumLibrary Class, and expands it with some commonly used keywords.
     """
+
     @keyword("Element Value Should Be Equal")
     def element_value_should_be_equal(self, locator, expected_value):
         """Assert that the value attribute of a web element is equal to a given value\n
@@ -147,10 +148,7 @@ class GUILibrary(SeleniumLibrary):
             timeout = self.timeout
         self.wait_until_page_contains_element(locator, timeout)
         self.wait_until_element_is_visible(locator, timeout)
-        # if not timeout:
-        #     timeout = self.timeout
         zoomba.wait_until_keyword_succeeds(timeout, 1, "Set Focus To Element", locator)
-        # self.wait_until_element_is_visible(locator)
 
     @keyword("Wait Until Window Opens")
     def wait_until_window_opens(self, title, timeout=None):
@@ -270,7 +268,7 @@ class GUILibrary(SeleniumLibrary):
         """
         if len(keys) != len(values):
             zoomba.log("The length of the keys and values lists is not the same: \nKeys Length: " +
-                             str(len(keys)) + "\nValues Length: " + str(len(values)), "ERROR")
+                       str(len(keys)) + "\nValues Length: " + str(len(values)), "ERROR")
         new_dict = dict(zip(keys, values))
         return new_dict
 
@@ -283,4 +281,3 @@ class GUILibrary(SeleniumLibrary):
         """
         truncated_string = string[0:number_of_characters]
         return truncated_string
-
