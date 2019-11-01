@@ -13,6 +13,7 @@ class GUILibrary(SeleniumLibrary):
 
     This class inherits from the SeleniumLibrary Class, and expands it with some commonly used keywords.
     """
+
     @keyword("Element Value Should Be Equal")
     def element_value_should_be_equal(self, locator, expected_value):
         """Assert that the value attribute of a web element is equal to a given value\n
@@ -32,109 +33,122 @@ class GUILibrary(SeleniumLibrary):
         zoomba.should_not_be_equal(value, expected_value)
 
     @keyword("Wait For And Click Element")
-    def wait_for_and_click_element(self, locator):
+    def wait_for_and_click_element(self, locator, timeout=None):
         """This is a series of chained Selenium keywords, that tries to find a web element first, and then clicks it.
         If the element fails to be clicked, it will scroll to the bottom of the page and try again.\n
         locator: (string) A selenium locator(CSS, XPATH, ID, NAME, etc)
+        timeout: (float) Time in seconds to wait, will use global timeout if not set.
         """
-        self.wait_for_and_focus_on_element(locator)
+        self.wait_for_and_focus_on_element(locator, timeout)
         self.click_element(locator)
 
     @keyword('Wait For And Input Text')
-    def wait_for_and_input_text(self, locator, text):
+    def wait_for_and_input_text(self, locator, text, timeout=None):
         """This is a series of chained Selenium keywords, that tries to find a web element first, and then input text.
         If the element fails to typed into, it will scroll to the bottom of the page and try again.\n
         locator: (string) A selenium locator(CSS, XPATH, ID, NAME, etc)\n
         text: (string) Text to be typed into the input field.
+        timeout: (float) Time in seconds to wait, will use global timeout if not set.
         """
-        self.wait_for_and_focus_on_element(locator)
+        self.wait_for_and_focus_on_element(locator, timeout)
         self.input_text(locator, text)
 
     @keyword("Wait For And Select Frame")
-    def wait_for_and_select_frame(self, locator):
+    def wait_for_and_select_frame(self, locator, timeout=None):
         """This is a series of chained Selenium keywords, that first waits until an iFrame exists in the page, and then
         selects it.\n
         locator: (string) A selenium locator(CSS, XPATH, ID, NAME, etc)
+        timeout: (float) Time in seconds to wait, will use global timeout if not set.
         """
-        self.wait_until_page_contains_element(locator)
+        self.wait_until_page_contains_element(locator, timeout)
         self.select_frame(locator)
 
     @keyword("Unselect and Select Frame")
-    def unselect_and_select_frame(self, locator):
+    def unselect_and_select_frame(self, locator, timeout=None):
         """This is a series of chained Selenium keywords, that first unselects the current iFrame, then executes a
         wait for and select frame for a new iFrame.\n
         locator: (string) A selenium locator(CSS, XPATH, ID, NAME, etc)
+        timeout: (float) Time in seconds to wait, will use global timeout if not set.
         """
         self.unselect_frame()
-        self.wait_for_and_select_frame(locator)
+        self.wait_for_and_select_frame(locator, timeout)
 
     @keyword("Wait For And Select From List")
-    def wait_for_and_select_from_list(self, locator, target):
+    def wait_for_and_select_from_list(self, locator, target, timeout=None):
         """This is a series of chained Selenium keywords, that first waits for and focuses on a list element, then
         selects an item(s).\n
         locator:  (string) A selenium locator(CSS, XPATH, ID, NAME, etc)\n
         target: (string, array of strings) The list item(s) to be selected (string, or list of strings)
+        timeout: (float) Time in seconds to wait, will use global timeout if not set.
         """
-        self.wait_for_and_focus_on_element(locator)
+        self.wait_for_and_focus_on_element(locator, timeout)
         self.select_from_list_by_label(locator, target)
 
     @keyword("Wait For And Select From List By Value")
-    def wait_for_and_select_from_list_by_value(self, locator, target):
+    def wait_for_and_select_from_list_by_value(self, locator, target, timeout=None):
         """This is a series of chained Selenium keywords, that first waits for and focuses on a list element, then
         selects an item(s) for it using the value attribute of the item(s) web element.\n
         locator:  (string) A selenium locator(CSS, XPATH, ID, NAME, etc)\n
         target: (string, array of strings) The list item(s) to be selected (string, or list of strings)
+        timeout: (float) Time in seconds to wait, will use global timeout if not set.
         """
-        self.wait_for_and_focus_on_element(locator)
+        self.wait_for_and_focus_on_element(locator, timeout)
         self.select_from_list_by_value(locator, target)
 
     @keyword("Wait For And Select From List By Index")
-    def wait_for_and_select_from_list_by_index(self, locator, target):
+    def wait_for_and_select_from_list_by_index(self, locator, target, timeout=None):
         """This is a series of chained Selenium keywords, that first waits for and focuses on a list element, then
         selects an item(s) for it using the index of the item(s) web element.\n
         locator:  (string) A selenium locator(CSS, XPATH, ID, NAME, etc)\n
         target: (string, array of strings) The list item(s) to be selected (string, or list of strings)
+        timeout: (float) Time in seconds to wait, will use global timeout if not set.
         """
-        self.wait_for_and_focus_on_element(locator)
+        self.wait_for_and_focus_on_element(locator, timeout)
         self.select_from_list_by_index(locator, target)
 
     @keyword("Wait For And Mouse Over")
-    def wait_for_and_mouse_over(self, locator):
+    def wait_for_and_mouse_over(self, locator, timeout=None):
         """This is a series of chained Selenium keywords, that first waits for an element to be visible, then executes a
         mouse over command on it.\n
         locator: (string) A selenium locator(CSS, XPATH, ID, NAME, etc)
+        timeout: (float) Time in seconds to wait, will use global timeout if not set.
         """
-        self.wait_for_and_focus_on_element(locator)
+        self.wait_for_and_focus_on_element(locator, timeout)
         self.mouse_over(locator)
 
     @keyword("Wait For And Select Checkbox")
-    def wait_for_and_select_checkbox(self, locator):
+    def wait_for_and_select_checkbox(self, locator, timeout=None):
         """This is a series of chained Selenium keywords, that first waits for an element to be visible, then selects it
         if it's a checkbox.\n
-        :locator: (string) A selenium locator(CSS, XPATH, ID, NAME, etc)
+        locator: (string) A selenium locator(CSS, XPATH, ID, NAME, etc)
+        timeout: (float) Time in seconds to wait, will use global timeout if not set.
         """
-        self.wait_for_and_focus_on_element(locator)
+        self.wait_for_and_focus_on_element(locator, timeout)
         self.select_checkbox(locator)
 
     @keyword("Wait For And Mouse Over And Click")
-    def wait_for_and_mouse_over_and_click(self, locator):
+    def wait_for_and_mouse_over_and_click(self, locator, timeout=None):
         """This is a series of chained Selenium keywords, that first waits for an element to be visible, executes a
         mouse over command on it, and it finally clicks it.\n
         locator: (string) A selenium locator(CSS, XPATH, ID, NAME, etc)
+        timeout: (float) Time in seconds to wait, will use global timeout if not set.
         """
-        self.wait_for_and_focus_on_element(locator)
+        self.wait_for_and_focus_on_element(locator, timeout)
         self.mouse_over(locator)
         self.click_element(locator)
 
     @keyword("Wait For and Focus On Element")
-    def wait_for_and_focus_on_element(self, locator):
+    def wait_for_and_focus_on_element(self, locator, timeout=None):
         """This is a series of chained Selenium keywords, that first waits for an element to be on the DOM, executes
         Focus on it, then it waits for it to be visible.\n
         locator: (string) A selenium locator(CSS, XPATH, ID, NAME, etc)
+        timeout: (float) Time in seconds to wait, will use global timeout if not set.
         """
-        self.wait_until_page_contains_element(locator)
-        zoomba.wait_until_keyword_succeeds(self.timeout, 1, "Set Focus To Element", locator)
-        self.wait_until_element_is_visible(locator)
+        if not timeout:
+            timeout = self.timeout
+        self.wait_until_page_contains_element(locator, timeout)
+        self.wait_until_element_is_visible(locator, timeout)
+        zoomba.wait_until_keyword_succeeds(timeout, 1, "Set Focus To Element", locator)
 
     @keyword("Wait Until Window Opens")
     def wait_until_window_opens(self, title, timeout=None):
@@ -162,12 +176,13 @@ class GUILibrary(SeleniumLibrary):
         zoomba_collections.list_should_not_contain_value(titles, title)
 
     @keyword("Wait For And Select Window")
-    def wait_for_and_select_window(self, title):
+    def wait_for_and_select_window(self, title, timeout=None):
         """This is a series of chained Selenium keywords, used to wait until a window with the title argument exists,
         then it selects that window.\n
         title: (string) The title of the window you are waiting for.
+        timeout: (float) Time in seconds to wait, will use global timeout if not set.
         """
-        self.wait_until_window_opens(title)
+        self.wait_until_window_opens(title, timeout)
         self.switch_window(title)
 
     @keyword("Scroll To Bottom Of Page")
@@ -235,12 +250,14 @@ class GUILibrary(SeleniumLibrary):
         return position_element_list
 
     @keyword("Wait Until Window Closes")
-    def wait_until_window_closes(self, title):
+    def wait_until_window_closes(self, title, timeout=None):
         """This is a series of chained Selenium keywords, used to wait until a window with the title no longer exists.\n
         title: (string) The title of the window you are expecting to close.
-        timeout: (integer) The amount of time (in seconds) the keyword will try to wait for the window to close.
+        timeout: (float) Time in seconds to wait, will use global timeout if not set.
         """
-        zoomba.wait_until_keyword_succeeds(self.timeout, 1, "Window Should Not Be Open", title)
+        if not timeout:
+            timeout = self.timeout
+        zoomba.wait_until_keyword_succeeds(timeout, 1, "Window Should Not Be Open", title)
 
     @keyword("Create Dictionary From Keys And Values Lists")
     def create_dictionary_from_keys_and_values_lists(self, keys, values):
@@ -251,7 +268,7 @@ class GUILibrary(SeleniumLibrary):
         """
         if len(keys) != len(values):
             zoomba.log("The length of the keys and values lists is not the same: \nKeys Length: " +
-                             str(len(keys)) + "\nValues Length: " + str(len(values)), "ERROR")
+                       str(len(keys)) + "\nValues Length: " + str(len(values)), "ERROR")
         new_dict = dict(zip(keys, values))
         return new_dict
 
@@ -264,4 +281,3 @@ class GUILibrary(SeleniumLibrary):
         """
         truncated_string = string[0:number_of_characters]
         return truncated_string
-
