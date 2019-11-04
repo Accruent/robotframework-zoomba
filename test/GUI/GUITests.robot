@@ -120,6 +120,6 @@ Wait Until Element Contains Value
     [Teardown]                      Close All Browsers
     Open Browser                    http://www.google.com                                              browser=${browser}
     Maximize Browser Window
-    Input Text                      //input[@name='q']  abc123
+    Input Text                      //input[@name='q']                                                  abc123
     Wait For And Click Element      btnK
     Wait Until Element Contains Value  //input[@name='q']                                               abc123
