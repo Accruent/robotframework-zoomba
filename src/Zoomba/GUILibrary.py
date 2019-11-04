@@ -259,6 +259,20 @@ class GUILibrary(SeleniumLibrary):
             timeout = self.timeout
         zoomba.wait_until_keyword_succeeds(timeout, 1, "Window Should Not Be Open", title)
 
+    @keyword("Wait Until Element Contains Value")
+    def wait_until_element_contains_value(self, locator, value, timeout=None):
+        """Waits until the element ``locator`` appears on the current page and contains value.
+        Fails if ``timeout`` expires before the element appears. See
+        the `Timeouts` section for more information about using timeouts and
+        their default value and the `Locating elements` section for details
+        about the locator syntax.
+        """
+        if not timeout:
+            timeout = self.timeout
+        self.wait_until_page_contains_element(locator)
+        expected_value = self.get_value(locator)
+        zoomba.should_contain(expected_value, value)
+
     @keyword("Create Dictionary From Keys And Values Lists")
     def create_dictionary_from_keys_and_values_lists(self, keys, values):
         """This keyword returns a dictionary, given a list of keys and a list of values of the same length.\n
