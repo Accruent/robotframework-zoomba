@@ -270,3 +270,19 @@ class TestInternal(unittest.TestCase):
     def test_truncate_string_simple(self):
         mock_gui = Mock()
         assert GUILibrary.truncate_string(mock_gui, "string", 3) == "str"
+
+    @patch('robot.libraries.BuiltIn.BuiltIn.should_contain')
+    def test_wait_until_element_contains_value(self, robot_call):
+        mock_gui = Mock()
+        GUILibrary.wait_until_element_contains_value(mock_gui, "some_locator", "expected_value", 5)
+        mock_gui.wait_until_page_contains_element.assert_called_with("some_locator", 5)
+        mock_gui.get_value = Mock(return_value="expected_value")
+        robot_call.assert_called()
+
+    @patch('robot.libraries.BuiltIn.BuiltIn.should_contain')
+    def test_wait_until_element_contains_value(self, robot_call):
+        mock_gui = Mock()
+        GUILibrary.wait_until_element_contains_value(mock_gui, "some_locator", "expected_value")
+        mock_gui.wait_until_page_contains_element.assert_called_with("some_locator", None)
+        mock_gui.get_value = Mock(return_value="expected_value")
+        robot_call.assert_called()
