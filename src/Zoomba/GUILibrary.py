@@ -1,3 +1,5 @@
+import itertools
+import time
 from SeleniumLibrary import SeleniumLibrary
 from robot.libraries.BuiltIn import BuiltIn
 from robot.api.deco import keyword
@@ -5,6 +7,8 @@ from robot.libraries.Collections import Collections
 
 zoomba = BuiltIn()
 zoomba_collections = Collections()
+
+screenshot_counter = itertools.count()
 
 
 class GUILibrary(SeleniumLibrary):
@@ -255,3 +259,11 @@ class GUILibrary(SeleniumLibrary):
         """
         truncated_string = string[0:number_of_characters]
         return truncated_string
+
+    @keyword("Save Selenium Screenshot")
+    def save_selenium_screenshot(self):
+        """Takes a screenshot with a unique filename to be stored in Robot Framework compiled reports."""
+        next(screenshot_counter)
+        timestamp = time.time()
+        filename = 'selenium-screenshot-' + str(timestamp) + '-' + str(screenshot_counter) + '.png'
+        self.capture_page_screenshot(filename)
