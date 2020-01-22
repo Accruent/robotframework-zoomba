@@ -1,5 +1,4 @@
 import itertools
-import time
 from SeleniumLibrary import SeleniumLibrary
 from robot.libraries.BuiltIn import BuiltIn
 from robot.api.deco import keyword
@@ -301,6 +300,6 @@ class GUILibrary(SeleniumLibrary):
     @keyword("Save Selenium Screenshot")
     def save_selenium_screenshot(self):
         """Takes a screenshot with a unique filename to be stored in Robot Framework compiled reports."""
-        timestamp = time.time()
+        timestamp = time()
         filename = 'selenium-screenshot-' + str(timestamp) + '-' + str(next(SCREENSHOT_COUNTER)) + '.png'
         return self.capture_page_screenshot(filename)
