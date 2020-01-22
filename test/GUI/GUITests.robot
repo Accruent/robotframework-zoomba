@@ -30,7 +30,7 @@ Save Selenium Screenshot Test
     ${file1}=                       Save Selenium Screenshot
     ${file2}=                       Save Selenium Screenshot
     Should Not Be Equal             ${file1}  ${file2}
-    Should Match Regexp             ${file1}                    .selenium-screenshot-\\d{10}.\\d{7}-\\d.png
+    Should Match Regexp             ${file1}                    .selenium-screenshot-\\d{10}.\\d{6,8}-\\d.png
 
 Iframe keywords Test
     [Teardown]      Close All Browsers
