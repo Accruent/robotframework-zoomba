@@ -29,79 +29,166 @@ class TestInternal(unittest.TestCase):
     @patch('robot.libraries.BuiltIn.BuiltIn.wait_until_keyword_succeeds')
     def test_wait_for_and_focus_simple(self, robot_call):
         mock_gui = Mock()
-        type(mock_gui).timeout = PropertyMock(return_value=15)
+        mock_gui.timeout = 15
         GUILibrary.wait_for_and_focus_on_element(mock_gui, "some_locator")
-        mock_gui.wait_until_page_contains_element.assert_called_with("some_locator")
+        mock_gui.wait_until_page_contains_element.assert_called_with("some_locator", 15)
         robot_call.assert_called_with(15, 1, "Set Focus To Element", "some_locator")
-        mock_gui.wait_until_element_is_visible.assert_called_with("some_locator")
+        mock_gui.wait_until_element_is_visible.assert_called_with("some_locator", 15)
+
+    @patch('robot.libraries.BuiltIn.BuiltIn.wait_until_keyword_succeeds')
+    def test_wait_for_and_focus_with_timeout_override(self, robot_call):
+        mock_gui = Mock()
+        mock_gui.timeout = 15
+        GUILibrary.wait_for_and_focus_on_element(mock_gui, "some_locator", 10)
+        mock_gui.wait_until_page_contains_element.assert_called_with("some_locator", 10)
+        robot_call.assert_called_with(10, 1, "Set Focus To Element", "some_locator")
+        mock_gui.wait_until_element_is_visible.assert_called_with("some_locator", 10)
 
     def test_wait_for_and_click_element_simple(self):
         mock_gui = Mock()
+        mock_gui.timeout = 10.5
         GUILibrary.wait_for_and_click_element(mock_gui, "some_locator")
-        mock_gui.wait_for_and_focus_on_element.assert_called_with("some_locator")
+        mock_gui.wait_for_and_focus_on_element.assert_called_with("some_locator", None)
+        mock_gui.click_element.assert_called_with("some_locator")
+
+    def test_wait_for_and_click_element_with_timeout(self):
+        mock_gui = Mock()
+        mock_gui.timeout = 15
+        GUILibrary.wait_for_and_click_element(mock_gui, "some_locator", timeout=10.5)
+        mock_gui.wait_for_and_focus_on_element.assert_called_with("some_locator", 10.5)
         mock_gui.click_element.assert_called_with("some_locator")
 
     def test_wait_for_and_input_text_simple(self):
         mock_gui = Mock()
         GUILibrary.wait_for_and_input_text(mock_gui, "some_locator", "text")
-        mock_gui.wait_for_and_focus_on_element.assert_called_with("some_locator")
+        mock_gui.wait_for_and_focus_on_element.assert_called_with("some_locator", None)
+        mock_gui.input_text.assert_called_with("some_locator", "text")
+
+    def test_wait_for_and_input_text_with_timeout(self):
+        mock_gui = Mock()
+        GUILibrary.wait_for_and_input_text(mock_gui, "some_locator", "text", 5)
+        mock_gui.wait_for_and_focus_on_element.assert_called_with("some_locator", 5)
         mock_gui.input_text.assert_called_with("some_locator", "text")
 
     def test_wait_for_and_select_frame_simple(self):
         mock_gui = Mock()
         GUILibrary.wait_for_and_select_frame(mock_gui, "some_locator")
-        mock_gui.wait_until_page_contains_element.assert_called_with("some_locator")
+        mock_gui.wait_until_page_contains_element.assert_called_with("some_locator", None)
+        mock_gui.select_frame.assert_called_with("some_locator")
+
+    def test_wait_for_and_select_frame_with_timeout(self):
+        mock_gui = Mock()
+        GUILibrary.wait_for_and_select_frame(mock_gui, "some_locator", 5)
+        mock_gui.wait_until_page_contains_element.assert_called_with("some_locator", 5)
         mock_gui.select_frame.assert_called_with("some_locator")
 
     def test_unselect_and_select_frame_simple(self):
         mock_gui = Mock()
         GUILibrary.unselect_and_select_frame(mock_gui, "some_locator")
-        mock_gui.wait_for_and_select_frame.assert_called_with("some_locator")
+        mock_gui.wait_for_and_select_frame.assert_called_with("some_locator", None)
+        mock_gui.unselect_frame.assert_called()
+
+    def test_unselect_and_select_frame_with_timeout(self):
+        mock_gui = Mock()
+        GUILibrary.unselect_and_select_frame(mock_gui, "some_locator", timeout=7.5)
+        mock_gui.wait_for_and_select_frame.assert_called_with("some_locator", 7.5)
         mock_gui.unselect_frame.assert_called()
 
     def test_wait_for_and_select_from_list_simple(self):
         mock_gui = Mock()
+        mock_gui.timeout = 12
         GUILibrary.wait_for_and_select_from_list(mock_gui, "some_locator", "target")
-        mock_gui.wait_for_and_focus_on_element.assert_called_with("some_locator")
+        mock_gui.wait_for_and_focus_on_element.assert_called_with("some_locator", None)
+        mock_gui.select_from_list_by_label.assert_called_with("some_locator", "target")
+
+    def test_wait_for_and_select_from_list_with_timeout(self):
+        mock_gui = Mock()
+        GUILibrary.wait_for_and_select_from_list(mock_gui, "some_locator", "target", 10)
+        mock_gui.wait_for_and_focus_on_element.assert_called_with("some_locator", 10)
         mock_gui.select_from_list_by_label.assert_called_with("some_locator", "target")
 
     def test_wait_for_and_select_from_list_by_value_simple(self):
         mock_gui = Mock()
         GUILibrary.wait_for_and_select_from_list_by_value(mock_gui, "some_locator", "target")
-        mock_gui.wait_for_and_focus_on_element.assert_called_with("some_locator")
+        mock_gui.wait_for_and_focus_on_element.assert_called_with("some_locator", None)
+        mock_gui.select_from_list_by_value.assert_called_with("some_locator", "target")
+
+    def test_wait_for_and_select_from_list_by_value_with_timeout(self):
+        mock_gui = Mock()
+        GUILibrary.wait_for_and_select_from_list_by_value(mock_gui, "some_locator", "target", 11)
+        mock_gui.wait_for_and_focus_on_element.assert_called_with("some_locator", 11)
         mock_gui.select_from_list_by_value.assert_called_with("some_locator", "target")
 
     def test_wait_for_and_select_from_list_by_index_simple(self):
         mock_gui = Mock()
         GUILibrary.wait_for_and_select_from_list_by_index(mock_gui, "some_locator", "target")
-        mock_gui.wait_for_and_focus_on_element.assert_called_with("some_locator")
+        mock_gui.wait_for_and_focus_on_element.assert_called_with("some_locator", None)
+        mock_gui.select_from_list_by_index.assert_called_with("some_locator", "target")
+
+    def test_wait_for_and_select_from_list_by_index_with_timeout(self):
+        mock_gui = Mock()
+        GUILibrary.wait_for_and_select_from_list_by_index(mock_gui, "some_locator", "target", 5)
+        mock_gui.wait_for_and_focus_on_element.assert_called_with("some_locator", 5)
         mock_gui.select_from_list_by_index.assert_called_with("some_locator", "target")
 
     def test_wait_for_mouse_over_simple(self):
         mock_gui = Mock()
         GUILibrary.wait_for_and_mouse_over(mock_gui, "some_locator")
-        mock_gui.wait_for_and_focus_on_element.assert_called_with("some_locator")
+        mock_gui.wait_for_and_focus_on_element.assert_called_with("some_locator", None)
+        mock_gui.mouse_over.assert_called_with("some_locator")
+
+    def test_wait_for_mouse_over_with_timeout(self):
+        mock_gui = Mock()
+        GUILibrary.wait_for_and_mouse_over(mock_gui, "some_locator", 12)
+        mock_gui.wait_for_and_focus_on_element.assert_called_with("some_locator", 12)
         mock_gui.mouse_over.assert_called_with("some_locator")
 
     def test_wait_for_mouse_over_and_click_simple(self):
         mock_gui = Mock()
         GUILibrary.wait_for_and_mouse_over_and_click(mock_gui, "some_locator")
-        mock_gui.wait_for_and_focus_on_element.assert_called_with("some_locator")
+        mock_gui.wait_for_and_focus_on_element.assert_called_with("some_locator", None)
+        mock_gui.mouse_over.assert_called_with("some_locator")
+        mock_gui.click_element.assert_called_with("some_locator")
+
+    def test_wait_for_mouse_over_and_click_with_timeout(self):
+        mock_gui = Mock()
+        GUILibrary.wait_for_and_mouse_over_and_click(mock_gui, "some_locator", 2)
+        mock_gui.wait_for_and_focus_on_element.assert_called_with("some_locator", 2)
         mock_gui.mouse_over.assert_called_with("some_locator")
         mock_gui.click_element.assert_called_with("some_locator")
 
     def test_wait_for_and_select_checkbox_simple(self):
         mock_gui = Mock()
         GUILibrary.wait_for_and_select_checkbox(mock_gui, "some_locator")
-        mock_gui.wait_for_and_focus_on_element.assert_called_with("some_locator")
+        mock_gui.wait_for_and_focus_on_element.assert_called_with("some_locator", None)
         mock_gui.select_checkbox.assert_called_with("some_locator")
 
-    @patch('robot.libraries.Collections.Collections.list_should_contain_value')
-    def test_wait_until_window_opens_simple(self, robot_call):
+    def test_wait_for_and_select_checkbox_with_timeout(self):
         mock_gui = Mock()
+        GUILibrary.wait_for_and_select_checkbox(mock_gui, "some_locator", 5)
+        mock_gui.wait_for_and_focus_on_element.assert_called_with("some_locator", 5)
+        mock_gui.select_checkbox.assert_called_with("some_locator")
+
+    def test_wait_until_window_opens_simple(self):
+        mock_gui = Mock()
+        mock_gui.timeout = 10
         mock_gui.get_window_titles = Mock(return_value=["title"])
         GUILibrary.wait_until_window_opens(mock_gui, "title")
-        robot_call.assert_called_with(["title"], "title")
+        mock_gui.get_window_titles.assert_called()
+
+    def test_wait_until_window_opens_with_timeout(self):
+        mock_gui = Mock()
+        mock_gui.get_window_titles = Mock(return_value=["title"])
+        GUILibrary.wait_until_window_opens(mock_gui, "title", 15)
+        mock_gui.get_window_titles.assert_called()
+
+    @patch('robot.libraries.BuiltIn.BuiltIn.fail')
+    def test_wait_until_window_opens_with_error(self, fail):
+        mock_gui = Mock()
+        mock_gui.timeout = 0.0001
+        mock_gui.get_window_titles = Mock(return_value=["wrong_title"])
+        GUILibrary.wait_until_window_opens(mock_gui, "title")
+        fail.assert_called_with("Window with the title: 'title' not found.")
 
     @patch('robot.libraries.Collections.Collections.list_should_not_contain_value')
     def test_window_should_not_be_open_simple(self, robot_call):
@@ -110,12 +197,18 @@ class TestInternal(unittest.TestCase):
         GUILibrary.window_should_not_be_open(mock_gui, "title")
         robot_call.assert_called_with(["main"], "title")
 
-    @patch('robot.libraries.BuiltIn.BuiltIn.wait_until_keyword_succeeds')
-    def test_wait_for_and_select_window_simple(self, robot_call):
+    def test_wait_for_and_select_window_simple(self):
         mock_gui = Mock()
-        type(mock_gui).timeout = PropertyMock(return_value=15)
+        mock_gui.timeout = 15
         GUILibrary.wait_for_and_select_window(mock_gui, "title")
-        robot_call.assert_called_with(15, 1, 'Wait Until Window Opens', 'title')
+        mock_gui.wait_until_window_opens.assert_called_with("title", None)
+        mock_gui.switch_window.assert_called_with("title")
+
+    def test_wait_for_and_select_window_with_timeout(self):
+        mock_gui = Mock()
+        mock_gui.timeout = 15
+        GUILibrary.wait_for_and_select_window(mock_gui, "title", 10)
+        mock_gui.wait_until_window_opens.assert_called_with("title", 10)
         mock_gui.switch_window.assert_called_with("title")
 
     @patch('robot.libraries.BuiltIn.BuiltIn.sleep')
@@ -125,20 +218,17 @@ class TestInternal(unittest.TestCase):
         GUILibrary.wait_until_javascript_is_complete(mock_gui)
         robot_call.assert_called()
 
-    @patch('SeleniumLibrary.ElementKeywords.get_text')
-    def test_get_text_from_web_elements_list_simple(self, robot_call):
+    def test_get_text_from_web_elements_list_simple(self):
         mock_gui = Mock()
         mock_gui.get_text = Mock(side_effect=['a', 'b'])
         assert GUILibrary.get_text_from_web_elements_list(mock_gui, ['a', 'b']) == ['a', 'b']
 
-    @patch('SeleniumLibrary.ElementKeywords.get_value')
-    def test_get_values_from_web_elements_list_simple(self, robot_call):
+    def test_get_values_from_web_elements_list_simple(self):
         mock_gui = Mock()
         mock_gui.get_value = Mock(side_effect=['a', 'b'])
         assert GUILibrary.get_values_from_web_elements_list(mock_gui, ['a', 'b']) == ['a', 'b']
 
-    @patch('SeleniumLibrary.ElementKeywords.get_vertical_position')
-    def test_get_vertical_position_from_web_elements_list_simple(self, robot_call):
+    def test_get_vertical_position_from_web_elements_list_simple(self):
         mock_gui = Mock()
         mock_gui.get_vertical_position = Mock(side_effect=[1, 2])
         assert GUILibrary.get_vertical_position_from_web_elements_list(mock_gui, ['a', 'b']) == [1, 2]
@@ -149,6 +239,13 @@ class TestInternal(unittest.TestCase):
         type(mock_gui).timeout = PropertyMock(return_value=15)
         GUILibrary.wait_until_window_closes(mock_gui, "title")
         robot_call.assert_called_with(15, 1, "Window Should Not Be Open", "title")
+
+    @patch('robot.libraries.BuiltIn.BuiltIn.wait_until_keyword_succeeds')
+    def test_wait_until_window_closes_with_timeout(self, robot_call):
+        mock_gui = Mock()
+        type(mock_gui).timeout = PropertyMock(return_value=15)
+        GUILibrary.wait_until_window_closes(mock_gui, "title", 6)
+        robot_call.assert_called_with(6, 1, "Window Should Not Be Open", "title")
 
     def test_scroll_to_bottom_of_page_simple(self):
         mock_gui = Mock()
@@ -189,3 +286,19 @@ class TestInternal(unittest.TestCase):
 
         # mock_gui.capture_page_screenshot.assert_called_with('test')
         mock_gui.capture_page_screenshot.assert_called()
+
+    @patch('robot.libraries.BuiltIn.BuiltIn.should_contain')
+    def test_wait_until_element_contains_value(self, robot_call):
+        mock_gui = Mock()
+        GUILibrary.wait_until_element_contains_value(mock_gui, "some_locator", "expected_value", 5)
+        mock_gui.wait_until_page_contains_element.assert_called_with("some_locator", 5)
+        mock_gui.get_value = Mock(return_value="expected_value")
+        robot_call.assert_called()
+
+    @patch('robot.libraries.BuiltIn.BuiltIn.should_contain')
+    def test_wait_until_element_contains_value(self, robot_call):
+        mock_gui = Mock()
+        GUILibrary.wait_until_element_contains_value(mock_gui, "some_locator", "expected_value")
+        mock_gui.wait_until_page_contains_element.assert_called_with("some_locator", None)
+        mock_gui.get_value = Mock(return_value="expected_value")
+        robot_call.assert_called()

@@ -1,8 +1,8 @@
 robotframework==3.1.2
-robotframework-requests==0.6.2
+robotframework-requests==0.5.0
 robotframework-seleniumlibrary==4.1.0
 robotframework-sudslibrary-aljcalandra==1.1
 requests==2.22.0
 selenium==3.141.0
-python-dateutil==2.8.0
+python-dateutil==2.8.1
 robotframework-appiumlibrary==1.5.0.4

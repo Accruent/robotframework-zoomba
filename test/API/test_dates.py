@@ -1,11 +1,10 @@
 import os
 import sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../src/')))
 import datetime
-sys.path.insert(0, os.path.abspath( os.path.join(os.path.dirname(__file__), '../../src/') ))
-
+import unittest
 from Zoomba.APILibrary import APILibrary
 from Zoomba.APILibrary import _date_format
-import unittest
 
 
 class TestDates(unittest.TestCase):
