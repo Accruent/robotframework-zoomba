@@ -8,7 +8,7 @@ from robot.libraries.Collections import Collections
 zoomba = BuiltIn()
 zoomba_collections = Collections()
 
-screenshot_counter = itertools.count()
+SCREENSHOT_COUNTER = itertools.count()
 
 
 class GUILibrary(SeleniumLibrary):
@@ -16,6 +16,7 @@ class GUILibrary(SeleniumLibrary):
 
     This class inherits from the SeleniumLibrary Class, and expands it with some commonly used keywords.
     """
+
     @keyword("Element Value Should Be Equal")
     def element_value_should_be_equal(self, locator, expected_value):
         """Assert that the value attribute of a web element is equal to a given value\n
@@ -246,7 +247,7 @@ class GUILibrary(SeleniumLibrary):
         """
         if len(keys) != len(values):
             zoomba.log("The length of the keys and values lists is not the same: \nKeys Length: " +
-                             str(len(keys)) + "\nValues Length: " + str(len(values)), "ERROR")
+                       str(len(keys)) + "\nValues Length: " + str(len(values)), "ERROR")
         new_dict = dict(zip(keys, values))
         return new_dict
 
@@ -263,7 +264,6 @@ class GUILibrary(SeleniumLibrary):
     @keyword("Save Selenium Screenshot")
     def save_selenium_screenshot(self):
         """Takes a screenshot with a unique filename to be stored in Robot Framework compiled reports."""
-        next(screenshot_counter)
         timestamp = time.time()
-        filename = 'selenium-screenshot-' + str(timestamp) + '-' + str(screenshot_counter) + '.png'
+        filename = 'selenium-screenshot-' + str(timestamp) + '-' + str(next(SCREENSHOT_COUNTER)) + '.png'
         self.capture_page_screenshot(filename)
