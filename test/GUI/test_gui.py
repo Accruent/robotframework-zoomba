@@ -2,7 +2,6 @@
 import unittest
 import os
 import sys
-import SeleniumLibrary
 from unittest.mock import patch
 from unittest.mock import Mock
 from unittest.mock import PropertyMock
@@ -277,18 +276,10 @@ class TestInternal(unittest.TestCase):
     @patch('SeleniumLibrary.ScreenshotKeywords.capture_page_screenshot')
     def test_save_selenium_screenshot_simple(self, mock_gui):
         GUILibrary.save_selenium_screenshot(mock_gui)
-        print(mock_gui.call_args)
-        # mock_gui.
-        # try:
-        #     mock_gui.capture_page_screenshot.assert_called_with('test')
-        # except AssertionError:
-        #     print(AssertionError)
-
-        # mock_gui.capture_page_screenshot.assert_called_with('test')
         mock_gui.capture_page_screenshot.assert_called()
 
     @patch('robot.libraries.BuiltIn.BuiltIn.should_contain')
-    def test_wait_until_element_contains_value(self, robot_call):
+    def test_wait_until_element_contains_value_with_timeout(self, robot_call):
         mock_gui = Mock()
         GUILibrary.wait_until_element_contains_value(mock_gui, "some_locator", "expected_value", 5)
         mock_gui.wait_until_page_contains_element.assert_called_with("some_locator", 5)
