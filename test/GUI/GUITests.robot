@@ -35,12 +35,11 @@ Iframe keywords Test
 
 Mouse over Keywords Test
     [Teardown]      Close All Browsers
-    Open Browser    https://devhints.io/    browser=${browser}
+    Open Browser    https://github.com/    browser=${browser}
     Maximize Browser Window
-    wait for and mouse over                 //a[@class='home back-button']
-    wait for and mouse over                 //li[@class='facebook link hint--bottom']//a
-    wait for and mouse over and click       //a[@class='item top-sheet -item-bash']//span[@class='info']
-    wait until page contains                Bash scripting cheatsheet
+    wait for and mouse over                 //a[@class='HeaderMenu-link no-underline mr-3']
+    wait for and mouse over and click       //button[@class='btn-mktg btn-primary-mktg btn-large-mktg f4 btn-block my-3']
+    wait until page contains                There were problems creating your account.
 
 Wait Until Javascript Completes Test
     [Teardown]      Close All Browsers
