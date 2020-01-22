@@ -35,12 +35,12 @@ Iframe keywords Test
 
 Mouse over Keywords Test
     [Teardown]      Close All Browsers
-    Open Browser    http://www.google.com    browser=${browser}
+    Open Browser    https://devhints.io/    browser=${browser}
     Maximize Browser Window
-    wait for and mouse over                 //div[@class='FPdoLc VlcLAe']//input[@name='btnK']
-    wait for and mouse over                 //a[contains(text(),'Gmail')]
-    wait for and mouse over and click       //a[contains(text(),'About')]
-    wait until page contains element        //a[contains(text(),'About')]
+    wait for and mouse over                 //a[@class='home back-button']
+    wait for and mouse over                 //li[@class='facebook link hint--bottom']//a
+    wait for and mouse over and click       //a[@class='item top-sheet -item-bash']//span[@class='info']
+    wait until page contains                Bash scripting cheatsheet
 
 Wait Until Javascript Completes Test
     [Teardown]      Close All Browsers
