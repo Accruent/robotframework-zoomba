@@ -202,37 +202,29 @@ class MobileLibrary(AppiumLibrary):
         self.wait_until_page_contains_element(locator, timeout, error)
         self.element_should_be_disabled(locator)
 
-    # @keyword("Drag And Drop")
-    # def drag_and_drop(self, source, target):
-    #     """Drags the element found with the locator  ``source`` to the element found with the locator ``target``.
-    #     """
-    #     driver = self._current_application()
-    #     source_element = self._element_find(source, True, True)
-    #     target_element = self._element_find(target, True, True)
-    #     actions = ActionChains(driver)
-    #     actions.drag_and_drop(source_element, target_element).perform()
-    #
-    # @keyword("Drag And Drop By Offset")
-    # def drag_and_drop_by_offset(self, locator, x_offset=0, y_offset=0):
-    #     """Drags the element found with ``locator`` to the given ``x_offset`` and ``y_offset`` coordinates.
-    #     """
-    #     driver = self._current_application()
-    #     element = self._element_find(locator, True, True)
-    #     actions = ActionChains(driver)
-    #     actions.drag_and_drop_by_offset(element, x_offset, y_offset).perform()
+    @keyword("Drag And Drop")
+    def drag_and_drop(self, source, target):
+        """Drags the element found with the locator  ``source`` to the element found with the locator ``target``.
+        """
+        driver = self._current_application()
+        source_element = self._element_find(source, True, True)
+        target_element = self._element_find(target, True, True)
+        actions = ActionChains(driver)
+        actions.drag_and_drop(source_element, target_element).perform()
+
+    @keyword("Drag And Drop By Offset")
+    def drag_and_drop_by_offset(self, locator, x_offset=0, y_offset=0):
+        """Drags the element found with ``locator`` to the given ``x_offset`` and ``y_offset`` coordinates.
+        """
+        driver = self._current_application()
+        element = self._element_find(locator, True, True)
+        actions = ActionChains(driver)
+        actions.drag_and_drop_by_offset(element, x_offset, y_offset).perform()
 
     # Private
-
-    def _element_find_by_text(self, text, exact_match=False):
-        if exact_match:
-            _xpath = u'//*[@{}="{}"]'.format('Name', text)
-        else:
-            _xpath = u'//*[contains(@{},"{}")]'.format('Name', text)
-        return self._element_find(_xpath, True, True)
-
-    @staticmethod
-    def _move_to_element(actions, element, x_offset, y_offset):
-        if x_offset != 0 or y_offset != 0:
-            actions.move_to_element_with_offset(element, x_offset, y_offset)
-        else:
-            actions.move_to_element(element)
+    # @staticmethod
+    # def _move_to_element(actions, element, x_offset, y_offset):
+    #     if x_offset != 0 or y_offset != 0:
+    #         actions.move_to_element_with_offset(element, x_offset, y_offset)
+    #     else:
+    #         actions.move_to_element(element)
