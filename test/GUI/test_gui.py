@@ -2,6 +2,7 @@
 import unittest
 import os
 import sys
+import SeleniumLibrary
 from unittest.mock import patch
 from unittest.mock import Mock
 from unittest.mock import PropertyMock
@@ -176,7 +177,15 @@ class TestInternal(unittest.TestCase):
         mock_gui = Mock()
         assert GUILibrary.truncate_string(mock_gui, "string", 3) == "str"
 
-    def test_save_selenium_screenshot_simple(self):
-        mock_gui = Mock()
+    @patch('SeleniumLibrary.ScreenshotKeywords.capture_page_screenshot')
+    def test_save_selenium_screenshot_simple(self, mock_gui):
         GUILibrary.save_selenium_screenshot(mock_gui)
-        # robot_call.assert_called('Save Selenium Screenshot')
+        print(mock_gui.call_args)
+        # mock_gui.
+        # try:
+        #     mock_gui.capture_page_screenshot.assert_called_with('test')
+        # except AssertionError:
+        #     print(AssertionError)
+
+        # mock_gui.capture_page_screenshot.assert_called_with('test')
+        mock_gui.capture_page_screenshot.assert_called()

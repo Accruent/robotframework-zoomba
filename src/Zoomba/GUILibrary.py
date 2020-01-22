@@ -266,4 +266,4 @@ class GUILibrary(SeleniumLibrary):
         """Takes a screenshot with a unique filename to be stored in Robot Framework compiled reports."""
         timestamp = time.time()
         filename = 'selenium-screenshot-' + str(timestamp) + '-' + str(next(SCREENSHOT_COUNTER)) + '.png'
-        self.capture_page_screenshot(filename)
+        return self.capture_page_screenshot(filename)

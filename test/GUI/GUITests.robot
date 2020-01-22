@@ -114,4 +114,3 @@ Save Selenium Screenshot Test
     Open Browser                    http://www.google.com    browser=${browser}
     Maximize Browser Window
     Save Selenium Screenshot
-    Save Selenium Screenshot
