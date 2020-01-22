@@ -62,7 +62,34 @@ Web Elements Text Test
     [Teardown]      Close All Browsers
     Open Browser    http://www.google.com    browser=${browser}
     Maximize Browser Window
-    Save Selenium Screenshot
+    wait for and input text      //input[@name='q']      robot framework
+    press keys                    //input[@name='q']      RETURN
+    wait until element is visible                   //div[@id='res']
+    ${resultsLinksList}=        Get Webelements     //div[@id='res']
+    ${linksTextList}=           Get Text From Web Elements List     ${resultsLinksList}
+    should contain     @{linksTextList}[0]     Robot Framework
+
+Web Elements Vertical Position Test
+    [Teardown]      Close All Browsers
+    Open Browser    http://www.google.com    browser=${browser}
+    Maximize Browser Window
+    wait for and input text      //input[@name='q']      robot framework
+    press keys                    //input[@name='q']      RETURN
+    wait until element is visible                       //div[@id='res']
+    ${resultsLinksList}=            Get Webelements     //div[@id='res']
+    ${linksPositionList}=           Get Vertical Position From Web Elements List        ${resultsLinksList}
+    should be equal                 @{linksPositionList}[0]     ${172}
+
+Create Dictionary from Lists Test
+    ${testDict1}=       create dictionary   Name=User1      ID=01   Phone=51212345678
+    ${testDict2}=       create dictionary   Name=User1      ID=02   Phone=51254515212
+    ${keysList}=        create list     Name    ID      Phone
+    ${valuesList}=      create list     User1   01      51212345678
+    ${badValuesList}=   create list     User1   02      51254515212     More Stuff
+    ${newDict1}=        create dictionary from keys and values lists        ${keysList}    ${valuesList}
+    should be equal     ${testDict1}    ${newDict1}
+    ${badValuesDict}=     create dictionary from keys and values lists        ${keysList}    ${badValuesList}
+    should be equal     ${testDict2}    ${badValuesDict}
 
 Truncate String Test
     ${reallyLongTestString}=    set variable    This is a long String, which should be truncated here, unless it's the original string.
