@@ -10,7 +10,7 @@ Wait for Keywords Test
     [Teardown]      Close All Browsers
     Open Browser    https://github.com/    browser=${browser}
     Maximize Browser Window
-    Set Selenium Speed    0.1s
+    Set Selenium Speed    0.2s
     wait for and input text      //input[@name='q']      robotframework
     press keys                    //input[@name='q']      RETURN
     wait for and click element               //a[@href='/robotframework/robotframework']
