@@ -23,6 +23,15 @@ Element value should be equal and not equal Test
     element value should be equal       btnK    Google Search
     element value should not be equal   btnK    Not Google Search
 
+Save Selenium Screenshot Test
+    [Teardown]                      Close All Browsers
+    Open Browser                    http://www.google.com       browser=${browser}
+    Maximize Browser Window
+    ${file1}=                       Save Selenium Screenshot
+    ${file2}=                       Save Selenium Screenshot
+    Should Not Be Equal             ${file1}  ${file2}
+    Should Match Regexp             ${file1}                    .selenium-screenshot-\\d{10}.\\d{6,8}-\\d.png
+
 Iframe keywords Test
     [Teardown]      Close All Browsers
     Open Browser    https://www.w3schools.com/html/html_iframe.asp    browser=${browser}

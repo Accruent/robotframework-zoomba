@@ -1,11 +1,13 @@
+"""Unit tests for GUILibrary keywords"""
+import unittest
 import os
 import sys
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../src/')))
-import unittest
-from Zoomba.GUILibrary import GUILibrary
 from unittest.mock import patch
 from unittest.mock import Mock
 from unittest.mock import PropertyMock
+from Zoomba.GUILibrary import GUILibrary
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../src/')))
 
 
 class TestInternal(unittest.TestCase):
@@ -271,8 +273,13 @@ class TestInternal(unittest.TestCase):
         mock_gui = Mock()
         assert GUILibrary.truncate_string(mock_gui, "string", 3) == "str"
 
+    @patch('SeleniumLibrary.ScreenshotKeywords.capture_page_screenshot')
+    def test_save_selenium_screenshot_simple(self, mock_gui):
+        GUILibrary.save_selenium_screenshot(mock_gui)
+        mock_gui.capture_page_screenshot.assert_called()
+
     @patch('robot.libraries.BuiltIn.BuiltIn.should_contain')
-    def test_wait_until_element_contains_value(self, robot_call):
+    def test_wait_until_element_contains_value_with_timeout(self, robot_call):
         mock_gui = Mock()
         GUILibrary.wait_until_element_contains_value(mock_gui, "some_locator", "expected_value", 5)
         mock_gui.wait_until_page_contains_element.assert_called_with("some_locator", 5)
