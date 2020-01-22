@@ -26,6 +26,36 @@ Element value should be equal and not equal Test
 Save Selenium Screenshot Test
     [Teardown]                      Close All Browsers
     Open Browser                    http://www.google.com    browser=${browser}
+
+Iframe keywords Test
+    [Teardown]      Close All Browsers
+    Open Browser    https://www.w3schools.com/html/html_iframe.asp    browser=${browser}
+    Maximize Browser Window
+    Page should not contain element     //a[@href='default.asp'][@class='active']
+    wait for and select frame   //iframe[@src='default.asp']
+    wait until page contains element    //a[@href='default.asp'][@class='active']
+    Unselect frame
+    Page should not contain element     //a[@href='default.asp'][@class='active']
+
+Mouse over Keywords Test
+    [Teardown]      Close All Browsers
+    Open Browser    https://github.com/    browser=${browser}
+    Maximize Browser Window
+    wait for and mouse over                 //a[@class='HeaderMenu-link no-underline mr-3']
+    wait for and mouse over and click       //button[@class='btn-mktg btn-primary-mktg btn-large-mktg f4 btn-block my-3']
+    wait until page contains                There were problems creating your account.
+
+Wait Until Javascript Completes Test
+    [Teardown]      Close All Browsers
+    Open Browser    https://jquery.com/    browser=${browser}
+    Maximize Browser Window
+    wait until page contains element       //a[@title='jQuery']
+    wait until javascript is complete
+    title should be                        jQuery
+
+Web Elements Text Test
+    [Teardown]      Close All Browsers
+    Open Browser    http://www.google.com    browser=${browser}
     Maximize Browser Window
     Save Selenium Screenshot
 
