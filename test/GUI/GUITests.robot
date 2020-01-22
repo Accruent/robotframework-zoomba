@@ -35,12 +35,11 @@ Iframe keywords Test
 
 Mouse over Keywords Test
     [Teardown]      Close All Browsers
-    Open Browser    http://www.google.com    browser=${browser}
+    Open Browser    https://github.com/    browser=${browser}
     Maximize Browser Window
-    wait for and mouse over                 //div[@class='FPdoLc VlcLAe']//input[@name='btnK']
-    wait for and mouse over                 //a[contains(text(),'Gmail')]
-    wait for and mouse over and click       //a[contains(text(),'About')]
-    wait until page contains element        //a[contains(text(),'About')]
+    wait for and mouse over                 //a[@class='HeaderMenu-link no-underline mr-3']
+    wait for and mouse over and click       //button[@class='btn-mktg btn-primary-mktg btn-large-mktg f4 btn-block my-3']
+    wait until page contains                There were problems creating your account.
 
 Wait Until Javascript Completes Test
     [Teardown]      Close All Browsers
