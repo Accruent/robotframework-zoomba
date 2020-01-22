@@ -11,7 +11,7 @@ addons:
 cache: pip
 install:
 - pip install .
-- pip install python-coveralls
+- pip install coveralls
 - pip install pytest-cov
 before_script:
 - wget "http://chromedriver.storage.googleapis.com/78.0.3904.70/chromedriver_linux64.zip"
