@@ -25,7 +25,12 @@ Element value should be equal and not equal Test
 
 Save Selenium Screenshot Test
     [Teardown]                      Close All Browsers
-    Open Browser                    http://www.google.com    browser=${browser}
+    Open Browser                    http://www.google.com       browser=${browser}
+    Maximize Browser Window
+    ${file1}=                       Save Selenium Screenshot
+    ${file2}=                       Save Selenium Screenshot
+    Should Not Be Equal             ${file1}  ${file2}
+    Should Match Regexp             ${file1}                    .selenium-screenshot-\\d{10}.\\d{7}-\\d.png
 
 Iframe keywords Test
     [Teardown]      Close All Browsers
