@@ -11,6 +11,7 @@ zoomba = BuiltIn()
 
 class MobileLibrary(AppiumLibrary):
     """Zoomba Mobile Library
+
         This class is the base Library used to generate automated Mobile Tests in the Robot Automation Framework using
         Appium. This Library uses and extends the robotframework-appiumlibrary.
 
