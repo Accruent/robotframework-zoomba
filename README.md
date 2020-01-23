@@ -5,7 +5,7 @@ Zoomba
 [![Coverage Status](https://coveralls.io/repos/github/Accruent/robotframework-zoomba/badge.svg?branch=master)](https://coveralls.io/github/Accruent/robotframework-zoomba?branch=master)
 [![CodeFactor](https://www.codefactor.io/repository/github/accruent/robotframework-zoomba/badge)](https://www.codefactor.io/repository/github/accruent/robotframework-zoomba)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/Accruent/robotframework-zoomba.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Accruent/robotframework-zoomba/alerts/)
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FAccruent%2Frobotframework-zoomba.svg?type=small)](https://app.fossa.com/projects/git%2Bgithub.com%2FAccruent%2Frobotframework-zoomba?ref=badge_small)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FAccruent%2Frobotframework-zoomba.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FAccruent%2Frobotframework-zoomba?ref=badge_shield)
 
 Introduction
 -----------
