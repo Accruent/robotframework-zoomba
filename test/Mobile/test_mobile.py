@@ -1,10 +1,12 @@
 from Zoomba.MobileLibrary import MobileLibrary
 import unittest
 from appium import webdriver
-import subprocess
-from unittest.mock import MagicMock, patch
-from webdriverremotemock import WebdriverRemoteMock
+from unittest.mock import MagicMock
 from selenium.webdriver.common.action_chains import ActionChains
+
+import sys
+sys.path.append('../')
+from Helpers.webdriverremotemock import WebdriverRemoteMock
 
 
 class TestInternal(unittest.TestCase):

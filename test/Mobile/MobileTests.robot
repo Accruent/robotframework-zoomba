@@ -7,7 +7,7 @@ Force Tags        Mobile
 
 *** Variables ***
 ${REMOTE_URL}           http://localhost:4723/wd/hub
-${APP}                  ${CURDIR}\\demo_app.apk
+${APP}                  ${CURDIR}${/}..\\Helpers\\demo_app.apk
 
 *** Keywords ***
 Start App

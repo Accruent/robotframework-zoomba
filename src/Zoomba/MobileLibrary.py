@@ -1,10 +1,7 @@
 from AppiumLibrary import AppiumLibrary
-from appium import webdriver
 from robot.api.deco import keyword
 from robot.libraries.BuiltIn import BuiltIn
-import subprocess
 from selenium.webdriver.common.action_chains import ActionChains
-from time import sleep
 
 zoomba = BuiltIn()
 
