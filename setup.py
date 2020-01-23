@@ -15,9 +15,9 @@ setup(name='robotframework-zoomba',
       description='Robot Framework mini-framework.',
       long_description='Zoomba',
       url='https://github.com/Accruent/zoomba',
-      maintainer='Alex Calandra, Michael Hintz, Keith Smoland, Matthew Giardina, Brandon Wolfe',
+      maintainer='Alex Calandra, Michael Hintz, Keith Smoland, Matthew Giardina, Brandon Wolfe, Neil Howell, Tommy Hoang',
       maintainer_email='robosquad@accruent.com',
-      license='GPL-3.0-only',
+      license='GPL-3.0',
       keywords='Robot Framework robot-framework selenium requests appium soap winappdriver appium robotframework'
                'desktop windows zoomba python robotframework-library appium-windows appiumlibrary api-rest api '
                'soap-api',
