@@ -7,9 +7,10 @@ import sys
 import os
 try:
     sys.path.insert(0, os.path.abspath('..')) #Works for local
+    from Helpers.webdriverremotemock import WebdriverRemoteMock
 except:
     sys.path.insert(0, os.path.abspath('.')) #Works for Travis CI
-from Helpers.webdriverremotemock import WebdriverRemoteMock
+    from Helpers.webdriverremotemock import WebdriverRemoteMock
 
 
 class TestInternal(unittest.TestCase):
