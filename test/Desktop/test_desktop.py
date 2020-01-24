@@ -4,9 +4,12 @@ from appium import webdriver
 import subprocess
 from unittest.mock import MagicMock, patch
 from selenium.webdriver.common.action_chains import ActionChains
-
 import sys
-sys.path.append('../')
+import os
+try:
+    sys.path.insert(0, os.path.abspath('..')) #Works for local
+except:
+    sys.path.insert(0, os.path.abspath('.')) #Works for Travis CI
 from webdriverremotemock import WebdriverRemoteMock
 
 
