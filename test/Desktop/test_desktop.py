@@ -7,7 +7,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 
 import sys
 sys.path.append('../')
-from Helpers.webdriverremotemock import WebdriverRemoteMock
+from webdriverremotemock import WebdriverRemoteMock
 
 
 class TestInternal(unittest.TestCase):
