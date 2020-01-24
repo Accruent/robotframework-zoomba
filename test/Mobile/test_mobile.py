@@ -5,12 +5,8 @@ from unittest.mock import MagicMock
 from selenium.webdriver.common.action_chains import ActionChains
 import sys
 import os
-try:
-    sys.path.insert(0, os.path.abspath('..'))  # Works for local
-    from Helpers.webdriverremotemock import WebdriverRemoteMock
-except:
-    sys.path.insert(0, os.path.abspath('.'))  # Works for Travis CI
-    from Helpers.webdriverremotemock import WebdriverRemoteMock
+sys.path.append(os.path.join(os.path.dirname(sys.path[0]), 'Helpers'))
+from webdriverremotemock import WebdriverRemoteMock
 
 
 class TestInternal(unittest.TestCase):
