@@ -81,8 +81,13 @@ Wait Until Element Does Not Contain
 Scroll To Text Keyword Test
     Wait For And Click Text     API Demos
     Wait For And Click Text     Graphics
-    scroll down to text    SensorTest
-    scroll up to text      Arcs
+    Scroll Down To Text    SensorTest
+    Scroll Up To Text      Arcs
+
+Wait For And Tap Keyword Test
+    Wait For And Tap      accessibility_id=Search
+    Wait Until Page Contains    com.touchboarder.android.api.demos:id/search_src_text
+
 
 
 

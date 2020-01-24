@@ -260,3 +260,16 @@ class MobileLibrary(AppiumLibrary):
                 self.swipe_by_percent(50, 50, 50, 75)  # use swipe by direction if its ever implemented
         if not found:
             zoomba.fail(text + " was not found after " + str(swipe_count) + " swipes")
+
+    @keyword("Wait For And Tap")
+    def wait_for_and_tap(self, locator, x_offset=None, y_offset=None, count=1, timeout=None, error=None):
+        """ Wait for and then Tap element identified by ``locator``.
+        Args:
+        - ``x_offset`` - (optional) x coordinate to tap, relative to the top left corner of the element.
+        - ``y_offset`` - (optional) y coordinate. If y is used, x must also be set, and vice versa
+        - ``count`` - can be used to tap multiple times
+        - ``timeout`` - time in seconds to locate the element, defaults to global timeout
+        - ``error`` - (optional) used to override the default error message.
+        """
+        self.wait_until_page_contains_element(locator, timeout, error)
+        self.tap(locator, x_offset, y_offset, count)

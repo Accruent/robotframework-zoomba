@@ -169,3 +169,25 @@ class TestInternal(unittest.TestCase):
         mock_desk._is_text_present.side_effect = [False, False, False]
         MobileLibrary.open_application(mock_desk, 'remote_url')
         self.assertRaises(AssertionError, MobileLibrary.scroll_down_to_text, mock_desk, "some_locator", 2)
+
+    def test_wait_for_and_tap(self):
+        mock_desk = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        MobileLibrary.open_application(mock_desk, 'remote_url')
+        MobileLibrary.wait_for_and_tap(mock_desk, "some_locator")
+        mock_desk.tap.assert_called_with("some_locator", None, None, 1)
+
+    def test_wait_for_and_tap_multiple(self):
+        mock_desk = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        MobileLibrary.open_application(mock_desk, 'remote_url')
+        MobileLibrary.wait_for_and_tap(mock_desk, "some_locator", count=4)
+        mock_desk.tap.assert_called_with("some_locator", None, None, 4)
+
+    def test_wait_for_and_tap_override_defaults(self):
+        mock_desk = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        MobileLibrary.open_application(mock_desk, 'remote_url')
+        MobileLibrary.wait_for_and_tap(mock_desk, "some_locator", x_offset=200, y_offset=100, count=4,
+                                       error='some_error', timeout='10s')
+        mock_desk.tap.assert_called_with("some_locator", 200, 100, 4)
