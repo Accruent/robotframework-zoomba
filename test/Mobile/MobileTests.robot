@@ -88,6 +88,12 @@ Wait For And Tap Keyword Test
     Wait For And Tap      accessibility_id=Search
     Wait Until Page Contains    com.touchboarder.android.api.demos:id/search_src_text
 
+Save Selenium Screenshot Test
+    ${file1}=                       Save Appium Screenshot
+    ${file2}=                       Save Appium Screenshot
+    Should Not Be Equal             ${file1}  ${file2}
+    Should Match Regexp             ${file1}                    appium-screenshot-\\d{8,10}.\\d{6,8}-\\d.png
+
 
 
 
