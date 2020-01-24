@@ -30,7 +30,7 @@ class TestInternal(unittest.TestCase):
         webdriver.Remote = WebdriverRemoteMock
         MobileLibrary.open_application(mock_desk, 'remote_url')
         MobileLibrary.wait_for_and_click_text(mock_desk, "some_text")
-        mock_desk.click_text.assert_called_with("some_text")
+        mock_desk.click_text.assert_called_with("some_text", False)
 
     def test_wait_for_and_click_text_exact(self):
         mock_desk = MagicMock()
@@ -113,16 +113,14 @@ class TestInternal(unittest.TestCase):
     def test_drag_and_drop_missing_source(self):
         mock_desk = MagicMock()
         webdriver.Remote = WebdriverRemoteMock
-        mock_desk._element_find.side_effect = [ValueError("Element locator 'some_locator'"
-                                                          " did not match any elements."), True]
+        mock_desk._element_find.side_effect = ValueError
         MobileLibrary.open_application(mock_desk, 'remote_url')
         self.assertRaises(ValueError, MobileLibrary.drag_and_drop, mock_desk, "some_locator", "some_other_locator")
 
     def test_drag_and_drop_missing_target(self):
         mock_desk = MagicMock()
         webdriver.Remote = WebdriverRemoteMock
-        mock_desk._element_find.side_effect = [True, ValueError("Element locator 'some_other_locator'"
-                                                                " did not match any elements.")]
+        mock_desk._element_find.side_effect = [True, ValueError]
         MobileLibrary.open_application(mock_desk, 'remote_url')
         self.assertRaises(ValueError, MobileLibrary.drag_and_drop, mock_desk, "some_locator", "some_other_locator")
 
@@ -137,8 +135,7 @@ class TestInternal(unittest.TestCase):
     def test_drag_and_drop_with_offset_missing_locator(self):
         mock_desk = MagicMock()
         webdriver.Remote = WebdriverRemoteMock
-        mock_desk._element_find.side_effect = [ValueError("Element locator 'some_locator'"
-                                                                " did not match any elements.")]
+        mock_desk._element_find.side_effect = ValueError
         MobileLibrary.open_application(mock_desk, 'remote_url')
         self.assertRaises(ValueError, MobileLibrary.drag_and_drop_by_offset, mock_desk, "some_locator",
                           x_offset=100, y_offset=100)
