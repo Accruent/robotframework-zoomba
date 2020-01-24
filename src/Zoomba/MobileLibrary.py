@@ -61,7 +61,6 @@ class MobileLibrary(AppiumLibrary):
     For example:
     | @{elements}    Get Webelements    class=UIAButton
     | Click Element    @{elements}[2]
-
     """
 
     @keyword("Wait For And Clear Text")
@@ -84,9 +83,7 @@ class MobileLibrary(AppiumLibrary):
 
         ``error`` can be used to override the default error message.
 
-        See `introduction` for details about locating elements.
-        
-        Use `Wait For And Mouse Over And Click Element` if this keyword gives issues in the application."""
+        See `introduction` for details about locating elements."""
         self.wait_until_page_contains_element(locator, timeout, error)
         self.click_element(locator)
 
@@ -99,11 +96,21 @@ class MobileLibrary(AppiumLibrary):
         ``error`` can be used to override the default error message.
 
         By default tries to click first text involves given ``text``. If you would
-        like to click exactly matching text, then set ``exact_match`` to `True`.
-        
-        Use `Wait For And Mouse Over And Click Text` if this keyword gives issues in the application."""
+        like to click exactly matching text, then set ``exact_match`` to `True`."""
         self.wait_until_page_contains(text, timeout, error)
         self.click_text(text, exact_match)
+
+    @keyword("Wait For And Click Button")
+    def wait_for_and_click_button(self, locator, timeout=None, error=None):
+        """Wait for and click the button identified by ``locator``.
+
+        Fails if ``timeout`` expires before the element appears.
+
+        ``error`` can be used to override the default error message.
+
+        See `introduction` for details about locating elements."""
+        self.wait_until_page_contains_element(locator, timeout, error)
+        self.click_button(locator)
 
     @keyword("Wait For And Input Password")
     def wait_for_and_input_password(self, locator, text, timeout=None, error=None):
@@ -130,9 +137,23 @@ class MobileLibrary(AppiumLibrary):
         self.wait_until_page_contains_element(locator, timeout, error)
         self.input_text(locator, text)
 
+    @keyword("Wait For And Input Value")
+    def wait_for_and_input_value(self, locator, value, timeout=None, error=None):
+        """Wait for and set the given ``value`` into the text field identified by ``locator``. This is an IOS only
+        keyword, input value makes use of set_value.
+
+        Fails if ``timeout`` expires before the element appears.
+
+        ``error`` can be used to override the default error message.
+
+        The difference between this keyword and `Wait For And Input Text` is that this keyword
+        does not log the given password. See `introduction` for details about locating elements."""
+        self.wait_until_page_contains_element(locator, timeout, error)
+        self.input_value(locator, value)
+
     @keyword("Wait For And Long Press")
     def wait_for_and_long_press(self, locator, duration=5000, timeout=None, error=None):
-        """Wait for and long press the element identified by ``locator`` with optional duration.
+        """Wait for and long press the element identified by ``locator`` with optional ``duration``.
 
         Fails if ``timeout`` expires before the element appears.
 
@@ -152,8 +173,7 @@ class MobileLibrary(AppiumLibrary):
 
         See also `Wait Until Page Contains`,
         `Wait Until Page Does Not Contain`
-        `Wait Until Page Does Not Contain Element`
-        """
+        `Wait Until Page Does Not Contain Element`"""
         self.wait_until_page_contains_element(locator, timeout, error)
         self.element_should_contain_text(locator, text, error)
 
@@ -168,8 +188,7 @@ class MobileLibrary(AppiumLibrary):
         See also `Wait Until Element Contains`,
         `Wait Until Page Contains`,
         `Wait Until Page Does Not Contain`
-        `Wait Until Page Does Not Contain Element`
-        """
+        `Wait Until Page Does Not Contain Element`"""
         self.wait_until_page_contains_element(locator, timeout, error)
         self.element_should_not_contain_text(locator, text, error)
 
@@ -181,8 +200,7 @@ class MobileLibrary(AppiumLibrary):
 
         ``error`` can be used to override the default error message.
 
-        See also `Wait Until Element Is Disabled`
-        """
+        See also `Wait Until Element Is Disabled`"""
         self.wait_until_page_contains_element(locator, timeout, error)
         self.element_should_be_enabled(locator)
 
@@ -194,15 +212,13 @@ class MobileLibrary(AppiumLibrary):
 
         ``error`` can be used to override the default error message.
 
-        See also `Wait Until Element Is Disabled`
-        """
+        See also `Wait Until Element Is Disabled`"""
         self.wait_until_page_contains_element(locator, timeout, error)
         self.element_should_be_disabled(locator)
 
     @keyword("Drag And Drop")
     def drag_and_drop(self, source, target):
-        """Drags the element found with the locator  ``source`` to the element found with the locator ``target``.
-        """
+        """Drags the element found with the locator ``source`` to the element found with the locator ``target``."""
         driver = self._current_application()
         source_element = self._element_find(source, True, True)
         target_element = self._element_find(target, True, True)
@@ -211,17 +227,38 @@ class MobileLibrary(AppiumLibrary):
 
     @keyword("Drag And Drop By Offset")
     def drag_and_drop_by_offset(self, locator, x_offset=0, y_offset=0):
-        """Drags the element found with ``locator`` to the given ``x_offset`` and ``y_offset`` coordinates.
-        """
+        """Drags the element found with ``locator`` to the given ``x_offset`` and ``y_offset`` coordinates."""
         driver = self._current_application()
         element = self._element_find(locator, True, True)
         actions = ActionChains(driver)
         actions.drag_and_drop_by_offset(element, x_offset, y_offset).perform()
 
-    # Private
-    # @staticmethod
-    # def _move_to_element(actions, element, x_offset, y_offset):
-    #     if x_offset != 0 or y_offset != 0:
-    #         actions.move_to_element_with_offset(element, x_offset, y_offset)
-    #     else:
-    #         actions.move_to_element(element)
+    @keyword("Scroll Down To Text")
+    def scroll_down_to_text(self, text, swipe_count=20):
+        """Scrolls down to ``text`` using small swipes. The ``swipe_count`` defaults to 20."""
+        found = False
+        for x in range(swipe_count):
+            if self._is_text_present(text):
+                found = True
+                break
+            else:
+                self.swipe_by_percent(50, 75, 50, 50)
+                # TODO: https://github.com/serhatbolsu/robotframework-appiumlibrary/issues/252
+                # self.swipe_by_direction('down')
+        if not found:
+            zoomba.fail("Text: " + text + " was not found after " + str(swipe_count) + " swipes")
+
+    @keyword("Scroll Up To Text")
+    def scroll_up_to_text(self, text, swipe_count=20):
+        """Scrolls down to ``text`` using small swipes. The ``swipe_count`` defaults to 20."""
+        found = False
+        for x in range(swipe_count):
+            if self._is_text_present(text):
+                found = True
+                break
+            else:
+                self.swipe_by_percent(50, 50, 50, 75)
+                # TODO: https://github.com/serhatbolsu/robotframework-appiumlibrary/issues/252
+                # self.swipe_by_direction('up')
+        if not found:
+            zoomba.fail("Text: " + text + " was not found after " + str(swipe_count) + " swipes")

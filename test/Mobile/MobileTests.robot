@@ -1,58 +1,87 @@
 *** Settings ***
 Documentation   Zoomba Mobile Library Tests. Requires Appium Server running on port 4723 with an Android device/emulator available.
 Library         ../../src/Zoomba/MobileLibrary.py
-Test Setup      Start App
-Test Teardown   Quit Application
+Suite Setup      Start App
+Test Setup       Reset App
+#Suite Teardown   Close Application
 Force Tags        Mobile
 
 *** Variables ***
 ${REMOTE_URL}           http://localhost:4723/wd/hub
 ${APP}                  ${CURDIR}${/}..\\Helpers\\demo_app.apk
+${commandTimeout}=      120
 
 *** Keywords ***
 Start App
-    Open Application        ${REMOTE_URL}     platformName=Android    deviceName=Android   app=${APP}
+    Open Application        ${REMOTE_URL}     platformName=Android    automationName=UiAutomator2    deviceName=Android
+    ...                     newCommandTimeout=${commandTimeout}       app=${APP}
+
+Reset App
+    Reset Application
     Wait For And Click Element       com.touchboarder.android.api.demos:id/buttonDefaultPositive
     Wait Until Page Contains      API Demos
 
 *** Test Cases ***
-Wait For And Click Element By Accessibility Id Keyword Test
-    Wait For And Click Element       accessibility_id=More options
-    Wait Until Page Contains      Change Log
+#Wait For And Click Element By Accessibility Id Keyword Test
+#    Wait For And Click Element       accessibility_id=More options
+#    Wait Until Page Contains      Change Log
+#
+#Wait For And Click Element By Xpath Keyword Test
+#    Wait For And Click Element       //hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout[2]/android.widget.RelativeLayout/android.widget.ListView/android.widget.TextView[2]
+#    Wait Until Page Contains      Animation
+#
+#Wait For And Input Text Keyword Test
+#    Wait For And Click Element       accessibility_id=Search
+#    Wait For And Input Text        com.touchboarder.android.api.demos:id/search_src_text       drag and drop
+#    Wait Until Page Contains       Views/Drag and Drop
+#
+#Wait For And Long Press Keyword Test
+#    Wait For And Long Press       //hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout[2]/android.widget.RelativeLayout/android.widget.ListView/android.widget.TextView[2]
+#    Wait Until Page Contains      Animation
+#
+#Wait For And Input Password Keyword Test
+#    Wait For And Click Element       accessibility_id=Search
+#    Wait For And Input Password        com.touchboarder.android.api.demos:id/search_src_text       drag and drop
+#    Wait Until Page Contains       Views/Drag and Drop
+#
+#Wait Until Element is Enabled Keyword Test
+#    Wait Until Element Is Enabled       accessibility_id=More options
+#
+#Drag and Drop Keyword Test
+#    Wait For And Click Element       accessibility_id=Search
+#    Wait For And Input Text        com.touchboarder.android.api.demos:id/search_src_text       drag
+#    wait for and click text       Graphics/Shadow Card Drag
+#    Drag and Drop                 com.touchboarder.android.api.demos:id/card      com.touchboarder.android.api.demos:id/shape_select
+#
+#Drag and Drop By Offset Keyword Test
+#    Wait For And Click Element       accessibility_id=Search
+#    Wait For And Input Text        com.touchboarder.android.api.demos:id/search_src_text       drag
+#    wait for and click text       Graphics/Shadow Card Drag
+#    Drag and Drop By Offset                com.touchboarder.android.api.demos:id/card           200      200
+#
+#Wait Until Element Contains
+#    Wait For And Click Element       accessibility_id=Search
+#    Wait For And Input Text        com.touchboarder.android.api.demos:id/search_src_text       drag
+#    Wait Until Element Contains    /hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout[2]/android.widget.RelativeLayout/android.widget.ListView/android.widget.TextView[1]
+#    ...                            Views/Drag and Drop
+#
+#Wait Until Element Does Not Contain
+#    Wait For And Click Element       accessibility_id=Search
+#    Wait For And Input Text        com.touchboarder.android.api.demos:id/search_src_text       drag
+#    Wait Until Element Contains    /hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout[2]/android.widget.RelativeLayout/android.widget.ListView/android.widget.TextView[1]
+#    ...                            Some Other Text
 
-Wait For And Click Element By Xpath Keyword Test
-    Wait For And Click Element       //hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout[2]/android.widget.RelativeLayout/android.widget.ListView/android.widget.TextView[2]
-    Wait Until Page Contains      Animation
+#Scroll To Text Keyword Test
+#    Wait For And Click Element     //hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout[2]/android.widget.RelativeLayout/android.widget.ListView/android.widget.TextView[2]
+#    Wait For And Click Element     //hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout[2]/android.widget.RelativeLayout/android.widget.ListView/android.widget.TextView[5]
+#    scroll until text is visible    SensorTest
 
-Wait For And Input Text Keyword Test
-    Wait For And Click Element       accessibility_id=Search
-    Wait For And Input Text        com.touchboarder.android.api.demos:id/search_src_text       drag and drop
-    Wait Until Page Contains       Views/Drag and Drop
-
-Wait For And Long Press Keyword Test
-    Wait For And Long Press       accessibility_id=More options
-    Wait Until Page Contains      Change Log
-
-Wait For And Input Password Keyword Test
-    Wait For And Click Element       accessibility_id=Search
-    Wait For And Input Password        com.touchboarder.android.api.demos:id/search_src_text       drag and drop
-    Wait Until Page Contains       Views/Drag and Drop
-
-Wait Until Element is Enabled Keyword Test
-    Wait Until Element Is Enabled       accessibility_id=More options
-
-Drag and Drop Keyword Test
-    Wait For And Click Element       accessibility_id=Search
-    Wait For And Input Text        com.touchboarder.android.api.demos:id/search_src_text       drag
-    wait for and click text       Graphics/Shadow Card Drag
-    Drag and Drop                 com.touchboarder.android.api.demos:id/card      com.touchboarder.android.api.demos:id/shape_select
-
-Drag and Drop By Offset Keyword Test
-    Wait For And Click Element       accessibility_id=Search
-    Wait For And Input Text        com.touchboarder.android.api.demos:id/search_src_text       drag
-    wait for and click text       Graphics/Shadow Card Drag
-    Drag and Drop By Offset                com.touchboarder.android.api.demos:id/card           200      200
-
+Scroll To Text Keyword Test
+    Wait For And Click Text     API Demos
+    Wait For And Click Text     Graphics
+#    Wait For And Click Text     SensorTest
+    scroll down to text    SensorTest
+    scroll up to text      Arcs
 
 
 
