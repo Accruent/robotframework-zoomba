@@ -113,7 +113,6 @@ class TestInternal(unittest.TestCase):
     def test_drag_and_drop_missing_source(self):
         mock_desk = MagicMock()
         webdriver.Remote = WebdriverRemoteMock
-        ActionChains.drag_and_drop = MagicMock()
         mock_desk._element_find.side_effect = [ValueError("Element locator 'some_locator'"
                                                           " did not match any elements."), True]
         MobileLibrary.open_application(mock_desk, 'remote_url')
@@ -122,7 +121,6 @@ class TestInternal(unittest.TestCase):
     def test_drag_and_drop_missing_target(self):
         mock_desk = MagicMock()
         webdriver.Remote = WebdriverRemoteMock
-        ActionChains.drag_and_drop = MagicMock()
         mock_desk._element_find.side_effect = [True, ValueError("Element locator 'some_other_locator'"
                                                                 " did not match any elements.")]
         MobileLibrary.open_application(mock_desk, 'remote_url')
@@ -139,9 +137,24 @@ class TestInternal(unittest.TestCase):
     def test_drag_and_drop_with_offset_missing_locator(self):
         mock_desk = MagicMock()
         webdriver.Remote = WebdriverRemoteMock
-        ActionChains.drag_and_drop_by_offset = MagicMock()
         mock_desk._element_find.side_effect = [ValueError("Element locator 'some_locator'"
                                                                 " did not match any elements.")]
         MobileLibrary.open_application(mock_desk, 'remote_url')
         self.assertRaises(ValueError, MobileLibrary.drag_and_drop_by_offset, mock_desk, "some_locator",
                           x_offset=100, y_offset=100)
+
+    def test_scroll_up_to_text(self):
+        mock_desk = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        mock_desk._is_text_present.side_effect = [False, True]
+        MobileLibrary.open_application(mock_desk, 'remote_url')
+        MobileLibrary.scroll_up_to_text(mock_desk, "some_locator")
+        mock_desk.swipe_by_percent.assert_called()
+
+    def test_scroll_down_to_text(self):
+        mock_desk = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        mock_desk._is_text_present.side_effect = [False, True]
+        MobileLibrary.open_application(mock_desk, 'remote_url')
+        MobileLibrary.scroll_down_to_text(mock_desk, "some_locator")
+        mock_desk.swipe_by_percent.assert_called()
