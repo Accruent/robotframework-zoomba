@@ -148,6 +148,13 @@ class TestInternal(unittest.TestCase):
         MobileLibrary.scroll_up_to_text(mock_desk, "some_locator")
         mock_desk.swipe_by_percent.assert_called()
 
+    def test_scroll_up_to_text_failure(self):
+        mock_desk = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        mock_desk._is_text_present.side_effect = [False, False, False]
+        MobileLibrary.open_application(mock_desk, 'remote_url')
+        self.assertRaises(AssertionError, MobileLibrary.scroll_up_to_text, mock_desk, "some_locator", 2)
+
     def test_scroll_down_to_text(self):
         mock_desk = MagicMock()
         webdriver.Remote = WebdriverRemoteMock
@@ -155,3 +162,10 @@ class TestInternal(unittest.TestCase):
         MobileLibrary.open_application(mock_desk, 'remote_url')
         MobileLibrary.scroll_down_to_text(mock_desk, "some_locator")
         mock_desk.swipe_by_percent.assert_called()
+
+    def test_scroll_down_to_text_failure(self):
+        mock_desk = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        mock_desk._is_text_present.side_effect = [False, False, False]
+        MobileLibrary.open_application(mock_desk, 'remote_url')
+        self.assertRaises(AssertionError, MobileLibrary.scroll_down_to_text, mock_desk, "some_locator", 2)

@@ -244,9 +244,7 @@ class MobileLibrary(AppiumLibrary):
                 found = True
                 break
             else:
-                self.swipe_by_percent(50, 75, 50, 50)
-                # If this ever gets implemented in Appiumlibrary (in the docs but no code found):
-                # self.swipe_by_direction('down')
+                self.swipe_by_percent(50, 75, 50, 50)  # use swipe by direction if its ever implemented
         if not found:
             zoomba.fail("Text: " + text + " was not found after " + str(swipe_count) + " swipes")
 
@@ -259,8 +257,6 @@ class MobileLibrary(AppiumLibrary):
                 found = True
                 break
             else:
-                self.swipe_by_percent(50, 50, 50, 75)
-                # If this ever gets implemented in Appiumlibrary (in the docs but no code found):
-                # self.swipe_by_direction('up')
+                self.swipe_by_percent(50, 50, 50, 75)  # use swipe by direction if its ever implemented
         if not found:
-            zoomba.fail("Text: " + text + " was not found after " + str(swipe_count) + " swipes")
+            zoomba.fail(text + " was not found after " + str(swipe_count) + " swipes")
