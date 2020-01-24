@@ -66,7 +66,25 @@ class MobileLibrary(AppiumLibrary):
     | Click Element    @{elements}[2]
     """
 
-    # super().__init__(5, 'Save Appium Screenshot')
+    def __init__(self, timeout=5, run_on_failure='Save Appium Screenshot'):
+        """MobileLibrary can be imported with optional arguments.
+        ``timeout`` is the default timeout used to wait for all waiting actions.
+        It can be later set with `Set Appium Timeout`.
+        ``run_on_failure`` specifies the name of a keyword (from any available
+        libraries) to execute when a MobileLibrary keyword fails.
+        By default `Save Appium Screenshot` will be used to take a screenshot of the current page.
+        Using the value `No Operation` will disable this feature altogether. See
+        `Register Keyword To Run On Failure` keyword for more information about this
+        functionality.
+        Examples:
+        | Library | AppiumLibrary | 10 | # Sets default timeout to 10 seconds                                                                             |
+        | Library | AppiumLibrary | timeout=10 | run_on_failure=No Operation | # Sets default timeout to 10 seconds and does nothing on failure           |
+        """
+        super().__init__(timeout, run_on_failure)
+        for base in MobileLibrary.__bases__:
+            base.__init__(self)
+        self.set_appium_timeout(timeout)
+        self.register_keyword_to_run_on_failure(run_on_failure)
 
     @keyword("Wait For And Clear Text")
     def wait_for_and_clear_text(self, locator, timeout=None, error=None):

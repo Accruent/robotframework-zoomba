@@ -192,12 +192,12 @@ class TestInternal(unittest.TestCase):
                                        error='some_error', timeout='10s')
         mock_desk.tap.assert_called_with("some_locator", 200, 100, 4)
 
-    # def test_capture_page_screenshot(self):
-    #     mock_desk = MagicMock()
-    #     mock_desk._get_screenshot_paths = MagicMock()
-    #     webdriver.Remote = WebdriverRemoteMock
-    #     MobileLibrary.capture_page_screenshot(mock_desk)
-        # mock_desk._get_screenshot_paths.assert_called()
+    def test_capture_page_screenshot(self):
+        mock_desk = MagicMock()
+        mock_desk._get_screenshot_paths = MagicMock(return_value=['path', 'link'])
+        webdriver.Remote = WebdriverRemoteMock
+        MobileLibrary.capture_page_screenshot(mock_desk)
+        mock_desk._get_screenshot_paths.assert_called()
 
     def test_save_appium_screenshot(self):
         mock_desk = MagicMock()
