@@ -10,7 +10,7 @@ Zoomba
 Introduction
 -----------
 
-Zoomba is a collection of libraries spanning GUI, REST API, SOAP API, and Windows Desktop automation using [Robot Framework](https://github.com/robotframework/robotframework).
+Zoomba is a collection of libraries spanning GUI, REST API, SOAP API, Mobile, and Windows Desktop automation using [Robot Framework](https://github.com/robotframework/robotframework).
 These libraries are extensions of existing libraries [SeleniumLibrary](https://github.com/robotframework/SeleniumLibrary), [Requests](https://github.com/bulkan/robotframework-requests), 
 [SudsLibrary](https://github.com/aljcalandra/robotframework-sudslibrary), and [AppiumLibrary](https://github.com/serhatbolsu/robotframework-appiumlibrary).
 
@@ -20,7 +20,7 @@ extends AppiumLibrary functionality to support Windows desktop automation.
 As a team beginning the journey of automation with Robot Framework - we found that there was some time spent ramping up our libraries and Zoomba aims to make that process easier for new projects.
 
 See the **Keyword Documentation** for the [API](https://accruent.github.io/robotframework-zoomba/docs/APILibraryDocumentation.html), [SOAP](https://accruent.github.io/robotframework-zoomba/docs/SOAPLibraryDocumentation.html),
-[GUI](https://accruent.github.io/robotframework-zoomba/docs/GUILibraryDocumentation.html), or [Desktop](https://accruent.github.io/robotframework-zoomba/docs/DesktopLibraryDocumentation.html) library for more specific information about the functionality.
+[GUI](https://accruent.github.io/robotframework-zoomba/docs/GUILibraryDocumentation.html), [Mobile](https://accruent.github.io/robotframework-zoomba/docs/MobileLibraryDocumentation.html), or [Desktop](https://accruent.github.io/robotframework-zoomba/docs/DesktopLibraryDocumentation.html) library for more specific information about the functionality.
 
 
 Getting Started
@@ -45,13 +45,14 @@ To access the keywords in the library simply add the following to your robot fil
 Library    Zoomba.APILibrary
 Library    Zoomba.GUILibrary
 Library    Zoomba.SOAPLibrary
+Library    Zoomba.MobileLibrary
 Library    Zoomba.DesktopLibrary
 ```
 
 Additional Setup Information
 -----------
 
-If you plan to run Windows desktop automation you will need to have a running appium server. To do so first have [Node](https://nodejs.org/en/download/)
+If you plan to run Mobile or Windows desktop automation you will need to have a running appium server. To do so first have [Node](https://nodejs.org/en/download/)
 installed and then run the following:
 ```python
 npm install -g appium
