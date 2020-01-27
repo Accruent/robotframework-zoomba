@@ -11,6 +11,12 @@ from webdriverremotemock import WebdriverRemoteMock
 
 class TestInternal(unittest.TestCase):
 
+    def test_import_defaults(self):
+        MobileLibrary()
+
+    def test_import_overrides(self):
+        MobileLibrary(timeout=10, run_on_failure='Capture Page Screenshot')
+
     def test_wait_for_and_input_text_simple(self):
         mock_desk = MagicMock()
         webdriver.Remote = WebdriverRemoteMock
@@ -203,7 +209,7 @@ class TestInternal(unittest.TestCase):
         mock_desk = MagicMock()
         mock_desk._get_screenshot_paths = MagicMock(return_value=['path', 'link'])
         webdriver.Remote = WebdriverRemoteMock
-        del mock_desk.get_screenshot_as_file
+        del mock_desk._current_application().get_screenshot_as_file
         MobileLibrary.capture_page_screenshot(mock_desk, 'filename')
         mock_desk._get_screenshot_paths.assert_called()
 
