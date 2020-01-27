@@ -203,7 +203,7 @@ class TestInternal(unittest.TestCase):
         mock_desk = MagicMock()
         mock_desk._get_screenshot_paths = MagicMock(return_value=['path', 'link'])
         webdriver.Remote = WebdriverRemoteMock
-        mock_desk.currentApplication.get_screenshot_as_file = None
+        del mock_desk.get_screenshot_as_file
         MobileLibrary.capture_page_screenshot(mock_desk, 'filename')
         mock_desk._get_screenshot_paths.assert_called()
 
