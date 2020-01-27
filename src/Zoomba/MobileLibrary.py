@@ -77,8 +77,8 @@ class MobileLibrary(AppiumLibrary):
         `Register Keyword To Run On Failure` keyword for more information about this
         functionality.
         Examples:
-        | Library | AppiumLibrary | 10 | # Sets default timeout to 10 seconds                                                                             |
-        | Library | AppiumLibrary | timeout=10 | run_on_failure=No Operation | # Sets default timeout to 10 seconds and does nothing on failure           |
+        | Library | MobileLibrary | 10 | # Sets default timeout to 10 seconds                                                                             |
+        | Library | MobileLibrary | timeout=10 | run_on_failure=No Operation | # Sets default timeout to 10 seconds and does nothing on failure           |
         """
         super().__init__(timeout, run_on_failure)
         for base in MobileLibrary.__bases__:

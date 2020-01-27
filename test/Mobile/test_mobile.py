@@ -199,12 +199,14 @@ class TestInternal(unittest.TestCase):
         MobileLibrary.capture_page_screenshot(mock_desk)
         mock_desk._get_screenshot_paths.assert_called()
 
+    # @unittest.mock.patch('builtins.hasattr')
     def test_capture_page_screenshot_else_case(self):
         mock_desk = MagicMock()
         mock_desk._get_screenshot_paths = MagicMock(return_value=['path', 'link'])
-        mock_desk._current_application.get_screenshot_as_file = None
         webdriver.Remote = WebdriverRemoteMock
-        MobileLibrary.capture_page_screenshot(mock_desk)
+        mock_desk.currentApplication.get_screenshot_as_file = None
+        # mock_hasattr.side_effect = [True, True, True, False]
+        MobileLibrary.capture_page_screenshot(mock_desk, 'filename')
         mock_desk._get_screenshot_paths.assert_called()
 
     def test_save_appium_screenshot(self):
