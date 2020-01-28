@@ -11,6 +11,7 @@ zoomba = BuiltIn()
 
 class DesktopLibrary(AppiumLibrary):
     """Zoomba Desktop Library
+
         This class is the base Library used to generate automated Desktop Tests in the Robot Automation Framework using
         Appium. This Library uses and extends the robotframework-appiumlibrary.
 
@@ -35,7 +36,9 @@ class DesktopLibrary(AppiumLibrary):
     When using a modern Windows application there should be no issue with using the 'Wait For And' keywords. However if
     you are using an older WinForm, Win32, or a larger application it may be necessary to simply use the non-waiting
     version of keywords. Then you would simply add your waits in manually where necessary using something like
-    `Wait Until Page Contains` or `Wait Until Page Contains Element`."""
+    ``Wait Until Page Contains`` or ``Wait Until Page Contains Element``.
+
+    """
 
     def get_keyword_names(self):
         """

@@ -3,8 +3,11 @@ import unittest
 from appium import webdriver
 import subprocess
 from unittest.mock import MagicMock, patch
-from webdriverremotemock import WebdriverRemoteMock
 from selenium.webdriver.common.action_chains import ActionChains
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(sys.path[0]), 'Helpers'))
+from webdriverremotemock import WebdriverRemoteMock
 
 
 class TestInternal(unittest.TestCase):

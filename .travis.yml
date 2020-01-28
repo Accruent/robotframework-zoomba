@@ -22,7 +22,7 @@ before_script:
 - sleep 3
 script:
 - pytest --cov src -v
-- robot -e BrokenORWindows test
+- robot -e BrokenORWindowsORMobile test
 after_success:
 - coveralls
 deploy:

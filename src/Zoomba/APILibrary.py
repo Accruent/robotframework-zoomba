@@ -13,6 +13,7 @@ zoomba = BuiltIn()
 
 class APILibrary(object):
     """Zoomba API Library
+
         This class is the base Library used to generate automated API Tests in the Robot Automation Framework.
         It has been generated to accommodate the RESTful API design pattern.
     """

@@ -10,7 +10,7 @@ Wait for Keywords Test
     [Teardown]      Close All Browsers
     Open Browser    https://github.com/    browser=${browser}
     Maximize Browser Window
-    Set Selenium Speed    0.1s
+    Set Selenium Speed    0.2s
     wait for and input text      //input[@name='q']      robotframework
     press keys                    //input[@name='q']      RETURN
     wait for and click element               //a[@href='/robotframework/robotframework']
@@ -30,7 +30,7 @@ Save Selenium Screenshot Test
     ${file1}=                       Save Selenium Screenshot
     ${file2}=                       Save Selenium Screenshot
     Should Not Be Equal             ${file1}  ${file2}
-    Should Match Regexp             ${file1}                    .selenium-screenshot-\\d{10}.\\d{6,8}-\\d.png
+    Should Match Regexp             ${file1}                    .selenium-screenshot-\\d{10}.\\d{0,8}-\\d.png
 
 Iframe keywords Test
     [Teardown]      Close All Browsers
