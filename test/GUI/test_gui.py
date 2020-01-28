@@ -11,6 +11,9 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../.
 
 
 class TestInternal(unittest.TestCase):
+    def test_import_defaults(self):
+        GUILibrary()
+
     @patch('robot.libraries.BuiltIn.BuiltIn.should_be_equal')
     def test_should_be_equal_simple(self, robot_call):
         mock_gui = Mock()

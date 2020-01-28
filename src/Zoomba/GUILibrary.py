@@ -14,8 +14,30 @@ SCREENSHOT_COUNTER = itertools.count()
 class GUILibrary(SeleniumLibrary):
     """Zoomba GUI Library
 
-    This class inherits from the SeleniumLibrary Class, and expands it with some commonly used keywords.
+    This class inherits from the SeleniumLibrary Class, and expands it with some commonly used keywords. For more information on SeleniumLibrary please visit: https://robotframework.org/SeleniumLibrary/SeleniumLibrary.html
     """
+
+    def __init__(self, timeout=5.0, implicit_wait=0.0, run_on_failure='Save Selenium Screenshot',
+                 screenshot_root_directory=None, plugins=None, event_firing_webdriver=None):
+        """GUILibrary can be imported with several optional arguments.
+
+        - ``timeout``:
+          Default value for `timeouts` used with ``Wait ...`` keywords.
+        - ``implicit_wait``:
+          Default value for `implicit wait` used when locating elements.
+        - ``run_on_failure``:
+          Default action for the `run-on-failure functionality`.
+        - ``screenshot_root_directory``:
+          Location where possible screenshots are created. If not given,
+          the directory where the log file is written is used.
+        - ``plugins``:
+          Allows extending the GUILibrary with external Python classes.
+        - ``event_firing_webdriver``:
+          Class for wrapping Selenium with
+          [https://seleniumhq.github.io/selenium/docs/api/py/webdriver_support/selenium.webdriver.support.event_firing_webdriver.html#module-selenium.webdriver.support.event_firing_webdriver|EventFiringWebDriver]
+        """
+        super().__init__(timeout, implicit_wait, run_on_failure, screenshot_root_directory, plugins,
+                         event_firing_webdriver)
 
     @keyword("Element Value Should Be Equal")
     def element_value_should_be_equal(self, locator, expected_value):

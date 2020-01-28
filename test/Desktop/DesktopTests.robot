@@ -99,4 +99,10 @@ Send Keys To Element Keyword Test
     Send Keys To Element   name=Display is 0    24     \ue025     2      \ue007
     Page Should Contain Text    26
 
+Save Selenium Screenshot Test
+    ${file1}=                       Save Appium Screenshot
+    ${file2}=                       Save Appium Screenshot
+    Should Not Be Equal             ${file1}  ${file2}
+    Should Match Regexp             ${file1}                    appium-screenshot-\\d{10}.\\d{0,8}-\\d.png
+
 

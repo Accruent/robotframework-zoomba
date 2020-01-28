@@ -1,19 +1,21 @@
+import itertools
 from AppiumLibrary import AppiumLibrary
 from appium import webdriver
 from robot.api.deco import keyword
 from robot.libraries.BuiltIn import BuiltIn
 import subprocess
 from selenium.webdriver.common.action_chains import ActionChains
-from time import sleep
+from time import sleep, time
 
 zoomba = BuiltIn()
+SCREENSHOT_COUNTER = itertools.count()
 
 
 class DesktopLibrary(AppiumLibrary):
     """Zoomba Desktop Library
 
-        This class is the base Library used to generate automated Desktop Tests in the Robot Automation Framework using
-        Appium. This Library uses and extends the robotframework-appiumlibrary.
+    This class is the base Library used to generate automated Desktop Tests in the Robot Automation Framework using
+    Appium. This Library uses and extends the robotframework-appiumlibrary.
 
     = Locating or Specifying Elements =
 
@@ -40,6 +42,22 @@ class DesktopLibrary(AppiumLibrary):
 
     """
 
+    def __init__(self, timeout=5, run_on_failure='Save Appium Screenshot'):
+        """DesktopLibrary can be imported with optional arguments.
+        ``timeout`` is the default timeout used to wait for all waiting actions.
+        It can be later set with `Set Appium Timeout`.
+        ``run_on_failure`` specifies the name of a keyword (from any available
+        libraries) to execute when a DesktopLibrary keyword fails.
+        By default `Save Appium Screenshot` will be used to take a screenshot of the current page.
+        Using the value `No Operation` will disable this feature altogether. See
+        `Register Keyword To Run On Failure` keyword for more information about this
+        functionality.
+        Examples:
+        | Library | DesktopLibrary | 10 | # Sets default timeout to 10 seconds                                                                             |
+        | Library | DesktopLibrary | timeout=10 | run_on_failure=No Operation | # Sets default timeout to 10 seconds and does nothing on failure           |
+        """
+        super().__init__(timeout, run_on_failure)
+
     def get_keyword_names(self):
         """
         This function restricts the keywords used in the library. This is to prevent incompatible keywords from imported
@@ -55,8 +73,9 @@ class DesktopLibrary(AppiumLibrary):
             'mouse_over_and_click_text', 'wait_for_and_mouse_over_and_click_text', 'click_a_point',
             'context_click_a_point', 'mouse_over_and_context_click_element', 'mouse_over_and_context_click_text',
             'mouse_over_by_offset', 'drag_and_drop', 'drag_and_drop_by_offset', 'send_keys', 'send_keys_to_element',
+            'capture_page_screenshot', 'save_appium_screenshot',
             # External Libraries
-            'capture_page_screenshot', 'clear_text', 'click_button', 'click_element',
+            'clear_text', 'click_button', 'click_element',
             'click_text', 'close_all_applications', 'close_application',
             'element_attribute_should_match', 'element_should_be_disabled', "element_should_be_enabled",
             'element_should_be_visible', 'element_should_contain_text', 'element_should_not_contain_text',
@@ -535,6 +554,41 @@ class DesktopLibrary(AppiumLibrary):
         else:
             zoomba.fail('No key arguments specified.')
         actions.perform()
+
+    def capture_page_screenshot(self, filename=None):
+        """Takes a screenshot of the current page and embeds it into the log.
+
+        `filename` argument specifies the name of the file to write the
+        screenshot into. If no `filename` is given, the screenshot is saved into file
+        `appium-screenshot-<counter>.png` under the directory where
+        the Robot Framework log file is written into. The `filename` is
+        also considered relative to the same directory, if it is not
+        given in absolute format.
+
+        `css` can be used to modify how the screenshot is taken. By default
+        the bakground color is changed to avoid possible problems with
+        background leaking when the page layout is somehow broken.
+
+        See `Save Appium Screenshot` for a screenshot that will be unique across reports
+        """
+        path, link = self._get_screenshot_paths(filename)
+
+        if hasattr(self._current_application(), 'get_screenshot_as_file'):
+            self._current_application().get_screenshot_as_file(path)
+        else:
+            self._current_application().save_screenshot(path)
+
+        # Image is shown on its own row and thus prev row is closed on purpose
+        self._html('</td></tr><tr><td colspan="3"><a href="%s">'
+                   '<img src="%s" width="800px"></a>' % (link, link))
+        return link
+
+    @keyword("Save Appium Screenshot")
+    def save_appium_screenshot(self):
+        """Takes a screenshot with a unique filename to be stored in Robot Framework compiled reports."""
+        timestamp = time()
+        filename = 'appium-screenshot-' + str(timestamp) + '-' + str(next(SCREENSHOT_COUNTER)) + '.png'
+        return self.capture_page_screenshot(filename)
 
     # Private
 
