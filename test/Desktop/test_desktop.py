@@ -11,6 +11,9 @@ from webdriverremotemock import WebdriverRemoteMock
 
 
 class TestInternal(unittest.TestCase):
+    def test_import_defaults(self):
+        DesktopLibrary()
+
     def test_get_keyword_names_successful(self):
         DesktopLibrary().get_keyword_names()
 
@@ -366,3 +369,24 @@ class TestInternal(unittest.TestCase):
         DesktopLibrary.open_application(mock_desk, 'remote_url')
         DesktopLibrary.send_keys_to_element(mock_desk, 'some_locator')
         fail.assert_called_with('No key arguments specified.')
+
+    def test_capture_page_screenshot(self):
+        mock_desk = MagicMock()
+        mock_desk._get_screenshot_paths = MagicMock(return_value=['path', 'link'])
+        webdriver.Remote = WebdriverRemoteMock
+        DesktopLibrary.capture_page_screenshot(mock_desk)
+        mock_desk._get_screenshot_paths.assert_called()
+
+    def test_capture_page_screenshot_else_case(self):
+        mock_desk = MagicMock()
+        mock_desk._get_screenshot_paths = MagicMock(return_value=['path', 'link'])
+        webdriver.Remote = WebdriverRemoteMock
+        del mock_desk._current_application().get_screenshot_as_file
+        DesktopLibrary.capture_page_screenshot(mock_desk, 'filename')
+        mock_desk._get_screenshot_paths.assert_called()
+
+    def test_save_appium_screenshot(self):
+        mock_desk = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        DesktopLibrary.save_appium_screenshot(mock_desk)
+        mock_desk.capture_page_screenshot.assert_called()

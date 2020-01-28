@@ -12,8 +12,8 @@ SCREENSHOT_COUNTER = itertools.count()
 class MobileLibrary(AppiumLibrary):
     """Zoomba Mobile Library
 
-        This class is the base Library used to generate automated Mobile Tests in the Robot Automation Framework using
-        Appium. This Library uses and extends the robotframework-appiumlibrary.
+    This class is the base Library used to generate automated Mobile Tests in the Robot Automation Framework using
+    Appium. This Library uses and extends the robotframework-appiumlibrary.
 
     = Locating or Specifying Elements =
 
@@ -81,10 +81,6 @@ class MobileLibrary(AppiumLibrary):
         | Library | MobileLibrary | timeout=10 | run_on_failure=No Operation | # Sets default timeout to 10 seconds and does nothing on failure           |
         """
         super().__init__(timeout, run_on_failure)
-        for base in MobileLibrary.__bases__:
-            base.__init__(self)
-        self.set_appium_timeout(timeout)
-        self.register_keyword_to_run_on_failure(run_on_failure)
 
     @keyword("Wait For And Clear Text")
     def wait_for_and_clear_text(self, locator, timeout=None, error=None):
