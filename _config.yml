@@ -1,2 +1,2 @@
 theme: jekyll-theme-architect
-exclude: ["test/Helpers/demo_app.apk"]
+exclude: ["test/", "src/"]
