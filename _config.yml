@@ -1,1 +1,2 @@
 theme: jekyll-theme-architect
+exclude: demo_app.apk
