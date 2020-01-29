@@ -16,3 +16,7 @@ categories:
       - 'tech debt'
       - 'security fix'
       - 'security vulnerability'
+template: |
+  ## What’s Changed
+  $CHANGES
+  
