@@ -4,6 +4,7 @@ from robot.libraries.BuiltIn import BuiltIn
 from robot.api.deco import keyword
 from robot.libraries.Collections import Collections
 from time import time
+from robot.utils import is_string
 
 zoomba = BuiltIn()
 zoomba_collections = Collections()
@@ -28,8 +29,9 @@ class GUILibrary(SeleniumLibrary):
         - ``run_on_failure``:
           Default action for the `run-on-failure functionality`.
         - ``screenshot_root_directory``:
-          Location where possible screenshots are created. If not given,
-          the directory where the log file is written is used.
+          Path to folder where possible screenshots are created or EMBED.
+          See `Set Screenshot Directory` keyword for further details about EMBED.
+          If not given, the directory where the log file is written is used.
         - ``plugins``:
           Allows extending the GUILibrary with external Python classes.
         - ``event_firing_webdriver``:
@@ -321,7 +323,14 @@ class GUILibrary(SeleniumLibrary):
 
     @keyword("Save Selenium Screenshot")
     def save_selenium_screenshot(self):
-        """Takes a screenshot with a unique filename to be stored in Robot Framework compiled reports."""
-        timestamp = time()
-        filename = 'selenium-screenshot-' + str(timestamp) + '-' + str(next(SCREENSHOT_COUNTER)) + '.png'
-        return self.capture_page_screenshot(filename)
+        """Takes a screenshot with a unique filename to be stored in Robot Framework compiled reports.
+
+        If `Set Screenshot Directory` has been set to ``EMBED`` then the screenshot will be embedded into the report
+        """
+        if is_string(self.screenshot_root_directory):
+            if self.screenshot_root_directory.upper() == 'EMBED':
+                return self.capture_page_screenshot()
+        else:
+            timestamp = time()
+            filename = 'selenium-screenshot-' + str(timestamp) + '-' + str(next(SCREENSHOT_COUNTER)) + '.png'
+            return self.capture_page_screenshot(filename)
