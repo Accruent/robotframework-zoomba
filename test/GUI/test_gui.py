@@ -279,7 +279,13 @@ class TestInternal(unittest.TestCase):
     @patch('SeleniumLibrary.ScreenshotKeywords.capture_page_screenshot')
     def test_save_selenium_screenshot_simple(self, mock_gui):
         GUILibrary.save_selenium_screenshot(mock_gui)
-        mock_gui.capture_page_screenshot.assert_called()
+        mock_gui.capture_page_screenshot.assert_called_with(unittest.mock.ANY)
+
+    @patch('SeleniumLibrary.ScreenshotKeywords.capture_page_screenshot')
+    def test_save_selenium_screenshot_embed(self, mock_gui):
+        mock_gui.screenshot_root_directory = 'EMBED'
+        GUILibrary.save_selenium_screenshot(mock_gui)
+        mock_gui.capture_page_screenshot.assert_called_with()
 
     @patch('robot.libraries.BuiltIn.BuiltIn.should_contain')
     def test_wait_until_element_contains_value_with_timeout(self, robot_call):
