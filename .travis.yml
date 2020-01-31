@@ -8,6 +8,8 @@ branches:
   - "/^(documentation).*$/i"
 sudo: required
 dist: xenial
+services:
+  - xvfb
 addons:
   chrome: stable
 cache: pip
