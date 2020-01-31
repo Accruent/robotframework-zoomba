@@ -7,7 +7,7 @@ branches:
   except:
   - "/^(documentation).*$/i"
 sudo: required
-dist: trusty
+dist: xenial
 addons:
   chrome: stable
 cache: pip
