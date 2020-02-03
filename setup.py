@@ -24,7 +24,7 @@ setup(name='robotframework-zoomba',
       license='GPL-3.0',
       keywords='Robot Framework robot-framework selenium requests appium soap winappdriver appium robotframework'
                'desktop windows zoomba python robotframework-library appium-windows appiumlibrary api-rest api '
-               'soap-api',
+               'soap-api appium-mobile mobile',
       platforms='any',
       install_requires=requirements,
       extras_require={
