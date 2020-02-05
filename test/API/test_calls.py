@@ -5,6 +5,7 @@ import unittest
 from Zoomba.APILibrary import APILibrary
 from unittest.mock import patch
 from unittest.mock import PropertyMock
+import RequestsLibrary
 
 
 class TestInternal(unittest.TestCase):
@@ -125,6 +126,17 @@ class TestExternal(unittest.TestCase):
         assert r.cookies["chocolate_chip"] == "tasty"
         post_request.assert_called_with('postapi', 'fullstring', None, files='chocolate_chip', timeout=None)
         create_session.assert_called_with("postapi", "Endpoint", {"a": "Text"}, cookies=None, timeout=None)
+
+    @patch('RequestsLibrary.RequestsLibrary._common_request')
+    def test_external_dependency_post_request_with_empty_data(self, common_request):
+        lib = RequestsLibrary.RequestsLibrary()
+        sess_headers = {'content-type': False}
+        post_headers = {'Content-Type': 'application/json'}
+        lib.create_session('http_server', 'http://localhost:5000', sess_headers)
+        lib.post_request('http_server', '/anything',  data="",  headers=post_headers)
+        common_request.assert_called_with('post', unittest.mock.ANY, '/anything', allow_redirects=True, data='',
+                                          files=None, headers=post_headers, json=None,
+                                          params=None, timeout=None)
 
     def test_delete_default(self):
         library = APILibrary()
