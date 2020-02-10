@@ -18,7 +18,7 @@ install:
 - pip install coveralls
 - pip install pytest-cov
 before_script:
-- wget "http://chromedriver.storage.googleapis.com/78.0.3904.70/chromedriver_linux64.zip"
+- wget "http://chromedriver.storage.googleapis.com/80.0.3987.16/chromedriver_linux64.zip"
 - unzip chromedriver_linux64.zip
 - sudo mv chromedriver /usr/local/bin
 - export DISPLAY=:99.0
