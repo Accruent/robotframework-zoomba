@@ -62,7 +62,7 @@ Alternatively [Appium Desktop](https://github.com/appium/appium-desktop/releases
 
 Examples
 -----------
-Example tests can be found in the [test directory](test).
+Example tests can be found in the [test directory](/test).
 
 
 Contributing
