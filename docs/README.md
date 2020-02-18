@@ -26,7 +26,7 @@ See the **Keyword Documentation** for the [API](https://accruent.github.io/robot
 Getting Started
 -----------
 
-The Zoomba library is easily installed using the [`setup.py`](setup.py) file in the home directory.
+The Zoomba library is easily installed using the [`setup.py`](/setup.py) file in the home directory.
 Simply run the following command to install Zoomba and it's dependencies:
 
 ```python
@@ -68,7 +68,7 @@ Example tests can be found in the [test directory](/test).
 Contributing
 ------------
 
-To make contributions please refer to the [CONTRIBUTING](CONTRIBUTING.rst) guidelines.
+To make contributions please refer to the [CONTRIBUTING](/CONTRIBUTING.rst) guidelines.
 
 Additionally if you run the following command new documentation will be generated on each commit :
 ```python
