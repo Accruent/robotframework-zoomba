@@ -44,11 +44,11 @@ Iframe keywords Test
 
 Mouse over Keywords Test
     [Teardown]      Close All Browsers
-    Open Browser    https://github.com/    browser=${browser}
+    Open Browser    https://jquery.com/    browser=${browser}
     Maximize Browser Window
-    wait for and mouse over                 //a[@class='HeaderMenu-link no-underline mr-3']
-    wait for and mouse over and click       //button[@class='btn-mktg btn-primary-mktg btn-large-mktg f4 btn-block my-3']
-    wait until page contains                There were problems creating your account.
+    wait for and mouse over                 //a[contains(text(),'Download')]
+    wait for and mouse over and click       //a[contains(text(),'Browser Support')]
+    wait until page contains                Current Active Support
 
 Wait Until Javascript Completes Test
     [Teardown]      Close All Browsers
@@ -78,7 +78,7 @@ Web Elements Vertical Position Test
     wait until element is visible                       //div[@id='res']
     ${resultsLinksList}=            Get Webelements     //div[@id='res']
     ${linksPositionList}=           Get Vertical Position From Web Elements List        ${resultsLinksList}
-    should be equal                 @{linksPositionList}[0]     ${172}
+    should be equal                 @{linksPositionList}[0]     ${202}
 
 Create Dictionary from Lists Test
     ${testDict1}=       create dictionary   Name=User1      ID=01   Phone=51212345678
