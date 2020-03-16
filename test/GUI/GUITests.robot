@@ -5,12 +5,17 @@ Library         ../../src/Zoomba/GUILibrary.py
 *** Variables ***
 ${browser}     chrome
 
+*** Keywords ***
+Test Case Setup
+    [Arguments]    ${url}=https://github.com/      ${browser}=${browser}
+    Open Browser   ${url}    browser=${browser}
+    Maximize Browser Window
+    Set Selenium Speed    0.2s
+
 *** Test Cases ***
 Wait for Keywords Test
     [Teardown]      Close All Browsers
-    Open Browser    https://github.com/    browser=${browser}
-    Maximize Browser Window
-    Set Selenium Speed    0.2s
+    Test Case Setup
     wait for and input text      //input[@name='q']      robotframework
     press keys                    //input[@name='q']      RETURN
     wait for and click element               //a[@href='/robotframework/robotframework']
@@ -18,15 +23,13 @@ Wait for Keywords Test
 
 Element value should be equal and not equal Test
     [Teardown]      Close All Browsers
-    Open Browser    http://www.google.com    browser=${browser}
-    Maximize Browser Window
+    Test Case Setup    http://www.google.com
     element value should be equal       btnK    Google Search
     element value should not be equal   btnK    Not Google Search
 
 Save Selenium Screenshot Test
     [Teardown]                      Close All Browsers
-    Open Browser                    http://www.google.com       browser=${browser}
-    Maximize Browser Window
+    Test Case Setup    http://www.google.com
     ${file1}=                       Save Selenium Screenshot
     ${file2}=                       Save Selenium Screenshot
     Should Not Be Equal             ${file1}  ${file2}
@@ -34,8 +37,7 @@ Save Selenium Screenshot Test
 
 Iframe keywords Test
     [Teardown]      Close All Browsers
-    Open Browser    https://www.w3schools.com/html/html_iframe.asp    browser=${browser}
-    Maximize Browser Window
+    Test Case Setup    https://www.w3schools.com/html/html_iframe.asp
     Page should not contain element     //a[@href='default.asp'][@class='active']
     wait for and select frame   //iframe[@src='default.asp']
     wait until page contains element    //a[@href='default.asp'][@class='active']
@@ -44,24 +46,21 @@ Iframe keywords Test
 
 Mouse over Keywords Test
     [Teardown]      Close All Browsers
-    Open Browser    https://jquery.com/    browser=${browser}
-    Maximize Browser Window
+    Test Case Setup    https://jquery.com/
     wait for and mouse over                 //a[contains(text(),'Download')]
     wait for and mouse over and click       //a[contains(text(),'Browser Support')]
     wait until page contains                Current Active Support
 
 Wait Until Javascript Completes Test
     [Teardown]      Close All Browsers
-    Open Browser    https://jquery.com/    browser=${browser}
-    Maximize Browser Window
+    Test Case Setup    https://jquery.com/
     wait until page contains element       //a[@title='jQuery']
     wait until javascript is complete
     title should be                        jQuery
 
 Web Elements Text Test
     [Teardown]      Close All Browsers
-    Open Browser    http://www.google.com    browser=${browser}
-    Maximize Browser Window
+    Test Case Setup    http://www.google.com
     wait for and input text      //input[@name='q']      robot framework
     press keys                    //input[@name='q']      RETURN
     wait until element is visible                   //div[@id='res']
@@ -71,9 +70,7 @@ Web Elements Text Test
 
 Web Elements Vertical Position Test
     [Teardown]      Close All Browsers
-    Open Browser    http://www.google.com    browser=${browser}
-    Maximize Browser Window
-    Set Selenium Speed    0.2s
+    Test Case Setup    http://www.google.com
     wait for and input text      //input[@name='q']      robot framework
     press keys                    //input[@name='q']      RETURN
     wait until element is visible                       //div[@id='res']
@@ -102,8 +99,7 @@ Truncate String Test
 
 Scroll To Bottom of Page Test
     [Teardown]      Close All Browsers
-    Open Browser    http://www.google.com    browser=${browser}
-    Maximize Browser Window
+    Test Case Setup    http://www.google.com
     wait for and input text      //input[@name='q']      robot framework
     press keys                    //input[@name='q']      RETURN
     wait until element is visible                   //div[@id='res']
@@ -113,22 +109,19 @@ Scroll To Bottom of Page Test
 
 Wait Until Window Opens Test
     [Teardown]                      Close All Browsers
-    Open Browser                    https://www.seleniumeasy.com/test/window-popup-modal-demo.html    browser=${browser}
-    Maximize Browser Window
+    Test Case Setup    https://www.seleniumeasy.com/test/window-popup-modal-demo.html
     Click Element                   //a[contains(text(),'Follow On Twitter')]
     Wait Until Window Opens         Selenium Easy (@seleniumeasy) on Twitter     10
 
 Wait For and Select Window Test
     [Teardown]                      Close All Browsers
-    Open Browser                    https://www.seleniumeasy.com/test/window-popup-modal-demo.html    browser=${browser}
-    Maximize Browser Window
+    Test Case Setup    https://www.seleniumeasy.com/test/window-popup-modal-demo.html
     Click Element                   //a[contains(text(),'Follow On Twitter')]
     Wait For and Select Window      Selenium Easy (@seleniumeasy) on Twitter
 
 Wait Until Element Contains Value
     [Teardown]                      Close All Browsers
-    Open Browser                    http://www.google.com                                              browser=${browser}
-    Maximize Browser Window
+    Test Case Setup    http://www.google.com
     Input Text                      //input[@name='q']                                                  abc123
     Wait For And Click Element      btnK
     Wait Until Element Contains Value  //input[@name='q']                                               abc123
