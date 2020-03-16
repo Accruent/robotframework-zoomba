@@ -78,7 +78,6 @@ Web Elements Vertical Position Test
     ${resultsLinksList}=            Get Webelements     //div[@id='res']
     ${linksPositionList}=           Get Vertical Position From Web Elements List        ${resultsLinksList}
     should be equal                 @{linksPositionList}[0]     ${202}
-    should be
 
 Create Dictionary from Lists Test
     ${testDict1}=       create dictionary   Name=User1      ID=01   Phone=51212345678
