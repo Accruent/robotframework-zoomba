@@ -73,6 +73,7 @@ Web Elements Vertical Position Test
     Test Case Setup    http://www.google.com
     wait for and input text      //input[@name='q']      robot framework
     press keys                    //input[@name='q']      RETURN
+    sleep    1s
     wait until element is visible                       //div[@id='res']
     ${resultsLinksList}=            Get Webelements     //div[@id='res']
     ${linksPositionList}=           Get Vertical Position From Web Elements List        ${resultsLinksList}
