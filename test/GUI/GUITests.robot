@@ -73,6 +73,7 @@ Web Elements Vertical Position Test
     [Teardown]      Close All Browsers
     Open Browser    http://www.google.com    browser=${browser}
     Maximize Browser Window
+    Set Selenium Speed    0.2s
     wait for and input text      //input[@name='q']      robot framework
     press keys                    //input[@name='q']      RETURN
     wait until element is visible                       //div[@id='res']
