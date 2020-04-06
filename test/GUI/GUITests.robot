@@ -76,7 +76,7 @@ Web Elements Vertical Position Test
     wait until element is visible                       //div[@id='res']
     ${resultsLinksList}=            Get Webelements     //div[@id='res']
     ${linksPositionList}=           Get Vertical Position From Web Elements List        ${resultsLinksList}
-    Should Be True                 @{linksPositionList}[0] > ${200}
+    Should Be True                 @{linksPositionList}[0] > ${170}
 
 Create Dictionary from Lists Test
     ${testDict1}=       create dictionary   Name=User1      ID=01   Phone=51212345678
