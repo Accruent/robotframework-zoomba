@@ -189,7 +189,7 @@ def _build_wsdl_objects(client=None, request_object=None, object_dict=None):
             try:
                 temp_object = _wsdl_sub_builder(client, value)
                 request_object.__setattr__(key, temp_object)
-            except BaseException as ex:
+            except BaseException as ex:   #lgtm [py/catch-base-exception]
                 if ex:
                     zoomba.log('Failed to define wsdl_object_type for child object. [' + key + ']', level='ERROR')
         elif isinstance(value, list):
