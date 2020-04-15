@@ -17,6 +17,7 @@ setup(name='robotframework-zoomba',
       version=version.VERSION,
       description='Robot Framework mini-framework.',
       long_description=long_description,
+      long_description_content_type='text/markdown',
       url='https://github.com/Accruent/zoomba',
       maintainer='Alex Calandra, Michael Hintz, Keith Smoland, Matthew Giardina, Brandon Wolfe, Neil Howell,'
                  ' Tommy Hoang',

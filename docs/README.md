@@ -8,7 +8,7 @@ Zoomba
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FAccruent%2Frobotframework-zoomba.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FAccruent%2Frobotframework-zoomba?ref=badge_shield)
 
 Introduction
------------
+--------------
 
 Zoomba is a collection of libraries spanning GUI, REST API, SOAP API, Mobile, and Windows Desktop automation using [Robot Framework](https://github.com/robotframework/robotframework).
 These libraries are extensions of existing libraries [SeleniumLibrary](https://github.com/robotframework/SeleniumLibrary), [Requests](https://github.com/bulkan/robotframework-requests), 
@@ -24,7 +24,7 @@ See the **Keyword Documentation** for the [API](https://accruent.github.io/robot
 
 
 Getting Started
------------
+----------------
 
 The Zoomba library is easily installed using the [`setup.py`](/setup.py) file in the home directory.
 Simply run the following command to install Zoomba and it's dependencies:
@@ -50,7 +50,7 @@ Library    Zoomba.DesktopLibrary
 ```
 
 Additional Setup Information
------------
+---------------------------------
 
 If you plan to run Mobile or Windows desktop automation you will need to have a running appium server. To do so first have [Node](https://nodejs.org/en/download/)
 installed and then run the following:
@@ -61,12 +61,12 @@ appium
 Alternatively [Appium Desktop](https://github.com/appium/appium-desktop/releases) can be used.
 
 Examples
------------
+------------
 Example tests can be found in the [test directory](/test).
 
 
 Contributing
-------------
+-----------------
 
 To make contributions please refer to the [CONTRIBUTING](/CONTRIBUTING.rst) guidelines.
 
@@ -76,7 +76,7 @@ git config core.hooksPath .githooks
 ```
 
 Support
---------
+---------------
 General Robot Framework questions should be directed to the [community forum](https://groups.google.com/forum/#!forum/robotframework-users).
 
 Contact the team at `robosquad@accruent.com` or create an issue with specific requests or questions regarding the Zoomba libraries!

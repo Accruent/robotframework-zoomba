@@ -28,7 +28,6 @@ script:
 - robot -e BrokenORWindowsORMobile test
 after_success:
 - coveralls
-- twine check
 deploy:
   provider: pypi
   user: __token__
