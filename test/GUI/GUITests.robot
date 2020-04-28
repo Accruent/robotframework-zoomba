@@ -123,6 +123,5 @@ Wait Until Element Contains Value
     [Teardown]                      Close All Browsers
     Test Case Setup    http://www.google.com
     Input Text                      //input[@name='q']                                                  abc123
-    press keys                    //input[@name='q']      RETURN
-    #Wait For And Click Element      btnK
+    Wait For And Click Element      btnK
     Wait Until Element Contains Value  //input[@name='q']                                               abc123
