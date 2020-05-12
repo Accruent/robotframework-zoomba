@@ -4,6 +4,8 @@ from appium import webdriver
 from robot.api.deco import keyword
 from robot.libraries.BuiltIn import BuiltIn
 import subprocess
+
+from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.action_chains import ActionChains
 from time import sleep, time
 
@@ -149,14 +151,23 @@ class DesktopLibrary(AppiumLibrary):
         desktop_capabilities = dict()
         desktop_capabilities.update({"app": "Root", "platformName": "Windows", "deviceName": "WindowsPC"})
         desktop_session = webdriver.Remote(str(remote_url), desktop_capabilities)
-        window = desktop_session.find_element_by_name(window_name)
-        window = hex(int(window.get_attribute("NativeWindowHandle")))
+        try:
+            window = desktop_session.find_element_by_name(window_name)
+            window = hex(int(window.get_attribute("NativeWindowHandle")))
+        except WebDriverException:
+            desktop_session.quit()
+            zoomba.fail(
+                'Error finding window: ' + window_name + " from the desktop session. Is it a top level window handle?")
         desktop_session.quit()
         if "app" in desired_caps:
             del desired_caps["app"]
         desired_caps["appTopLevelWindow"] = window
         # global application
-        application = webdriver.Remote(str(remote_url), desired_caps)
+        try:
+            application = webdriver.Remote(str(remote_url), desired_caps)
+        except WebDriverException:
+            zoomba.fail(
+                'Error connecting webdriver to window: ' + window_name + ". Is it a top level window handle?")
         self._debug('Opened application with session id %s' % application.session_id)
 
         return self._cache.register(application, alias)
