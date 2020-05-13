@@ -118,10 +118,8 @@ class DesktopLibrary(AppiumLibrary):
         """
         desired_caps = kwargs
         if window_name:
-            """
-            If the app has a splash screen we need to supply the window_name of the final window. This code path will
-            start the application and then attach to the correct window via the window_name.
-            """
+            """If the app has a splash screen we need to supply the window_name of the final window. This code path will
+            start the application and then attach to the correct window via the window_name."""
             subprocess.Popen(desired_caps['app'])
             if splash_delay > 0:
                 sleep(splash_delay)
@@ -591,7 +589,7 @@ class DesktopLibrary(AppiumLibrary):
             _xpath = u'//*[contains(@{},"{}")]'.format('Name', text)
         return self._element_find(_xpath, True, True)
 
-    def _move_to_element(self, actions, element, x_offset, y_offset):
+    def _move_to_element(self, actions, element, x_offset=0, y_offset=0):
         if x_offset != 0 or y_offset != 0:
             self._info('Moving to element "' + str(element) + '" with offset (%s,%s).' % (x_offset, y_offset))
             actions.move_to_element_with_offset(element, x_offset, y_offset)
