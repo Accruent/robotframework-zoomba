@@ -152,7 +152,7 @@ class DesktopLibrary(AppiumLibrary):
             window = desktop_session.find_element_by_name(window_name)
             self._debug('Window_name "%s" found.' % window_name)
             window = hex(int(window.get_attribute("NativeWindowHandle")))
-        except WebDriverException as e:
+        except Exception as e:
             self._debug('Closing desktop session.')
             desktop_session.quit()
             zoomba.fail(
@@ -167,7 +167,7 @@ class DesktopLibrary(AppiumLibrary):
         try:
             self._info('Connecting to window_name "%s".' % window_name)
             application = webdriver.Remote(str(remote_url), desired_caps)
-        except WebDriverException as e:
+        except Exception as e:
             zoomba.fail(
                 'Error connecting webdriver to window "' + window_name + '". \n' + str(e))
         self._debug('Opened application with session id %s' % application.session_id)
