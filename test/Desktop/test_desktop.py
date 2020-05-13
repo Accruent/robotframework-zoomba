@@ -39,7 +39,7 @@ class TestInternal(unittest.TestCase):
         dl._run_on_failure = MagicMock()
         webdriver.Remote = WebdriverRemoteMock
         webdriver.Remote.find_element_by_name = MagicMock(side_effect=WebDriverException)
-        self.assertRaises(Exception, dl.switch_application_by_name, 'remote_url', window_name='test')
+        self.assertRaises(AssertionError, dl.switch_application_by_name, 'remote_url', window_name='test')
         self.assertFalse(dl._cache.current)
 
     def test_switch_application_failure_2(self):
@@ -48,7 +48,7 @@ class TestInternal(unittest.TestCase):
         web_driver_mock = WebdriverRemoteMock
         webdriver.Remote = MagicMock(side_effect=[web_driver_mock, WebDriverException])
         web_driver_mock.quit = MagicMock(return_value=True)
-        self.assertRaises(Exception, dl.switch_application_by_name, 'remote_url', window_name='test')
+        self.assertRaises(AssertionError, dl.switch_application_by_name, 'remote_url', window_name='test')
         self.assertFalse(dl._cache.current)
 
     def test_maximize_window_successful(self):

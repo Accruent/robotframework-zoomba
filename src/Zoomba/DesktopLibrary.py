@@ -119,14 +119,15 @@ class DesktopLibrary(AppiumLibrary):
         if window_name:
             """If the app has a splash screen we need to supply the window_name of the final window. This code path will
             start the application and then attach to the correct window via the window_name."""
+            self._info('Opening application "%s"' % desired_caps['app'])
             subprocess.Popen(desired_caps['app'])
             if splash_delay > 0:
+                self._info('Waiting %s seconds for splash screen' % splash_delay)
                 sleep(splash_delay)
             return self.switch_application_by_name(remote_url, alias=alias, window_name=window_name, **kwargs)
         # global application
         application = webdriver.Remote(str(remote_url), desired_caps)
         self._debug('Opened application with session id %s' % application.session_id)
-
         return self._cache.register(application, alias)
 
     @keyword("Switch Application By Name")
@@ -145,9 +146,11 @@ class DesktopLibrary(AppiumLibrary):
         desired_caps = kwargs
         desktop_capabilities = dict()
         desktop_capabilities.update({"app": "Root", "platformName": "Windows", "deviceName": "WindowsPC"})
+        self._debug('Opening desktop session to search for window_name "%s".' % window_name)
         desktop_session = webdriver.Remote(str(remote_url), desktop_capabilities)
         try:
             window = desktop_session.find_element_by_name(window_name)
+            self._debug('Window_name "%s" found.' % window_name)
             window = hex(int(window.get_attribute("NativeWindowHandle")))
         except WebDriverException as e:
             desktop_session.quit()
