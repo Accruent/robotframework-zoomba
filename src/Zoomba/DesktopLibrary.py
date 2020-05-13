@@ -22,10 +22,9 @@ class DesktopLibrary(AppiumLibrary):
     = Locating or Specifying Elements =
 
     All keywords in DesktopLibrary that need to find an element on the page take a locator argument. To find these
-    locators we use **inspect.exe**. Microsoft Visual Studio 2015 by default includes Windows SDK that provides
-    great tool to inspect the application you are testing. This tool allows you to see every UI element/node that you
-    can interact with using DesktopLibrary. This **inspect.exe** tool can be found under the Windows SDK folder such as
-    `C:\Program Files (x86)\Windows Kits\\10\\bin\\x86`. The tool will show various element attributes. The table below
+    locators we use **Accessibility Insights** to inspect the application under test. This tool allows you to see every
+    UI element/node that you can interact with using DesktopLibrary. **Accessibility Insights** can be downloaded at
+    https://accessibilityinsights.io/ The tool will show various element attributes. The table below
     shows you witch locator strategy you should use to find elements with the corresponding attributes.
 
     | *Locator Strategy* | *Matched Attribute in inspect.exe* | *Example*                                         |
@@ -151,8 +150,6 @@ class DesktopLibrary(AppiumLibrary):
             window = desktop_session.find_element_by_name(window_name)
             window = hex(int(window.get_attribute("NativeWindowHandle")))
         except WebDriverException as e:
-            print(desktop_session.window_handles)
-            print(desktop_session.current_window_handle)
             desktop_session.quit()
             zoomba.fail(
                 'Error finding window "' + window_name + '" in the desktop session. '

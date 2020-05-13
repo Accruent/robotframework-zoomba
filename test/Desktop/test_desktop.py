@@ -1,3 +1,5 @@
+from selenium.common.exceptions import WebDriverException
+
 from Zoomba.DesktopLibrary import DesktopLibrary
 import unittest
 from appium import webdriver
@@ -31,6 +33,23 @@ class TestInternal(unittest.TestCase):
         self.assertFalse(dl._cache.current)
         dl.open_application('remote_url', window_name='test', app='testApp', splash_delay=1)
         self.assertTrue(dl._cache.current)
+
+    def test_switch_application_failure(self):
+        dl = DesktopLibrary()
+        dl._run_on_failure = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        webdriver.Remote.find_element_by_name = MagicMock(side_effect=WebDriverException)
+        self.assertRaises(Exception, dl.switch_application_by_name, 'remote_url', window_name='test')
+        self.assertFalse(dl._cache.current)
+
+    def test_switch_application_failure_2(self):
+        dl = DesktopLibrary()
+        dl._run_on_failure = MagicMock()
+        web_driver_mock = WebdriverRemoteMock
+        webdriver.Remote = MagicMock(side_effect=[web_driver_mock, WebDriverException])
+        web_driver_mock.quit = MagicMock(return_value=True)
+        self.assertRaises(Exception, dl.switch_application_by_name, 'remote_url', window_name='test')
+        self.assertFalse(dl._cache.current)
 
     def test_maximize_window_successful(self):
         dl = DesktopLibrary()
