@@ -95,8 +95,6 @@ class DesktopLibrary(AppiumLibrary):
     @keyword("Maximize Window")
     def maximize_window(self):
         """Maximizes the current application window.
-
-        Windows Only.
         """
         driver = self._current_application()
         driver.maximize_window()
@@ -120,10 +118,10 @@ class DesktopLibrary(AppiumLibrary):
         """
         desired_caps = kwargs
         if window_name:
-            # """
-            # If the app has a splash screen we need to supply the window_name of the final window. This code path will
-            # start the application and then attach to the correct window via the window_name.
-            # """
+            """
+            If the app has a splash screen we need to supply the window_name of the final window. This code path will
+            start the application and then attach to the correct window via the window_name.
+            """
             subprocess.Popen(desired_caps['app'])
             if splash_delay > 0:
                 sleep(splash_delay)
@@ -154,10 +152,13 @@ class DesktopLibrary(AppiumLibrary):
         try:
             window = desktop_session.find_element_by_name(window_name)
             window = hex(int(window.get_attribute("NativeWindowHandle")))
-        except WebDriverException:
+        except WebDriverException as e:
+            print(desktop_session.window_handles)
+            print(desktop_session.current_window_handle)
             desktop_session.quit()
             zoomba.fail(
-                'Error finding window: ' + window_name + " from the desktop session. Is it a top level window handle?")
+                'Error finding window "' + window_name + '" in the desktop session. '
+                'Is it a top level window handle?' + '. \n' + str(e))
         desktop_session.quit()
         if "app" in desired_caps:
             del desired_caps["app"]
@@ -165,9 +166,9 @@ class DesktopLibrary(AppiumLibrary):
         # global application
         try:
             application = webdriver.Remote(str(remote_url), desired_caps)
-        except WebDriverException:
+        except WebDriverException as e:
             zoomba.fail(
-                'Error connecting webdriver to window: ' + window_name + ". Is it a top level window handle?")
+                'Error connecting webdriver to window "' + window_name + '". \n' + str(e))
         self._debug('Opened application with session id %s' % application.session_id)
 
         return self._cache.register(application, alias)
@@ -315,6 +316,7 @@ class DesktopLibrary(AppiumLibrary):
 
         See also `Mouse Over Text`
         """
+        # TODO: Error messaging
         driver = self._current_application()
         element = self._element_find(locator, True, True)
         actions = ActionChains(driver)
@@ -346,15 +348,8 @@ class DesktopLibrary(AppiumLibrary):
 
         See also `Mouse Over And Click Text`
         """
-        driver = self._current_application()
-        element = self._element_find(locator, True, True)
-        actions = ActionChains(driver)
-        self._move_to_element(actions, element, x_offset, y_offset)
-        if double_click:
-            actions.double_click()
-        else:
-            actions.click()
-        actions.perform()
+        self.mouse_over_element(locator, x_offset=x_offset, y_offset=y_offset)
+        self.click_a_point(double_click=double_click)
 
     @keyword("Mouse Over And Context Click Element")
     def mouse_over_and_context_click_element(self, locator, x_offset=0, y_offset=0):
@@ -364,12 +359,8 @@ class DesktopLibrary(AppiumLibrary):
 
         See also `Mouse Over And Click Element`
         """
-        driver = self._current_application()
-        element = self._element_find(locator, True, True)
-        actions = ActionChains(driver)
-        self._move_to_element(actions, element, x_offset, y_offset)
-        actions.context_click()
-        actions.perform()
+        self.mouse_over_element(locator, x_offset=x_offset, y_offset=y_offset)
+        self.context_click_a_point()
 
     @keyword("Wait For And Mouse Over And Click Element")
     def wait_for_and_mouse_over_and_click_element(self, locator, timeout=None, error=None, double_click=False,
@@ -397,6 +388,7 @@ class DesktopLibrary(AppiumLibrary):
 
         See also `Mouse Over Element`
         """
+        # TODO: Error messaging
         driver = self._current_application()
         element = self._element_find_by_text(text, exact_match)
         actions = ActionChains(driver)
@@ -428,15 +420,8 @@ class DesktopLibrary(AppiumLibrary):
 
         See also `Mouse Over And Click Element`
         """
-        driver = self._current_application()
-        element = self._element_find_by_text(text, exact_match)
-        actions = ActionChains(driver)
-        self._move_to_element(actions, element, x_offset, y_offset)
-        if double_click:
-            actions.double_click()
-        else:
-            actions.click()
-        actions.perform()
+        self.mouse_over_text(text, exact_match=exact_match, x_offset=x_offset, y_offset=y_offset)
+        self.click_a_point(double_click=double_click)
 
     @keyword("Mouse Over And Context Click Text")
     def mouse_over_and_context_click_text(self, text, exact_match=False, x_offset=0, y_offset=0):
@@ -446,12 +431,8 @@ class DesktopLibrary(AppiumLibrary):
 
         See also `Mouse Over And Click Text`
         """
-        driver = self._current_application()
-        element = self._element_find_by_text(text, exact_match)
-        actions = ActionChains(driver)
-        self._move_to_element(actions, element, x_offset, y_offset)
-        actions.context_click()
-        actions.perform()
+        self.mouse_over_text(text, exact_match=exact_match, x_offset=x_offset, y_offset=y_offset)
+        self.context_click_a_point()
 
     @keyword("Wait For And Mouse Over And Click Text")
     def wait_for_and_mouse_over_and_click_text(self, text, exact_match=False, timeout=None, error=None,
@@ -516,7 +497,7 @@ class DesktopLibrary(AppiumLibrary):
 
     @keyword("Drag And Drop")
     def drag_and_drop(self, source, target):
-        """Drags the element found with the locator  ``source`` to the element found with the locator ``target``.
+        """Drags the element found with the locator ``source`` to the element found with the locator ``target``.
         """
         driver = self._current_application()
         source_element = self._element_find(source, True, True)
@@ -610,9 +591,10 @@ class DesktopLibrary(AppiumLibrary):
             _xpath = u'//*[contains(@{},"{}")]'.format('Name', text)
         return self._element_find(_xpath, True, True)
 
-    @staticmethod
-    def _move_to_element(actions, element, x_offset, y_offset):
+    def _move_to_element(self, actions, element, x_offset, y_offset):
         if x_offset != 0 or y_offset != 0:
+            self._info('Moving to element "' + str(element) + '" with offset (%s,%s).' % (x_offset, y_offset))
             actions.move_to_element_with_offset(element, x_offset, y_offset)
         else:
+            self._info('Moving to element "' + str(element) + '".')
             actions.move_to_element(element)
