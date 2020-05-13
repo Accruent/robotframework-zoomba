@@ -104,13 +104,3 @@ Save Selenium Screenshot Test
     ${file2}=                       Save Appium Screenshot
     Should Not Be Equal             ${file1}  ${file2}
     Should Match Regexp             ${file1}                    appium-screenshot-\\d{10}.\\d{0,8}-\\d.png
-
-#Switch test
-#    Quit Application
-#    switch application by name     ${REMOTE_URL}     Snipping Tool     platformName=Windows
-#    mouse over element     name=Optionsewqeqw
-#    wait for and click element     Name=Show selection ink after snips are captured
-
-
-
-
