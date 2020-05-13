@@ -153,22 +153,24 @@ class DesktopLibrary(AppiumLibrary):
             self._debug('Window_name "%s" found.' % window_name)
             window = hex(int(window.get_attribute("NativeWindowHandle")))
         except WebDriverException as e:
+            self._debug('Closing desktop session.')
             desktop_session.quit()
             zoomba.fail(
                 'Error finding window "' + window_name + '" in the desktop session. '
                 'Is it a top level window handle?' + '. \n' + str(e))
+        self._debug('Closing desktop session.')
         desktop_session.quit()
         if "app" in desired_caps:
             del desired_caps["app"]
         desired_caps["appTopLevelWindow"] = window
         # global application
         try:
+            self._info('Connecting to window_name "%s".' % window_name)
             application = webdriver.Remote(str(remote_url), desired_caps)
         except WebDriverException as e:
             zoomba.fail(
                 'Error connecting webdriver to window "' + window_name + '". \n' + str(e))
         self._debug('Opened application with session id %s' % application.session_id)
-
         return self._cache.register(application, alias)
 
     @keyword("Wait For And Clear Text")
@@ -314,7 +316,6 @@ class DesktopLibrary(AppiumLibrary):
 
         See also `Mouse Over Text`
         """
-        # TODO: Error messaging
         driver = self._current_application()
         element = self._element_find(locator, True, True)
         actions = ActionChains(driver)
@@ -386,7 +387,6 @@ class DesktopLibrary(AppiumLibrary):
 
         See also `Mouse Over Element`
         """
-        # TODO: Error messaging
         driver = self._current_application()
         element = self._element_find_by_text(text, exact_match)
         actions = ActionChains(driver)
@@ -457,7 +457,7 @@ class DesktopLibrary(AppiumLibrary):
         driver = self._current_application()
         actions = ActionChains(driver)
         actions.move_by_offset(x_offset, y_offset)
-        self._info("Mouse Over (%s,%s)." % (x_offset, y_offset))
+        self._info('Moving mouse from current location with an offset of (%s,%s).' % (x_offset, y_offset))
         actions.perform()
 
     @keyword("Click A Point")
@@ -476,7 +476,7 @@ class DesktopLibrary(AppiumLibrary):
             actions.double_click()
         else:
             actions.click()
-        self._info("Clicking on a point (%s,%s)." % (x_offset, y_offset))
+        self._info("Clicking on current mouse position with an offset of (%s,%s)." % (x_offset, y_offset))
         actions.perform()
 
     @keyword("Context Click A Point")
@@ -490,7 +490,7 @@ class DesktopLibrary(AppiumLibrary):
         if x_offset != 0 or y_offset != 0:
             actions.move_by_offset(x_offset, y_offset)
         actions.context_click()
-        self._info("Right-clicking on a point (%s,%s)." % (x_offset, y_offset))
+        self._info("Right-clicking on current mouse position with an offset of (%s,%s)." % (x_offset, y_offset))
         actions.perform()
 
     @keyword("Drag And Drop")
@@ -501,6 +501,7 @@ class DesktopLibrary(AppiumLibrary):
         source_element = self._element_find(source, True, True)
         target_element = self._element_find(target, True, True)
         actions = ActionChains(driver)
+        self._info('Dragging source element "%s" to target element "%s".' % (source, target))
         actions.drag_and_drop(source_element, target_element).perform()
 
     @keyword("Drag And Drop By Offset")
@@ -510,6 +511,7 @@ class DesktopLibrary(AppiumLibrary):
         driver = self._current_application()
         element = self._element_find(locator, True, True)
         actions = ActionChains(driver)
+        self._info('Dragging element "%s" by offset (%s, %s).' % (locator, x_offset, y_offset))
         actions.drag_and_drop_by_offset(element, x_offset, y_offset).perform()
 
     @keyword("Send Keys")
@@ -526,6 +528,7 @@ class DesktopLibrary(AppiumLibrary):
                 actions.send_keys(each)
         else:
             zoomba.fail('No key arguments specified.')
+        self._info('Sending keys to application.')
         actions.perform()
 
     @keyword("Send Keys To Element")
@@ -543,6 +546,7 @@ class DesktopLibrary(AppiumLibrary):
                 actions.send_keys_to_element(element, each)
         else:
             zoomba.fail('No key arguments specified.')
+        self._info('Sending keys to element "%s".' % locator)
         actions.perform()
 
     def capture_page_screenshot(self, filename=None):
