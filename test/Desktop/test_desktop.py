@@ -46,8 +46,9 @@ class TestInternal(unittest.TestCase):
         dl = DesktopLibrary()
         dl._run_on_failure = MagicMock()
         web_driver_mock = WebdriverRemoteMock
-        webdriver.Remote = MagicMock(side_effect=[web_driver_mock, WebDriverException])
+        webdriver.Remote = MagicMock(side_effect=[web_driver_mock, AssertionError])
         web_driver_mock.quit = MagicMock(return_value=True)
+        # dl.switch_application_by_name('remote_url', window_name='test')
         self.assertRaises(AssertionError, dl.switch_application_by_name, 'remote_url', window_name='test')
         self.assertFalse(dl._cache.current)
 
