@@ -344,6 +344,7 @@ class TestInternal(unittest.TestCase):
     def test_capture_page_screenshot_else_case(self):
         mock_desk = MagicMock()
         mock_desk._get_screenshot_paths = MagicMock(return_value=['path', 'link'])
+        del mock_desk._current_application().get_screenshot_as_file
         DesktopLibrary.capture_page_screenshot(mock_desk, 'filename')
         mock_desk._get_screenshot_paths.assert_called_with('filename')
 
