@@ -14,7 +14,6 @@ logger.addHandler(stream_handler)
 
 
 class WebdriverRemoteMock(mock.Mock, unittest.TestCase):
-    # def __init__(self, *args, **kwargs):
     def __init__(self, command_executor='http://127.0.0.1:4444/wd/hub', desired_capabilities=None):
         super(WebdriverRemoteMock, self).__init__()
         self._appiumUrl = command_executor
@@ -27,10 +26,6 @@ class WebdriverRemoteMock(mock.Mock, unittest.TestCase):
     def _get_child_mock(self, **kwargs):
         return mock.Mock(**kwargs)
 
-    # quit() and lock() methods for simulating the situations where applications
-    # are called after they have been closed.
-    # Needed because of a robot.utils.ConnectionCache manages the closed connections in a weird way
-    # - see comments in test_MAC_closeApplication_failed() below
     def quit(self):
         self._dead = True
 

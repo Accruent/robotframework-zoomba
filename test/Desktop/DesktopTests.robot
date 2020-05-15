@@ -54,7 +54,7 @@ Mouse Over Element/Text Keyword Test
     Mouse Over Element     name=Two
     Mouse Over Text      Memory
     Mouse Over Text      Memory    True
-#
+
 Mouse Over And Click Element/Text Keyword Test
     Mouse Over And Click Element     name=Two
     Mouse Over And Click Element     name=Two     x_offset=400   y_offset=100
@@ -104,5 +104,3 @@ Save Selenium Screenshot Test
     ${file2}=                       Save Appium Screenshot
     Should Not Be Equal             ${file1}  ${file2}
     Should Match Regexp             ${file1}                    appium-screenshot-\\d{10}.\\d{0,8}-\\d.png
-
-
