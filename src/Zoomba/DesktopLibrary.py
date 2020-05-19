@@ -586,10 +586,17 @@ class DesktopLibrary(AppiumLibrary):
         return self.capture_page_screenshot(filename)
 
     @keyword("Select Element From Combobox")
-    def select_element_from_combobox(self, list_locator, element_locator):
-        """Selects the ``element_locator`` from the combobox found by ``list_locator``."""
+    def select_element_from_combobox(self, list_locator, element_locator, skip_to_desktop=False):
+        """Selects the ``element_locator`` from the combobox found by ``list_locator``.
+
+        The keyword first checks the current application for the combobox list elements. If it is not found it will
+        switch to the desktop session to look for the elements as many windows applications house the actual combobox
+        items in a pane off of the desktop. ``skip_to_desktop`` can be set to ``True`` in order to go straight to the
+        desktop session. This provides good time savings when dealing with a large application."""
         self.click_element(list_locator)
         try:
+            if skip_to_desktop:
+                raise ValueError("Skipping to desktop session")
             self._element_find(element_locator, True, True)
             self.click_element(element_locator)
         except ValueError:
