@@ -73,7 +73,7 @@ class DesktopLibrary(AppiumLibrary):
             'mouse_over_and_click_text', 'wait_for_and_mouse_over_and_click_text', 'click_a_point',
             'context_click_a_point', 'mouse_over_and_context_click_element', 'mouse_over_and_context_click_text',
             'mouse_over_by_offset', 'drag_and_drop', 'drag_and_drop_by_offset', 'send_keys', 'send_keys_to_element',
-            'capture_page_screenshot', 'save_appium_screenshot', 'select_element_from_combobox', 'open_desktop_session',
+            'capture_page_screenshot', 'save_appium_screenshot', 'select_element_from_combobox',
             # External Libraries
             'clear_text', 'click_button', 'click_element',
             'click_text', 'close_all_applications', 'close_application',
@@ -102,8 +102,8 @@ class DesktopLibrary(AppiumLibrary):
     def open_application(self, remote_url, alias=None, window_name=None, splash_delay=0, **kwargs):
         """Opens a new application to given Appium server.
         If your application has a splash screen please supply the window name of the final window that will appear.
-        For the capabilities of appium server and Windows,
-        Please check http://appium.io/docs/en/drivers/windows
+        For the capabilities of appium server and Windows please check http://appium.io/docs/en/drivers/windows
+
         | *Option*            | *Man.* | *Description*                                                        |
         | remote_url          | Yes    | Appium server url                                                    |
         | alias               | No     | Alias                                                                |
@@ -113,6 +113,9 @@ class DesktopLibrary(AppiumLibrary):
         Examples:
         | Open Application | http://localhost:4723/wd/hub | alias=Myapp1         | platformName=Windows            | deviceName=Windows           | app=your.app          |
         | Open Application | http://localhost:4723/wd/hub | alias=Myapp1         | platformName=Windows            | deviceName=Windows           | app=your.app          | window_name=MyApplication          | splash_delay=5          |
+
+        A session for the root desktop will also be opened and can be switched to by running the following:
+        | Switch Application | Desktop         |
         """
         desired_caps = kwargs
 
@@ -126,7 +129,7 @@ class DesktopLibrary(AppiumLibrary):
                 sleep(splash_delay)
             return self.switch_application_by_name(remote_url, alias=alias, window_name=window_name, **kwargs)
         # global application
-        self.open_desktop_session(remote_url)
+        self._open_desktop_session(remote_url)
         application = webdriver.Remote(str(remote_url), desired_caps)
         self._debug('Opened application with session id %s' % application.session_id)
         return self._cache.register(application, alias)
@@ -143,9 +146,12 @@ class DesktopLibrary(AppiumLibrary):
 
         Examples:
         | Switch Application By Name | http://localhost:4723/wd/hub | alias=Myapp1         | platformName=Windows            | deviceName=Windows           | window_name=MyApplication         |
+
+        A session for the root desktop will also be opened and can be switched to by running the following:
+        | Switch Application | Desktop         |
         """
         desired_caps = kwargs
-        desktop_session = self.open_desktop_session(remote_url)
+        desktop_session = self._open_desktop_session(remote_url)
         try:
             window = desktop_session.find_element_by_name(window_name)
             self._debug('Window_name "%s" found.' % window_name)
@@ -167,13 +173,6 @@ class DesktopLibrary(AppiumLibrary):
                 'Error connecting webdriver to window "' + window_name + '". \n' + str(e))
         self._debug('Opened application with session id %s' % application.session_id)
         return self._cache.register(application, alias)
-
-    @keyword("Open Desktop Session")
-    def open_desktop_session(self, remote_url, alias="Desktop"):
-        desktop_capabilities = dict({"app": "Root", "platformName": "Windows", "deviceName": "WindowsPC"})
-        desktop_session = webdriver.Remote(str(remote_url), desktop_capabilities)
-        self._cache.register(desktop_session, alias)
-        return desktop_session
 
     @keyword("Wait For And Clear Text")
     def wait_for_and_clear_text(self, locator, timeout=None, error=None):
@@ -616,3 +615,9 @@ class DesktopLibrary(AppiumLibrary):
         else:
             self._info('Moving to element "' + str(element) + '".')
             actions.move_to_element(element)
+
+    def _open_desktop_session(self, remote_url, alias="Desktop"):
+        desktop_capabilities = dict({"app": "Root", "platformName": "Windows", "deviceName": "WindowsPC"})
+        desktop_session = webdriver.Remote(str(remote_url), desktop_capabilities)
+        self._cache.register(desktop_session, alias)
+        return desktop_session
