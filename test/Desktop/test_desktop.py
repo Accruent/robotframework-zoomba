@@ -21,6 +21,15 @@ class TestInternal(unittest.TestCase):
         dl.open_application('remote_url')
         self.assertTrue(dl._cache.current)
 
+    def test_open_application_successful_double(self):
+        dl = DesktopLibrary()
+        webdriver.Remote = WebdriverRemoteMock
+        self.assertFalse(dl._cache.current)
+        dl.open_application('remote_url')
+        self.assertTrue(dl._cache.current)
+        dl.open_application('remote_url')
+        self.assertTrue(dl._cache.current)
+
     def test_open_application_splash_catch(self):
         dl = DesktopLibrary()
         subprocess.Popen = MagicMock()
@@ -368,3 +377,4 @@ class TestInternal(unittest.TestCase):
         mock_desk = MagicMock()
         DesktopLibrary.select_element_from_combobox(mock_desk, 'some_locator', 'another_locator', True)
         mock_desk.click_element.assert_called_with('another_locator')
+
