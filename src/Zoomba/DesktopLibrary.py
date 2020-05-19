@@ -585,7 +585,7 @@ class DesktopLibrary(AppiumLibrary):
         filename = 'appium-screenshot-' + str(timestamp) + '-' + str(next(SCREENSHOT_COUNTER)) + '.png'
         return self.capture_page_screenshot(filename)
 
-    @keyword("Select Element From Combobox")
+    @keyword("Select Element From ComboBox")
     def select_element_from_combobox(self, list_locator, element_locator, skip_to_desktop=False):
         """Selects the ``element_locator`` from the combobox found by ``list_locator``.
 

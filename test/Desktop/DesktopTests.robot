@@ -106,9 +106,9 @@ Save Selenium Screenshot Test
     Should Match Regexp             ${file1}                    appium-screenshot-\\d{10}.\\d{0,8}-\\d.png
 
 Select Element From Combobox Test
-    Select Element From Combobox      accessibility_id=TogglePaneButton         accessibility_id=Speed
-    Select Element From Combobox      accessibility_id=Units1         name=Knots
-    Select Element From Combobox      accessibility_id=TogglePaneButton         accessibility_id=Standard
+    Select Element From ComboBox      accessibility_id=TogglePaneButton         accessibility_id=Speed
+    Select Element From ComboBox      accessibility_id=Units1         name=Knots
+    Select Element From ComboBox      accessibility_id=TogglePaneButton         accessibility_id=Standard
 
 Switch To Desktop Test
     Close Application
