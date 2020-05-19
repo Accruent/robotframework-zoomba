@@ -361,15 +361,10 @@ class TestInternal(unittest.TestCase):
     def test_select_from_combobox_with_desktop(self):
         mock_desk = MagicMock()
         mock_desk.click_element = MagicMock(side_effect=[True, ValueError, True])
-        # self.assertRaises(ValueError, DesktopLibrary.select_element_from_combobox, mock_desk, 'some_locator',
-        #                   'another_locator')
         DesktopLibrary.select_element_from_combobox(mock_desk, 'some_locator', 'another_locator')
         mock_desk.click_element.assert_called_with('another_locator')
 
     def test_select_from_combobox_skip_to_desktop(self):
         mock_desk = MagicMock()
-        # mock_desk.click_element = MagicMock(side_effect=[True, ValueError, True])
-        # self.assertRaises(ValueError, DesktopLibrary.select_element_from_combobox, mock_desk, 'some_locator',
-        #                   'another_locator')
         DesktopLibrary.select_element_from_combobox(mock_desk, 'some_locator', 'another_locator', True)
         mock_desk.click_element.assert_called_with('another_locator')
