@@ -38,6 +38,16 @@ class TestInternal(unittest.TestCase):
         dl.open_application('remote_url', window_name='test', app='testApp', splash_delay=1)
         self.assertTrue(dl._cache.current)
 
+    def test_open_application_splash_catch_double(self):
+        dl = DesktopLibrary()
+        subprocess.Popen = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        self.assertFalse(dl._cache.current)
+        dl.open_application('remote_url', window_name='test', app='testApp', splash_delay=1)
+        self.assertTrue(dl._cache.current)
+        dl.open_application('remote_url', window_name='test2', app='testApp', splash_delay=1)
+        self.assertTrue(dl._cache.current)
+
     def test_switch_application_failure(self):
         dl = DesktopLibrary()
         dl._run_on_failure = MagicMock()

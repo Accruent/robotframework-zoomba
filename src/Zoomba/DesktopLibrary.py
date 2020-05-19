@@ -623,7 +623,7 @@ class DesktopLibrary(AppiumLibrary):
 
     def _open_desktop_session(self, remote_url, alias="Desktop"):
         try:
-            self._cache.get_connection(alias)
+            return self._cache.get_connection(alias)
         except RuntimeError:
             desktop_capabilities = dict({"app": "Root", "platformName": "Windows", "deviceName": "WindowsPC"})
             desktop_session = webdriver.Remote(str(remote_url), desktop_capabilities)
