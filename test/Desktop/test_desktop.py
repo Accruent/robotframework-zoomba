@@ -387,4 +387,3 @@ class TestInternal(unittest.TestCase):
         mock_desk = MagicMock()
         DesktopLibrary.select_element_from_combobox(mock_desk, 'some_locator', 'another_locator', True)
         mock_desk.click_element.assert_called_with('another_locator')
-
