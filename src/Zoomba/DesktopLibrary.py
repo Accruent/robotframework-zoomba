@@ -586,18 +586,16 @@ class DesktopLibrary(AppiumLibrary):
         return self.capture_page_screenshot(filename)
 
     @keyword("Select Element From Combobox")
-    def select_element_from_combobox(self, list_locator, element_locator, needs_desktop=True):
-        """Selects the ``element_locator`` from the list found by ``list_locator``.
-
-        Usually windows forces all combobox list items to a pane on the desktop. If this is not true for your
-        application you will need to set ``needs_desktop`` to False in order to select your item.
-        """
+    def select_element_from_combobox(self, list_locator, element_locator):
+        """Selects the ``element_locator`` from the combobox found by ``list_locator``."""
         self.click_element(list_locator)
-        if needs_desktop:
+        try:
+            self._element_find(element_locator, True, True)
+            self.click_element(element_locator)
+        except ValueError:
             original_index = self._cache.current_index
             self.switch_application('Desktop')
-        self.click_element(element_locator)
-        if needs_desktop:
+            self.click_element(element_locator)
             self.switch_application(original_index)
 
     # Private

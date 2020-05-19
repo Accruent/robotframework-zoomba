@@ -25,7 +25,6 @@ Wait For And Click Element By Id Keyword Test
 Wait For And Click Element By Name Keyword Test
     Wait For And Click Element       name=Two
     Wait Until Page Contains      2
-    switch application    Desktop
 
 Wait For And Click Element By Class Keyword Test
     Wait For And Click Element       class=Button
@@ -109,4 +108,5 @@ Save Selenium Screenshot Test
 Select Element From Combobox Test
     Select Element From Combobox      accessibility_id=TogglePaneButton         accessibility_id=Speed
     Select Element From Combobox      accessibility_id=Units1         name=Knots
+    Select Element From Combobox      accessibility_id=TogglePaneButton         accessibility_id=Standard
 
