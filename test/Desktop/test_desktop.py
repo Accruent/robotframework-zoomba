@@ -352,3 +352,13 @@ class TestInternal(unittest.TestCase):
         mock_desk = MagicMock()
         DesktopLibrary.save_appium_screenshot(mock_desk)
         mock_desk.capture_page_screenshot.assert_called_with(unittest.mock.ANY)
+
+    def test_select_from_combobox(self):
+        mock_desk = MagicMock()
+        DesktopLibrary.select_element_from_combobox(mock_desk, 'some_locator', 'another_locator')
+        mock_desk.click_element.assert_called_with('another_locator')
+
+    def test_select_from_combobox_no_desktop(self):
+        mock_desk = MagicMock()
+        DesktopLibrary.select_element_from_combobox(mock_desk, 'some_locator', 'another_locator', False)
+        mock_desk.click_element.assert_called_with('another_locator')

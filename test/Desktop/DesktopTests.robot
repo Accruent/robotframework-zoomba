@@ -25,6 +25,7 @@ Wait For And Click Element By Id Keyword Test
 Wait For And Click Element By Name Keyword Test
     Wait For And Click Element       name=Two
     Wait Until Page Contains      2
+    switch application    Desktop
 
 Wait For And Click Element By Class Keyword Test
     Wait For And Click Element       class=Button
@@ -104,3 +105,8 @@ Save Selenium Screenshot Test
     ${file2}=                       Save Appium Screenshot
     Should Not Be Equal             ${file1}  ${file2}
     Should Match Regexp             ${file1}                    appium-screenshot-\\d{10}.\\d{0,8}-\\d.png
+
+Select Element From Combobox Test
+    Select Element From Combobox      accessibility_id=TogglePaneButton         accessibility_id=Speed
+    Select Element From Combobox      accessibility_id=Units1         name=Knots
+

@@ -73,7 +73,7 @@ class DesktopLibrary(AppiumLibrary):
             'mouse_over_and_click_text', 'wait_for_and_mouse_over_and_click_text', 'click_a_point',
             'context_click_a_point', 'mouse_over_and_context_click_element', 'mouse_over_and_context_click_text',
             'mouse_over_by_offset', 'drag_and_drop', 'drag_and_drop_by_offset', 'send_keys', 'send_keys_to_element',
-            'capture_page_screenshot', 'save_appium_screenshot',
+            'capture_page_screenshot', 'save_appium_screenshot', 'select_element_from_combobox', 'open_desktop_session',
             # External Libraries
             'clear_text', 'click_button', 'click_element',
             'click_text', 'close_all_applications', 'close_application',
@@ -115,6 +115,7 @@ class DesktopLibrary(AppiumLibrary):
         | Open Application | http://localhost:4723/wd/hub | alias=Myapp1         | platformName=Windows            | deviceName=Windows           | app=your.app          | window_name=MyApplication          | splash_delay=5          |
         """
         desired_caps = kwargs
+
         if window_name:
             # If the app has a splash screen we need to supply the window_name of the final window. This code path will
             # start the application and then attach to the correct window via the window_name.
@@ -125,6 +126,7 @@ class DesktopLibrary(AppiumLibrary):
                 sleep(splash_delay)
             return self.switch_application_by_name(remote_url, alias=alias, window_name=window_name, **kwargs)
         # global application
+        self.open_desktop_session(remote_url)
         application = webdriver.Remote(str(remote_url), desired_caps)
         self._debug('Opened application with session id %s' % application.session_id)
         return self._cache.register(application, alias)
@@ -143,22 +145,20 @@ class DesktopLibrary(AppiumLibrary):
         | Switch Application By Name | http://localhost:4723/wd/hub | alias=Myapp1         | platformName=Windows            | deviceName=Windows           | window_name=MyApplication         |
         """
         desired_caps = kwargs
-        desktop_capabilities = dict()
-        desktop_capabilities.update({"app": "Root", "platformName": "Windows", "deviceName": "WindowsPC"})
-        self._debug('Opening desktop session to search for window_name "%s".' % window_name)
-        desktop_session = webdriver.Remote(str(remote_url), desktop_capabilities)
+        desktop_session = self.open_desktop_session(remote_url)
         try:
             window = desktop_session.find_element_by_name(window_name)
             self._debug('Window_name "%s" found.' % window_name)
             window = hex(int(window.get_attribute("NativeWindowHandle")))
         except Exception as e:
             self._debug('Closing desktop session.')
-            desktop_session.quit()
+            # desktop_session.quit()
+            self.close_all_applications()
             zoomba.fail(
                 'Error finding window "' + window_name + '" in the desktop session. '
-                'Is it a top level window handle?' + '. \n' + str(e))
-        self._debug('Closing desktop session.')
-        desktop_session.quit()
+                                                         'Is it a top level window handle?' + '. \n' + str(e))
+        # self._debug('Closing desktop session.')
+        # desktop_session.quit()
         if "app" in desired_caps:
             del desired_caps["app"]
         desired_caps["appTopLevelWindow"] = window
@@ -171,6 +171,13 @@ class DesktopLibrary(AppiumLibrary):
                 'Error connecting webdriver to window "' + window_name + '". \n' + str(e))
         self._debug('Opened application with session id %s' % application.session_id)
         return self._cache.register(application, alias)
+
+    @keyword("Open Desktop Session")
+    def open_desktop_session(self, remote_url, alias="Desktop"):
+        desktop_capabilities = dict({"app": "Root", "platformName": "Windows", "deviceName": "WindowsPC"})
+        desktop_session = webdriver.Remote(str(remote_url), desktop_capabilities)
+        self._cache.register(desktop_session, alias)
+        return desktop_session
 
     @keyword("Wait For And Clear Text")
     def wait_for_and_clear_text(self, locator, timeout=None, error=None):
@@ -583,8 +590,22 @@ class DesktopLibrary(AppiumLibrary):
         filename = 'appium-screenshot-' + str(timestamp) + '-' + str(next(SCREENSHOT_COUNTER)) + '.png'
         return self.capture_page_screenshot(filename)
 
-    # Private
+    @keyword("Select Element From Combobox")
+    def select_element_from_combobox(self, list_locator, element_locator, needs_desktop=True):
+        """Selects the ``element_locator`` from the list found by ``list_locator``.
 
+        Usually windows forces all combobox list items to a pane on the desktop. If this is not true for your
+        application you will need to set ``needs_desktop`` to False in order to select your item.
+        """
+        self.click_element(list_locator)
+        if needs_desktop:
+            original_index = self._cache.current_index
+            self.switch_application('Desktop')
+        self.click_element(element_locator)
+        if needs_desktop:
+            self.switch_application(original_index)
+
+    # Private
     def _element_find_by_text(self, text, exact_match=False):
         if exact_match:
             _xpath = u'//*[@{}="{}"]'.format('Name', text)
