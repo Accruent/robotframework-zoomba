@@ -46,7 +46,6 @@ class TestInternal(unittest.TestCase):
         web_driver_mock.find_element_by_name = MagicMock()
         web_driver_mock.quit = MagicMock(return_value=True)
         self.assertRaisesRegex(AssertionError, 'Error connecting webdriver to window "test".', dl.switch_application_by_name, 'remote_url', window_name='test')
-        self.assertFalse(dl._cache.current)
 
     def test_maximize_window_successful(self):
         mock_desk = MagicMock()
