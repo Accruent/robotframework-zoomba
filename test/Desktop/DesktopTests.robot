@@ -110,3 +110,7 @@ Select Element From Combobox Test
     Select Element From Combobox      accessibility_id=Units1         name=Knots
     Select Element From Combobox      accessibility_id=TogglePaneButton         accessibility_id=Standard
 
+Switch To Desktop Test
+    Close Application
+    Switch Application      Desktop
+    Click Text      Start
