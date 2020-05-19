@@ -35,8 +35,9 @@ class TestInternal(unittest.TestCase):
         dl._run_on_failure = MagicMock()
         webdriver.Remote = WebdriverRemoteMock
         webdriver.Remote.find_element_by_name = MagicMock(side_effect=WebDriverException)
-        self.assertRaises(AssertionError, dl.switch_application_by_name, 'remote_url', window_name='test')
-        self.assertFalse(dl._cache.current)
+        self.assertRaisesRegex(AssertionError, 'Error finding window "test" in the desktop session. Is it a top level '
+                                               'window handle?.', dl.switch_application_by_name,
+                                               'remote_url', window_name='test')
 
     def test_switch_application_failure_2(self):
         dl = DesktopLibrary()
@@ -45,7 +46,8 @@ class TestInternal(unittest.TestCase):
         webdriver.Remote = MagicMock(side_effect=[web_driver_mock, Exception])
         web_driver_mock.find_element_by_name = MagicMock()
         web_driver_mock.quit = MagicMock(return_value=True)
-        self.assertRaisesRegex(AssertionError, 'Error connecting webdriver to window "test".', dl.switch_application_by_name, 'remote_url', window_name='test')
+        self.assertRaisesRegex(AssertionError, 'Error connecting webdriver to window "test".',
+                               dl.switch_application_by_name, 'remote_url', window_name='test')
 
     def test_maximize_window_successful(self):
         mock_desk = MagicMock()

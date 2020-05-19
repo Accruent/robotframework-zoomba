@@ -152,13 +152,9 @@ class DesktopLibrary(AppiumLibrary):
             window = hex(int(window.get_attribute("NativeWindowHandle")))
         except Exception as e:
             self._debug('Closing desktop session.')
-            # desktop_session.quit()
-            self.close_all_applications()
             zoomba.fail(
                 'Error finding window "' + window_name + '" in the desktop session. '
                                                          'Is it a top level window handle?' + '. \n' + str(e))
-        # self._debug('Closing desktop session.')
-        # desktop_session.quit()
         if "app" in desired_caps:
             del desired_caps["app"]
         desired_caps["appTopLevelWindow"] = window
