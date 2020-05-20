@@ -12,15 +12,16 @@ services:
   - xvfb
 addons:
   chrome: stable
+  apt:
+    packages:
+      - chromium-chromedriver
 cache: pip
 install:
 - pip install .
 - pip install coveralls
 - pip install pytest-cov
 before_script:
-- wget "http://chromedriver.storage.googleapis.com/83.0.4103.39/chromedriver_linux64.zip"
-- unzip chromedriver_linux64.zip
-- sudo mv chromedriver /usr/local/bin
+- ln --symbolic /usr/lib/chromium-browser/chromedriver "${HOME}/bin/chromedriver"
 - export DISPLAY=:99.0
 - sleep 3
 script:
