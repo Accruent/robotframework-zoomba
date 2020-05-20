@@ -1,5 +1,4 @@
 from selenium.common.exceptions import WebDriverException
-
 from Zoomba.DesktopLibrary import DesktopLibrary
 import unittest
 from appium import webdriver
@@ -22,6 +21,15 @@ class TestInternal(unittest.TestCase):
         dl.open_application('remote_url')
         self.assertTrue(dl._cache.current)
 
+    def test_open_application_successful_double(self):
+        dl = DesktopLibrary()
+        webdriver.Remote = WebdriverRemoteMock
+        self.assertFalse(dl._cache.current)
+        dl.open_application('remote_url')
+        self.assertTrue(dl._cache.current)
+        dl.open_application('remote_url')
+        self.assertTrue(dl._cache.current)
+
     def test_open_application_splash_catch(self):
         dl = DesktopLibrary()
         subprocess.Popen = MagicMock()
@@ -30,13 +38,24 @@ class TestInternal(unittest.TestCase):
         dl.open_application('remote_url', window_name='test', app='testApp', splash_delay=1)
         self.assertTrue(dl._cache.current)
 
+    def test_open_application_splash_catch_double(self):
+        dl = DesktopLibrary()
+        subprocess.Popen = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        self.assertFalse(dl._cache.current)
+        dl.open_application('remote_url', window_name='test', app='testApp', splash_delay=1)
+        self.assertTrue(dl._cache.current)
+        dl.open_application('remote_url', window_name='test2', app='testApp', splash_delay=1)
+        self.assertTrue(dl._cache.current)
+
     def test_switch_application_failure(self):
         dl = DesktopLibrary()
         dl._run_on_failure = MagicMock()
         webdriver.Remote = WebdriverRemoteMock
         webdriver.Remote.find_element_by_name = MagicMock(side_effect=WebDriverException)
-        self.assertRaises(AssertionError, dl.switch_application_by_name, 'remote_url', window_name='test')
-        self.assertFalse(dl._cache.current)
+        self.assertRaisesRegex(AssertionError, 'Error finding window "test" in the desktop session. Is it a top level '
+                                               'window handle?.', dl.switch_application_by_name,
+                                               'remote_url', window_name='test')
 
     def test_switch_application_failure_2(self):
         dl = DesktopLibrary()
@@ -45,8 +64,8 @@ class TestInternal(unittest.TestCase):
         webdriver.Remote = MagicMock(side_effect=[web_driver_mock, Exception])
         web_driver_mock.find_element_by_name = MagicMock()
         web_driver_mock.quit = MagicMock(return_value=True)
-        self.assertRaisesRegex(AssertionError, 'Error connecting webdriver to window "test".', dl.switch_application_by_name, 'remote_url', window_name='test')
-        self.assertFalse(dl._cache.current)
+        self.assertRaisesRegex(AssertionError, 'Error connecting webdriver to window "test".',
+                               dl.switch_application_by_name, 'remote_url', window_name='test')
 
     def test_maximize_window_successful(self):
         mock_desk = MagicMock()
@@ -352,3 +371,19 @@ class TestInternal(unittest.TestCase):
         mock_desk = MagicMock()
         DesktopLibrary.save_appium_screenshot(mock_desk)
         mock_desk.capture_page_screenshot.assert_called_with(unittest.mock.ANY)
+
+    def test_select_from_combobox_no_desktop(self):
+        mock_desk = MagicMock()
+        DesktopLibrary.select_element_from_combobox(mock_desk, 'some_locator', 'another_locator')
+        mock_desk.click_element.assert_called_with('another_locator')
+
+    def test_select_from_combobox_with_desktop(self):
+        mock_desk = MagicMock()
+        mock_desk.click_element = MagicMock(side_effect=[True, ValueError, True])
+        DesktopLibrary.select_element_from_combobox(mock_desk, 'some_locator', 'another_locator')
+        mock_desk.click_element.assert_called_with('another_locator')
+
+    def test_select_from_combobox_skip_to_desktop(self):
+        mock_desk = MagicMock()
+        DesktopLibrary.select_element_from_combobox(mock_desk, 'some_locator', 'another_locator', True)
+        mock_desk.click_element.assert_called_with('another_locator')
