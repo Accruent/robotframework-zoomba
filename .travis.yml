@@ -8,8 +8,7 @@ branches:
   - "/^(documentation).*$/i"
 sudo: required
 dist: xenial
-services:
-  - xvfb
+
 addons:
   chrome: stable
   apt:
@@ -25,8 +24,7 @@ before_script:
 - ln --symbolic /usr/lib/chromium-browser/chromedriver "${HOME}/bin/chromedriver"
 # start Chrome and listen on localhost
 - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
-- export DISPLAY=:99.0
-- sleep 3
+
 script:
 - pytest --cov src -v
 - robot -e BrokenORWindowsORMobile test
