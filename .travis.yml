@@ -8,7 +8,8 @@ branches:
   - "/^(documentation).*$/i"
 sudo: required
 dist: xenial
-
+services:
+  - xvfb
 addons:
   chrome: stable
   apt:
@@ -20,11 +21,9 @@ install:
 - pip install coveralls
 - pip install pytest-cov
 before_script:
-# include ChromeDriver in PATH
-- ln --symbolic /usr/lib/chromium-browser/chromedriver "${HOME}/bin/chromedriver"
-# start Chrome and listen on localhost
-- google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
-
+- sudo mv /usr/lib/chromium-browser/chromedriver /usr/local/bin
+- export DISPLAY=:99.0
+- sleep 3
 script:
 - pytest --cov src -v
 - robot -e BrokenORWindowsORMobile test
