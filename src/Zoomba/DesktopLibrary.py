@@ -607,11 +607,13 @@ class DesktopLibrary(AppiumLibrary):
 
     # Private
     def _element_find_by_text(self, text, exact_match=False):
-        if exact_match:
-            _xpath = u'//*[@{}="{}"]'.format('Name', text)
-        else:
-            _xpath = u'//*[contains(@{},"{}")]'.format('Name', text)
-        return self._element_find(_xpath, True, True)
+        # if exact_match:
+        #     _xpath = u'//*[@{}="{}"]'.format('Name', text)
+        # else:
+        #     _xpath = u'//*[contains(@{},"{}")]'.format('Name', text)
+        # return self._element_find(_xpath, True, True)
+        # TODO: This still needs partial text match support
+        return self._current_application().find_element_by_name(text)
 
     def _move_to_element(self, actions, element, x_offset=0, y_offset=0):
         if x_offset != 0 or y_offset != 0:
@@ -629,3 +631,40 @@ class DesktopLibrary(AppiumLibrary):
             desktop_session = webdriver.Remote(str(remote_url), desktop_capabilities)
             self._cache.register(desktop_session, alias)
             return desktop_session
+
+    def _parse_locator(self, locator):
+        prefix = None
+        criteria = locator
+        if not locator.startswith('//'):
+            locator_parts = locator.partition('=')
+            if len(locator_parts[1]) > 0:
+                prefix = locator_parts[0].strip().lower()
+                criteria = locator_parts[2].strip()
+        return prefix, criteria
+
+    def click_element(self, locator):
+        """Click element identified by `locator`.
+
+        Key attributes for arbitrary elements are `index` and `name`. See
+        `introduction` for details about locating elements.
+        """
+        self._info("Clicking element '%s'." % locator)
+        prefix, criteria = self._parse_locator(locator)
+        prefix = 'default' if prefix is None else prefix
+        # self._element_find(locator, True, True).click()
+        driver = self._current_application()
+        if prefix == 'default':
+            if criteria.startswith('//'):
+                driver.find_element_by_xpath(criteria).click()
+            else:
+                driver.find_element_by_accessibility_id(criteria).click()
+        elif prefix == 'name':
+            driver.find_element_by_name(criteria).click()
+        elif prefix == 'class':
+            driver.find_element_by_class_name(criteria).click()
+        elif prefix == 'xpath':
+            driver.find_element_by_xpath(criteria).click()
+        elif prefix == 'accessibility_id':
+            driver.find_element_by_accessibility_id(criteria).click()
+        else:
+            zoomba.fail("Element locator with prefix '" + prefix + "' is not supported")

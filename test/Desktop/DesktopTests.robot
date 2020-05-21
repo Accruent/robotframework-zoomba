@@ -8,7 +8,7 @@ Suite Teardown    Close All Applications
 Force Tags        Windows
 
 *** Variables ***
-${REMOTE_URL}           http://localhost:4723/wd/hub
+${REMOTE_URL}           http://localhost:4723
 ${APP}                  Microsoft.WindowsCalculator_8wekyb3d8bbwe!App
 
 *** Keywords ***
