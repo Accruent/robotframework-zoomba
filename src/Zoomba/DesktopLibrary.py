@@ -659,12 +659,13 @@ class DesktopLibrary(AppiumLibrary):
         else:
             zoomba.fail("Element locator with prefix '" + prefix + "' is not supported")
 
-    def _parse_locator(self, locator):
-        prefix = None
-        criteria = locator
-        if not locator.startswith('//'):
-            locator_parts = locator.partition('=')
-            if len(locator_parts[1]) > 0:
-                prefix = locator_parts[0].strip().lower()
-                criteria = locator_parts[2].strip()
-        return prefix, criteria
+
+def _parse_locator(locator):
+    prefix = None
+    criteria = locator
+    if not locator.startswith('//'):
+        locator_parts = locator.partition('=')
+        if len(locator_parts[1]) > 0:
+            prefix = locator_parts[0].strip().lower()
+            criteria = locator_parts[2].strip()
+    return prefix, criteria
