@@ -1,5 +1,5 @@
 *** Settings ***
-Documentation   Zoomba Desktop Library Tests. Requires Appium Server running on port 4723.
+Documentation   Zoomba Desktop Library Tests. Requires Appium Server/WinAppDriver running on port 4723.
 Library         ../../src/Zoomba/DesktopLibrary.py
 Suite Setup     Start App
 Test Setup      Launch Application
@@ -8,7 +8,8 @@ Suite Teardown    Close All Applications
 Force Tags        Windows
 
 *** Variables ***
-${REMOTE_URL}           http://localhost:4723
+#${REMOTE_URL}           http://localhost:4723/wd/hub     #If using Appium
+${REMOTE_URL}           http://localhost:4723             #If Using WinAppDriver directly (suggested)
 ${APP}                  Microsoft.WindowsCalculator_8wekyb3d8bbwe!App
 
 *** Keywords ***
