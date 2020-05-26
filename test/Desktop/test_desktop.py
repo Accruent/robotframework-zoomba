@@ -67,6 +67,15 @@ class TestInternal(unittest.TestCase):
         self.assertRaisesRegex(AssertionError, 'Error connecting webdriver to window "test".',
                                dl.switch_application_by_name, 'remote_url', window_name='test')
 
+    def test_launch_application_successful(self):
+        dl = DesktopLibrary()
+        webdriver.Remote = WebdriverRemoteMock
+        self.assertFalse(dl._cache.current)
+        dl.open_application('remote_url')
+        dl.quit_application()
+        dl.launch_application()
+        self.assertTrue(dl._cache.current)
+
     def test_maximize_window_successful(self):
         mock_desk = MagicMock()
         self.assertTrue(DesktopLibrary.maximize_window(mock_desk))
@@ -80,6 +89,11 @@ class TestInternal(unittest.TestCase):
         mock_desk = MagicMock()
         DesktopLibrary.wait_for_and_click_element(mock_desk, "some_locator")
         mock_desk.click_element.assert_called_with("some_locator")
+
+    def test_click_element(self):
+        mock_desk = MagicMock()
+        DesktopLibrary.click_element(mock_desk, "some_locator")
+        mock_desk._element_find.assert_called_with("some_locator")
 
     def test_click_text(self):
         mock_desk = MagicMock()
