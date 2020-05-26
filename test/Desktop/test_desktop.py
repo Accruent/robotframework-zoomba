@@ -308,11 +308,15 @@ class TestInternal(unittest.TestCase):
         self.assertRaisesRegex(AssertionError, "Element locator with prefix 'blockbuster_id' is not supported",
                                DesktopLibrary._element_find, mock_desk, "blockbuster_id=123456789")
 
-    # def test_parse_locator(self):
-    #     mock_desk = MagicMock()
-    #     mock_desk._parse_locator = MagicMock(return_value=[None, "Capture"])
-    #     DesktopLibrary._element_find(mock_desk, "Capture")
-    #     mock_desk._current_application().find_element_by_accessibility_id.assert_called_with('Capture')
+    def test_parse_locator_xpath(self):
+        mock_desk = MagicMock()
+        parse = DesktopLibrary._parse_locator(mock_desk, '//test')
+        self.assertEqual(parse, (None, '//test'))
+
+    def test_parse_locator(self):
+        mock_desk = MagicMock()
+        parse = DesktopLibrary._parse_locator(mock_desk, 'name=test')
+        self.assertEqual(parse, ('name', 'test'))
 
     @patch("selenium.webdriver.common.action_chains.ActionChains.move_by_offset")
     def test_mouse_over_by_offset(self, action):
