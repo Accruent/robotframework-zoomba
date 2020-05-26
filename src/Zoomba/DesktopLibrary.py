@@ -656,8 +656,7 @@ class DesktopLibrary(AppiumLibrary):
             return driver.find_element_by_xpath(criteria)
         if prefix == 'accessibility_id':
             return driver.find_element_by_accessibility_id(criteria)
-        else:
-            zoomba.fail("Element locator with prefix '" + prefix + "' is not supported")
+        zoomba.fail("Element locator with prefix '" + prefix + "' is not supported")
 
 
 def _parse_locator(locator):
