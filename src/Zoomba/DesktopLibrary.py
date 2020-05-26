@@ -10,7 +10,6 @@ from time import sleep, time
 
 zoomba = BuiltIn()
 SCREENSHOT_COUNTER = itertools.count()
-source_cache = None
 
 
 class DesktopLibrary(AppiumLibrary):
