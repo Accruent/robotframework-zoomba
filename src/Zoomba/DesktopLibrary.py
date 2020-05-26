@@ -649,8 +649,7 @@ class DesktopLibrary(AppiumLibrary):
         if prefix == 'default':
             if criteria.startswith('//'):
                 return driver.find_element_by_xpath(criteria)
-            else:
-                return driver.find_element_by_accessibility_id(criteria)
+            return driver.find_element_by_accessibility_id(criteria)
         elif prefix == 'name':
             return driver.find_element_by_name(criteria)
         elif prefix == 'class':
