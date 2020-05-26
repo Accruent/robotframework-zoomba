@@ -10,6 +10,7 @@ from time import sleep, time
 
 zoomba = BuiltIn()
 SCREENSHOT_COUNTER = itertools.count()
+source_cache = None
 
 
 class DesktopLibrary(AppiumLibrary):
@@ -26,10 +27,14 @@ class DesktopLibrary(AppiumLibrary):
     https://accessibilityinsights.io/ The tool will show various element attributes. The table below
     shows you witch locator strategy you should use to find elements with the corresponding attributes.
 
-    | *Locator Strategy* | *Matched Attribute in inspect.exe* | *Example*                                         |
-    |  accessibility id  |            AutomationId            | Click Element `|` accessibility_id=my_element_id  |
+    To locate xpath we suggest using the **WinAppDriver UI Recorder** located here:
+    https://github.com/Microsoft/WinAppDriver/releases
+
+    | *Locator Strategy* | *Matched Attribute in Insights*    | *Example*                                         |
+    |  accessibility_id  |            AutomationId            | Click Element `|` accessibility_id=my_element_id  |
     |       class        |              ClassName             | Click Element `|` class=UIAPickerWheel            |
     |       name         |                Name                | Click Element `|` name=my_element                 |
+    |       xpath        |                N/A                 | Click Element `|` xpath=//Button[@Name="Close"]   |
 
     Example tests using the windows calculator are located in the tests directory.
 
@@ -39,7 +44,6 @@ class DesktopLibrary(AppiumLibrary):
     you are using an older WinForm, Win32, or a larger application it may be necessary to simply use the non-waiting
     version of keywords. Then you would simply add your waits in manually where necessary using something like
     ``Wait Until Page Contains`` or ``Wait Until Page Contains Element``.
-
     """
 
     def __init__(self, timeout=5, run_on_failure='Save Appium Screenshot'):
@@ -73,7 +77,7 @@ class DesktopLibrary(AppiumLibrary):
             'mouse_over_and_click_text', 'wait_for_and_mouse_over_and_click_text', 'click_a_point',
             'context_click_a_point', 'mouse_over_and_context_click_element', 'mouse_over_and_context_click_text',
             'mouse_over_by_offset', 'drag_and_drop', 'drag_and_drop_by_offset', 'send_keys', 'send_keys_to_element',
-            'capture_page_screenshot', 'save_appium_screenshot', 'select_element_from_combobox',
+            'capture_page_screenshot', 'save_appium_screenshot', 'select_element_from_combobox', 'get_source',
             # External Libraries
             'clear_text', 'click_button', 'click_element',
             'click_text', 'close_all_applications', 'close_application',
@@ -89,6 +93,20 @@ class DesktopLibrary(AppiumLibrary):
             'wait_until_page_does_not_contain', 'wait_until_page_does_not_contain_element', 'get_matching_xpath_count',
             'xpath_should_match_x_times'
         ]
+
+    # @keyword("Get Source")
+    # def get_source(self, refresh=False):
+    #     """Returns the entire source of the current page.
+    #
+    #     This will be a cache of the source unless the user supplies ``refresh``."""
+    #     global source_cache
+    #     if source_cache:
+    #         if refresh:
+    #             pass
+    #         else:
+    #             return source_cache
+    #     source_cache = self._current_application().page_source
+    #     return source_cache
 
     @keyword("Maximize Window")
     def maximize_window(self):
@@ -107,7 +125,7 @@ class DesktopLibrary(AppiumLibrary):
         | *Option*            | *Man.* | *Description*                                                        |
         | remote_url          | Yes    | Appium server url                                                    |
         | alias               | No     | Alias                                                                |
-        | window_name         | No     | Window name you wish to attach, usually after a splash screen        |
+        | window_name         | No     | Window name you wish to attach Usually after a splash screen        |
         | splash_delay        | No     | Delay used when waiting for a splash screen to load, in seconds      |
 
         Examples:
@@ -186,6 +204,33 @@ class DesktopLibrary(AppiumLibrary):
         self.wait_until_page_contains_element(locator, timeout, error)
         self.clear_text(locator)
 
+    # def click_element(self, locator):
+    #     """Click element identified by `locator`.
+    #
+    #     Supported prefixes: ``accessibility_id``, ``name``, ``class``, ``xpath``
+    #
+    #     If no prefix is give ``click element`` defaults to ``accessibility_id`` or ``xpath``
+    #     """
+    #     self._info("Clicking element '%s'." % locator)
+    #     prefix, criteria = self._parse_locator(locator)
+    #     prefix = 'default' if prefix is None else prefix
+    #     driver = self._current_application()
+    #     if prefix == 'default':
+    #         if criteria.startswith('//'):
+    #             driver.find_element_by_xpath(criteria).click()
+    #         else:
+    #             driver.find_element_by_accessibility_id(criteria).click()
+    #     elif prefix == 'name':
+    #         driver.find_element_by_name(criteria).click()
+    #     elif prefix == 'class':
+    #         driver.find_element_by_class_name(criteria).click()
+    #     elif prefix == 'xpath':
+    #         driver.find_element_by_xpath(criteria).click()
+    #     elif prefix == 'accessibility_id':
+    #         driver.find_element_by_accessibility_id(criteria).click()
+    #     else:
+    #         zoomba.fail("Element locator with prefix '" + prefix + "' is not supported")
+
     @keyword("Wait For And Click Element")
     def wait_for_and_click_element(self, locator, timeout=None, error=None):
         """Wait for and click the element identified by ``locator``.
@@ -200,18 +245,16 @@ class DesktopLibrary(AppiumLibrary):
         self.wait_until_page_contains_element(locator, timeout, error)
         self.click_element(locator)
 
+    @keyword("Click Text")
+    def click_text(self, text, exact_match=False):
+        """*DEPRECATED in DesktopLibrary 2.4.0* Use `Click Element` with the ``name`` prefix instead.
+        """
+        self._element_find_by_text(text, exact_match).click()
+
     @keyword("Wait For And Click Text")
     def wait_for_and_click_text(self, text, exact_match=False, timeout=None, error=None):
-        """Wait for and click text identified by ``text``.
-
-        Fails if ``timeout`` expires before the element appears.
-
-        ``error`` can be used to override the default error message.
-
-        By default tries to click first text involves given ``text``. If you would
-        like to click exactly matching text, then set ``exact_match`` to `True`.
-        
-        Use `Wait For And Mouse Over And Click Text` if this keyword gives issues in the application."""
+        """*DEPRECATED in DesktopLibrary 2.4.0* Use `Wait For And Click Element` with the ``name`` prefix instead.
+        """
         self.wait_until_page_contains(text, timeout, error)
         self.click_text(text, exact_match)
 
@@ -314,8 +357,6 @@ class DesktopLibrary(AppiumLibrary):
         """Moves the mouse over the given ``locator``.
 
         ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
-
-        See also `Mouse Over Text`
         """
         driver = self._current_application()
         element = self._element_find(locator, True, True)
@@ -332,8 +373,6 @@ class DesktopLibrary(AppiumLibrary):
         ``error`` can be used to override the default error message.
 
         ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
-
-        See also `Wait For And Mouse Over Text`
         """
         self.wait_until_page_contains_element(locator, timeout, error)
         self.mouse_over_element(locator, x_offset, y_offset)
@@ -345,8 +384,6 @@ class DesktopLibrary(AppiumLibrary):
         ``double_click`` can be used to click twice.
 
         ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
-
-        See also `Mouse Over And Click Text`
         """
         self.mouse_over_element(locator, x_offset=x_offset, y_offset=y_offset)
         self.click_a_point(double_click=double_click)
@@ -374,19 +411,13 @@ class DesktopLibrary(AppiumLibrary):
         ``double_click`` can be used to click twice.
 
         ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
-
-        See also `Wait For And Mouse Over And Click Text`
         """
         self.wait_until_page_contains_element(locator, timeout, error)
         self.mouse_over_and_click_element(locator, double_click, x_offset, y_offset)
 
     @keyword("Mouse Over Text")
     def mouse_over_text(self, text, exact_match=False, x_offset=0, y_offset=0):
-        """Moves the mouse over the given ``locator``.
-
-        ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
-
-        See also `Mouse Over Element`
+        """*DEPRECATED in DesktopLibrary 2.4.0* Use `Mouse Over Element` with the ``name`` prefix instead.
         """
         driver = self._current_application()
         element = self._element_find_by_text(text, exact_match)
@@ -396,39 +427,22 @@ class DesktopLibrary(AppiumLibrary):
 
     @keyword("Wait For And Mouse Over Text")
     def wait_for_and_mouse_over_text(self, text, exact_match=False, timeout=None, error=None, x_offset=0, y_offset=0):
-        """Moves the mouse over the given ``locator``.
-
-        Fails if ``timeout`` expires before the element appears.
-
-        ``error`` can be used to override the default error message.
-
-        ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
-
-        See also `Wait For And Mouse Over Element`
+        """*DEPRECATED in DesktopLibrary 2.4.0* Use `Wait For And Mouse Over Element` with the ``name`` prefix instead.
         """
         self.wait_until_page_contains(text, timeout, error)
         self.mouse_over_text(text, exact_match, x_offset, y_offset)
 
     @keyword("Mouse Over And Click Text")
     def mouse_over_and_click_text(self, text, exact_match=False, double_click=False, x_offset=0, y_offset=0):
-        """Moves the mouse over and clicks the given ``locator``.
-
-        ``double_click`` can be used to click twice.
-
-        ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
-
-        See also `Mouse Over And Click Element`
+        """*DEPRECATED in DesktopLibrary 2.4.0* Use `Mouse Over And Click Element` with the ``name`` prefix instead.
         """
         self.mouse_over_text(text, exact_match=exact_match, x_offset=x_offset, y_offset=y_offset)
         self.click_a_point(double_click=double_click)
 
     @keyword("Mouse Over And Context Click Text")
     def mouse_over_and_context_click_text(self, text, exact_match=False, x_offset=0, y_offset=0):
-        """Moves the mouse over and right-clicks the given ``locator``.
-
-        ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
-
-        See also `Mouse Over And Click Text`
+        """*DEPRECATED in DesktopLibrary 2.4.0* Use `Mouse Over And Context Click Element` with the ``name``
+        prefix instead.
         """
         self.mouse_over_text(text, exact_match=exact_match, x_offset=x_offset, y_offset=y_offset)
         self.context_click_a_point()
@@ -436,17 +450,8 @@ class DesktopLibrary(AppiumLibrary):
     @keyword("Wait For And Mouse Over And Click Text")
     def wait_for_and_mouse_over_and_click_text(self, text, exact_match=False, timeout=None, error=None,
                                                double_click=False, x_offset=0, y_offset=0):
-        """Waits for, moves the mouse over, and clicks the given ``locator``.
-
-        Fails if ``timeout`` expires before the element appears.
-
-        ``error`` can be used to override the default error message.
-
-        ``double_click`` can be used to click twice.
-
-        ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
-
-        See also `Wait For And Mouse Over And Click Element`
+        """*DEPRECATED in DesktopLibrary 2.4.0* Use `Wait For And Mouse Over And Click Element` with the ``name``
+         prefix instead.
         """
         self.wait_until_page_contains(text, timeout, error)
         self.mouse_over_and_click_text(text, exact_match, double_click, x_offset, y_offset)
@@ -607,13 +612,11 @@ class DesktopLibrary(AppiumLibrary):
 
     # Private
     def _element_find_by_text(self, text, exact_match=False):
-        # if exact_match:
-        #     _xpath = u'//*[@{}="{}"]'.format('Name', text)
-        # else:
-        #     _xpath = u'//*[contains(@{},"{}")]'.format('Name', text)
-        # return self._element_find(_xpath, True, True)
-        # TODO: This still needs partial text match support
-        return self._current_application().find_element_by_name(text)
+        if exact_match:
+            _xpath = u'//*[@{}="{}"]'.format('Name', text)
+        else:
+            _xpath = u'//*[contains(@{},"{}")]'.format('Name', text)
+        return self._element_find(_xpath, True, True)
 
     def _move_to_element(self, actions, element, x_offset=0, y_offset=0):
         if x_offset != 0 or y_offset != 0:
@@ -632,39 +635,39 @@ class DesktopLibrary(AppiumLibrary):
             self._cache.register(desktop_session, alias)
             return desktop_session
 
-    # def _parse_locator(self, locator):
-    #     prefix = None
-    #     criteria = locator
-    #     if not locator.startswith('//'):
-    #         locator_parts = locator.partition('=')
-    #         if len(locator_parts[1]) > 0:
-    #             prefix = locator_parts[0].strip().lower()
-    #             criteria = locator_parts[2].strip()
-    #     return prefix, criteria
-    #
-    # def click_element(self, locator):
-    #     """Click element identified by `locator`.
-    #
-    #     Key attributes for arbitrary elements are `index` and `name`. See
-    #     `introduction` for details about locating elements.
-    #     """
-    #     self._info("Clicking element '%s'." % locator)
-    #     prefix, criteria = self._parse_locator(locator)
-    #     prefix = 'default' if prefix is None else prefix
-    #     # self._element_find(locator, True, True).click()
-    #     driver = self._current_application()
-    #     if prefix == 'default':
-    #         if criteria.startswith('//'):
-    #             driver.find_element_by_xpath(criteria).click()
-    #         else:
-    #             driver.find_element_by_accessibility_id(criteria).click()
-    #     elif prefix == 'name':
-    #         driver.find_element_by_name(criteria).click()
-    #     elif prefix == 'class':
-    #         driver.find_element_by_class_name(criteria).click()
-    #     elif prefix == 'xpath':
-    #         driver.find_element_by_xpath(criteria).click()
-    #     elif prefix == 'accessibility_id':
-    #         driver.find_element_by_accessibility_id(criteria).click()
-    #     else:
-    #         zoomba.fail("Element locator with prefix '" + prefix + "' is not supported")
+    def _element_find(self, locator, *kwargs):
+        """Click element identified by `locator`.
+
+        Supported prefixes: ``accessibility_id``, ``name``, ``class``, ``xpath``
+
+        If no prefix is give ``click element`` defaults to ``accessibility_id`` or ``xpath``
+        """
+        # self._info("Clicking element '%s'." % locator)
+        prefix, criteria = self._parse_locator(locator)
+        prefix = 'default' if prefix is None else prefix
+        driver = self._current_application()
+        if prefix == 'default':
+            if criteria.startswith('//'):
+                return driver.find_element_by_xpath(criteria)
+            else:
+                return driver.find_element_by_accessibility_id(criteria)
+        elif prefix == 'name':
+            return driver.find_element_by_name(criteria)
+        elif prefix == 'class':
+            return driver.find_element_by_class_name(criteria)
+        elif prefix == 'xpath':
+            return driver.find_element_by_xpath(criteria)
+        elif prefix == 'accessibility_id':
+            return driver.find_element_by_accessibility_id(criteria)
+        else:
+            zoomba.fail("Element locator with prefix '" + prefix + "' is not supported")
+
+    def _parse_locator(self, locator):
+        prefix = None
+        criteria = locator
+        if not locator.startswith('//'):
+            locator_parts = locator.partition('=')
+            if len(locator_parts[1]) > 0:
+                prefix = locator_parts[0].strip().lower()
+                criteria = locator_parts[2].strip()
+        return prefix, criteria
