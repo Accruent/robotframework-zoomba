@@ -78,9 +78,9 @@ class DesktopLibrary(AppiumLibrary):
             'context_click_a_point', 'mouse_over_and_context_click_element', 'mouse_over_and_context_click_text',
             'mouse_over_by_offset', 'drag_and_drop', 'drag_and_drop_by_offset', 'send_keys', 'send_keys_to_element',
             'capture_page_screenshot', 'save_appium_screenshot', 'select_element_from_combobox', 'get_source',
+            'click_text',
             # External Libraries
-            'clear_text', 'click_button', 'click_element',
-            'click_text', 'close_all_applications', 'close_application',
+            'clear_text', 'click_button', 'click_element', 'close_all_applications', 'close_application',
             'element_attribute_should_match', 'element_should_be_disabled', "element_should_be_enabled",
             'element_should_be_visible', 'element_should_contain_text', 'element_should_not_contain_text',
             'element_text_should_be', 'get_appium_sessionId', 'get_appium_timeout', 'get_capability',
@@ -93,20 +93,6 @@ class DesktopLibrary(AppiumLibrary):
             'wait_until_page_does_not_contain', 'wait_until_page_does_not_contain_element', 'get_matching_xpath_count',
             'xpath_should_match_x_times'
         ]
-
-    # @keyword("Get Source")
-    # def get_source(self, refresh=False):
-    #     """Returns the entire source of the current page.
-    #
-    #     This will be a cache of the source unless the user supplies ``refresh``."""
-    #     global source_cache
-    #     if source_cache:
-    #         if refresh:
-    #             pass
-    #         else:
-    #             return source_cache
-    #     source_cache = self._current_application().page_source
-    #     return source_cache
 
     @keyword("Maximize Window")
     def maximize_window(self):
@@ -192,6 +178,31 @@ class DesktopLibrary(AppiumLibrary):
         self._debug('Opened application with session id %s' % application.session_id)
         return self._cache.register(application, alias)
 
+    def launch_application(self):
+        """ Launch application. Application can be launched while Appium session running.
+        This keyword can be used to launch application during test case or between test cases.
+
+        This keyword works while `Open Application` has a test running. This is good practice to `Launch Application`
+        and `Quit Application` between test cases. As Suite Setup is `Open Application`, `Test Setup` can be used to `Launch Application`
+
+        Example (syntax is just a representation, refer to RF Guide for usage of Setup/Teardown):
+        | [Setup Suite] |
+        |  | Open Application | http://localhost:4723 | platformName=Windows | deviceName=Windows | app=${App_Path} |
+        | [Test Setup] |
+        |  | Launch Application |
+        |  |  | <<<test execution>>> |
+        |  |  | <<<test execution>>> |
+        | [Test Teardown] |
+        |  | Quit Application |
+        | [Suite Teardown] |
+        |  | Close Application |
+
+        See `Quit Application` for quiting application but keeping Appium sesion running.
+        """
+        self._open_desktop_session(self._current_application().command_executor)
+        driver = self._current_application()
+        driver.launch_app()
+
     @keyword("Wait For And Clear Text")
     def wait_for_and_clear_text(self, locator, timeout=None, error=None):
         """Wait for and then clear the text field identified by ``locator``.
@@ -204,32 +215,15 @@ class DesktopLibrary(AppiumLibrary):
         self.wait_until_page_contains_element(locator, timeout, error)
         self.clear_text(locator)
 
-    # def click_element(self, locator):
-    #     """Click element identified by `locator`.
-    #
-    #     Supported prefixes: ``accessibility_id``, ``name``, ``class``, ``xpath``
-    #
-    #     If no prefix is give ``click element`` defaults to ``accessibility_id`` or ``xpath``
-    #     """
-    #     self._info("Clicking element '%s'." % locator)
-    #     prefix, criteria = self._parse_locator(locator)
-    #     prefix = 'default' if prefix is None else prefix
-    #     driver = self._current_application()
-    #     if prefix == 'default':
-    #         if criteria.startswith('//'):
-    #             driver.find_element_by_xpath(criteria).click()
-    #         else:
-    #             driver.find_element_by_accessibility_id(criteria).click()
-    #     elif prefix == 'name':
-    #         driver.find_element_by_name(criteria).click()
-    #     elif prefix == 'class':
-    #         driver.find_element_by_class_name(criteria).click()
-    #     elif prefix == 'xpath':
-    #         driver.find_element_by_xpath(criteria).click()
-    #     elif prefix == 'accessibility_id':
-    #         driver.find_element_by_accessibility_id(criteria).click()
-    #     else:
-    #         zoomba.fail("Element locator with prefix '" + prefix + "' is not supported")
+    def click_element(self, locator):
+        """Click element identified by `locator`.
+
+        Supported prefixes: ``accessibility_id``, ``name``, ``class``, ``xpath``
+
+        If no prefix is give ``click element`` defaults to ``accessibility_id`` or ``xpath``
+        """
+        self._info("Clicking element '%s'." % locator)
+        self._element_find(locator).click()
 
     @keyword("Wait For And Click Element")
     def wait_for_and_click_element(self, locator, timeout=None, error=None):
@@ -630,9 +624,11 @@ class DesktopLibrary(AppiumLibrary):
         try:
             return self._cache.get_connection(alias)
         except RuntimeError:
-            desktop_capabilities = dict({"app": "Root", "platformName": "Windows", "deviceName": "WindowsPC"})
+            self._debug('Creating new desktop session')
+            desktop_capabilities = dict({"app": "Root", "platformName": "Windows", "deviceName": "Windows",
+                                         "newCommandTimeout": 3600})
             desktop_session = webdriver.Remote(str(remote_url), desktop_capabilities)
-            self._cache.register(desktop_session, alias)
+            self._cache.register(desktop_session, alias=alias)
             return desktop_session
 
     def _element_find(self, locator, *kwargs):

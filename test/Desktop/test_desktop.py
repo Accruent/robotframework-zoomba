@@ -81,6 +81,16 @@ class TestInternal(unittest.TestCase):
         DesktopLibrary.wait_for_and_click_element(mock_desk, "some_locator")
         mock_desk.click_element.assert_called_with("some_locator")
 
+    def test_click_text(self):
+        mock_desk = MagicMock()
+        DesktopLibrary.click_text(mock_desk, "some_text")
+        mock_desk.click_text.assert_called_with("some_text", False)
+
+    def test_click_text_exact(self):
+        mock_desk = MagicMock()
+        DesktopLibrary.click_text(mock_desk, "some_text", True)
+        mock_desk.click_text.assert_called_with("some_text", True)
+
     def test_wait_for_and_click_text(self):
         mock_desk = MagicMock()
         DesktopLibrary.wait_for_and_click_text(mock_desk, "some_text")
