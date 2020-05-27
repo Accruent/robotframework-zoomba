@@ -196,7 +196,7 @@ class DesktopLibrary(AppiumLibrary):
         | [Suite Teardown] |
         |  | Close Application |
 
-        See `Quit Application` for quiting application but keeping Appium sesion running.
+        See `Quit Application` for quiting application but keeping Appium session running.
         """
         self._open_desktop_session(self._current_application().command_executor)
         driver = self._current_application()
@@ -219,7 +219,7 @@ class DesktopLibrary(AppiumLibrary):
 
         Supported prefixes: ``accessibility_id``, ``name``, ``class``, ``xpath``
 
-        If no prefix is give ``click element`` defaults to ``accessibility_id`` or ``xpath``
+        If no prefix is given ``click element`` defaults to ``accessibility_id`` or ``xpath``
         """
         self._info("Clicking element '%s'." % locator)
         self._element_find(locator).click()
@@ -635,7 +635,7 @@ class DesktopLibrary(AppiumLibrary):
 
         Supported prefixes: ``accessibility_id``, ``name``, ``class``, ``xpath``
 
-        If no prefix is give ``click element`` defaults to ``accessibility_id`` or ``xpath``
+        If no prefix is given ``click element`` defaults to ``accessibility_id`` or ``xpath``
         """
         prefix, criteria = self._parse_locator(locator)
         driver = self._current_application()
