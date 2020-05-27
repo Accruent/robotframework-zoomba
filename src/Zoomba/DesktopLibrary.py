@@ -110,7 +110,7 @@ class DesktopLibrary(AppiumLibrary):
         | *Option*            | *Man.* | *Description*                                                        |
         | remote_url          | Yes    | Appium server url                                                    |
         | alias               | No     | Alias                                                                |
-        | window_name         | No     | Window name you wish to attach Usually after a splash screen        |
+        | window_name         | No     | Window name you wish to attach, usually after a splash screen        |
         | splash_delay        | No     | Delay used when waiting for a splash screen to load, in seconds      |
 
         Examples:
