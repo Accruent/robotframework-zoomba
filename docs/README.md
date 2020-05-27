@@ -60,6 +60,8 @@ appium
 ```
 Alternatively [Appium Desktop](https://github.com/appium/appium-desktop/releases) can be used.
 
+For Windows automation we suggest [installing and using the WinAppDriver](https://github.com/Microsoft/WinAppDriver/releases) without Appium as it seems to be much more stable.
+
 Examples
 ------------
 Example tests can be found in the [test directory](/test).
