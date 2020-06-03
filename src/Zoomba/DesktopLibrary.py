@@ -519,16 +519,20 @@ class DesktopLibrary(AppiumLibrary):
 
         A list of special key codes can be found
         [https://seleniumhq.github.io/selenium/docs/api/py/webdriver/selenium.webdriver.common.keys.html|here]
+
+        Note that when sending in a modifier key (Ctrl, Alt, Shift) you will need to send the key again to release it.
+        |  Send Keys  |      a              |    b   |
+        |  Send Keys  |      \\ue00        |    p    |    \\ue00     |
         """
         driver = self._current_application()
         actions = ActionChains(driver)
+        self._info('Sending keys to application')
         if argv:
             for each in argv:
-                actions.send_keys(each)
+                actions.send_keys(each).perform()
+                actions.reset_actions()
         else:
             zoomba.fail('No key arguments specified.')
-        self._info('Sending keys to application.')
-        actions.perform()
 
     @keyword("Send Keys To Element")
     def send_keys_to_element(self, locator, *argv):
@@ -536,17 +540,21 @@ class DesktopLibrary(AppiumLibrary):
 
         A list of special key codes can be found
         [https://seleniumhq.github.io/selenium/docs/api/py/webdriver/selenium.webdriver.common.keys.html|here]
+
+        Note that when sending in a modifier key (Ctrl, Alt, Shift) you will need to send the key again to release it.
+        |  Send Keys To Element  |     locator    |      a              |    b   |
+        |  Send Keys To Element  |     locator    |      \\ue00        |    p    |    \\ue00     |
         """
         driver = self._current_application()
         actions = ActionChains(driver)
         element = self._element_find(locator, True, True)
+        self._info('Sending keys to element "%s".' % locator)
         if argv:
             for each in argv:
-                actions.send_keys_to_element(element, each)
+                actions.send_keys_to_element(element, each).perform()
+                actions.reset_actions()
         else:
             zoomba.fail('No key arguments specified.')
-        self._info('Sending keys to element "%s".' % locator)
-        actions.perform()
 
     def capture_page_screenshot(self, filename=None):
         """Takes a screenshot of the current page and embeds it into the log.
