@@ -111,13 +111,13 @@ Wait Until Window Opens Test
     [Teardown]                      Close All Browsers
     Test Case Setup    https://www.seleniumeasy.com/test/window-popup-modal-demo.html
     Click Element                   //a[contains(text(),'Follow On Twitter')]
-    Wait Until Window Opens         Selenium Easy (@seleniumeasy) on Twitter     10
+    Wait Until Window Opens         Selenium Easy (@seleniumeasy) / Twitter     10
 
 Wait For and Select Window Test
     [Teardown]                      Close All Browsers
     Test Case Setup    https://www.seleniumeasy.com/test/window-popup-modal-demo.html
     Click Element                   //a[contains(text(),'Follow On Twitter')]
-    Wait For and Select Window      Selenium Easy (@seleniumeasy) on Twitter     10
+    Wait For and Select Window      Selenium Easy (@seleniumeasy) / Twitter     10
 
 Wait Until Element Contains Value
     [Teardown]                      Close All Browsers
