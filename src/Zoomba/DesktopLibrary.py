@@ -642,12 +642,12 @@ class DesktopLibrary(AppiumLibrary):
         prefix, criteria = self._parse_locator(locator)
         driver = self._current_application()
         if prefix is None:
-            if criteria.startswith('//'):
-                if first_only:
-                    return driver.find_element_by_xpath(criteria)
-                return driver.find_elements_by_xpath(criteria)
             if first_only:
+                if criteria.startswith('//'):
+                    return driver.find_element_by_xpath(criteria)
                 return driver.find_element_by_accessibility_id(criteria)
+            if criteria.startswith('//'):
+                return driver.find_elements_by_xpath(criteria)
             return driver.find_elements_by_accessibility_id(criteria)
         if prefix == 'name':
             if first_only:
