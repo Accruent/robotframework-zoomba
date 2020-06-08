@@ -296,11 +296,23 @@ class TestInternal(unittest.TestCase):
         DesktopLibrary._element_find(mock_desk, "Name='Capture'", True, True)
         mock_desk._current_application().find_element_by_name.assert_called_with('Capture')
 
+    def test_elements_find_by_name(self):
+        mock_desk = MagicMock()
+        mock_desk._parse_locator = MagicMock(return_value=['name', 'Capture'])
+        DesktopLibrary._element_find(mock_desk, "Name='Capture'", False, True)
+        mock_desk._current_application().find_elements_by_name.assert_called_with('Capture')
+
     def test_element_find_by_accessibility_id(self):
         mock_desk = MagicMock()
         mock_desk._parse_locator = MagicMock(return_value=['accessibility_id', 'Capture'])
         DesktopLibrary._element_find(mock_desk, "accessibility_id='Capture'", True, True)
         mock_desk._current_application().find_element_by_accessibility_id.assert_called_with('Capture')
+
+    def test_elements_find_by_accessibility_id(self):
+        mock_desk = MagicMock()
+        mock_desk._parse_locator = MagicMock(return_value=['accessibility_id', 'Capture'])
+        DesktopLibrary._element_find(mock_desk, "accessibility_id='Capture'", False, True)
+        mock_desk._current_application().find_elements_by_accessibility_id.assert_called_with('Capture')
 
     def test_element_find_by_class_name(self):
         mock_desk = MagicMock()
@@ -308,11 +320,23 @@ class TestInternal(unittest.TestCase):
         DesktopLibrary._element_find(mock_desk, "class='Capture'", True, True)
         mock_desk._current_application().find_element_by_class_name.assert_called_with('Capture')
 
+    def test_elements_find_by_class_name(self):
+        mock_desk = MagicMock()
+        mock_desk._parse_locator = MagicMock(return_value=['class', 'Capture'])
+        DesktopLibrary._element_find(mock_desk, "class='Capture'", False, True)
+        mock_desk._current_application().find_elements_by_class_name.assert_called_with('Capture')
+
     def test_element_find_by_xpath(self):
         mock_desk = MagicMock()
         mock_desk._parse_locator = MagicMock(return_value=['xpath', 'Capture'])
         DesktopLibrary._element_find(mock_desk, "xpath=//TreeItem[@Name='Capture']", True, True)
         mock_desk._current_application().find_element_by_xpath.assert_called_with('Capture')
+
+    def test_elements_find_by_xpath(self):
+        mock_desk = MagicMock()
+        mock_desk._parse_locator = MagicMock(return_value=['xpath', 'Capture'])
+        DesktopLibrary._element_find(mock_desk, "xpath=//TreeItem[@Name='Capture']", False, True)
+        mock_desk._current_application().find_elements_by_xpath.assert_called_with('Capture')
 
     def test_element_find_by_default_xpath(self):
         mock_desk = MagicMock()
@@ -320,11 +344,23 @@ class TestInternal(unittest.TestCase):
         DesktopLibrary._element_find(mock_desk, "//TreeItem[@Name='Capture']", True, True)
         mock_desk._current_application().find_element_by_xpath.assert_called_with("//TreeItem[@Name='Capture']")
 
+    def test_elements_find_by_default_xpath(self):
+        mock_desk = MagicMock()
+        mock_desk._parse_locator = MagicMock(return_value=[None, "//TreeItem[@Name='Capture']"])
+        DesktopLibrary._element_find(mock_desk, "//TreeItem[@Name='Capture']", False, True)
+        mock_desk._current_application().find_elements_by_xpath.assert_called_with("//TreeItem[@Name='Capture']")
+
     def test_element_find_by_default_accessibility_id(self):
         mock_desk = MagicMock()
         mock_desk._parse_locator = MagicMock(return_value=[None, "Capture"])
         DesktopLibrary._element_find(mock_desk, "Capture", True, True)
         mock_desk._current_application().find_element_by_accessibility_id.assert_called_with('Capture')
+
+    def test_elements_find_by_default_accessibility_id(self):
+        mock_desk = MagicMock()
+        mock_desk._parse_locator = MagicMock(return_value=[None, "Capture"])
+        DesktopLibrary._element_find(mock_desk, "Capture", False, True)
+        mock_desk._current_application().find_elements_by_accessibility_id.assert_called_with('Capture')
 
     def test_element_find_fail(self):
         mock_desk = MagicMock()

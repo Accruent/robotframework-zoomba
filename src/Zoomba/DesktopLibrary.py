@@ -638,13 +638,7 @@ class DesktopLibrary(AppiumLibrary):
             self._cache.register(desktop_session, alias=alias)
             return desktop_session
 
-    def _element_find(self, locator, first_only, required, tag=None):
-        """Click element identified by `locator`.
-
-        Supported prefixes: ``accessibility_id``, ``name``, ``class``, ``xpath``
-
-        If no prefix is given ``click element`` defaults to ``accessibility_id`` or ``xpath``
-        """
+    def _element_find(self, locator, first_only, *kwargs):
         prefix, criteria = self._parse_locator(locator)
         driver = self._current_application()
         if prefix is None:
