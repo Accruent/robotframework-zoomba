@@ -105,6 +105,9 @@ Save Selenium Screenshot Test
     Should Not Be Equal             ${file1}  ${file2}
     Should Match Regexp             ${file1}                    appium-screenshot-\\d{10}.\\d{0,8}-\\d.png
 
+Xpath Should Match X Times
+    Xpath Should Match X Times     //Group[@Name="Number pad"][@AutomationId="NumberPad"]/Button     11
+
 Select Element From Combobox Test
     Select Element From ComboBox      accessibility_id=TogglePaneButton         accessibility_id=Speed
     Select Element From ComboBox      accessibility_id=Units1         name=Knots

@@ -651,32 +651,26 @@ class DesktopLibrary(AppiumLibrary):
             if criteria.startswith('//'):
                 if first_only:
                     return driver.find_element_by_xpath(criteria)
-                else:
-                    return driver.find_elements_by_xpath(criteria)
+                return driver.find_elements_by_xpath(criteria)
             if first_only:
                 return driver.find_element_by_accessibility_id(criteria)
-            else:
-                return driver.find_elements_by_accessibility_id(criteria)
+            return driver.find_elements_by_accessibility_id(criteria)
         if prefix == 'name':
             if first_only:
                 return driver.find_element_by_name(criteria)
-            else:
-                return driver.find_elements_by_name(criteria)
+            return driver.find_elements_by_name(criteria)
         if prefix == 'class':
             if first_only:
                 return driver.find_element_by_class_name(criteria)
-            else:
-                return driver.find_elements_by_class_name(criteria)
+            return driver.find_elements_by_class_name(criteria)
         if prefix == 'xpath':
             if first_only:
                 return driver.find_element_by_xpath(criteria)
-            else:
-                return driver.find_elements_by_xpath(criteria)
+            return driver.find_elements_by_xpath(criteria)
         if prefix == 'accessibility_id':
             if first_only:
                 return driver.find_element_by_accessibility_id(criteria)
-            else:
-                return driver.find_elements_by_accessibility_id(criteria)
+            return driver.find_elements_by_accessibility_id(criteria)
         zoomba.fail("Element locator with prefix '" + prefix + "' is not supported")
 
     def _parse_locator(self, locator):
