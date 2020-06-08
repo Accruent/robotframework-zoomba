@@ -1,7 +1,17 @@
 name: Broken-Links-Crawler
-uses: ScholliYT/Broken-Links-Crawler-Action@v2.0.0
-with:
-  # Which website to check
-  website_url: https://accruent.github.io/robotframework-zoomba/
-  # Turn verbose mode on/off
-  verbose: false
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+jobs:
+  check_broken_links:
+    runs-on: ubuntu-latest
+    steps:
+      # Drafts your next Release notes as Pull Requests are merged into "master"
+      - uses: ScholliYT/Broken-Links-Crawler-Action@v2.0.0
+        with:
+          # Which website to check
+          website_url: https://accruent.github.io/robotframework-zoomba/
+          # Turn verbose mode on/off
+          verbose: false
