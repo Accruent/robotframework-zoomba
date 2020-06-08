@@ -222,7 +222,7 @@ class DesktopLibrary(AppiumLibrary):
         If no prefix is given ``click element`` defaults to ``accessibility_id`` or ``xpath``
         """
         self._info("Clicking element '%s'." % locator)
-        self._element_find(locator).click()
+        self._element_find(locator, True, True).click()
 
     @keyword("Wait For And Click Element")
     def wait_for_and_click_element(self, locator, timeout=None, error=None):
@@ -638,27 +638,33 @@ class DesktopLibrary(AppiumLibrary):
             self._cache.register(desktop_session, alias=alias)
             return desktop_session
 
-    def _element_find(self, locator, *kwargs):
-        """Click element identified by `locator`.
-
-        Supported prefixes: ``accessibility_id``, ``name``, ``class``, ``xpath``
-
-        If no prefix is given ``click element`` defaults to ``accessibility_id`` or ``xpath``
-        """
+    def _element_find(self, locator, first_only, *kwargs):
         prefix, criteria = self._parse_locator(locator)
         driver = self._current_application()
         if prefix is None:
+            if first_only:
+                if criteria.startswith('//'):
+                    return driver.find_element_by_xpath(criteria)
+                return driver.find_element_by_accessibility_id(criteria)
             if criteria.startswith('//'):
-                return driver.find_element_by_xpath(criteria)
-            return driver.find_element_by_accessibility_id(criteria)
+                return driver.find_elements_by_xpath(criteria)
+            return driver.find_elements_by_accessibility_id(criteria)
         if prefix == 'name':
-            return driver.find_element_by_name(criteria)
+            if first_only:
+                return driver.find_element_by_name(criteria)
+            return driver.find_elements_by_name(criteria)
         if prefix == 'class':
-            return driver.find_element_by_class_name(criteria)
+            if first_only:
+                return driver.find_element_by_class_name(criteria)
+            return driver.find_elements_by_class_name(criteria)
         if prefix == 'xpath':
-            return driver.find_element_by_xpath(criteria)
+            if first_only:
+                return driver.find_element_by_xpath(criteria)
+            return driver.find_elements_by_xpath(criteria)
         if prefix == 'accessibility_id':
-            return driver.find_element_by_accessibility_id(criteria)
+            if first_only:
+                return driver.find_element_by_accessibility_id(criteria)
+            return driver.find_elements_by_accessibility_id(criteria)
         zoomba.fail("Element locator with prefix '" + prefix + "' is not supported")
 
     def _parse_locator(self, locator):
