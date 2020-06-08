@@ -79,6 +79,6 @@ git config core.hooksPath .githooks
 
 Support
 ---------------
-General Robot Framework questions should be directed to the [community forum](https://groups.google.com/forum/#!forum/robotframework-users).
+General Robot Framework questions should be directed to the [community forum](https://forum.robotframework.org/).
 
 Contact the team at `robosquad@accruent.com` or create an issue with specific requests or questions regarding the Zoomba libraries!
