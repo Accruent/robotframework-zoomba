@@ -15,3 +15,9 @@ jobs:
           website_url: https://accruent.github.io/robotframework-zoomba/
           # Turn verbose mode on/off
           verbose: false
+      - uses: ScholliYT/Broken-Links-Crawler-Action@v2.0.0
+        with:
+          # Which website to check
+          website_url: https://github.com/Accruent/robotframework-zoomba/blob/master/docs/README.md
+          # Turn verbose mode on/off
+          verbose: false
