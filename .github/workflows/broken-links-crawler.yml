@@ -2,20 +2,28 @@ name: Broken-Links-Crawler
 on:
   push:
     branches: [ master ]
+  pull_request:
+    branches: [ master ]
 jobs:
   check_broken_links:
     runs-on: ubuntu-latest
     steps:
-      # Drafts your next Release notes as Pull Requests are merged into "master"
-      - uses: ScholliYT/Broken-Links-Crawler-Action@v2.0.0
+      - name: Check for broken links
+        id: link-report
+        uses: celinekurpershoek/github-actions-link-checker@v1.0.0
         with:
           # Which website to check
-          website_url: https://accruent.github.io/robotframework-zoomba/
-          # Turn verbose mode on/off
-          verbose: false
-      - uses: ScholliYT/Broken-Links-Crawler-Action@v2.0.0
+          url: https://accruent.github.io/robotframework-zoomba/
+          ignorePatterns: 'github,google'
+      - name: Check for broken links
+        id: link-report_2
+        uses: celinekurpershoek/github-actions-link-checker@v1.0.0
         with:
           # Which website to check
-          website_url: https://github.com/Accruent/robotframework-zoomba/blob/master/docs/README.md
-          # Turn verbose mode on/off
-          verbose: false
+          url: https://github.com/Accruent/robotframework-zoomba/blob/master/docs/README.md
+          ignorePatterns: 'github,google'
+      - name: Get the result
+        run: echo "${{steps.link-report.outputs.result}}"
+      - name: Get the result 2
+        run: echo "${{steps.link-report_2.outputs.result}}"
+        
