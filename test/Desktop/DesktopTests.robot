@@ -91,7 +91,7 @@ Send Keys Keyword Test
     Send Keys    24     \ue025     2      \ue007
     Page Should Contain Text    26
 
-Send Keys with Modifier (Ctrl + v)
+Send Keys with Modifier (Ctrl + v)F
     Send Keys               \ue009    v    \ue009
     Wait Until Element Contains       accessibility_id=CalculatorResults    Display is Invalid input
 
