@@ -25,7 +25,7 @@ See the **Keyword Documentation** for the [API](https://accruent.github.io/robot
 Some Features of the Library
 --------------
 
-###[GUI Library](https://accruent.github.io/robotframework-zoomba/GUILibraryDocumentation.html):
+#### [GUI Library](https://accruent.github.io/robotframework-zoomba/GUILibraryDocumentation.html):
 When working with webpages of varying load times you probably find yourself running a lot of calls like so:
 ```robotframework
 Wait Until Page Contains Element      locator
@@ -44,7 +44,7 @@ Wait Until Javascript Is Complete
 Wait For And Click Element       locator
 ```
 
-###[API Library](https://accruent.github.io/robotframework-zoomba/APILibraryDocumentation.html):
+#### [API Library](https://accruent.github.io/robotframework-zoomba/APILibraryDocumentation.html):
 This library wraps the [requests library](https://github.com/bulkan/robotframework-requests) so we have created a set of keywords to easily allow users to make requests in a single keyword:
 ```robotframework
 Call Get Request       ${headers_dictionary}    endpoint    query_string
@@ -75,7 +75,7 @@ Validate Response Contains Expected Response    ${json_actual_response}      ${j
 Validate Response Contains Expected Response    ${json_actual_response}      ${json_expected_response}      ignored_keys=${list_of_keys}
 ```
 
-###[Mobile Library](https://accruent.github.io/robotframework-zoomba/MobileLibraryDocumentation.html):
+#### [Mobile Library](https://accruent.github.io/robotframework-zoomba/MobileLibraryDocumentation.html):
 Extending the [AppiumLibrary](https://github.com/serhatbolsu/robotframework-appiumlibrary) we again add some quality of life 'Wait For And' type keywords:
 ```robotframework
 Wait For And Click Element      locator
@@ -90,7 +90,7 @@ Scroll Down To Text       text
 Scroll Up To Text         text
 ```
 
-###[Desktop Library](https://accruent.github.io/robotframework-zoomba/DesktopLibraryDocumentation.html):
+#### [Desktop Library](https://accruent.github.io/robotframework-zoomba/DesktopLibraryDocumentation.html):
 Also extends [AppiumLibrary](https://github.com/serhatbolsu/robotframework-appiumlibrary) to tailor it Windows desktop automation.
 
 This includes enhancements to base keywords such as [Open Application](https://accruent.github.io/robotframework-zoomba/DesktopLibraryDocumentation.html#Open%20Application) or [Click Element](https://accruent.github.io/robotframework-zoomba/DesktopLibraryDocumentation.html#Click%20Element) to perform better for windows. Other notable additions include:
