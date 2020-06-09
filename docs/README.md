@@ -116,11 +116,11 @@ Drag And Drop By Offset     locator    x_offset     y_offset
 The ability to send key commands to the application
 ```robotframework
 Send Keys     \\ue00      p     \\ue00
-Send Keys To Element    loactor     a     b     c
+Send Keys To Element    locator     a     b     c
 ```
 Selecting an element from a combobox
 ```robotframework
-Select Element From ComboBox     combobox_locactor      element_locator
+Select Element From ComboBox     combobox_locator      element_locator
 ```
 
 Getting Started
