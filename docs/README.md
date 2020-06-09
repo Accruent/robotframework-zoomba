@@ -1,7 +1,7 @@
 Zoomba
 ===========
 [![PyPI version](https://badge.fury.io/py/robotframework-zoomba.svg)](https://badge.fury.io/py/robotframework-zoomba)
-[![Build Status](https://travis-ci.org/Accruent/robotframework-zoomba.svg?branch=master)](https://travis-ci.org/Accruent/robotframework-zoomba)
+[![Build Status](https://travis-ci.com/Accruent/robotframework-zoomba.svg?branch=master)](https://travis-ci.org/Accruent/robotframework-zoomba)
 [![Coverage Status](https://coveralls.io/repos/github/Accruent/robotframework-zoomba/badge.svg?branch=master)](https://coveralls.io/github/Accruent/robotframework-zoomba?branch=master)
 [![CodeFactor](https://www.codefactor.io/repository/github/accruent/robotframework-zoomba/badge)](https://www.codefactor.io/repository/github/accruent/robotframework-zoomba)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/Accruent/robotframework-zoomba.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Accruent/robotframework-zoomba/alerts/)
@@ -24,20 +24,19 @@ See the **Keyword Documentation** for the [API](https://accruent.github.io/robot
 
 Some Features of the Library
 --------------
-
 #### [GUI Library](https://accruent.github.io/robotframework-zoomba/GUILibraryDocumentation.html):
-When working with webpages of varying load times you probably find yourself running a lot of calls like so:
+When working with web pages of varying load times you probably find yourself running a lot of calls like so:
 ```robotframework
 Wait Until Page Contains Element      locator
 Click Element                         locator
 ```
-For ease of use we have combined a lot of these into simple one line keywords
+For ease of use we have combined a lot of these into simple one line keywords:
 ```robotframework
 Wait For And Click Element      locator
 Wait For And Click Text         text
 Wait For And Select From List   list_locator    target_locator
 ```
-Another keyword that is particularly useful is for when you are waiting for javascript to complete on a page before proceeding
+Another keyword that is particularly useful is for when you are waiting for javascript to complete on a page before proceeding:
 ```robotframework
 Wait For And Click Element       locator that leads to a new page with javascript     
 Wait Until Javascript Is Complete
@@ -55,7 +54,7 @@ After receiving your data we made it incredibly easy to validate it. [Validate R
 ```robotframework
 Validate Response Contains Expected Response    ${json_actual_response}      ${json_expected_response}
 ```
-If there were any mismatched data it would look something like this:
+If there is any mismatched data it will look something like this:
 ```
 Key(s) Did Not Match:
 ------------------
@@ -69,7 +68,7 @@ Actual: [{'apple': 'cat', 'banana': 'dog', 'pear': 'bird'}]
 
 Please see differing value(s)
 ```
-If you wanted to ignore a key such as the 'update_date' you would simply set the 'ignored_keys' variable to that key or a list of keys you want to ignore:
+If you wanted to ignore a key such as the 'update_date' you would simply set the 'ignored_keys' variable to that key or a list of keys:
 ```robotframework
 Validate Response Contains Expected Response    ${json_actual_response}      ${json_expected_response}      ignored_keys=update_date
 Validate Response Contains Expected Response    ${json_actual_response}      ${json_expected_response}      ignored_keys=${list_of_keys}
@@ -91,34 +90,31 @@ Scroll Up To Text         text
 ```
 
 #### [Desktop Library](https://accruent.github.io/robotframework-zoomba/DesktopLibraryDocumentation.html):
-Also extends [AppiumLibrary](https://github.com/serhatbolsu/robotframework-appiumlibrary) to tailor it Windows desktop automation.
+Also extends [AppiumLibrary](https://github.com/serhatbolsu/robotframework-appiumlibrary) to tailor it Windows desktop automation. This includes enhancements to base keywords such as [Open Application](https://accruent.github.io/robotframework-zoomba/DesktopLibraryDocumentation.html#Open%20Application) or [Click Element](https://accruent.github.io/robotframework-zoomba/DesktopLibraryDocumentation.html#Click%20Element) to perform better for windows. Other notable additions include:
 
-This includes enhancements to base keywords such as [Open Application](https://accruent.github.io/robotframework-zoomba/DesktopLibraryDocumentation.html#Open%20Application) or [Click Element](https://accruent.github.io/robotframework-zoomba/DesktopLibraryDocumentation.html#Click%20Element) to perform better for windows. Other notable additions include:
-
-Easily switching to new windows or the desktop
+Easily switching to new windows or the desktop session:
 ```robotframework
 Switch Application      Desktop
 Switch Application By Name     remote_url    new_window_name
 ```
-
-A variety of keywords for controlling the mouse
+A variety of keywords for controlling the mouse:
 ```robotframework
 Mouse Over Element     locator
 Mouse Over and Click Element    locator
 Mouse over and Context Click Element    locator
 Mouse Over By Offset     x_offset    y_offset
 ```
-Keywords for dragging and dropping
+Keywords for dragging and dropping:
 ```robotframework
 Drag and Drop      source_locator     target_locator
 Drag And Drop By Offset     locator    x_offset     y_offset
 ```
-The ability to send key commands to the application
+The ability to send key commands to the application:
 ```robotframework
 Send Keys     \\ue00      p     \\ue00
 Send Keys To Element    locator     a     b     c
 ```
-Selecting an element from a combobox
+Selecting an element from a combobox:
 ```robotframework
 Select Element From ComboBox     combobox_locator      element_locator
 ```
