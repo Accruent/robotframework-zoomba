@@ -22,6 +22,8 @@ As a team beginning the journey of automation with Robot Framework - we found th
 See the **Keyword Documentation** for the [API](https://accruent.github.io/robotframework-zoomba/APILibraryDocumentation.html), [SOAP](https://accruent.github.io/robotframework-zoomba/SOAPLibraryDocumentation.html),
 [GUI](https://accruent.github.io/robotframework-zoomba/GUILibraryDocumentation.html), [Mobile](https://accruent.github.io/robotframework-zoomba/MobileLibraryDocumentation.html), or [Desktop](https://accruent.github.io/robotframework-zoomba/DesktopLibraryDocumentation.html) library for more specific information about the functionality.
 
+Example tests can be found in the [samples directory](https://github.com/Accruent/robotframework-zoomba/tree/master/samples).
+
 Some Features of the Library
 --------------
 #### [GUI Library](https://accruent.github.io/robotframework-zoomba/GUILibraryDocumentation.html):
@@ -160,7 +162,9 @@ For Windows automation we suggest [installing and using the WinAppDriver](https:
 
 Examples
 ------------
-Example tests can be found in the [test directory](https://github.com/Accruent/robotframework-zoomba/tree/master/test).
+Example tests can be found in the [samples directory](https://github.com/Accruent/robotframework-zoomba/tree/master/samples).
+
+The [test directory](https://github.com/Accruent/robotframework-zoomba/tree/master/test) may also contains tests but be aware that these are used for testing releases and may not be as straight forward to use as the ones in the [samples directory](https://github.com/Accruent/robotframework-zoomba/tree/master/samples).
 
 
 Contributing
