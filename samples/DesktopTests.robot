@@ -1,9 +1,9 @@
 *** Settings ***
-Documentation   Zoomba Desktop Library Tests. Requires Appium Server/WinAppDriver running on port 4723.
-Library         ../../src/Zoomba/DesktopLibrary.py
-Suite Setup     Start App
-Test Setup      Launch Application
-Test Teardown   Quit Application
+Documentation     Zoomba Desktop Library Tests. Requires Appium Server/WinAppDriver running on port 4723.
+Library           Zoomba.DesktopLibrary
+Suite Setup       Start App
+Test Setup        Launch Application
+Test Teardown     Quit Application
 Suite Teardown    Close All Applications
 Force Tags        Windows
 
@@ -14,7 +14,8 @@ ${APP}                  Microsoft.WindowsCalculator_8wekyb3d8bbwe!App
 
 *** Keywords ***
 Start App
-    Open Application        ${REMOTE_URL}     platformName=Windows    deviceName=Windows   app=${APP}
+    [Documentation]     Sets up the application for quick launching through 'Launch Application'
+    Open Application    ${REMOTE_URL}     platformName=Windows    deviceName=Windows   app=${APP}
     Maximize Window
     Quit Application
 

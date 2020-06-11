@@ -1,14 +1,14 @@
 *** Settings ***
-Documentation   Zoomba Mobile Library Tests. Requires Appium Server running on port 4723 with an Android device/emulator available.
-Library         ../../src/Zoomba/MobileLibrary.py
+Documentation    Zoomba Mobile Library Tests. Requires Appium Server running on port 4723 with an Android device/emulator available.
+Library          Zoomba.MobileLibrary
 Suite Setup      Start App
 Test Setup       Reset App
 Suite Teardown   Close Application
-Force Tags        Mobile
+Force Tags       Mobile
 
 *** Variables ***
 ${REMOTE_URL}           http://localhost:4723/wd/hub
-${APP}                  ${CURDIR}${/}..\\Helpers\\demo_app.apk
+${APP}                  ${CURDIR}${/}..\\test\\Helpers\\demo_app.apk
 ${commandTimeout}=      120
 
 *** Keywords ***
@@ -19,7 +19,7 @@ Start App
 Reset App
     Reset Application
     Wait For And Click Element       com.touchboarder.android.api.demos:id/buttonDefaultPositive
-    Wait Until Page Contains      API Demos
+    Wait Until Page Contains         API Demos
 
 *** Test Cases ***
 Wait For And Click Element By Accessibility Id Keyword Test
