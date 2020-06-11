@@ -164,7 +164,7 @@ Examples
 ------------
 Example tests can be found in the [samples directory](https://github.com/Accruent/robotframework-zoomba/tree/master/samples).
 
-The [test directory](https://github.com/Accruent/robotframework-zoomba/tree/master/test) may also contains tests but be aware that these are used for testing releases and may not be as straight forward to use as the ones in the [samples directory](https://github.com/Accruent/robotframework-zoomba/tree/master/samples).
+The [test directory](https://github.com/Accruent/robotframework-zoomba/tree/master/test) may also contain tests but be aware that these are used for testing releases and may not be as straight forward to use as the ones in the [samples directory](https://github.com/Accruent/robotframework-zoomba/tree/master/samples).
 
 
 Contributing
