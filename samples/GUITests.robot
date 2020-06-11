@@ -14,30 +14,30 @@ Test Case Setup
 
 *** Test Cases ***
 Wait for Keywords Test
+    [Setup]         Test Case Setup
     [Teardown]      Close All Browsers
-    Test Case Setup
     Wait For And Input Text      //input[@name='q']      robotframework
     Press Keys                    //input[@name='q']      RETURN
     Wait For And Click Element               //a[@href='/robotframework/robotframework']
     Wait Until Page Contains Element         //div[@id='readme']
 
 Element Value Should Be Equal and not equal Test
+    [Setup]         Test Case Setup        http://www.google.com
     [Teardown]      Close All Browsers
-    Test Case Setup    http://www.google.com
     Element Value Should Be Equal       btnK    Google Search
     Element Value Should Not Be Equal   btnK    Not Google Search
 
 Save Selenium Screenshot Test
+    [Setup]         Test Case Setup        http://www.google.com
     [Teardown]                      Close All Browsers
-    Test Case Setup    http://www.google.com
     ${file1}=                       Save Selenium Screenshot
     ${file2}=                       Save Selenium Screenshot
     Should Not Be Equal             ${file1}  ${file2}
     Should Match Regexp             ${file1}                    .selenium-screenshot-\\d{10}.\\d{0,8}-\\d.png
 
 Iframe keywords Test
+    [Setup]         Test Case Setup        https://www.w3schools.com/html/html_iframe.asp
     [Teardown]      Close All Browsers
-    Test Case Setup    https://www.w3schools.com/html/html_iframe.asp
     Page Should Not Contain Element     //a[@href='default.asp'][@class='active']
     Wait For And Select Frame   //iframe[@src='default.asp']
     Wait Until Page Contains Element    //a[@href='default.asp'][@class='active']
@@ -45,13 +45,14 @@ Iframe keywords Test
     Page Should Not Contain Element     //a[@href='default.asp'][@class='active']
 
 Mouse over Keywords Test
+    [Setup]         Test Case Setup        https://jquery.com/
     [Teardown]      Close All Browsers
-    Test Case Setup    https://jquery.com/
     Wait For And Mouse Over                 //a[contains(text(),'Download')]
     Wait For And Mouse Over And Click       //a[contains(text(),'Browser Support')]
     Wait Until Page Contains                Current Active Support
 
 Wait Until Javascript Completes Test
+    [Setup]         Test Case Setup        https://jquery.com/
     [Teardown]      Close All Browsers
     Test Case Setup    https://jquery.com/
     Wait Until Page Contains Element       //a[@title='jQuery']
@@ -59,8 +60,8 @@ Wait Until Javascript Completes Test
     Title Should Be                        jQuery
 
 Web Elements Text Test
+    [Setup]         Test Case Setup        http://www.google.com
     [Teardown]      Close All Browsers
-    Test Case Setup    http://www.google.com
     Wait For And Input Text      //input[@name='q']      robot framework
     Press Keys                    //input[@name='q']      RETURN
     Wait Until Element Is Visible                   //div[@id='res']
@@ -69,8 +70,8 @@ Web Elements Text Test
     Should Contain     ${linksTextList}[0]     Robot Framework
 
 Web Elements Vertical Position Test
+    [Setup]         Test Case Setup        http://www.google.com
     [Teardown]      Close All Browsers
-    Test Case Setup    http://www.google.com
     Wait For And Input Text      //input[@name='q']      robot framework
     Press Keys                    //input[@name='q']      RETURN
     Wait Until Element Is Visible                       //div[@id='res']
@@ -98,27 +99,27 @@ Truncate String Test
     Should Be Equal             ${reallyLongTestString}      ${actualTruncatedString2}
 
 Scroll To Bottom of Page Test
+    [Setup]         Test Case Setup        http://www.google.com
     [Teardown]      Close All Browsers
-    Test Case Setup    http://www.google.com
     Wait For And Input Text      //input[@name='q']      robot framework
     Press Keys                    //input[@name='q']      RETURN
     Wait Until Element Is Visible                   //div[@id='res']
     scroll to bottom of page
 
 Wait Until Window Opens Test
+    [Setup]         Test Case Setup        https://www.seleniumeasy.com/test/window-popup-modal-demo.html
     [Teardown]                      Close All Browsers
-    Test Case Setup    https://www.seleniumeasy.com/test/window-popup-modal-demo.html
     Click Element                   //a[contains(text(),'Follow On Twitter')]
     Wait Until Window Opens         Selenium Easy (@seleniumeasy) / Twitter     10
 
 Wait For and Select Window Test
+    [Setup]         Test Case Setup        https://www.seleniumeasy.com/test/window-popup-modal-demo.html
     [Teardown]                      Close All Browsers
-    Test Case Setup    https://www.seleniumeasy.com/test/window-popup-modal-demo.html
     Click Element                   //a[contains(text(),'Follow On Twitter')]
     Wait For and Select Window      Selenium Easy (@seleniumeasy) / Twitter     10
 
 Wait Until Element Contains Value
+    [Setup]         Test Case Setup        http://www.google.com
     [Teardown]                      Close All Browsers
-    Test Case Setup    http://www.google.com
     Input Text                      //input[@name='q']                                                  abc123
     Wait Until Element Contains Value  //input[@name='q']                                               abc123
