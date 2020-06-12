@@ -218,10 +218,10 @@ class TestInternal(unittest.TestCase):
 
     def test_wait_until_page_contains_private(self):
         mock_desk = MagicMock()
-        MobileLibrary._wait_until_page_contains(mock_desk, 'some_text', 5, 'custom_error_message')
-        mock_desk._wait_until.asser_called_with('some_text', 5, 'custom_error_message')
+        MobileLibrary._wait_until_page_contains(mock_desk, 'some_text', 5)
+        mock_desk._wait_until.asser_called_with('some_text', 5)
 
     def test_wait_until_page_contains_element_private(self):
         mock_desk = MagicMock()
-        MobileLibrary._wait_until_page_contains_element(mock_desk, 'some_element', 5, 'custom_error_message')
-        mock_desk._wait_until.asser_called_with('some_element', 5, 'custom_error_message')
+        MobileLibrary._wait_until_page_contains_element(mock_desk, 'some_element', 5)
+        mock_desk._wait_until.asser_called_with('some_element', 5)
