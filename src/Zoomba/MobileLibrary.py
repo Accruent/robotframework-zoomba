@@ -91,7 +91,7 @@ class MobileLibrary(AppiumLibrary):
         ``error`` can be used to override the default error message.
 
         See `introduction` for details about locating elements."""
-        self.wait_until_page_contains_element(locator, timeout, error)
+        self._wait_until_page_contains_element(locator, timeout, error)
         self.clear_text(locator)
 
     @keyword("Wait For And Click Element")
@@ -103,7 +103,7 @@ class MobileLibrary(AppiumLibrary):
         ``error`` can be used to override the default error message.
 
         See `introduction` for details about locating elements."""
-        self.wait_until_page_contains_element(locator, timeout, error)
+        self._wait_until_page_contains_element(locator, timeout, error)
         self.click_element(locator)
 
     @keyword("Wait For And Click Text")
@@ -116,7 +116,7 @@ class MobileLibrary(AppiumLibrary):
 
         By default tries to click first text involves given ``text``. If you would
         like to click exactly matching text, then set ``exact_match`` to `True`."""
-        self.wait_until_page_contains(text, timeout, error)
+        self._wait_until_page_contains(text, timeout, error)
         self.click_text(text, exact_match)
 
     @keyword("Wait For And Click Button")
@@ -128,7 +128,7 @@ class MobileLibrary(AppiumLibrary):
         ``error`` can be used to override the default error message.
 
         See `introduction` for details about locating elements."""
-        self.wait_until_page_contains_element(locator, timeout, error)
+        self._wait_until_page_contains_element(locator, timeout, error)
         self.click_button(locator)
 
     @keyword("Wait For And Input Password")
@@ -141,7 +141,7 @@ class MobileLibrary(AppiumLibrary):
 
         The difference between this keyword and `Wait For And Input Text` is that this keyword
         does not log the given password. See `introduction` for details about locating elements."""
-        self.wait_until_page_contains_element(locator, timeout, error)
+        self._wait_until_page_contains_element(locator, timeout, error)
         self.input_password(locator, text)
 
     @keyword("Wait For And Input Text")
@@ -153,7 +153,7 @@ class MobileLibrary(AppiumLibrary):
         ``error`` can be used to override the default error message.
 
         See `introduction` for details about locating elements."""
-        self.wait_until_page_contains_element(locator, timeout, error)
+        self._wait_until_page_contains_element(locator, timeout, error)
         self.input_text(locator, text)
 
     @keyword("Wait For And Input Value")
@@ -167,7 +167,7 @@ class MobileLibrary(AppiumLibrary):
 
         The difference between this keyword and `Wait For And Input Text` is that this keyword
         does not log the given password. See `introduction` for details about locating elements."""
-        self.wait_until_page_contains_element(locator, timeout, error)
+        self._wait_until_page_contains_element(locator, timeout, error)
         self.input_value(locator, value)
 
     @keyword("Wait For And Long Press")
@@ -179,7 +179,7 @@ class MobileLibrary(AppiumLibrary):
         ``error`` can be used to override the default error message.
 
         See `introduction` for details about locating elements."""
-        self.wait_until_page_contains_element(locator, timeout, error)
+        self._wait_until_page_contains_element(locator, timeout, error)
         self.long_press(locator, duration)
 
     @keyword("Wait Until Element Contains")
@@ -193,7 +193,7 @@ class MobileLibrary(AppiumLibrary):
         See also `Wait Until Page Contains`,
         `Wait Until Page Does Not Contain`
         `Wait Until Page Does Not Contain Element`"""
-        self.wait_until_page_contains_element(locator, timeout, error)
+        self._wait_until_page_contains_element(locator, timeout, error)
         self.element_should_contain_text(locator, text, error)
 
     @keyword("Wait Until Element Does Not Contain")
@@ -208,7 +208,7 @@ class MobileLibrary(AppiumLibrary):
         `Wait Until Page Contains`,
         `Wait Until Page Does Not Contain`
         `Wait Until Page Does Not Contain Element`"""
-        self.wait_until_page_contains_element(locator, timeout, error)
+        self._wait_until_page_contains_element(locator, timeout, error)
         self.element_should_not_contain_text(locator, text, error)
 
     @keyword("Wait Until Element Is Enabled")
@@ -220,7 +220,7 @@ class MobileLibrary(AppiumLibrary):
         ``error`` can be used to override the default error message.
 
         See also `Wait Until Element Is Disabled`"""
-        self.wait_until_page_contains_element(locator, timeout, error)
+        self._wait_until_page_contains_element(locator, timeout, error)
         self.element_should_be_enabled(locator)
 
     @keyword("Wait Until Element Is Disabled")
@@ -232,7 +232,7 @@ class MobileLibrary(AppiumLibrary):
         ``error`` can be used to override the default error message.
 
         See also `Wait Until Element Is Disabled`"""
-        self.wait_until_page_contains_element(locator, timeout, error)
+        self._wait_until_page_contains_element(locator, timeout, error)
         self.element_should_be_disabled(locator)
 
     @keyword("Drag And Drop")
@@ -290,7 +290,7 @@ class MobileLibrary(AppiumLibrary):
         - ``timeout`` - time in seconds to locate the element, defaults to global timeout
         - ``error`` - (optional) used to override the default error message.
         """
-        self.wait_until_page_contains_element(locator, timeout, error)
+        self._wait_until_page_contains_element(locator, timeout, error)
         self.tap(locator, x_offset, y_offset, count)
 
     def capture_page_screenshot(self, filename=None):
@@ -327,3 +327,16 @@ class MobileLibrary(AppiumLibrary):
         timestamp = time()
         filename = 'appium-screenshot-' + str(timestamp) + '-' + str(next(SCREENSHOT_COUNTER)) + '.png'
         return self.capture_page_screenshot(filename)
+    
+    # Private
+    def _wait_until_page_contains(self, text, timeout=None, error=None):
+        """Internal version to avoid duplicate screenshots"""
+        if not error:
+            error = "Text '%s' did not appear in <TIMEOUT>" % text
+        self._wait_until(timeout, error, self._is_text_present, text)
+
+    def _wait_until_page_contains_element(self, locator, timeout=None, error=None):
+        """Internal version to avoid duplicate screenshots"""
+        if not error:
+            error = "Element '%s' did not appear in <TIMEOUT>" % locator
+        self._wait_until(timeout, error, self._is_element_present, locator)
