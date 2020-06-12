@@ -201,20 +201,27 @@ class TestInternal(unittest.TestCase):
     def test_capture_page_screenshot(self):
         mock_desk = MagicMock()
         mock_desk._get_screenshot_paths = MagicMock(return_value=['path', 'link'])
-        webdriver.Remote = WebdriverRemoteMock
         MobileLibrary.capture_page_screenshot(mock_desk)
         mock_desk._get_screenshot_paths.assert_called()
 
     def test_capture_page_screenshot_else_case(self):
         mock_desk = MagicMock()
         mock_desk._get_screenshot_paths = MagicMock(return_value=['path', 'link'])
-        webdriver.Remote = WebdriverRemoteMock
         del mock_desk._current_application().get_screenshot_as_file
         MobileLibrary.capture_page_screenshot(mock_desk, 'filename')
         mock_desk._get_screenshot_paths.assert_called()
 
     def test_save_appium_screenshot(self):
         mock_desk = MagicMock()
-        webdriver.Remote = WebdriverRemoteMock
         MobileLibrary.save_appium_screenshot(mock_desk)
         mock_desk.capture_page_screenshot.assert_called()
+
+    def test_wait_until_page_contains_private(self):
+        mock_desk = MagicMock()
+        MobileLibrary._wait_until_page_contains(mock_desk, 'some_text', 5, 'custom_error_message')
+        mock_desk._wait_until.asser_called_with('some_text', 5, 'custom_error_message')
+
+    def test_wait_until_page_contains_element_private(self):
+        mock_desk = MagicMock()
+        MobileLibrary._wait_until_page_contains_element(mock_desk, 'some_element', 5, 'custom_error_message')
+        mock_desk._wait_until.asser_called_with('some_element', 5, 'custom_error_message')
