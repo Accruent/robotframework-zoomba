@@ -60,9 +60,6 @@ class DesktopLibrary(AppiumLibrary):
         | Library | DesktopLibrary | timeout=10 | run_on_failure=No Operation | # Sets default timeout to 10 seconds and does nothing on failure           |
         """
         super().__init__(timeout, run_on_failure)
-        # self._run_on_failure_keyword = 'save_appium_screenshot'
-        # self._running_on_failure_routine = False
-
 
     def get_keyword_names(self):
         """
@@ -214,7 +211,7 @@ class DesktopLibrary(AppiumLibrary):
         ``error`` can be used to override the default error message.
 
         See `introduction` for details about locating elements."""
-        self.wait_until_page_contains_element(locator, timeout, error)
+        self._wait_until_page_contains_element(locator, timeout, error)
         self.clear_text(locator)
 
     def click_element(self, locator):
@@ -238,7 +235,7 @@ class DesktopLibrary(AppiumLibrary):
         See `introduction` for details about locating elements.
         
         Use `Wait For And Mouse Over And Click Element` if this keyword gives issues in the application."""
-        self.wait_until_page_contains_element(locator, timeout, error)
+        self._wait_until_page_contains_element(locator, timeout, error)
         self.click_element(locator)
 
     @keyword("Click Text")
@@ -251,7 +248,7 @@ class DesktopLibrary(AppiumLibrary):
     def wait_for_and_click_text(self, text, exact_match=False, timeout=None, error=None):
         """*DEPRECATED in DesktopLibrary 2.4.0* Use `Wait For And Click Element` with the ``name`` prefix instead.
         """
-        self.wait_until_page_contains(text, timeout, error)
+        self._wait_until_page_contains(text, timeout, error)
         self.click_text(text, exact_match)
 
     @keyword("Wait For And Input Password")
@@ -264,7 +261,7 @@ class DesktopLibrary(AppiumLibrary):
 
         The difference between this keyword and `Wait For And Input Text` is that this keyword
         does not log the given password. See `introduction` for details about locating elements."""
-        self.wait_until_page_contains_element(locator, timeout, error)
+        self._wait_until_page_contains_element(locator, timeout, error)
         self.input_password(locator, text)
 
     @keyword("Wait For And Input Text")
@@ -276,7 +273,7 @@ class DesktopLibrary(AppiumLibrary):
         ``error`` can be used to override the default error message.
 
         See `introduction` for details about locating elements."""
-        self.wait_until_page_contains_element(locator, timeout, error)
+        self._wait_until_page_contains_element(locator, timeout, error)
         self.input_text(locator, text)
 
     @keyword("Wait For And Long Press")
@@ -288,7 +285,7 @@ class DesktopLibrary(AppiumLibrary):
         ``error`` can be used to override the default error message.
 
         See `introduction` for details about locating elements."""
-        self.wait_until_page_contains_element(locator, timeout, error)
+        self._wait_until_page_contains_element(locator, timeout, error)
         self.long_press(locator, duration)
 
     @keyword("Wait Until Element Contains")
@@ -303,7 +300,7 @@ class DesktopLibrary(AppiumLibrary):
         `Wait Until Page Does Not Contain`
         `Wait Until Page Does Not Contain Element`
         """
-        self.wait_until_page_contains_element(locator, timeout, error)
+        self._wait_until_page_contains_element(locator, timeout, error)
         self.element_should_contain_text(locator, text, error)
 
     @keyword("Wait Until Element Does Not Contain")
@@ -319,7 +316,7 @@ class DesktopLibrary(AppiumLibrary):
         `Wait Until Page Does Not Contain`
         `Wait Until Page Does Not Contain Element`
         """
-        self.wait_until_page_contains_element(locator, timeout, error)
+        self._wait_until_page_contains_element(locator, timeout, error)
         self.element_should_not_contain_text(locator, text, error)
 
     @keyword("Wait Until Element Is Enabled")
@@ -332,7 +329,7 @@ class DesktopLibrary(AppiumLibrary):
 
         See also `Wait Until Element Is Disabled`
         """
-        self.wait_until_page_contains_element(locator, timeout, error)
+        self._wait_until_page_contains_element(locator, timeout, error)
         self.element_should_be_enabled(locator)
 
     @keyword("Wait Until Element Is Disabled")
@@ -345,7 +342,7 @@ class DesktopLibrary(AppiumLibrary):
 
         See also `Wait Until Element Is Disabled`
         """
-        self.wait_until_page_contains_element(locator, timeout, error)
+        self._wait_until_page_contains_element(locator, timeout, error)
         self.element_should_be_disabled(locator)
 
     @keyword("Mouse Over Element")
@@ -370,7 +367,7 @@ class DesktopLibrary(AppiumLibrary):
 
         ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
         """
-        self.wait_until_page_contains_element(locator, timeout, error)
+        self._wait_until_page_contains_element(locator, timeout, error)
         self.mouse_over_element(locator, x_offset, y_offset)
 
     @keyword("Mouse Over And Click Element")
@@ -408,7 +405,7 @@ class DesktopLibrary(AppiumLibrary):
 
         ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
         """
-        self.wait_until_page_contains_element(locator, timeout, error)
+        self._wait_until_page_contains_element(locator, timeout, error)
         self.mouse_over_and_click_element(locator, double_click, x_offset, y_offset)
 
     @keyword("Mouse Over Text")
@@ -425,7 +422,7 @@ class DesktopLibrary(AppiumLibrary):
     def wait_for_and_mouse_over_text(self, text, exact_match=False, timeout=None, error=None, x_offset=0, y_offset=0):
         """*DEPRECATED in DesktopLibrary 2.4.0* Use `Wait For And Mouse Over Element` with the ``name`` prefix instead.
         """
-        self.wait_until_page_contains(text, timeout, error)
+        self._wait_until_page_contains(text, timeout, error)
         self.mouse_over_text(text, exact_match, x_offset, y_offset)
 
     @keyword("Mouse Over And Click Text")
@@ -449,7 +446,7 @@ class DesktopLibrary(AppiumLibrary):
         """*DEPRECATED in DesktopLibrary 2.4.0* Use `Wait For And Mouse Over And Click Element` with the ``name``
          prefix instead.
         """
-        self.wait_until_page_contains(text, timeout, error)
+        self._wait_until_page_contains(text, timeout, error)
         self.mouse_over_and_click_text(text, exact_match, double_click, x_offset, y_offset)
 
     @keyword("Mouse Over By Offset")
@@ -679,59 +676,15 @@ class DesktopLibrary(AppiumLibrary):
                 prefix = locator_parts[0].strip().lower()
                 criteria = locator_parts[2].strip()
         return prefix, criteria
+    
+    def _wait_until_page_contains(self, text, timeout=None, error=None):
+        """Internal version to avoid duplicate screenshots"""
+        if not error:
+            error = "Text '%s' did not appear in <TIMEOUT>" % text
+        self._wait_until(timeout, error, self._is_text_present, text)
 
-    # def register_keyword_to_run_on_failure(self, keyword):
-    #     """Sets the keyword to execute when a AppiumLibrary keyword fails.
-    #
-    #     `keyword_name` is the name of a keyword (from any available
-    #     libraries) that  will be executed if a AppiumLibrary keyword fails.
-    #     It is not possible to use a keyword that requires arguments.
-    #     Using the value "Nothing" will disable this feature altogether.
-    #
-    #     The initial keyword to use is set in `importing`, and the
-    #     keyword that is used by default is `Capture Page Screenshot`.
-    #     Taking a screenshot when something failed is a very useful
-    #     feature, but notice that it can slow down the execution.
-    #
-    #     This keyword returns the name of the previously registered
-    #     failure keyword. It can be used to restore the original
-    #     value later.
-    #
-    #     Example:
-    #     | Register Keyword To Run On Failure  | Log Source | # Run `Log Source` on failure. |
-    #     | ${previous kw}= | Register Keyword To Run On Failure  | Nothing    | # Disables run-on-failure functionality and stores the previous kw name in a variable. |
-    #     | Register Keyword To Run On Failure  | ${previous kw} | # Restore to the previous keyword. |
-    #
-    #     This run-on-failure functionality only works when running tests on Python/Jython 2.4
-    #     or newer and it does not work on IronPython at all.
-    #     """
-    #     old_keyword = self._run_on_failure_keyword
-    #     old_keyword_text = old_keyword if old_keyword is not None else "Nothing"
-    #
-    #     new_keyword = keyword if keyword.strip().lower() != "nothing" else None
-    #     new_keyword_text = new_keyword if new_keyword is not None else "Nothing"
-    #
-    #     self._run_on_failure_keyword = new_keyword
-    #     self._info('%s will be run on failure.' % new_keyword_text)
-    #
-    #     return old_keyword_text
-
-    def _run_on_failure(self):
-        if self._run_on_failure_keyword is None:
-            return
-        if self._running_on_failure_routine:
-            return
-        self._running_on_failure_routine = True
-        try:
-            zoomba.run_keyword(self._run_on_failure_keyword)
-        except Exception as err:
-            self._run_on_failure_error(err)
-        finally:
-            self._running_on_failure_routine = False
-
-    def _run_on_failure_error(self, err):
-        err = "Keyword '%s' could not be run on failure: %s" % (self._run_on_failure_keyword, err)
-        if hasattr(self, '_warn'):
-            self._warn(err)
-            return
-        raise Exception(err)
+    def _wait_until_page_contains_element(self, locator, timeout=None, error=None):
+        """Internal version to avoid duplicate screenshots"""
+        if not error:
+            error = "Element '%s' did not appear in <TIMEOUT>" % locator
+        self._wait_until(timeout, error, self._is_element_present, locator)
