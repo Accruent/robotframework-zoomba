@@ -21,7 +21,7 @@ Start App
 
 *** Test Cases ***
 Wait For And Click Element By Id Keyword Test
-    Wait For And Click Element       accessibility_id=num2Button4
+    Wait For And Click Element       accessibility_id=num2Button
     Wait Until Element Contains       accessibility_id=CalculatorResults      2
 
 Wait For And Click Element By Xpath Keyword Test
