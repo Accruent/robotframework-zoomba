@@ -25,4 +25,4 @@ jobs:
       - name: Get the result
         run: echo "${{steps.link-report.outputs.result}}"
       - name: Get the result 2
-        run: echo "${{steps.link-report_2.outputs.result}}
+        run: echo "${{steps.link-report_2.outputs.result}}"
