@@ -1,0 +1,11 @@
+version: 2
+updates:
+- package-ecosystem: pip
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "09:00"
+    timezone: US/Central
+  open-pull-requests-limit: 10
+  reviewers:
+  - Wolfe1
