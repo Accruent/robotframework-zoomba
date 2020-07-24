@@ -123,3 +123,7 @@ Wait Until Element Contains Value
     [Teardown]                      Close All Browsers
     Input Text                      //input[@name='q']                                                  abc123
     Wait Until Element Contains Value  //input[@name='q']                                               abc123
+
+Get React List Items        # ToDo: Implement this test
+    [Setup]     Test Case Setup         https://react-select.com/home
+

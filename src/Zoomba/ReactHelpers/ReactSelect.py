@@ -4,6 +4,8 @@ from selenium.common.exceptions import NoSuchElementException, UnexpectedTagName
 
 
 class ReactSelect(Select):  # ToDo: Update documentation
+    # Examples: https://react-select.com/home
+    # Note: "Options" typically don't appear in the page's source html until the drop-down is clicked/expanded, so the locator for those can be tricky
 
     def __init__(self, webelement):
         """

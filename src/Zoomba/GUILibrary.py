@@ -337,7 +337,7 @@ class GUILibrary(SeleniumLibrary):
             return self.capture_page_screenshot(filename)
 
     @keyword("Get React List Items")
-    def get_react_list_items(self, locator, values=False):  # ToDo: Fix ModuelNotFoundError when running from automation-framework-360. Only happnes when running from *.robot file. Python files are good to go.
+    def get_react_list_items(self, locator, values=False):  # ToDo: Test this keyword
         test_variable = ReactHelper.ReactHelper(self)
         test_variable.tester('HellO!')
         #options = self._get_options(locator, 'div')

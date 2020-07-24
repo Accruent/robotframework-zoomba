@@ -5,12 +5,9 @@ from SeleniumLibrary.utils import is_truthy
 
 class ReactHelper(LibraryComponent):
     def __init__(self, gui_library_instance):
-        #seleniumlib = BuiltIn().get_library_instance('Zoomba.GUILibrary')  # ToDo: Resolve how to pass in GUILibrary instance into this class.
-        seleniumlib = gui_library_instance
-        super().__init__(seleniumlib)
-
-    def tester(self, text):
-        print(text)
+        #seleniumlib = BuiltIn().get_library_instance('Zoomba.GUILibrary')  # ToDo: Remove after confirming keyword works.
+        self.seleniumlib = gui_library_instance
+        super().__init__(self.seleniumlib)
 
     def get_react_list_items(self, locator, values=False):
         options = self._get_options(locator, 'div')
