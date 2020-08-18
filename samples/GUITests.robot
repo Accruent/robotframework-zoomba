@@ -123,13 +123,3 @@ Wait Until Element Contains Value
     [Teardown]                      Close All Browsers
     Input Text                      //input[@name='q']                                                  abc123
     Wait Until Element Contains Value  //input[@name='q']                                               abc123
-
-Get React List Items
-    [Setup]     Test Case Setup         https://react-select.com/home       # ToDo: Implement this test
-    [Teardown]  Close All Browsers
-    import library      Dialogs
-    wait for and click element      //div[@id="root"]/div/div[2]/div[2]/div/div/div[3]/div[2]/div
-    # ToDo: The Select class needs to operate bassed on the React-Select container. The container has 2 child elements
-    # 1) control - this is where controling the menu item exists. Drop-down arrow and input text field
-    # 2) menu - this is hidden unless the select menu is expanded.
-

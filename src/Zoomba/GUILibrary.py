@@ -5,7 +5,7 @@ from robot.api.deco import keyword
 from robot.libraries.Collections import Collections
 from time import time
 from robot.utils import is_string
-from Zoomba.ReactHelpers import ReactHelper
+from ReactHelpers.ReactSelect import ReactSelect
 
 zoomba = BuiltIn()
 zoomba_collections = Collections()
@@ -336,12 +336,14 @@ class GUILibrary(SeleniumLibrary):
             filename = 'selenium-screenshot-' + str(timestamp) + '-' + str(next(SCREENSHOT_COUNTER)) + '.png'
             return self.capture_page_screenshot(filename)
 
-    @keyword("Get React List Items")
-    def get_react_list_items(self, locator, values=False):  # ToDo: Test this keyword
-        test_variable = ReactHelper.ReactHelper(self)
-        test_variable.tester('HellO!')
-        #options = self._get_options(locator, 'div')
-        #if is_truthy(values):
-        #    return self._get_values(options)
-        #else:
-        #    return self._get_labels(options)
+    @keyword("Get React List Labels")
+    def get_react_list_labels(self, locator):
+        react_select_container = self.find_element(locator)
+        options = ReactSelect(react_select_container).options
+        return [opt.text for opt in options]
+
+
+    @keyword("Expand React Select List")
+    def expand_react_select_list(self, locator):
+        react_select_container = self.find_element(locator)
+        ReactSelect(react_select_container).expand_select_list
