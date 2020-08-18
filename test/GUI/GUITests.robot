@@ -1,6 +1,7 @@
 *** Settings ***
 Documentation   Zoomba GUI Library Tests
 Library         ../../src/Zoomba/GUILibrary.py
+Library         Collections
 
 *** Variables ***
 ${browser}     chrome
@@ -126,18 +127,11 @@ Wait Until Element Contains Value
     Wait Until Element Contains Value  //input[@name='q']                                               abc123
 
 Get React List Items Test
-    [Setup]     Test Case Setup         https://react-select.com/home       # ToDo: Implement this test
+    [Setup]     Test Case Setup         https://react-select.com/home
     [Teardown]  Close All Browsers
-    ${selectXpath}=                     Set Variable    //*[@id="root"]/div/div[2]/div[2]/div/div/div[1]/div[2]
-    Wait Until Page Contains Element        ${selectXpath}
-    Scroll Element Into View                ${selectXpath}
-    Expand React Select List                ${selectXpath}
-    ${labels}=    Get React List Labels       ${selectXpath}
-    Log To Console      ${\n}Lables: ${labels}
-
-deleteMe
-    [Setup]     Test Case Setup         http://localhost:3000
-    [Teardown]     Close All Browsers
-    #import library      Dialogs
-    ${labels}=          Get React List Labels        //div[@id='Selector-1']
-    log to console      ${\n}labels: ${labels}
+    ${selectXpath}=             Set Variable        //*[@id="root"]/div/div[2]/div[2]/div/div/div[1]/div[2]
+    ${expectedLabels}=          Create List         Ocean    Blue    Purple    Red    Orange    Yellow    Green    Forest    Slate    Silver
+    Wait Until Page Contains Element                ${selectXpath}
+    Scroll Element Into View                        ${selectXpath}
+    ${actualLabels}=    Get React List Labels       ${selectXpath}
+    Lists Should Be Equal       ${expectedLabels}   ${actualLabels}     ignore_order=True
