@@ -5,7 +5,7 @@ from robot.api.deco import keyword
 from robot.libraries.Collections import Collections
 from time import time
 from robot.utils import is_string
-from .ReactHelpers.ReactSelect import ReactSelect
+from Zoomba.ReactHelpers.ReactSelect import ReactSelect
 
 zoomba = BuiltIn()
 zoomba_collections = Collections()
