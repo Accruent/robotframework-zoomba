@@ -7,7 +7,7 @@ from time import time
 from robot.utils import is_string
 import os
 os.sys.path.append(os.getcwd() + '\\ReactHelpers')
-from ReactHelpers.ReactSelect import ReactSelect
+from ReactSelect import ReactSelect
 
 zoomba = BuiltIn()
 zoomba_collections = Collections()
