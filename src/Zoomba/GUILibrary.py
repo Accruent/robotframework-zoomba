@@ -14,7 +14,7 @@ zoomba_collections = Collections()
 
 SCREENSHOT_COUNTER = itertools.count()
 
-
+print(os.sys.path)
 class GUILibrary(SeleniumLibrary):
     """Zoomba GUI Library
 
