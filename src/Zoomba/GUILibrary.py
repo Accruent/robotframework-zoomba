@@ -6,8 +6,8 @@ from robot.libraries.Collections import Collections
 from time import time
 from robot.utils import is_string
 import os
-os.sys.path.append(os.getcwd() + '\\ReactHelpers')
-from .ReactHelpers.ReactSelect import ReactSelect
+os.sys.path.append(os.path.dirname(os.path.realpath(__file__)) + '\\ReactHelpers')
+from ReactSelect import ReactSelect
 
 zoomba = BuiltIn()
 zoomba_collections = Collections()
