@@ -1,6 +1,7 @@
 import itertools
 from SeleniumLibrary import SeleniumLibrary
 from robot.libraries.BuiltIn import BuiltIn
+#BuiltIn().log_to_console(f'GUILibrary.py\n    __name__: {__name__}\n    __package__: {__package__}')
 from robot.api.deco import keyword
 from robot.libraries.Collections import Collections
 from time import time
@@ -8,13 +9,14 @@ from robot.utils import is_string
 import os
 os.sys.path.append(os.path.dirname(os.path.realpath(__file__)) + '\\ReactHelpers')
 from ReactSelect import ReactSelect
+#from . import ReactHelpers
 
 zoomba = BuiltIn()
 zoomba_collections = Collections()
 
 SCREENSHOT_COUNTER = itertools.count()
 
-print(os.sys.path)
+print(f'GUILibrary.py\n    __name__: {__name__}\n    __package__: {__package__}')
 class GUILibrary(SeleniumLibrary):
     """Zoomba GUI Library
 

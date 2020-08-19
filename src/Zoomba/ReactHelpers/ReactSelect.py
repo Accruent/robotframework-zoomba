@@ -7,7 +7,7 @@ from SeleniumLibrary.base import LibraryComponent
 from selenium.common.exceptions import NoSuchElementException, UnexpectedTagNameException
 from robot.libraries.BuiltIn import BuiltIn
 
-
+print(f'ReactSelect.py\n    __name__: {__name__}\n    __package__: {__package__}')
 
 class ReactSelect:
     # Examples: https://react-select.com/home # ToDo: Update documentation
