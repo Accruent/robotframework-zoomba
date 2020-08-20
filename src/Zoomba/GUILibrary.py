@@ -1,22 +1,24 @@
 import itertools
 from SeleniumLibrary import SeleniumLibrary
 from robot.libraries.BuiltIn import BuiltIn
-#BuiltIn().log_to_console(f'GUILibrary.py\n    __name__: {__name__}\n    __package__: {__package__}')
 from robot.api.deco import keyword
 from robot.libraries.Collections import Collections
 from time import time
 from robot.utils import is_string
-import os
-os.sys.path.append(os.path.dirname(os.path.realpath(__file__)) + '\\ReactHelpers')
-from ReactSelect import ReactSelect
-#from . import ReactHelpers
+import importlib
+
+# Importing ReactSelect
+try:
+    RS = importlib.import_module('ReactHelpers.ReactSelect', package='ReactHelpers')
+except ModuleNotFoundError:
+    RS = importlib.import_module('.ReactHelpers.ReactSelect', package='Zoomba')
+
 
 zoomba = BuiltIn()
 zoomba_collections = Collections()
 
 SCREENSHOT_COUNTER = itertools.count()
 
-print(f'GUILibrary.py\n    __name__: {__name__}\n    __package__: {__package__}')
 class GUILibrary(SeleniumLibrary):
     """Zoomba GUI Library
 
@@ -343,7 +345,7 @@ class GUILibrary(SeleniumLibrary):
     @keyword("Get React List Labels")
     def get_react_list_labels(self, locator):
         react_select_container = self.find_element(locator)
-        options = ReactSelect(react_select_container).options
+        options = rs.ReactSelect(react_select_container).options
         return [opt.text for opt in options]
 
 
