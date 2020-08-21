@@ -345,11 +345,10 @@ class GUILibrary(SeleniumLibrary):
     @keyword("Get React List Labels")
     def get_react_list_labels(self, locator):
         react_select_container = self.find_element(locator)
-        options = rs.ReactSelect(react_select_container).options
+        options = RS.ReactSelect(react_select_container).options
         return [opt.text for opt in options]
-
 
     @keyword("Expand React Select List")
     def expand_react_select_list(self, locator):
         react_select_container = self.find_element(locator)
-        ReactSelect(react_select_container).expand_select_list
+        RS.ReactSelect(react_select_container).expand_select_list
