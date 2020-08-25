@@ -14,7 +14,7 @@ jobs:
         with:
           # Which website to check
           url: https://accruent.github.io/robotframework-zoomba/
-          ignorePatterns: 'github,google'
+          ignorePatterns: 'github,google,githubusercontent'
       - name: Check for broken links
         id: link-report_2
         uses: celinekurpershoek/github-actions-link-checker@v1.0.0
