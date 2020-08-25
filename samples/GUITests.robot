@@ -106,17 +106,13 @@ Scroll To Bottom of Page Test
     Wait Until Element Is Visible                   //div[@id='res']
     scroll to bottom of page
 
-Wait Until Window Opens Test
-    [Setup]         Test Case Setup        https://www.seleniumeasy.com/test/window-popup-modal-demo.html
+Wait Until Window Tests
     [Teardown]                      Close All Browsers
-    Click Element                   //a[contains(text(),'Follow On Twitter')]
-    Wait Until Window Opens         Selenium Easy (@seleniumeasy) / Twitter     10
-
-Wait For and Select Window Test
-    [Setup]         Test Case Setup        https://www.seleniumeasy.com/test/window-popup-modal-demo.html
-    [Teardown]                      Close All Browsers
-    Click Element                   //a[contains(text(),'Follow On Twitter')]
-    Wait For and Select Window      Selenium Easy (@seleniumeasy) / Twitter     10
+    Test Case Setup    https://www.quackit.com/html/codes/html_popup_window_code.cfm
+    Wait For And Select Frame       //iframe[@name='result1']
+    Click Element                   //a[contains(text(),'Open a popup window')]
+    Wait Until Window Opens         Popup Example     10
+    Wait For and Select Window      Popup Example     10
 
 Wait Until Element Contains Value
     [Setup]         Test Case Setup        http://www.google.com
