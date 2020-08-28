@@ -5,6 +5,7 @@ from robot.api.deco import keyword
 from robot.libraries.BuiltIn import BuiltIn
 import subprocess
 
+from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.action_chains import ActionChains
 from time import sleep, time
 
@@ -603,12 +604,20 @@ class DesktopLibrary(AppiumLibrary):
         try:
             if skip_to_desktop:
                 raise ValueError("Skipping to desktop session")
-            self._element_find(element_locator, True, True)
-            self.click_element(element_locator)
+            try:
+                self._element_find(element_locator, True, True)
+                self.click_element(element_locator)
+            except NoSuchElementException:
+                self._wait_until_page_contains_element(element_locator, self.get_appium_timeout())
+                self.click_element(element_locator)
         except ValueError:
             original_index = self._cache.current_index
             self.switch_application('Desktop')
-            self.click_element(element_locator)
+            try:
+                self.click_element(element_locator)
+            except NoSuchElementException:
+                self._wait_until_page_contains_element(element_locator, self.get_appium_timeout())
+                self.click_element(element_locator)
             self.switch_application(original_index)
 
     # Private
