@@ -5,6 +5,7 @@ from robot.api.deco import keyword
 from robot.libraries.BuiltIn import BuiltIn
 import subprocess
 
+from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.action_chains import ActionChains
 from time import sleep, time
 
@@ -606,7 +607,7 @@ class DesktopLibrary(AppiumLibrary):
             try:
                 self._element_find(element_locator, True, True)
                 self.click_element(element_locator)
-            except AssertionError:
+            except NoSuchElementException:
                 self._wait_until_page_contains_element(element_locator, self.get_appium_timeout())
                 self.click_element(element_locator)
         except ValueError:
@@ -614,7 +615,7 @@ class DesktopLibrary(AppiumLibrary):
             self.switch_application('Desktop')
             try:
                 self.click_element(element_locator)
-            except AssertionError:
+            except NoSuchElementException:
                 self._wait_until_page_contains_element(element_locator, self.get_appium_timeout())
                 self.click_element(element_locator)
             self.switch_application(original_index)

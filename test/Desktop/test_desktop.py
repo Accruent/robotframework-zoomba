@@ -1,4 +1,4 @@
-from selenium.common.exceptions import WebDriverException
+from selenium.common.exceptions import WebDriverException, NoSuchElementException
 from Zoomba.DesktopLibrary import DesktopLibrary
 import unittest
 from appium import webdriver
@@ -502,13 +502,13 @@ class TestInternal(unittest.TestCase):
 
     def test_select_from_combobox_retry(self):
         mock_desk = MagicMock()
-        mock_desk.click_element = MagicMock(side_effect=[True, AssertionError, True])
+        mock_desk.click_element = MagicMock(side_effect=[True, NoSuchElementException, True])
         DesktopLibrary.select_element_from_combobox(mock_desk, 'some_locator', 'another_locator')
         mock_desk.click_element.assert_called_with('another_locator')
 
     def test_select_from_combobox_retry_desktop(self):
         mock_desk = MagicMock()
-        mock_desk.click_element = MagicMock(side_effect=[True, AssertionError, True])
+        mock_desk.click_element = MagicMock(side_effect=[True, NoSuchElementException, True])
         DesktopLibrary.select_element_from_combobox(mock_desk, 'some_locator', 'another_locator', True)
         mock_desk.click_element.assert_called_with('another_locator')
 
