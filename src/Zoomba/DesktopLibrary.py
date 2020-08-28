@@ -607,7 +607,7 @@ class DesktopLibrary(AppiumLibrary):
             try:
                 self._element_find(element_locator, True, True)
                 self.click_element(element_locator)
-            except NoSuchElementException:
+            except AssertionError:
                 self._wait_until_page_contains_element(element_locator, self.get_appium_timeout())
                 self.click_element(element_locator)
         except ValueError:
@@ -615,7 +615,7 @@ class DesktopLibrary(AppiumLibrary):
             self.switch_application('Desktop')
             try:
                 self.click_element(element_locator)
-            except NoSuchElementException:
+            except AssertionError:
                 self._wait_until_page_contains_element(element_locator, self.get_appium_timeout())
                 self.click_element(element_locator)
             self.switch_application(original_index)
