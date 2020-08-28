@@ -5,7 +5,6 @@ from robot.api.deco import keyword
 from robot.libraries.BuiltIn import BuiltIn
 import subprocess
 
-from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.action_chains import ActionChains
 from time import sleep, time
 

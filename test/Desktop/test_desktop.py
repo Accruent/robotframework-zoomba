@@ -1,4 +1,4 @@
-from selenium.common.exceptions import WebDriverException, NoSuchElementException
+from selenium.common.exceptions import WebDriverException
 from Zoomba.DesktopLibrary import DesktopLibrary
 import unittest
 from appium import webdriver
