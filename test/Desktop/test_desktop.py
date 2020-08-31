@@ -61,6 +61,7 @@ class TestInternal(unittest.TestCase):
         dl = DesktopLibrary()
         dl._run_on_failure = MagicMock()
         webdriver.Remote = WebdriverRemoteMock
+        dl._wait_until_page_contains_element = MagicMock()
         webdriver.Remote.find_element_by_name = MagicMock()
         webdriver.Remote.find_element_by_name.side_effect = [WebDriverException, "Window"]
         self.assertRaisesRegex(AssertionError, 'Error finding window "test" in the desktop session. Is it a top level '
