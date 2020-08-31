@@ -139,7 +139,7 @@ class DesktopLibrary(AppiumLibrary):
         return self._cache.register(application, alias)
 
     @keyword("Switch Application By Name")
-    def switch_application_by_name(self, remote_url, window_name, alias=None, **kwargs):
+    def switch_application_by_name(self, remote_url, window_name, alias=None, timeout=5, **kwargs):
         """Switches to a currently opened window by ``window_name``.
         For the capabilities of appium server and Windows,
         Please check http://appium.io/docs/en/drivers/windows
@@ -162,8 +162,10 @@ class DesktopLibrary(AppiumLibrary):
             window = hex(int(window.get_attribute("NativeWindowHandle")))
         except Exception:
             try:
-                sleep(5)
-                window = desktop_session.find_element_by_name(window_name)
+                error = "Window '%s' did not appear in <TIMEOUT>" % window_name
+                window = self._wait_until(timeout, error, desktop_session.find_element_by_name,
+                                          window_name)
+                # window = desktop_session.find_element_by_name(window_name)
                 self._debug('Window_name "%s" found.' % window_name)
                 window = hex(int(window.get_attribute("NativeWindowHandle")))
             except Exception as e:
