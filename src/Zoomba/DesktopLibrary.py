@@ -162,7 +162,7 @@ class DesktopLibrary(AppiumLibrary):
             window = hex(int(window.get_attribute("NativeWindowHandle")))
         except Exception:
             try:
-                self._wait_until_page_contains_element(window_name)
+                sleep(self.get_appium_timeout())
                 window = desktop_session.find_element_by_name(window_name)
                 self._debug('Window_name "%s" found.' % window_name)
                 window = hex(int(window.get_attribute("NativeWindowHandle")))
