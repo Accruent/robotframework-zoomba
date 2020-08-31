@@ -139,7 +139,7 @@ class DesktopLibrary(AppiumLibrary):
         return self._cache.register(application, alias)
 
     @keyword("Switch Application By Name")
-    def switch_application_by_name(self, remote_url, window_name, alias=None, **kwargs):
+    def switch_application_by_name(self, remote_url, window_name, alias=None, timeout=5, **kwargs):
         """Switches to a currently opened window by ``window_name``.
         For the capabilities of appium server and Windows,
         Please check http://appium.io/docs/en/drivers/windows
@@ -147,6 +147,7 @@ class DesktopLibrary(AppiumLibrary):
         | remote_url          | Yes    | Appium server url                     |
         | window_name         | Yes    | Window name you wish to attach        |
         | alias               | No     | alias                                 |
+        | timeout             | No     | timeout to connect                    |
 
         Examples:
         | Switch Application By Name | http://localhost:4723/wd/hub | alias=Myapp1         | platformName=Windows            | deviceName=Windows           | window_name=MyApplication         |
@@ -160,11 +161,18 @@ class DesktopLibrary(AppiumLibrary):
             window = desktop_session.find_element_by_name(window_name)
             self._debug('Window_name "%s" found.' % window_name)
             window = hex(int(window.get_attribute("NativeWindowHandle")))
-        except Exception as e:
-            self._debug('Closing desktop session.')
-            zoomba.fail(
-                'Error finding window "' + window_name + '" in the desktop session. '
-                                                         'Is it a top level window handle?' + '. \n' + str(e))
+        except Exception:
+            try:
+                error = "Window '%s' did not appear in <TIMEOUT>" % window_name
+                self._wait_until(timeout, error, desktop_session.find_element_by_name, window_name)
+                window = desktop_session.find_element_by_name(window_name)
+                self._debug('Window_name "%s" found.' % window_name)
+                window = hex(int(window.get_attribute("NativeWindowHandle")))
+            except Exception as e:
+                self._debug('Closing desktop session.')
+                zoomba.fail(
+                    'Error finding window "' + window_name + '" in the desktop session. '
+                    'Is it a top level window handle?' + '. \n' + str(e))
         if "app" in desired_caps:
             del desired_caps["app"]
         desired_caps["appTopLevelWindow"] = window
