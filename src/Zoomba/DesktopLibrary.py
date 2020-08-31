@@ -147,6 +147,7 @@ class DesktopLibrary(AppiumLibrary):
         | remote_url          | Yes    | Appium server url                     |
         | window_name         | Yes    | Window name you wish to attach        |
         | alias               | No     | alias                                 |
+        | timeout             | No     | timeout to connect                    |
 
         Examples:
         | Switch Application By Name | http://localhost:4723/wd/hub | alias=Myapp1         | platformName=Windows            | deviceName=Windows           | window_name=MyApplication         |
@@ -163,9 +164,8 @@ class DesktopLibrary(AppiumLibrary):
         except Exception:
             try:
                 error = "Window '%s' did not appear in <TIMEOUT>" % window_name
-                window = self._wait_until(timeout, error, desktop_session.find_element_by_name,
-                                          window_name)
-                # window = desktop_session.find_element_by_name(window_name)
+                self._wait_until(timeout, error, desktop_session.find_element_by_name, window_name)
+                window = desktop_session.find_element_by_name(window_name)
                 self._debug('Window_name "%s" found.' % window_name)
                 window = hex(int(window.get_attribute("NativeWindowHandle")))
             except Exception as e:
