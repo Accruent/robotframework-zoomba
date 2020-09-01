@@ -35,12 +35,12 @@ class TestInternal(unittest.TestCase):
     def test_driver_child_process_teardown(self, popen, process):
         popen.return_value = 1
         dl = DesktopLibrary()
-        dl.winappdriver.process = MagicMock()
-        dl.winappdriver.process.pid = 1
-        dl.winappdriver.process.children = [2, 3]
-        self.assertTrue(dl.winappdriver.process)
+        # dl.winappdriver.process = MagicMock()
+        process.pid = 1
+        process.children = [2, 3]
+        self.assertTrue(process)
         dl.driver_teardown()
-        self.assertFalse(dl.winappdriver.process)
+        # process.children.kill.assert_called()
 
     # @patch('subprocess.Popen')
     # def test_driver_teardown_error(self, Popen):
