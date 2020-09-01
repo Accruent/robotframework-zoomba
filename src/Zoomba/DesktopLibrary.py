@@ -1,9 +1,12 @@
+import os
+import psutil
+import subprocess
 import itertools
 from AppiumLibrary import AppiumLibrary
 from appium import webdriver
+from psutil import NoSuchProcess
 from robot.api.deco import keyword
 from robot.libraries.BuiltIn import BuiltIn
-import subprocess
 
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.action_chains import ActionChains
@@ -11,6 +14,30 @@ from time import sleep, time
 
 zoomba = BuiltIn()
 SCREENSHOT_COUNTER = itertools.count()
+
+
+class WinAppDriver:
+    def __init__(self, driver_path=""):
+        self.f = open(os.devnull, 'w')
+        self.process = None
+        self.driver_path = driver_path
+
+    @keyword("Driver Setup")
+    def set_up_driver(self, path=None):
+        if path is None:
+            path = self.driver_path
+        self.process = subprocess.Popen([path], shell=True, stdin=None, stdout=self.f,
+                                        stderr=None, close_fds=False)
+
+    @keyword("Driver Teardown")
+    def tear_down_driver(self):
+        try:
+            process = psutil.Process(self.process.pid)
+            for pro in process.children(recursive=True):
+                pro.kill()
+            process.kill()
+        except NoSuchProcess:
+            os.system("taskkill /f /im WinAppDriver.exe")
 
 
 class DesktopLibrary(AppiumLibrary):
@@ -46,7 +73,8 @@ class DesktopLibrary(AppiumLibrary):
     ``Wait Until Page Contains`` or ``Wait Until Page Contains Element``.
     """
 
-    def __init__(self, timeout=5, run_on_failure='Save Appium Screenshot'):
+    def __init__(self, timeout=5, run_on_failure='Save Appium Screenshot',
+                 driver_path="C:\\Program Files (x86)\\Windows Application Driver\\WinAppDriver.exe"):
         """DesktopLibrary can be imported with optional arguments.
         ``timeout`` is the default timeout used to wait for all waiting actions.
         It can be later set with `Set Appium Timeout`.
@@ -60,6 +88,7 @@ class DesktopLibrary(AppiumLibrary):
         | Library | DesktopLibrary | 10 | # Sets default timeout to 10 seconds                                                                             |
         | Library | DesktopLibrary | timeout=10 | run_on_failure=No Operation | # Sets default timeout to 10 seconds and does nothing on failure           |
         """
+        self.winappdriver = WinAppDriver(driver_path)
         super().__init__(timeout, run_on_failure)
 
     def get_keyword_names(self):
@@ -78,7 +107,7 @@ class DesktopLibrary(AppiumLibrary):
             'context_click_a_point', 'mouse_over_and_context_click_element', 'mouse_over_and_context_click_text',
             'mouse_over_by_offset', 'drag_and_drop', 'drag_and_drop_by_offset', 'send_keys', 'send_keys_to_element',
             'capture_page_screenshot', 'save_appium_screenshot', 'select_element_from_combobox', 'get_source',
-            'click_text',
+            'click_text', 'driver_setup', 'driver_teardown',
             # External Libraries
             'clear_text', 'click_button', 'click_element', 'close_all_applications', 'close_application',
             'element_attribute_should_match', 'element_should_be_disabled', "element_should_be_enabled",
@@ -93,6 +122,14 @@ class DesktopLibrary(AppiumLibrary):
             'wait_until_page_does_not_contain', 'wait_until_page_does_not_contain_element', 'get_matching_xpath_count',
             'xpath_should_match_x_times'
         ]
+
+    @keyword("Driver Setup")
+    def driver_setup(self):
+        self.winappdriver.set_up_driver()
+
+    @keyword("Driver Teardown")
+    def driver_teardown(self):
+        self.winappdriver.tear_down_driver()
 
     @keyword("Maximize Window")
     def maximize_window(self):
@@ -604,6 +641,7 @@ class DesktopLibrary(AppiumLibrary):
     def select_element_from_combobox(self, list_locator, element_locator, skip_to_desktop=False):
         """Selects the ``element_locator`` from the combobox found by ``list_locator``.
 
+        The keyword first checks the current application for the combobox list elements. If it is not found it will
         The keyword first checks the current application for the combobox list elements. If it is not found it will
         switch to the desktop session to look for the elements as many windows applications house the actual combobox
         items in a pane off of the desktop. ``skip_to_desktop`` can be set to ``True`` in order to go straight to the
