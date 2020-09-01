@@ -23,12 +23,11 @@ class TestInternal(unittest.TestCase):
         dl.driver_teardown()
         self.assertFalse(dl.winappdriver.process)
 
-    def test_teardown_without_setup(self):
+    @patch('subprocess.Popen')
+    def test_teardown_without_setup(self, Popen):
+        Popen.return_value = 1
         dl = DesktopLibrary()
-        # dl.driver_setup()
-        self.assertFalse(dl.winappdriver.process)
         dl.driver_teardown()
-        # self.assertEqual(dl.driver_teardown(), "Error")
         self.assertFalse(dl.winappdriver.process)
 
     def test_open_application_successful(self):
