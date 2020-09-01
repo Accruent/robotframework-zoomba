@@ -30,6 +30,17 @@ class TestInternal(unittest.TestCase):
         dl.driver_teardown()
         self.assertFalse(dl.winappdriver.process)
 
+    @patch('subprocess.Popen')
+    def test_driver_child_process_teardown(self, Popen):
+        Popen.return_value = 1
+        dl = DesktopLibrary()
+        dl.winappdriver.process = MagicMock()
+        dl.winappdriver.process.pid = 1
+        dl.winappdriver.process.children = [2, 3]
+        self.assertTrue(dl.winappdriver.process)
+        dl.driver_teardown()
+        self.assertFalse(dl.winappdriver.process)
+
     def test_open_application_successful(self):
         dl = DesktopLibrary()
         webdriver.Remote = WebdriverRemoteMock
