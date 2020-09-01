@@ -347,8 +347,3 @@ class GUILibrary(SeleniumLibrary):
         react_select_container = self.find_element(locator)
         options = RS.ReactSelect(react_select_container).options
         return [opt.text for opt in options]
-
-    @keyword("Expand React Select List")
-    def expand_react_select_list(self, locator):
-        react_select_container = self.find_element(locator)
-        RS.ReactSelect(react_select_container).expand_select_list
