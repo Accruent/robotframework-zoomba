@@ -8,11 +8,18 @@ import sys
 import os
 sys.path.append(os.path.join(os.path.dirname(sys.path[0]), 'Helpers'))
 from webdriverremotemock import WebdriverRemoteMock
+from time import sleep
 
 
 class TestInternal(unittest.TestCase):
     def test_get_keyword_names_successful(self):
         DesktopLibrary().get_keyword_names()
+
+    def test_driver_setup_and_teardown(self):
+        dl = DesktopLibrary()
+        dl.driver_setup()
+        self.assertTrue(dl.winappdriver.process)
+        dl.driver_teardown()
 
     def test_open_application_successful(self):
         dl = DesktopLibrary()

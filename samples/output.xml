@@ -1,0 +1,1463 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 3.2.1 (Python 3.8.1 on win32)" generated="20200901 14:10:57.267" rpa="false">
+<suite id="s1" name="DesktopTests" source="C:\Git\robotframework-zoomba\samples\DesktopTests.robot">
+<kw name="Start App" type="setup">
+<doc>Sets up the application for quick launching through 'Launch Application' and starts the winappdriver</doc>
+<kw name="Driver Setup" library="Zoomba.DesktopLibrary">
+<status status="PASS" starttime="20200901 14:10:57.486" endtime="20200901 14:10:57.488"></status>
+</kw>
+<kw name="Open Application" library="Zoomba.DesktopLibrary">
+<doc>Opens a new application to given Appium server.
+If your application has a splash screen please supply the window name of the final window that will appear.
+For the capabilities of appium server and Windows please check http://appium.io/docs/en/drivers/windows</doc>
+<arguments>
+<arg>${REMOTE_URL}</arg>
+<arg>platformName=Windows</arg>
+<arg>deviceName=Windows</arg>
+<arg>app=${APP}</arg>
+</arguments>
+<msg timestamp="20200901 14:10:57.490" level="DEBUG">Creating new desktop session</msg>
+<msg timestamp="20200901 14:10:57.996" level="DEBUG">POST http://127.0.0.1:4723/session {"capabilities": {"firstMatch": [{"appium:app": "Root", "platformName": "Windows", "appium:deviceName": "Windows", "appium:newCommandTimeout": 3600}]}, "desiredCapabilities": {"app": "Root", "platformName": "Windows", "deviceName": "Windows", "newCommandTimeout": 3600}}</msg>
+<msg timestamp="20200901 14:10:57.997" level="DEBUG">Starting new HTTP connection (1): 127.0.0.1:4723</msg>
+<msg timestamp="20200901 14:10:58.165" level="DEBUG">http://127.0.0.1:4723 "POST /session HTTP/1.1" 200 111</msg>
+<msg timestamp="20200901 14:10:58.165" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:10:58.166" level="DEBUG">POST http://127.0.0.1:4723/session {"capabilities": {"firstMatch": [{"platformName": "Windows", "appium:deviceName": "Windows", "appium:app": "Microsoft.WindowsCalculator_8wekyb3d8bbwe!App"}]}, "desiredCapabilities": {"platformName": "Windows", "deviceName": "Windows", "app": "Microsoft.WindowsCalculator_8wekyb3d8bbwe!App"}}</msg>
+<msg timestamp="20200901 14:10:58.166" level="DEBUG">Starting new HTTP connection (1): 127.0.0.1:4723</msg>
+<msg timestamp="20200901 14:10:58.969" level="DEBUG">http://127.0.0.1:4723 "POST /session HTTP/1.1" 200 152</msg>
+<msg timestamp="20200901 14:10:58.969" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:10:58.970" level="DEBUG">Opened application with session id B1E40425-7A56-43DB-9908-10ED4867500B</msg>
+<status status="PASS" starttime="20200901 14:10:57.488" endtime="20200901 14:10:58.970"></status>
+</kw>
+<kw name="Maximize Window" library="Zoomba.DesktopLibrary">
+<doc>Maximizes the current application window.</doc>
+<msg timestamp="20200901 14:10:58.971" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/window/current/maximize {"windowHandle": "current", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:10:58.979" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/window/current/maximize HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:10:58.980" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:10:58.970" endtime="20200901 14:10:58.980"></status>
+</kw>
+<kw name="Quit Application" library="Zoomba.DesktopLibrary">
+<doc>Quit application. Application can be quit while Appium session is kept alive.
+This keyword can be used to close application during test case or between test cases.</doc>
+<msg timestamp="20200901 14:10:58.980" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/close {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:10:59.008" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/close HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:10:59.008" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:10:58.980" endtime="20200901 14:10:59.008"></status>
+</kw>
+<status status="PASS" starttime="20200901 14:10:57.486" endtime="20200901 14:10:59.009"></status>
+</kw>
+<test id="s1-t1" name="Wait For And Click Element By Id Keyword Test">
+<kw name="Launch Application" library="Zoomba.DesktopLibrary" type="setup">
+<doc>Launch application. Application can be launched while Appium session running.
+This keyword can be used to launch application during test case or between test cases.</doc>
+<msg timestamp="20200901 14:10:59.009" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/launch {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:10:59.863" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/launch HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:10:59.863" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:10:59.009" endtime="20200901 14:10:59.863"></status>
+</kw>
+<kw name="Wait For And Click Element" library="Zoomba.DesktopLibrary">
+<doc>Wait for and click the element identified by ``locator``.</doc>
+<arguments>
+<arg>accessibility_id=num2Button</arg>
+</arguments>
+<msg timestamp="20200901 14:10:59.864" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/elements {"using": "accessibility id", "value": "num2Button", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:10:59.986" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/elements HTTP/1.1" 200 102</msg>
+<msg timestamp="20200901 14:10:59.986" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:10:59.987" level="INFO">Clicking element 'accessibility_id=num2Button'.</msg>
+<msg timestamp="20200901 14:10:59.987" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element {"using": "accessibility id", "value": "num2Button", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:00.042" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/element HTTP/1.1" 200 100</msg>
+<msg timestamp="20200901 14:11:00.043" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:00.043" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element/42.331266.4.60/click {"id": "42.331266.4.60", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:00.300" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/element/42.331266.4.60/click HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:00.300" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:10:59.864" endtime="20200901 14:11:00.300"></status>
+</kw>
+<kw name="Wait Until Element Contains" library="Zoomba.DesktopLibrary">
+<doc>Waits until element specified with ``locator`` contains ``text``.</doc>
+<arguments>
+<arg>accessibility_id=CalculatorResults</arg>
+<arg>2</arg>
+</arguments>
+<msg timestamp="20200901 14:11:00.301" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/elements {"using": "accessibility id", "value": "CalculatorResults", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:00.400" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/elements HTTP/1.1" 200 102</msg>
+<msg timestamp="20200901 14:11:00.400" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:00.401" level="INFO">Verifying element 'accessibility_id=CalculatorResults' contains text '2'.</msg>
+<msg timestamp="20200901 14:11:00.401" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element {"using": "accessibility id", "value": "CalculatorResults", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:00.422" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/element HTTP/1.1" 200 100</msg>
+<msg timestamp="20200901 14:11:00.422" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:00.422" level="DEBUG">GET http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element/42.331266.4.10/text {"id": "42.331266.4.10", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:00.428" level="DEBUG">http://127.0.0.1:4723 "GET /session/B1E40425-7A56-43DB-9908-10ED4867500B/element/42.331266.4.10/text HTTP/1.1" 200 86</msg>
+<msg timestamp="20200901 14:11:00.428" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:00.301" endtime="20200901 14:11:00.428"></status>
+</kw>
+<kw name="Quit Application" library="Zoomba.DesktopLibrary" type="teardown">
+<doc>Quit application. Application can be quit while Appium session is kept alive.
+This keyword can be used to close application during test case or between test cases.</doc>
+<msg timestamp="20200901 14:11:00.429" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/close {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:00.445" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/close HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:00.445" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:00.428" endtime="20200901 14:11:00.445"></status>
+</kw>
+<tags>
+<tag>Windows</tag>
+</tags>
+<status status="PASS" starttime="20200901 14:10:59.009" endtime="20200901 14:11:00.445" critical="yes"></status>
+</test>
+<test id="s1-t2" name="Wait For And Click Element By Xpath Keyword Test">
+<kw name="Launch Application" library="Zoomba.DesktopLibrary" type="setup">
+<doc>Launch application. Application can be launched while Appium session running.
+This keyword can be used to launch application during test case or between test cases.</doc>
+<msg timestamp="20200901 14:11:00.446" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/launch {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:00.860" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/launch HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:00.860" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:00.446" endtime="20200901 14:11:00.860"></status>
+</kw>
+<kw name="Wait For And Click Element" library="Zoomba.DesktopLibrary">
+<doc>Wait for and click the element identified by ``locator``.</doc>
+<arguments>
+<arg>xpath=//Button[@Name="Two"]</arg>
+</arguments>
+<msg timestamp="20200901 14:11:00.861" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/elements {"using": "xpath", "value": "//Button[@Name=\"Two\"]", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:01.130" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/elements HTTP/1.1" 200 102</msg>
+<msg timestamp="20200901 14:11:01.130" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:01.131" level="INFO">Clicking element 'xpath=//Button[@Name="Two"]'.</msg>
+<msg timestamp="20200901 14:11:01.131" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element {"using": "xpath", "value": "//Button[@Name=\"Two\"]", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:01.343" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/element HTTP/1.1" 200 100</msg>
+<msg timestamp="20200901 14:11:01.344" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:01.344" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element/42.593408.4.53/click {"id": "42.593408.4.53", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:01.577" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/element/42.593408.4.53/click HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:01.577" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:00.860" endtime="20200901 14:11:01.577"></status>
+</kw>
+<kw name="Wait Until Element Contains" library="Zoomba.DesktopLibrary">
+<doc>Waits until element specified with ``locator`` contains ``text``.</doc>
+<arguments>
+<arg>accessibility_id=CalculatorResults</arg>
+<arg>2</arg>
+</arguments>
+<msg timestamp="20200901 14:11:01.578" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/elements {"using": "accessibility id", "value": "CalculatorResults", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:01.687" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/elements HTTP/1.1" 200 101</msg>
+<msg timestamp="20200901 14:11:01.687" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:01.688" level="INFO">Verifying element 'accessibility_id=CalculatorResults' contains text '2'.</msg>
+<msg timestamp="20200901 14:11:01.688" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element {"using": "accessibility id", "value": "CalculatorResults", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:01.708" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/element HTTP/1.1" 200 99</msg>
+<msg timestamp="20200901 14:11:01.708" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:01.708" level="DEBUG">GET http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element/42.593408.4.1/text {"id": "42.593408.4.1", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:01.712" level="DEBUG">http://127.0.0.1:4723 "GET /session/B1E40425-7A56-43DB-9908-10ED4867500B/element/42.593408.4.1/text HTTP/1.1" 200 86</msg>
+<msg timestamp="20200901 14:11:01.713" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:01.578" endtime="20200901 14:11:01.713"></status>
+</kw>
+<kw name="Quit Application" library="Zoomba.DesktopLibrary" type="teardown">
+<doc>Quit application. Application can be quit while Appium session is kept alive.
+This keyword can be used to close application during test case or between test cases.</doc>
+<msg timestamp="20200901 14:11:01.713" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/close {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:01.731" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/close HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:01.732" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:01.713" endtime="20200901 14:11:01.732"></status>
+</kw>
+<tags>
+<tag>Windows</tag>
+</tags>
+<status status="PASS" starttime="20200901 14:11:00.445" endtime="20200901 14:11:01.732" critical="yes"></status>
+</test>
+<test id="s1-t3" name="Wait For And Click Element By Name Keyword Test">
+<kw name="Launch Application" library="Zoomba.DesktopLibrary" type="setup">
+<doc>Launch application. Application can be launched while Appium session running.
+This keyword can be used to launch application during test case or between test cases.</doc>
+<msg timestamp="20200901 14:11:01.733" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/launch {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:02.555" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/launch HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:02.555" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:01.732" endtime="20200901 14:11:02.555"></status>
+</kw>
+<kw name="Wait For And Click Element" library="Zoomba.DesktopLibrary">
+<doc>Wait for and click the element identified by ``locator``.</doc>
+<arguments>
+<arg>name=Two</arg>
+</arguments>
+<msg timestamp="20200901 14:11:02.556" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/elements {"using": "name", "value": "Two", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:02.676" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/elements HTTP/1.1" 200 103</msg>
+<msg timestamp="20200901 14:11:02.677" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:02.678" level="INFO">Clicking element 'name=Two'.</msg>
+<msg timestamp="20200901 14:11:02.678" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element {"using": "name", "value": "Two", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:02.726" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/element HTTP/1.1" 200 101</msg>
+<msg timestamp="20200901 14:11:02.726" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:02.727" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element/42.1707478.4.60/click {"id": "42.1707478.4.60", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:02.954" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/element/42.1707478.4.60/click HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:02.954" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:02.556" endtime="20200901 14:11:02.954"></status>
+</kw>
+<kw name="Wait Until Element Contains" library="Zoomba.DesktopLibrary">
+<doc>Waits until element specified with ``locator`` contains ``text``.</doc>
+<arguments>
+<arg>accessibility_id=CalculatorResults</arg>
+<arg>2</arg>
+</arguments>
+<msg timestamp="20200901 14:11:02.955" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/elements {"using": "accessibility id", "value": "CalculatorResults", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:03.043" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/elements HTTP/1.1" 200 102</msg>
+<msg timestamp="20200901 14:11:03.043" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:03.044" level="INFO">Verifying element 'accessibility_id=CalculatorResults' contains text '2'.</msg>
+<msg timestamp="20200901 14:11:03.044" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element {"using": "accessibility id", "value": "CalculatorResults", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:03.062" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/element HTTP/1.1" 200 100</msg>
+<msg timestamp="20200901 14:11:03.062" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:03.063" level="DEBUG">GET http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element/42.1707478.4.1/text {"id": "42.1707478.4.1", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:03.067" level="DEBUG">http://127.0.0.1:4723 "GET /session/B1E40425-7A56-43DB-9908-10ED4867500B/element/42.1707478.4.1/text HTTP/1.1" 200 86</msg>
+<msg timestamp="20200901 14:11:03.067" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:02.955" endtime="20200901 14:11:03.067"></status>
+</kw>
+<kw name="Quit Application" library="Zoomba.DesktopLibrary" type="teardown">
+<doc>Quit application. Application can be quit while Appium session is kept alive.
+This keyword can be used to close application during test case or between test cases.</doc>
+<msg timestamp="20200901 14:11:03.067" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/close {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:03.080" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/close HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:03.080" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:03.067" endtime="20200901 14:11:03.081"></status>
+</kw>
+<tags>
+<tag>Windows</tag>
+</tags>
+<status status="PASS" starttime="20200901 14:11:01.732" endtime="20200901 14:11:03.081" critical="yes"></status>
+</test>
+<test id="s1-t4" name="Wait For And Click Element By Class Keyword Test">
+<kw name="Launch Application" library="Zoomba.DesktopLibrary" type="setup">
+<doc>Launch application. Application can be launched while Appium session running.
+This keyword can be used to launch application during test case or between test cases.</doc>
+<msg timestamp="20200901 14:11:03.082" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/launch {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:03.913" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/launch HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:03.913" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:03.081" endtime="20200901 14:11:03.913"></status>
+</kw>
+<kw name="Wait For And Click Element" library="Zoomba.DesktopLibrary">
+<doc>Wait for and click the element identified by ``locator``.</doc>
+<arguments>
+<arg>class=Button</arg>
+</arguments>
+<msg timestamp="20200901 14:11:03.914" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/elements {"using": "class name", "value": "Button", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:04.045" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/elements HTTP/1.1" 200 1001</msg>
+<msg timestamp="20200901 14:11:04.045" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:04.046" level="INFO">Clicking element 'class=Button'.</msg>
+<msg timestamp="20200901 14:11:04.047" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element {"using": "class name", "value": "Button", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:04.066" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/element HTTP/1.1" 200 100</msg>
+<msg timestamp="20200901 14:11:04.066" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:04.066" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element/42.2231034.4.5/click {"id": "42.2231034.4.5", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:04.287" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/element/42.2231034.4.5/click HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:04.287" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:03.914" endtime="20200901 14:11:04.287"></status>
+</kw>
+<kw name="Quit Application" library="Zoomba.DesktopLibrary" type="teardown">
+<doc>Quit application. Application can be quit while Appium session is kept alive.
+This keyword can be used to close application during test case or between test cases.</doc>
+<msg timestamp="20200901 14:11:04.288" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/close {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:04.307" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/close HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:04.307" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:04.288" endtime="20200901 14:11:04.307"></status>
+</kw>
+<tags>
+<tag>Windows</tag>
+</tags>
+<status status="PASS" starttime="20200901 14:11:03.081" endtime="20200901 14:11:04.307" critical="yes"></status>
+</test>
+<test id="s1-t5" name="Wait For And Input Text By Id Keyword Test">
+<kw name="Launch Application" library="Zoomba.DesktopLibrary" type="setup">
+<doc>Launch application. Application can be launched while Appium session running.
+This keyword can be used to launch application during test case or between test cases.</doc>
+<msg timestamp="20200901 14:11:04.308" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/launch {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:05.148" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/launch HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:05.148" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:04.308" endtime="20200901 14:11:05.148"></status>
+</kw>
+<kw name="Wait For And Input Text" library="Zoomba.DesktopLibrary">
+<doc>Wait for and type the given ``locator`` into text field identified by ``locator``.</doc>
+<arguments>
+<arg>accessibility_id=CalculatorResults</arg>
+<arg>12345</arg>
+</arguments>
+<msg timestamp="20200901 14:11:05.149" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/elements {"using": "accessibility id", "value": "CalculatorResults", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:05.257" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/elements HTTP/1.1" 200 103</msg>
+<msg timestamp="20200901 14:11:05.257" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:05.258" level="INFO">Typing text '12345' into text field 'accessibility_id=CalculatorResults'</msg>
+<msg timestamp="20200901 14:11:05.258" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element {"using": "accessibility id", "value": "CalculatorResults", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:05.282" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/element HTTP/1.1" 200 101</msg>
+<msg timestamp="20200901 14:11:05.282" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:05.282" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element/42.5835592.4.10/value {"text": "12345", "value": ["1", "2", "3", "4", "5"], "id": "42.5835592.4.10", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:05.615" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/element/42.5835592.4.10/value HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:05.615" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:05.149" endtime="20200901 14:11:05.615"></status>
+</kw>
+<kw name="Wait Until Element Contains" library="Zoomba.DesktopLibrary">
+<doc>Waits until element specified with ``locator`` contains ``text``.</doc>
+<arguments>
+<arg>accessibility_id=CalculatorResults</arg>
+<arg>12,345</arg>
+</arguments>
+<msg timestamp="20200901 14:11:05.616" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/elements {"using": "accessibility id", "value": "CalculatorResults", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:05.724" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/elements HTTP/1.1" 200 103</msg>
+<msg timestamp="20200901 14:11:05.724" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:05.725" level="INFO">Verifying element 'accessibility_id=CalculatorResults' contains text '12,345'.</msg>
+<msg timestamp="20200901 14:11:05.725" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element {"using": "accessibility id", "value": "CalculatorResults", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:05.749" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/element HTTP/1.1" 200 101</msg>
+<msg timestamp="20200901 14:11:05.749" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:05.750" level="DEBUG">GET http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element/42.5835592.4.10/text {"id": "42.5835592.4.10", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:05.752" level="DEBUG">http://127.0.0.1:4723 "GET /session/B1E40425-7A56-43DB-9908-10ED4867500B/element/42.5835592.4.10/text HTTP/1.1" 200 91</msg>
+<msg timestamp="20200901 14:11:05.752" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:05.616" endtime="20200901 14:11:05.752"></status>
+</kw>
+<kw name="Quit Application" library="Zoomba.DesktopLibrary" type="teardown">
+<doc>Quit application. Application can be quit while Appium session is kept alive.
+This keyword can be used to close application during test case or between test cases.</doc>
+<msg timestamp="20200901 14:11:05.752" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/close {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:05.770" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/close HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:05.770" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:05.752" endtime="20200901 14:11:05.770"></status>
+</kw>
+<tags>
+<tag>Windows</tag>
+</tags>
+<status status="PASS" starttime="20200901 14:11:04.308" endtime="20200901 14:11:05.770" critical="yes"></status>
+</test>
+<test id="s1-t6" name="Wait For And Input Text By Name Keyword Test">
+<kw name="Launch Application" library="Zoomba.DesktopLibrary" type="setup">
+<doc>Launch application. Application can be launched while Appium session running.
+This keyword can be used to launch application during test case or between test cases.</doc>
+<msg timestamp="20200901 14:11:05.771" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/launch {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:06.689" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/launch HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:06.690" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:05.771" endtime="20200901 14:11:06.690"></status>
+</kw>
+<kw name="Wait For And Input Text" library="Zoomba.DesktopLibrary">
+<doc>Wait for and type the given ``locator`` into text field identified by ``locator``.</doc>
+<arguments>
+<arg>name=Display is 0</arg>
+<arg>12345</arg>
+</arguments>
+<msg timestamp="20200901 14:11:06.690" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/elements {"using": "name", "value": "Display is 0", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:06.806" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/elements HTTP/1.1" 200 102</msg>
+<msg timestamp="20200901 14:11:06.806" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:06.807" level="INFO">Typing text '12345' into text field 'name=Display is 0'</msg>
+<msg timestamp="20200901 14:11:06.807" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element {"using": "name", "value": "Display is 0", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:06.829" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/element HTTP/1.1" 200 100</msg>
+<msg timestamp="20200901 14:11:06.829" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:06.829" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element/42.396614.4.10/value {"text": "12345", "value": ["1", "2", "3", "4", "5"], "id": "42.396614.4.10", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:07.142" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/element/42.396614.4.10/value HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:07.142" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:06.690" endtime="20200901 14:11:07.142"></status>
+</kw>
+<kw name="Wait Until Element Contains" library="Zoomba.DesktopLibrary">
+<doc>Waits until element specified with ``locator`` contains ``text``.</doc>
+<arguments>
+<arg>accessibility_id=CalculatorResults</arg>
+<arg>12,345</arg>
+</arguments>
+<msg timestamp="20200901 14:11:07.143" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/elements {"using": "accessibility id", "value": "CalculatorResults", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:07.241" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/elements HTTP/1.1" 200 102</msg>
+<msg timestamp="20200901 14:11:07.242" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:07.243" level="INFO">Verifying element 'accessibility_id=CalculatorResults' contains text '12,345'.</msg>
+<msg timestamp="20200901 14:11:07.243" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element {"using": "accessibility id", "value": "CalculatorResults", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:07.263" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/element HTTP/1.1" 200 100</msg>
+<msg timestamp="20200901 14:11:07.263" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:07.263" level="DEBUG">GET http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element/42.396614.4.10/text {"id": "42.396614.4.10", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:07.268" level="DEBUG">http://127.0.0.1:4723 "GET /session/B1E40425-7A56-43DB-9908-10ED4867500B/element/42.396614.4.10/text HTTP/1.1" 200 91</msg>
+<msg timestamp="20200901 14:11:07.268" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:07.143" endtime="20200901 14:11:07.268"></status>
+</kw>
+<kw name="Quit Application" library="Zoomba.DesktopLibrary" type="teardown">
+<doc>Quit application. Application can be quit while Appium session is kept alive.
+This keyword can be used to close application during test case or between test cases.</doc>
+<msg timestamp="20200901 14:11:07.268" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/close {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:07.287" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/close HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:07.288" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:07.268" endtime="20200901 14:11:07.288"></status>
+</kw>
+<tags>
+<tag>Windows</tag>
+</tags>
+<status status="PASS" starttime="20200901 14:11:05.771" endtime="20200901 14:11:07.288" critical="yes"></status>
+</test>
+<test id="s1-t7" name="Wait For And Long Press Keyword Test">
+<kw name="Launch Application" library="Zoomba.DesktopLibrary" type="setup">
+<doc>Launch application. Application can be launched while Appium session running.
+This keyword can be used to launch application during test case or between test cases.</doc>
+<msg timestamp="20200901 14:11:07.289" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/launch {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:08.166" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/launch HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:08.166" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:07.289" endtime="20200901 14:11:08.166"></status>
+</kw>
+<kw name="Wait For And Long Press" library="Zoomba.DesktopLibrary">
+<doc>Wait for and long press the element identified by ``locator`` with optional duration.</doc>
+<arguments>
+<arg>accessibility_id=num2Button</arg>
+</arguments>
+<msg timestamp="20200901 14:11:08.167" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/elements {"using": "accessibility id", "value": "num2Button", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:08.284" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/elements HTTP/1.1" 200 103</msg>
+<msg timestamp="20200901 14:11:08.284" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:08.284" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element {"using": "accessibility id", "value": "num2Button", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:08.332" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/element HTTP/1.1" 200 101</msg>
+<msg timestamp="20200901 14:11:08.333" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:08.333" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/touch/perform {"actions": [{"action": "press", "options": {"element": "42.1117644.4.60"}}, {"action": "wait", "options": {"ms": 10000}}, {"action": "release", "options": {}}], "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:08.563" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/touch/perform HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:08.563" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:08.167" endtime="20200901 14:11:08.563"></status>
+</kw>
+<kw name="Wait Until Element Contains" library="Zoomba.DesktopLibrary">
+<doc>Waits until element specified with ``locator`` contains ``text``.</doc>
+<arguments>
+<arg>accessibility_id=CalculatorResults</arg>
+<arg>2</arg>
+</arguments>
+<msg timestamp="20200901 14:11:08.564" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/elements {"using": "accessibility id", "value": "CalculatorResults", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:08.676" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/elements HTTP/1.1" 200 102</msg>
+<msg timestamp="20200901 14:11:08.676" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:08.677" level="INFO">Verifying element 'accessibility_id=CalculatorResults' contains text '2'.</msg>
+<msg timestamp="20200901 14:11:08.677" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element {"using": "accessibility id", "value": "CalculatorResults", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:08.701" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/element HTTP/1.1" 200 100</msg>
+<msg timestamp="20200901 14:11:08.701" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:08.702" level="DEBUG">GET http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element/42.1117644.4.1/text {"id": "42.1117644.4.1", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:08.706" level="DEBUG">http://127.0.0.1:4723 "GET /session/B1E40425-7A56-43DB-9908-10ED4867500B/element/42.1117644.4.1/text HTTP/1.1" 200 86</msg>
+<msg timestamp="20200901 14:11:08.706" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:08.564" endtime="20200901 14:11:08.706"></status>
+</kw>
+<kw name="Quit Application" library="Zoomba.DesktopLibrary" type="teardown">
+<doc>Quit application. Application can be quit while Appium session is kept alive.
+This keyword can be used to close application during test case or between test cases.</doc>
+<msg timestamp="20200901 14:11:08.707" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/close {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:08.724" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/close HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:08.724" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:08.707" endtime="20200901 14:11:08.724"></status>
+</kw>
+<tags>
+<tag>Windows</tag>
+</tags>
+<status status="PASS" starttime="20200901 14:11:07.288" endtime="20200901 14:11:08.724" critical="yes"></status>
+</test>
+<test id="s1-t8" name="Wait For And Input Password Keyword Test">
+<kw name="Launch Application" library="Zoomba.DesktopLibrary" type="setup">
+<doc>Launch application. Application can be launched while Appium session running.
+This keyword can be used to launch application during test case or between test cases.</doc>
+<msg timestamp="20200901 14:11:08.725" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/launch {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:09.614" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/launch HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:09.614" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:08.725" endtime="20200901 14:11:09.614"></status>
+</kw>
+<kw name="Wait For And Input Password" library="Zoomba.DesktopLibrary">
+<doc>Wait for and type the given password into the text field identified by ``locator``.</doc>
+<arguments>
+<arg>accessibility_id=CalculatorResults</arg>
+<arg>12345</arg>
+</arguments>
+<msg timestamp="20200901 14:11:09.615" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/elements {"using": "accessibility id", "value": "CalculatorResults", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:09.733" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/elements HTTP/1.1" 200 103</msg>
+<msg timestamp="20200901 14:11:09.734" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:09.735" level="INFO">Typing password into text field 'accessibility_id=CalculatorResults'</msg>
+<msg timestamp="20200901 14:11:09.735" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element {"using": "accessibility id", "value": "CalculatorResults", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:09.758" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/element HTTP/1.1" 200 101</msg>
+<msg timestamp="20200901 14:11:09.759" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:09.759" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element/42.1051978.4.10/value {"text": "12345", "value": ["1", "2", "3", "4", "5"], "id": "42.1051978.4.10", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:10.078" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/element/42.1051978.4.10/value HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:10.078" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:09.614" endtime="20200901 14:11:10.078"></status>
+</kw>
+<kw name="Wait Until Element Contains" library="Zoomba.DesktopLibrary">
+<doc>Waits until element specified with ``locator`` contains ``text``.</doc>
+<arguments>
+<arg>accessibility_id=CalculatorResults</arg>
+<arg>12,345</arg>
+</arguments>
+<msg timestamp="20200901 14:11:10.079" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/elements {"using": "accessibility id", "value": "CalculatorResults", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:10.183" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/elements HTTP/1.1" 200 103</msg>
+<msg timestamp="20200901 14:11:10.183" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:10.184" level="INFO">Verifying element 'accessibility_id=CalculatorResults' contains text '12,345'.</msg>
+<msg timestamp="20200901 14:11:10.184" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element {"using": "accessibility id", "value": "CalculatorResults", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:10.208" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/element HTTP/1.1" 200 101</msg>
+<msg timestamp="20200901 14:11:10.208" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:10.208" level="DEBUG">GET http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element/42.1051978.4.10/text {"id": "42.1051978.4.10", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:10.210" level="DEBUG">http://127.0.0.1:4723 "GET /session/B1E40425-7A56-43DB-9908-10ED4867500B/element/42.1051978.4.10/text HTTP/1.1" 200 91</msg>
+<msg timestamp="20200901 14:11:10.210" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:10.079" endtime="20200901 14:11:10.210"></status>
+</kw>
+<kw name="Wait Until Element Does Not Contain" library="Zoomba.DesktopLibrary">
+<doc>Waits until element specified with ``locator`` does not contain ``text``.</doc>
+<arguments>
+<arg>accessibility_id=CalculatorResults</arg>
+<arg>0</arg>
+</arguments>
+<msg timestamp="20200901 14:11:10.211" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/elements {"using": "accessibility id", "value": "CalculatorResults", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:10.317" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/elements HTTP/1.1" 200 103</msg>
+<msg timestamp="20200901 14:11:10.317" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:10.318" level="INFO">Verifying element 'accessibility_id=CalculatorResults' does not contain text '0'.</msg>
+<msg timestamp="20200901 14:11:10.318" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element {"using": "accessibility id", "value": "CalculatorResults", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:10.341" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/element HTTP/1.1" 200 101</msg>
+<msg timestamp="20200901 14:11:10.341" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:10.341" level="DEBUG">GET http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element/42.1051978.4.10/text {"id": "42.1051978.4.10", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:10.345" level="DEBUG">http://127.0.0.1:4723 "GET /session/B1E40425-7A56-43DB-9908-10ED4867500B/element/42.1051978.4.10/text HTTP/1.1" 200 91</msg>
+<msg timestamp="20200901 14:11:10.345" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:10.211" endtime="20200901 14:11:10.345"></status>
+</kw>
+<kw name="Quit Application" library="Zoomba.DesktopLibrary" type="teardown">
+<doc>Quit application. Application can be quit while Appium session is kept alive.
+This keyword can be used to close application during test case or between test cases.</doc>
+<msg timestamp="20200901 14:11:10.346" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/close {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:10.362" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/close HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:10.362" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:10.346" endtime="20200901 14:11:10.362"></status>
+</kw>
+<tags>
+<tag>Windows</tag>
+</tags>
+<status status="PASS" starttime="20200901 14:11:08.725" endtime="20200901 14:11:10.362" critical="yes"></status>
+</test>
+<test id="s1-t9" name="Wait Until Element is Enabled / Disabled Keyword Test">
+<kw name="Launch Application" library="Zoomba.DesktopLibrary" type="setup">
+<doc>Launch application. Application can be launched while Appium session running.
+This keyword can be used to launch application during test case or between test cases.</doc>
+<msg timestamp="20200901 14:11:10.363" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/launch {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:11.234" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/launch HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:11.234" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:10.363" endtime="20200901 14:11:11.234"></status>
+</kw>
+<kw name="Wait Until Element Is Enabled" library="Zoomba.DesktopLibrary">
+<doc>Waits until element specified with ``locator`` is enabled.</doc>
+<arguments>
+<arg>accessibility_id=MemPlus</arg>
+</arguments>
+<msg timestamp="20200901 14:11:11.235" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/elements {"using": "accessibility id", "value": "MemPlus", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:11.356" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/elements HTTP/1.1" 200 103</msg>
+<msg timestamp="20200901 14:11:11.356" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:11.356" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element {"using": "accessibility id", "value": "MemPlus", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:11.390" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/element HTTP/1.1" 200 101</msg>
+<msg timestamp="20200901 14:11:11.391" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:11.391" level="DEBUG">GET http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element/42.3214242.4.30/enabled {"id": "42.3214242.4.30", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:11.394" level="DEBUG">http://127.0.0.1:4723 "GET /session/B1E40425-7A56-43DB-9908-10ED4867500B/element/42.3214242.4.30/enabled HTTP/1.1" 200 76</msg>
+<msg timestamp="20200901 14:11:11.394" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:11.395" level="INFO">Element 'accessibility_id=MemPlus' is enabled .</msg>
+<status status="PASS" starttime="20200901 14:11:11.234" endtime="20200901 14:11:11.395"></status>
+</kw>
+<kw name="Wait Until Element Is Disabled" library="Zoomba.DesktopLibrary">
+<doc>Waits until element specified with ``locator`` is disabled.</doc>
+<arguments>
+<arg>accessibility_id=MemRecall</arg>
+</arguments>
+<msg timestamp="20200901 14:11:11.395" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/elements {"using": "accessibility id", "value": "MemRecall", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:11.513" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/elements HTTP/1.1" 200 103</msg>
+<msg timestamp="20200901 14:11:11.513" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:11.513" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element {"using": "accessibility id", "value": "MemRecall", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:11.543" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/element HTTP/1.1" 200 101</msg>
+<msg timestamp="20200901 14:11:11.544" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:11.544" level="DEBUG">GET http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element/42.3214242.4.28/enabled {"id": "42.3214242.4.28", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:11.548" level="DEBUG">http://127.0.0.1:4723 "GET /session/B1E40425-7A56-43DB-9908-10ED4867500B/element/42.3214242.4.28/enabled HTTP/1.1" 200 77</msg>
+<msg timestamp="20200901 14:11:11.548" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:11.549" level="INFO">Element 'accessibility_id=MemRecall' is disabled .</msg>
+<status status="PASS" starttime="20200901 14:11:11.395" endtime="20200901 14:11:11.549"></status>
+</kw>
+<kw name="Quit Application" library="Zoomba.DesktopLibrary" type="teardown">
+<doc>Quit application. Application can be quit while Appium session is kept alive.
+This keyword can be used to close application during test case or between test cases.</doc>
+<msg timestamp="20200901 14:11:11.549" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/close {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:11.565" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/close HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:11.566" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:11.549" endtime="20200901 14:11:11.566"></status>
+</kw>
+<tags>
+<tag>Windows</tag>
+</tags>
+<status status="PASS" starttime="20200901 14:11:10.363" endtime="20200901 14:11:11.566" critical="yes"></status>
+</test>
+<test id="s1-t10" name="Mouse Over Element Keyword Test">
+<kw name="Launch Application" library="Zoomba.DesktopLibrary" type="setup">
+<doc>Launch application. Application can be launched while Appium session running.
+This keyword can be used to launch application during test case or between test cases.</doc>
+<msg timestamp="20200901 14:11:11.567" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/launch {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:12.445" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/launch HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:12.445" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:11.566" endtime="20200901 14:11:12.445"></status>
+</kw>
+<kw name="Mouse Over Element" library="Zoomba.DesktopLibrary">
+<doc>Moves the mouse over the given ``locator``.</doc>
+<arguments>
+<arg>name=Two</arg>
+</arguments>
+<msg timestamp="20200901 14:11:12.446" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element {"using": "name", "value": "Two", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:12.499" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/element HTTP/1.1" 200 101</msg>
+<msg timestamp="20200901 14:11:12.500" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:12.501" level="INFO">Moving to element "&lt;appium.webdriver.webelement.WebElement (session="B1E40425-7A56-43DB-9908-10ED4867500B", element="42.1445188.4.60")&gt;".</msg>
+<msg timestamp="20200901 14:11:12.501" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/moveto {"element": "42.1445188.4.60", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:12.508" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/moveto HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:12.508" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:12.446" endtime="20200901 14:11:12.508"></status>
+</kw>
+<kw name="Quit Application" library="Zoomba.DesktopLibrary" type="teardown">
+<doc>Quit application. Application can be quit while Appium session is kept alive.
+This keyword can be used to close application during test case or between test cases.</doc>
+<msg timestamp="20200901 14:11:12.508" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/close {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:12.529" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/close HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:12.530" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:12.508" endtime="20200901 14:11:12.530"></status>
+</kw>
+<tags>
+<tag>Windows</tag>
+</tags>
+<status status="PASS" starttime="20200901 14:11:11.566" endtime="20200901 14:11:12.530" critical="yes"></status>
+</test>
+<test id="s1-t11" name="Mouse Over And Click Element Keyword Test">
+<kw name="Launch Application" library="Zoomba.DesktopLibrary" type="setup">
+<doc>Launch application. Application can be launched while Appium session running.
+This keyword can be used to launch application during test case or between test cases.</doc>
+<msg timestamp="20200901 14:11:12.531" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/launch {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:13.382" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/launch HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:13.382" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:12.531" endtime="20200901 14:11:13.382"></status>
+</kw>
+<kw name="Mouse Over And Click Element" library="Zoomba.DesktopLibrary">
+<doc>Moves the mouse over and clicks the given ``locator``.</doc>
+<arguments>
+<arg>name=Two</arg>
+</arguments>
+<msg timestamp="20200901 14:11:13.383" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element {"using": "name", "value": "Two", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:13.437" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/element HTTP/1.1" 200 100</msg>
+<msg timestamp="20200901 14:11:13.437" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:13.438" level="INFO">Moving to element "&lt;appium.webdriver.webelement.WebElement (session="B1E40425-7A56-43DB-9908-10ED4867500B", element="42.330950.4.60")&gt;".</msg>
+<msg timestamp="20200901 14:11:13.438" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/moveto {"element": "42.330950.4.60", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:13.441" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/moveto HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:13.442" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:13.443" level="INFO">Clicking on current mouse position with an offset of (0,0).</msg>
+<msg timestamp="20200901 14:11:13.443" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/click {"button": 0, "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:13.658" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/click HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:13.658" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:13.383" endtime="20200901 14:11:13.658"></status>
+</kw>
+<kw name="Mouse Over And Click Element" library="Zoomba.DesktopLibrary">
+<doc>Moves the mouse over and clicks the given ``locator``.</doc>
+<arguments>
+<arg>name=Two</arg>
+<arg>x_offset=400</arg>
+<arg>y_offset=100</arg>
+</arguments>
+<msg timestamp="20200901 14:11:13.659" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element {"using": "name", "value": "Two", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:13.709" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/element HTTP/1.1" 200 100</msg>
+<msg timestamp="20200901 14:11:13.709" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:13.710" level="INFO">Moving to element "&lt;appium.webdriver.webelement.WebElement (session="B1E40425-7A56-43DB-9908-10ED4867500B", element="42.330950.4.60")&gt;" with offset (400,100).</msg>
+<msg timestamp="20200901 14:11:13.710" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/moveto {"element": "42.330950.4.60", "xoffset": 400, "yoffset": 100, "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:13.713" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/moveto HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:13.713" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:13.714" level="INFO">Clicking on current mouse position with an offset of (0,0).</msg>
+<msg timestamp="20200901 14:11:13.714" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/click {"button": 0, "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:13.940" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/click HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:13.940" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:13.659" endtime="20200901 14:11:13.940"></status>
+</kw>
+<kw name="Wait Until Element Contains" library="Zoomba.DesktopLibrary">
+<doc>Waits until element specified with ``locator`` contains ``text``.</doc>
+<arguments>
+<arg>accessibility_id=CalculatorResults</arg>
+<arg>23</arg>
+</arguments>
+<msg timestamp="20200901 14:11:13.941" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/elements {"using": "accessibility id", "value": "CalculatorResults", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:14.049" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/elements HTTP/1.1" 200 102</msg>
+<msg timestamp="20200901 14:11:14.049" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:14.050" level="INFO">Verifying element 'accessibility_id=CalculatorResults' contains text '23'.</msg>
+<msg timestamp="20200901 14:11:14.050" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element {"using": "accessibility id", "value": "CalculatorResults", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:14.074" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/element HTTP/1.1" 200 100</msg>
+<msg timestamp="20200901 14:11:14.074" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:14.074" level="DEBUG">GET http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element/42.330950.4.10/text {"id": "42.330950.4.10", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:14.076" level="DEBUG">http://127.0.0.1:4723 "GET /session/B1E40425-7A56-43DB-9908-10ED4867500B/element/42.330950.4.10/text HTTP/1.1" 200 87</msg>
+<msg timestamp="20200901 14:11:14.077" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:13.941" endtime="20200901 14:11:14.077"></status>
+</kw>
+<kw name="Quit Application" library="Zoomba.DesktopLibrary" type="teardown">
+<doc>Quit application. Application can be quit while Appium session is kept alive.
+This keyword can be used to close application during test case or between test cases.</doc>
+<msg timestamp="20200901 14:11:14.077" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/close {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:14.095" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/close HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:14.095" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:14.077" endtime="20200901 14:11:14.095"></status>
+</kw>
+<tags>
+<tag>Windows</tag>
+</tags>
+<status status="PASS" starttime="20200901 14:11:12.530" endtime="20200901 14:11:14.095" critical="yes"></status>
+</test>
+<test id="s1-t12" name="Mouse Over And Context Click Element Keyword Test">
+<kw name="Launch Application" library="Zoomba.DesktopLibrary" type="setup">
+<doc>Launch application. Application can be launched while Appium session running.
+This keyword can be used to launch application during test case or between test cases.</doc>
+<msg timestamp="20200901 14:11:14.096" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/launch {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:14.983" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/launch HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:14.983" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:14.096" endtime="20200901 14:11:14.983"></status>
+</kw>
+<kw name="Mouse Over And Context Click Element" library="Zoomba.DesktopLibrary">
+<doc>Moves the mouse over and right-clicks the given ``locator``.</doc>
+<arguments>
+<arg>name=Two</arg>
+</arguments>
+<msg timestamp="20200901 14:11:14.984" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element {"using": "name", "value": "Two", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:15.033" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/element HTTP/1.1" 200 100</msg>
+<msg timestamp="20200901 14:11:15.033" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:15.034" level="INFO">Moving to element "&lt;appium.webdriver.webelement.WebElement (session="B1E40425-7A56-43DB-9908-10ED4867500B", element="42.330956.4.60")&gt;".</msg>
+<msg timestamp="20200901 14:11:15.034" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/moveto {"element": "42.330956.4.60", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:15.037" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/moveto HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:15.037" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:15.038" level="INFO">Right-clicking on current mouse position with an offset of (0,0).</msg>
+<msg timestamp="20200901 14:11:15.038" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/click {"button": 2, "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:15.264" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/click HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:15.264" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:14.983" endtime="20200901 14:11:15.264"></status>
+</kw>
+<kw name="Quit Application" library="Zoomba.DesktopLibrary" type="teardown">
+<doc>Quit application. Application can be quit while Appium session is kept alive.
+This keyword can be used to close application during test case or between test cases.</doc>
+<msg timestamp="20200901 14:11:15.265" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/close {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:15.287" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/close HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:15.287" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:15.265" endtime="20200901 14:11:15.287"></status>
+</kw>
+<tags>
+<tag>Windows</tag>
+</tags>
+<status status="PASS" starttime="20200901 14:11:14.096" endtime="20200901 14:11:15.287" critical="yes"></status>
+</test>
+<test id="s1-t13" name="Mouse Over And Double Click Element Keyword Test">
+<kw name="Launch Application" library="Zoomba.DesktopLibrary" type="setup">
+<doc>Launch application. Application can be launched while Appium session running.
+This keyword can be used to launch application during test case or between test cases.</doc>
+<msg timestamp="20200901 14:11:15.288" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/launch {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:16.147" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/launch HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:16.147" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:15.288" endtime="20200901 14:11:16.147"></status>
+</kw>
+<kw name="Mouse Over And Click Element" library="Zoomba.DesktopLibrary">
+<doc>Moves the mouse over and clicks the given ``locator``.</doc>
+<arguments>
+<arg>name=Two</arg>
+<arg>double_click=True</arg>
+</arguments>
+<msg timestamp="20200901 14:11:16.148" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element {"using": "name", "value": "Two", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:16.200" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/element HTTP/1.1" 200 100</msg>
+<msg timestamp="20200901 14:11:16.200" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:16.201" level="INFO">Moving to element "&lt;appium.webdriver.webelement.WebElement (session="B1E40425-7A56-43DB-9908-10ED4867500B", element="42.330966.4.60")&gt;".</msg>
+<msg timestamp="20200901 14:11:16.201" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/moveto {"element": "42.330966.4.60", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:16.204" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/moveto HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:16.205" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:16.206" level="INFO">Clicking on current mouse position with an offset of (0,0).</msg>
+<msg timestamp="20200901 14:11:16.206" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/doubleclick {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:16.658" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/doubleclick HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:16.658" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:16.148" endtime="20200901 14:11:16.658"></status>
+</kw>
+<kw name="Quit Application" library="Zoomba.DesktopLibrary" type="teardown">
+<doc>Quit application. Application can be quit while Appium session is kept alive.
+This keyword can be used to close application during test case or between test cases.</doc>
+<msg timestamp="20200901 14:11:16.659" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/close {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:16.674" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/close HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:16.675" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:16.659" endtime="20200901 14:11:16.675"></status>
+</kw>
+<tags>
+<tag>Windows</tag>
+</tags>
+<status status="PASS" starttime="20200901 14:11:15.287" endtime="20200901 14:11:16.675" critical="yes"></status>
+</test>
+<test id="s1-t14" name="Wait For And Mouse Over And Click Element Keyword Test">
+<kw name="Launch Application" library="Zoomba.DesktopLibrary" type="setup">
+<doc>Launch application. Application can be launched while Appium session running.
+This keyword can be used to launch application during test case or between test cases.</doc>
+<msg timestamp="20200901 14:11:16.676" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/launch {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:17.522" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/launch HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:17.522" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:16.676" endtime="20200901 14:11:17.522"></status>
+</kw>
+<kw name="Wait For And Mouse Over And Click Element" library="Zoomba.DesktopLibrary">
+<doc>Waits for, moves the mouse over, and clicks the given ``locator``.</doc>
+<arguments>
+<arg>name=Two</arg>
+</arguments>
+<msg timestamp="20200901 14:11:17.522" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/elements {"using": "name", "value": "Two", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:17.639" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/elements HTTP/1.1" 200 102</msg>
+<msg timestamp="20200901 14:11:17.640" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:17.640" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element {"using": "name", "value": "Two", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:17.687" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/element HTTP/1.1" 200 100</msg>
+<msg timestamp="20200901 14:11:17.687" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:17.688" level="INFO">Moving to element "&lt;appium.webdriver.webelement.WebElement (session="B1E40425-7A56-43DB-9908-10ED4867500B", element="42.265438.4.60")&gt;".</msg>
+<msg timestamp="20200901 14:11:17.688" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/moveto {"element": "42.265438.4.60", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:17.691" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/moveto HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:17.691" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:17.692" level="INFO">Clicking on current mouse position with an offset of (0,0).</msg>
+<msg timestamp="20200901 14:11:17.692" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/click {"button": 0, "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:17.921" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/click HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:17.921" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:17.522" endtime="20200901 14:11:17.922"></status>
+</kw>
+<kw name="Quit Application" library="Zoomba.DesktopLibrary" type="teardown">
+<doc>Quit application. Application can be quit while Appium session is kept alive.
+This keyword can be used to close application during test case or between test cases.</doc>
+<msg timestamp="20200901 14:11:17.922" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/close {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:17.941" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/close HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:17.941" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:17.922" endtime="20200901 14:11:17.941"></status>
+</kw>
+<tags>
+<tag>Windows</tag>
+</tags>
+<status status="PASS" starttime="20200901 14:11:16.675" endtime="20200901 14:11:17.942" critical="yes"></status>
+</test>
+<test id="s1-t15" name="Mouse Over by Offset Keyword Test">
+<kw name="Launch Application" library="Zoomba.DesktopLibrary" type="setup">
+<doc>Launch application. Application can be launched while Appium session running.
+This keyword can be used to launch application during test case or between test cases.</doc>
+<msg timestamp="20200901 14:11:17.943" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/launch {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:18.776" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/launch HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:18.777" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:17.942" endtime="20200901 14:11:18.777"></status>
+</kw>
+<kw name="Mouse Over Element" library="Zoomba.DesktopLibrary">
+<doc>Moves the mouse over the given ``locator``.</doc>
+<arguments>
+<arg>name=Three</arg>
+</arguments>
+<msg timestamp="20200901 14:11:18.777" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element {"using": "name", "value": "Three", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:18.831" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/element HTTP/1.1" 200 100</msg>
+<msg timestamp="20200901 14:11:18.832" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:18.833" level="INFO">Moving to element "&lt;appium.webdriver.webelement.WebElement (session="B1E40425-7A56-43DB-9908-10ED4867500B", element="42.330982.4.62")&gt;".</msg>
+<msg timestamp="20200901 14:11:18.833" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/moveto {"element": "42.330982.4.62", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:18.836" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/moveto HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:18.836" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:18.777" endtime="20200901 14:11:18.836"></status>
+</kw>
+<kw name="Mouse Over By Offset" library="Zoomba.DesktopLibrary">
+<doc>Moves the mouse from its current location by the given ``x_offset`` and ``y_offset``.</doc>
+<arguments>
+<arg>100</arg>
+<arg>-200</arg>
+</arguments>
+<msg timestamp="20200901 14:11:18.837" level="INFO">Moving mouse from current location with an offset of (100,-200).</msg>
+<msg timestamp="20200901 14:11:18.837" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/moveto {"xoffset": 100, "yoffset": -200, "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:18.839" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/moveto HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:18.839" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:18.836" endtime="20200901 14:11:18.840"></status>
+</kw>
+<kw name="Quit Application" library="Zoomba.DesktopLibrary" type="teardown">
+<doc>Quit application. Application can be quit while Appium session is kept alive.
+This keyword can be used to close application during test case or between test cases.</doc>
+<msg timestamp="20200901 14:11:18.840" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/close {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:18.861" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/close HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:18.861" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:18.840" endtime="20200901 14:11:18.861"></status>
+</kw>
+<tags>
+<tag>Windows</tag>
+</tags>
+<status status="PASS" starttime="20200901 14:11:17.942" endtime="20200901 14:11:18.861" critical="yes"></status>
+</test>
+<test id="s1-t16" name="Click A Point Keyword Test">
+<kw name="Launch Application" library="Zoomba.DesktopLibrary" type="setup">
+<doc>Launch application. Application can be launched while Appium session running.
+This keyword can be used to launch application during test case or between test cases.</doc>
+<msg timestamp="20200901 14:11:18.862" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/launch {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:19.739" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/launch HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:19.739" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:18.862" endtime="20200901 14:11:19.739"></status>
+</kw>
+<kw name="Mouse Over Element" library="Zoomba.DesktopLibrary">
+<doc>Moves the mouse over the given ``locator``.</doc>
+<arguments>
+<arg>name=Three</arg>
+</arguments>
+<msg timestamp="20200901 14:11:19.740" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element {"using": "name", "value": "Three", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:19.792" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/element HTTP/1.1" 200 100</msg>
+<msg timestamp="20200901 14:11:19.792" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:19.793" level="INFO">Moving to element "&lt;appium.webdriver.webelement.WebElement (session="B1E40425-7A56-43DB-9908-10ED4867500B", element="42.265458.4.62")&gt;".</msg>
+<msg timestamp="20200901 14:11:19.793" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/moveto {"element": "42.265458.4.62", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:19.796" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/moveto HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:19.796" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:19.739" endtime="20200901 14:11:19.796"></status>
+</kw>
+<kw name="Click A Point" library="Zoomba.DesktopLibrary">
+<doc>Clicks the current mouse location.</doc>
+<msg timestamp="20200901 14:11:19.798" level="INFO">Clicking on current mouse position with an offset of (0,0).</msg>
+<msg timestamp="20200901 14:11:19.798" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/click {"button": 0, "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:20.015" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/click HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:20.015" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:19.797" endtime="20200901 14:11:20.016"></status>
+</kw>
+<kw name="Click A Point" library="Zoomba.DesktopLibrary">
+<doc>Clicks the current mouse location.</doc>
+<arguments>
+<arg>100</arg>
+<arg>-200</arg>
+</arguments>
+<msg timestamp="20200901 14:11:20.017" level="INFO">Clicking on current mouse position with an offset of (100,-200).</msg>
+<msg timestamp="20200901 14:11:20.017" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/moveto {"xoffset": 100, "yoffset": -200, "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:20.019" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/moveto HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:20.019" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:20.019" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/click {"button": 0, "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:20.236" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/click HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:20.236" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:20.016" endtime="20200901 14:11:20.236"></status>
+</kw>
+<kw name="Click A Point" library="Zoomba.DesktopLibrary">
+<doc>Clicks the current mouse location.</doc>
+<arguments>
+<arg>double_click=True</arg>
+</arguments>
+<msg timestamp="20200901 14:11:20.238" level="INFO">Clicking on current mouse position with an offset of (0,0).</msg>
+<msg timestamp="20200901 14:11:20.238" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/doubleclick {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:21.243" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/doubleclick HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:21.244" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:20.237" endtime="20200901 14:11:21.244"></status>
+</kw>
+<kw name="Quit Application" library="Zoomba.DesktopLibrary" type="teardown">
+<doc>Quit application. Application can be quit while Appium session is kept alive.
+This keyword can be used to close application during test case or between test cases.</doc>
+<msg timestamp="20200901 14:11:21.244" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/close {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:21.271" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/close HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:21.271" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:21.244" endtime="20200901 14:11:21.271"></status>
+</kw>
+<tags>
+<tag>Windows</tag>
+</tags>
+<status status="PASS" starttime="20200901 14:11:18.862" endtime="20200901 14:11:21.271" critical="yes"></status>
+</test>
+<test id="s1-t17" name="Context Click A Point Keyword Test">
+<kw name="Launch Application" library="Zoomba.DesktopLibrary" type="setup">
+<doc>Launch application. Application can be launched while Appium session running.
+This keyword can be used to launch application during test case or between test cases.</doc>
+<msg timestamp="20200901 14:11:21.272" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/launch {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:22.210" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/launch HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:22.210" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:21.272" endtime="20200901 14:11:22.210"></status>
+</kw>
+<kw name="Mouse Over Element" library="Zoomba.DesktopLibrary">
+<doc>Moves the mouse over the given ``locator``.</doc>
+<arguments>
+<arg>name=Three</arg>
+</arguments>
+<msg timestamp="20200901 14:11:22.211" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element {"using": "name", "value": "Three", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:22.266" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/element HTTP/1.1" 200 100</msg>
+<msg timestamp="20200901 14:11:22.266" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:22.267" level="INFO">Moving to element "&lt;appium.webdriver.webelement.WebElement (session="B1E40425-7A56-43DB-9908-10ED4867500B", element="42.265462.4.62")&gt;".</msg>
+<msg timestamp="20200901 14:11:22.267" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/moveto {"element": "42.265462.4.62", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:22.270" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/moveto HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:22.271" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:22.210" endtime="20200901 14:11:22.271"></status>
+</kw>
+<kw name="Context Click A Point" library="Zoomba.DesktopLibrary">
+<doc>Right-clicks the current mouse location.</doc>
+<msg timestamp="20200901 14:11:22.272" level="INFO">Right-clicking on current mouse position with an offset of (0,0).</msg>
+<msg timestamp="20200901 14:11:22.272" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/click {"button": 2, "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:22.500" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/click HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:22.500" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:22.271" endtime="20200901 14:11:22.500"></status>
+</kw>
+<kw name="Context Click A Point" library="Zoomba.DesktopLibrary">
+<doc>Right-clicks the current mouse location.</doc>
+<arguments>
+<arg>100</arg>
+<arg>-200</arg>
+</arguments>
+<msg timestamp="20200901 14:11:22.502" level="INFO">Right-clicking on current mouse position with an offset of (100,-200).</msg>
+<msg timestamp="20200901 14:11:22.502" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/moveto {"xoffset": 100, "yoffset": -200, "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:22.503" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/moveto HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:22.504" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:22.504" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/click {"button": 2, "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:22.720" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/click HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:22.720" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:22.501" endtime="20200901 14:11:22.720"></status>
+</kw>
+<kw name="Quit Application" library="Zoomba.DesktopLibrary" type="teardown">
+<doc>Quit application. Application can be quit while Appium session is kept alive.
+This keyword can be used to close application during test case or between test cases.</doc>
+<msg timestamp="20200901 14:11:22.721" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/close {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:22.737" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/close HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:22.737" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:22.721" endtime="20200901 14:11:22.737"></status>
+</kw>
+<tags>
+<tag>Windows</tag>
+</tags>
+<status status="PASS" starttime="20200901 14:11:21.271" endtime="20200901 14:11:22.737" critical="yes"></status>
+</test>
+<test id="s1-t18" name="Send Keys Keyword Test">
+<kw name="Launch Application" library="Zoomba.DesktopLibrary" type="setup">
+<doc>Launch application. Application can be launched while Appium session running.
+This keyword can be used to launch application during test case or between test cases.</doc>
+<msg timestamp="20200901 14:11:22.738" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/launch {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:23.597" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/launch HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:23.598" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:22.738" endtime="20200901 14:11:23.598"></status>
+</kw>
+<kw name="Send Keys" library="Zoomba.DesktopLibrary">
+<doc>Sends the desired keys in ``argv``.</doc>
+<arguments>
+<arg>24</arg>
+<arg>\ue025</arg>
+<arg>2</arg>
+<arg>\ue007</arg>
+</arguments>
+<msg timestamp="20200901 14:11:23.599" level="INFO">Sending keys to application</msg>
+<msg timestamp="20200901 14:11:23.599" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/keys {"value": ["2", "4"], "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:23.750" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/keys HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:23.750" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:23.751" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/keys {"value": ["\ue025"], "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:23.830" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/keys HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:23.830" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:23.830" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/keys {"value": ["2"], "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:23.910" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/keys HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:23.910" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:23.911" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/keys {"value": ["\ue007"], "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:23.988" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/keys HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:23.988" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:23.598" endtime="20200901 14:11:23.988"></status>
+</kw>
+<kw name="Page Should Contain Text" library="Zoomba.DesktopLibrary">
+<doc>Verifies that current page contains `text`.</doc>
+<arguments>
+<arg>26</arg>
+</arguments>
+<msg timestamp="20200901 14:11:23.989" level="DEBUG">GET http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/source {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:24.282" level="DEBUG">http://127.0.0.1:4723 "GET /session/B1E40425-7A56-43DB-9908-10ED4867500B/source HTTP/1.1" 200 32889</msg>
+<msg timestamp="20200901 14:11:24.283" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:24.284" level="INFO">Current page contains text '26'.</msg>
+<status status="PASS" starttime="20200901 14:11:23.989" endtime="20200901 14:11:24.284"></status>
+</kw>
+<kw name="Quit Application" library="Zoomba.DesktopLibrary" type="teardown">
+<doc>Quit application. Application can be quit while Appium session is kept alive.
+This keyword can be used to close application during test case or between test cases.</doc>
+<msg timestamp="20200901 14:11:24.284" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/close {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:24.301" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/close HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:24.302" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:24.284" endtime="20200901 14:11:24.302"></status>
+</kw>
+<tags>
+<tag>Windows</tag>
+</tags>
+<status status="PASS" starttime="20200901 14:11:22.738" endtime="20200901 14:11:24.302" critical="yes"></status>
+</test>
+<test id="s1-t19" name="Send Keys with Modifier (Ctrl + v)">
+<kw name="Launch Application" library="Zoomba.DesktopLibrary" type="setup">
+<doc>Launch application. Application can be launched while Appium session running.
+This keyword can be used to launch application during test case or between test cases.</doc>
+<msg timestamp="20200901 14:11:24.303" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/launch {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:25.122" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/launch HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:25.123" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:24.303" endtime="20200901 14:11:25.123"></status>
+</kw>
+<kw name="Send Keys" library="Zoomba.DesktopLibrary">
+<doc>Sends the desired keys in ``argv``.</doc>
+<arguments>
+<arg>\ue009</arg>
+<arg>v</arg>
+<arg>\ue009</arg>
+</arguments>
+<msg timestamp="20200901 14:11:25.124" level="INFO">Sending keys to application</msg>
+<msg timestamp="20200901 14:11:25.124" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/keys {"value": ["\ue009"], "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:25.177" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/keys HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:25.177" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:25.177" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/keys {"value": ["v"], "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:25.255" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/keys HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:25.255" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:25.255" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/keys {"value": ["\ue009"], "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:25.302" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/keys HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:25.302" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:25.123" endtime="20200901 14:11:25.302"></status>
+</kw>
+<kw name="Wait Until Element Contains" library="Zoomba.DesktopLibrary">
+<doc>Waits until element specified with ``locator`` contains ``text``.</doc>
+<arguments>
+<arg>accessibility_id=CalculatorResults</arg>
+<arg>Display is Invalid input</arg>
+</arguments>
+<msg timestamp="20200901 14:11:25.303" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/elements {"using": "accessibility id", "value": "CalculatorResults", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:25.422" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/elements HTTP/1.1" 200 102</msg>
+<msg timestamp="20200901 14:11:25.422" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:25.423" level="INFO">Verifying element 'accessibility_id=CalculatorResults' contains text 'Display is Invalid input'.</msg>
+<msg timestamp="20200901 14:11:25.423" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element {"using": "accessibility id", "value": "CalculatorResults", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:25.446" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/element HTTP/1.1" 200 100</msg>
+<msg timestamp="20200901 14:11:25.446" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:25.446" level="DEBUG">GET http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element/42.1904058.4.1/text {"id": "42.1904058.4.1", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:25.451" level="DEBUG">http://127.0.0.1:4723 "GET /session/B1E40425-7A56-43DB-9908-10ED4867500B/element/42.1904058.4.1/text HTTP/1.1" 200 98</msg>
+<msg timestamp="20200901 14:11:25.451" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:25.303" endtime="20200901 14:11:25.451"></status>
+</kw>
+<kw name="Quit Application" library="Zoomba.DesktopLibrary" type="teardown">
+<doc>Quit application. Application can be quit while Appium session is kept alive.
+This keyword can be used to close application during test case or between test cases.</doc>
+<msg timestamp="20200901 14:11:25.451" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/close {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:25.466" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/close HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:25.467" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:25.451" endtime="20200901 14:11:25.467"></status>
+</kw>
+<tags>
+<tag>Windows</tag>
+</tags>
+<status status="PASS" starttime="20200901 14:11:24.302" endtime="20200901 14:11:25.467" critical="yes"></status>
+</test>
+<test id="s1-t20" name="Send Keys To Element Keyword Test">
+<kw name="Launch Application" library="Zoomba.DesktopLibrary" type="setup">
+<doc>Launch application. Application can be launched while Appium session running.
+This keyword can be used to launch application during test case or between test cases.</doc>
+<msg timestamp="20200901 14:11:25.468" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/launch {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:26.294" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/launch HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:26.294" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:25.468" endtime="20200901 14:11:26.294"></status>
+</kw>
+<kw name="Send Keys To Element" library="Zoomba.DesktopLibrary">
+<doc>Sends the desired keys in ``argv`` to ``locator``.</doc>
+<arguments>
+<arg>name=Display is 0</arg>
+<arg>24</arg>
+<arg>\ue025</arg>
+<arg>2</arg>
+<arg>\ue007</arg>
+</arguments>
+<msg timestamp="20200901 14:11:26.295" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element {"using": "name", "value": "Display is 0", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:26.322" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/element HTTP/1.1" 200 101</msg>
+<msg timestamp="20200901 14:11:26.323" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:26.324" level="INFO">Sending keys to element "name=Display is 0".</msg>
+<msg timestamp="20200901 14:11:26.324" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/moveto {"element": "42.5049178.4.10", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:26.326" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/moveto HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:26.327" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:26.327" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/click {"button": 0, "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:26.556" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/click HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:26.556" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:26.557" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/keys {"value": ["2", "4"], "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:26.697" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/keys HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:26.697" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:26.697" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/moveto {"element": "42.5049178.4.10", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:26.700" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/moveto HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:26.700" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:26.700" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/click {"button": 0, "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:27.485" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/click HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:27.485" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:27.485" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/keys {"value": ["\ue025"], "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:27.563" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/keys HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:27.563" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:27.564" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/moveto {"element": "42.5049178.4.10", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:27.566" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/moveto HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:27.566" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:27.566" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/click {"button": 0, "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:28.351" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/click HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:28.351" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:28.351" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/keys {"value": ["2"], "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:28.431" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/keys HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:28.431" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:28.431" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/moveto {"element": "42.5049178.4.10", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:28.434" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/moveto HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:28.434" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:28.434" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/click {"button": 0, "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:29.221" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/click HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:29.221" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:29.222" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/keys {"value": ["\ue007"], "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:29.301" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/keys HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:29.301" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:26.294" endtime="20200901 14:11:29.301"></status>
+</kw>
+<kw name="Page Should Contain Text" library="Zoomba.DesktopLibrary">
+<doc>Verifies that current page contains `text`.</doc>
+<arguments>
+<arg>26</arg>
+</arguments>
+<msg timestamp="20200901 14:11:29.302" level="DEBUG">GET http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/source {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:29.554" level="DEBUG">http://127.0.0.1:4723 "GET /session/B1E40425-7A56-43DB-9908-10ED4867500B/source HTTP/1.1" 200 32949</msg>
+<msg timestamp="20200901 14:11:29.555" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:29.556" level="INFO">Current page contains text '26'.</msg>
+<status status="PASS" starttime="20200901 14:11:29.302" endtime="20200901 14:11:29.556"></status>
+</kw>
+<kw name="Quit Application" library="Zoomba.DesktopLibrary" type="teardown">
+<doc>Quit application. Application can be quit while Appium session is kept alive.
+This keyword can be used to close application during test case or between test cases.</doc>
+<msg timestamp="20200901 14:11:29.557" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/close {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:29.575" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/close HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:29.576" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:29.557" endtime="20200901 14:11:29.576"></status>
+</kw>
+<tags>
+<tag>Windows</tag>
+</tags>
+<status status="PASS" starttime="20200901 14:11:25.467" endtime="20200901 14:11:29.576" critical="yes"></status>
+</test>
+<test id="s1-t21" name="Save Selenium Screenshot Test">
+<kw name="Launch Application" library="Zoomba.DesktopLibrary" type="setup">
+<doc>Launch application. Application can be launched while Appium session running.
+This keyword can be used to launch application during test case or between test cases.</doc>
+<msg timestamp="20200901 14:11:29.577" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/launch {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:30.445" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/launch HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:30.445" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:29.577" endtime="20200901 14:11:30.445"></status>
+</kw>
+<kw name="Save Appium Screenshot" library="Zoomba.DesktopLibrary">
+<doc>Takes a screenshot with a unique filename to be stored in Robot Framework compiled reports.</doc>
+<assign>
+<var>${file1}</var>
+</assign>
+<msg timestamp="20200901 14:11:30.446" level="DEBUG">GET http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/screenshot {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:30.592" level="DEBUG">http://127.0.0.1:4723 "GET /session/B1E40425-7A56-43DB-9908-10ED4867500B/screenshot HTTP/1.1" 200 1633574</msg>
+<msg timestamp="20200901 14:11:30.597" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:30.604" level="INFO" html="yes">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="appium-screenshot-1598987490.4455812-0.png"&gt;&lt;img src="appium-screenshot-1598987490.4455812-0.png" width="800px"&gt;&lt;/a&gt;</msg>
+<msg timestamp="20200901 14:11:30.604" level="INFO">${file1} = appium-screenshot-1598987490.4455812-0.png</msg>
+<status status="PASS" starttime="20200901 14:11:30.446" endtime="20200901 14:11:30.604"></status>
+</kw>
+<kw name="Save Appium Screenshot" library="Zoomba.DesktopLibrary">
+<doc>Takes a screenshot with a unique filename to be stored in Robot Framework compiled reports.</doc>
+<assign>
+<var>${file2}</var>
+</assign>
+<msg timestamp="20200901 14:11:30.605" level="DEBUG">GET http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/screenshot {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:30.734" level="DEBUG">http://127.0.0.1:4723 "GET /session/B1E40425-7A56-43DB-9908-10ED4867500B/screenshot HTTP/1.1" 200 1633574</msg>
+<msg timestamp="20200901 14:11:30.739" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:30.745" level="INFO" html="yes">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="appium-screenshot-1598987490.6041484-1.png"&gt;&lt;img src="appium-screenshot-1598987490.6041484-1.png" width="800px"&gt;&lt;/a&gt;</msg>
+<msg timestamp="20200901 14:11:30.746" level="INFO">${file2} = appium-screenshot-1598987490.6041484-1.png</msg>
+<status status="PASS" starttime="20200901 14:11:30.604" endtime="20200901 14:11:30.746"></status>
+</kw>
+<kw name="Should Not Be Equal" library="BuiltIn">
+<doc>Fails if the given objects are equal.</doc>
+<arguments>
+<arg>${file1}</arg>
+<arg>${file2}</arg>
+</arguments>
+<msg timestamp="20200901 14:11:30.746" level="DEBUG">Argument types are:
+&lt;type 'unicode'&gt;
+&lt;type 'unicode'&gt;</msg>
+<status status="PASS" starttime="20200901 14:11:30.746" endtime="20200901 14:11:30.746"></status>
+</kw>
+<kw name="Should Match Regexp" library="BuiltIn">
+<doc>Fails if ``string`` does not match ``pattern`` as a regular expression.</doc>
+<arguments>
+<arg>${file1}</arg>
+<arg>appium-screenshot-\\d{10}.\\d{0,8}-\\d.png</arg>
+</arguments>
+<status status="PASS" starttime="20200901 14:11:30.746" endtime="20200901 14:11:30.747"></status>
+</kw>
+<kw name="Quit Application" library="Zoomba.DesktopLibrary" type="teardown">
+<doc>Quit application. Application can be quit while Appium session is kept alive.
+This keyword can be used to close application during test case or between test cases.</doc>
+<msg timestamp="20200901 14:11:30.747" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/close {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:30.765" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/close HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:30.765" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:30.747" endtime="20200901 14:11:30.765"></status>
+</kw>
+<tags>
+<tag>Windows</tag>
+</tags>
+<status status="PASS" starttime="20200901 14:11:29.576" endtime="20200901 14:11:30.765" critical="yes"></status>
+</test>
+<test id="s1-t22" name="Xpath Should Match X Times">
+<kw name="Launch Application" library="Zoomba.DesktopLibrary" type="setup">
+<doc>Launch application. Application can be launched while Appium session running.
+This keyword can be used to launch application during test case or between test cases.</doc>
+<msg timestamp="20200901 14:11:30.766" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/launch {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:31.615" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/launch HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:31.615" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:30.766" endtime="20200901 14:11:31.616"></status>
+</kw>
+<kw name="Xpath Should Match X Times" library="Zoomba.DesktopLibrary">
+<doc>Verifies that the page contains the given number of elements located by the given ``xpath``.</doc>
+<arguments>
+<arg>//Group[@Name="Number pad"][@AutomationId="NumberPad"]/Button</arg>
+<arg>11</arg>
+</arguments>
+<msg timestamp="20200901 14:11:31.616" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/elements {"using": "xpath", "value": "//Group[@Name=\"Number pad\"][@AutomationId=\"NumberPad\"]/Button", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:31.865" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/elements HTTP/1.1" 200 392</msg>
+<msg timestamp="20200901 14:11:31.865" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:31.866" level="INFO">Current page contains 11 elements matching '//Group[@Name="Number pad"][@AutomationId="NumberPad"]/Button'.</msg>
+<status status="PASS" starttime="20200901 14:11:31.616" endtime="20200901 14:11:31.866"></status>
+</kw>
+<kw name="Quit Application" library="Zoomba.DesktopLibrary" type="teardown">
+<doc>Quit application. Application can be quit while Appium session is kept alive.
+This keyword can be used to close application during test case or between test cases.</doc>
+<msg timestamp="20200901 14:11:31.867" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/close {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:31.889" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/close HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:31.889" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:31.866" endtime="20200901 14:11:31.889"></status>
+</kw>
+<tags>
+<tag>Windows</tag>
+</tags>
+<status status="PASS" starttime="20200901 14:11:30.765" endtime="20200901 14:11:31.889" critical="yes"></status>
+</test>
+<test id="s1-t23" name="Select Element From Combobox Test">
+<kw name="Launch Application" library="Zoomba.DesktopLibrary" type="setup">
+<doc>Launch application. Application can be launched while Appium session running.
+This keyword can be used to launch application during test case or between test cases.</doc>
+<msg timestamp="20200901 14:11:31.890" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/launch {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:32.759" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/launch HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:32.759" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:31.890" endtime="20200901 14:11:32.759"></status>
+</kw>
+<kw name="Select Element From ComboBox" library="Zoomba.DesktopLibrary">
+<doc>Selects the ``element_locator`` from the combobox found by ``list_locator``.</doc>
+<arguments>
+<arg>accessibility_id=TogglePaneButton</arg>
+<arg>accessibility_id=Speed</arg>
+</arguments>
+<msg timestamp="20200901 14:11:32.761" level="INFO">Clicking element 'accessibility_id=TogglePaneButton'.</msg>
+<msg timestamp="20200901 14:11:32.761" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element {"using": "accessibility id", "value": "TogglePaneButton", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:32.783" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/element HTTP/1.1" 200 100</msg>
+<msg timestamp="20200901 14:11:32.784" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:32.784" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element/42.4656248.4.8/click {"id": "42.4656248.4.8", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:33.015" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/element/42.4656248.4.8/click HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:33.015" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:33.016" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element {"using": "accessibility id", "value": "Speed", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:33.105" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/element HTTP/1.1" 200 102</msg>
+<msg timestamp="20200901 14:11:33.105" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:33.106" level="INFO">Clicking element 'accessibility_id=Speed'.</msg>
+<msg timestamp="20200901 14:11:33.106" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element {"using": "accessibility id", "value": "Speed", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:33.182" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/element HTTP/1.1" 200 102</msg>
+<msg timestamp="20200901 14:11:33.183" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:33.183" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element/42.4656248.4.124/click {"id": "42.4656248.4.124", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:33.420" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/element/42.4656248.4.124/click HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:33.420" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:32.759" endtime="20200901 14:11:33.421"></status>
+</kw>
+<kw name="Wait Until Page Contains Element" library="Zoomba.DesktopLibrary">
+<doc>Waits until element specified with `locator` appears on current page.</doc>
+<arguments>
+<arg>accessibility_id=TogglePaneButton</arg>
+</arguments>
+<msg timestamp="20200901 14:11:33.421" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/elements {"using": "accessibility id", "value": "TogglePaneButton", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:33.560" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/elements HTTP/1.1" 200 102</msg>
+<msg timestamp="20200901 14:11:33.561" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:33.421" endtime="20200901 14:11:33.561"></status>
+</kw>
+<kw name="Select Element From ComboBox" library="Zoomba.DesktopLibrary">
+<doc>Selects the ``element_locator`` from the combobox found by ``list_locator``.</doc>
+<arguments>
+<arg>accessibility_id=Units1</arg>
+<arg>name=Knots</arg>
+</arguments>
+<msg timestamp="20200901 14:11:33.562" level="INFO">Clicking element 'accessibility_id=Units1'.</msg>
+<msg timestamp="20200901 14:11:33.562" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element {"using": "accessibility id", "value": "Units1", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:33.583" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/element HTTP/1.1" 200 102</msg>
+<msg timestamp="20200901 14:11:33.583" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:33.583" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element/42.4656248.4.136/click {"id": "42.4656248.4.136", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:33.815" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/element/42.4656248.4.136/click HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:33.815" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:33.816" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element {"using": "name", "value": "Knots", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:33.851" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/element HTTP/1.1" 200 102</msg>
+<msg timestamp="20200901 14:11:33.851" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:33.852" level="INFO">Clicking element 'name=Knots'.</msg>
+<msg timestamp="20200901 14:11:33.852" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element {"using": "name", "value": "Knots", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:33.893" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/element HTTP/1.1" 200 102</msg>
+<msg timestamp="20200901 14:11:33.894" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:33.894" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element/42.4656248.4.137/click {"id": "42.4656248.4.137", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:34.132" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/element/42.4656248.4.137/click HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:34.132" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:33.561" endtime="20200901 14:11:34.132"></status>
+</kw>
+<kw name="Wait Until Page Contains Element" library="Zoomba.DesktopLibrary">
+<doc>Waits until element specified with `locator` appears on current page.</doc>
+<arguments>
+<arg>accessibility_id=TogglePaneButton</arg>
+</arguments>
+<msg timestamp="20200901 14:11:34.133" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/elements {"using": "accessibility id", "value": "TogglePaneButton", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:34.211" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/elements HTTP/1.1" 200 102</msg>
+<msg timestamp="20200901 14:11:34.211" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:34.133" endtime="20200901 14:11:34.211"></status>
+</kw>
+<kw name="Select Element From ComboBox" library="Zoomba.DesktopLibrary">
+<doc>Selects the ``element_locator`` from the combobox found by ``list_locator``.</doc>
+<arguments>
+<arg>accessibility_id=TogglePaneButton</arg>
+<arg>accessibility_id=Standard</arg>
+</arguments>
+<msg timestamp="20200901 14:11:34.212" level="INFO">Clicking element 'accessibility_id=TogglePaneButton'.</msg>
+<msg timestamp="20200901 14:11:34.212" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element {"using": "accessibility id", "value": "TogglePaneButton", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:34.231" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/element HTTP/1.1" 200 100</msg>
+<msg timestamp="20200901 14:11:34.231" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:34.231" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element/42.4656248.4.8/click {"id": "42.4656248.4.8", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:34.464" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/element/42.4656248.4.8/click HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:34.464" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:34.464" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element {"using": "accessibility id", "value": "Standard", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:34.515" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/element HTTP/1.1" 200 101</msg>
+<msg timestamp="20200901 14:11:34.516" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:34.517" level="INFO">Clicking element 'accessibility_id=Standard'.</msg>
+<msg timestamp="20200901 14:11:34.517" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element {"using": "accessibility id", "value": "Standard", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:34.564" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/element HTTP/1.1" 200 101</msg>
+<msg timestamp="20200901 14:11:34.564" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:34.564" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/element/42.4656248.4.87/click {"id": "42.4656248.4.87", "sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:34.796" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/element/42.4656248.4.87/click HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:34.796" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:34.211" endtime="20200901 14:11:34.796"></status>
+</kw>
+<kw name="Quit Application" library="Zoomba.DesktopLibrary" type="teardown">
+<doc>Quit application. Application can be quit while Appium session is kept alive.
+This keyword can be used to close application during test case or between test cases.</doc>
+<msg timestamp="20200901 14:11:34.797" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/close {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:34.819" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/close HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:34.820" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:34.797" endtime="20200901 14:11:34.820"></status>
+</kw>
+<tags>
+<tag>Windows</tag>
+</tags>
+<status status="PASS" starttime="20200901 14:11:31.889" endtime="20200901 14:11:34.820" critical="yes"></status>
+</test>
+<test id="s1-t24" name="Switch To Desktop Test">
+<kw name="Launch Application" library="Zoomba.DesktopLibrary" type="setup">
+<doc>Launch application. Application can be launched while Appium session running.
+This keyword can be used to launch application during test case or between test cases.</doc>
+<msg timestamp="20200901 14:11:34.821" level="DEBUG">POST http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/launch {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:35.709" level="DEBUG">http://127.0.0.1:4723 "POST /session/B1E40425-7A56-43DB-9908-10ED4867500B/appium/app/launch HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:35.709" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:34.821" endtime="20200901 14:11:35.709"></status>
+</kw>
+<kw name="Close Application" library="Zoomba.DesktopLibrary">
+<doc>Closes the current application and also close webdriver session.</doc>
+<msg timestamp="20200901 14:11:35.710" level="DEBUG">Closing application with session id B1E40425-7A56-43DB-9908-10ED4867500B</msg>
+<msg timestamp="20200901 14:11:35.710" level="DEBUG">DELETE http://127.0.0.1:4723/session/B1E40425-7A56-43DB-9908-10ED4867500B {"sessionId": "B1E40425-7A56-43DB-9908-10ED4867500B"}</msg>
+<msg timestamp="20200901 14:11:35.727" level="DEBUG">http://127.0.0.1:4723 "DELETE /session/B1E40425-7A56-43DB-9908-10ED4867500B HTTP/1.1" 200 12</msg>
+<msg timestamp="20200901 14:11:35.727" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:35.709" endtime="20200901 14:11:35.727"></status>
+</kw>
+<kw name="Switch Application" library="Zoomba.DesktopLibrary">
+<doc>Switches the active application by index or alias.</doc>
+<arguments>
+<arg>Desktop</arg>
+</arguments>
+<status status="PASS" starttime="20200901 14:11:35.728" endtime="20200901 14:11:35.728"></status>
+</kw>
+<kw name="Click Element" library="Zoomba.DesktopLibrary">
+<doc>Click element identified by `locator`.</doc>
+<arguments>
+<arg>name=Start</arg>
+</arguments>
+<msg timestamp="20200901 14:11:35.729" level="INFO">Clicking element 'name=Start'.</msg>
+<msg timestamp="20200901 14:11:35.729" level="DEBUG">POST http://127.0.0.1:4723/session/4133369B-437F-4747-A024-1045AAAE6B46/element {"using": "name", "value": "Start", "sessionId": "4133369B-437F-4747-A024-1045AAAE6B46"}</msg>
+<msg timestamp="20200901 14:11:35.971" level="DEBUG">http://127.0.0.1:4723 "POST /session/4133369B-437F-4747-A024-1045AAAE6B46/element HTTP/1.1" 200 94</msg>
+<msg timestamp="20200901 14:11:35.971" level="DEBUG">Finished Request</msg>
+<msg timestamp="20200901 14:11:35.971" level="DEBUG">POST http://127.0.0.1:4723/session/4133369B-437F-4747-A024-1045AAAE6B46/element/42.65698/click {"id": "42.65698", "sessionId": "4133369B-437F-4747-A024-1045AAAE6B46"}</msg>
+<msg timestamp="20200901 14:11:36.207" level="DEBUG">http://127.0.0.1:4723 "POST /session/4133369B-437F-4747-A024-1045AAAE6B46/element/42.65698/click HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:36.207" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:35.728" endtime="20200901 14:11:36.207"></status>
+</kw>
+<kw name="Quit Application" library="Zoomba.DesktopLibrary" type="teardown">
+<doc>Quit application. Application can be quit while Appium session is kept alive.
+This keyword can be used to close application during test case or between test cases.</doc>
+<msg timestamp="20200901 14:11:36.208" level="DEBUG">POST http://127.0.0.1:4723/session/4133369B-437F-4747-A024-1045AAAE6B46/appium/app/close {"sessionId": "4133369B-437F-4747-A024-1045AAAE6B46"}</msg>
+<msg timestamp="20200901 14:11:36.209" level="DEBUG">http://127.0.0.1:4723 "POST /session/4133369B-437F-4747-A024-1045AAAE6B46/appium/app/close HTTP/1.1" 200 63</msg>
+<msg timestamp="20200901 14:11:36.209" level="DEBUG">Finished Request</msg>
+<status status="PASS" starttime="20200901 14:11:36.208" endtime="20200901 14:11:36.210"></status>
+</kw>
+<tags>
+<tag>Windows</tag>
+</tags>
+<status status="PASS" starttime="20200901 14:11:34.820" endtime="20200901 14:11:36.210" critical="yes"></status>
+</test>
+<kw name="Driver Teardown" library="Zoomba.DesktopLibrary" type="teardown">
+<status status="PASS" starttime="20200901 14:11:36.212" endtime="20200901 14:11:36.224"></status>
+</kw>
+<doc>Zoomba Desktop Library Tests.</doc>
+<status status="PASS" starttime="20200901 14:10:57.268" endtime="20200901 14:11:36.224"></status>
+</suite>
+<statistics>
+<total>
+<stat pass="24" fail="0">Critical Tests</stat>
+<stat pass="24" fail="0">All Tests</stat>
+</total>
+<tag>
+<stat pass="24" fail="0">Windows</stat>
+</tag>
+<suite>
+<stat pass="24" fail="0" id="s1" name="DesktopTests">DesktopTests</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>

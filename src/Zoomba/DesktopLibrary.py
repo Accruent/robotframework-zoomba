@@ -1,10 +1,9 @@
 import os
-import psutil
 import subprocess
 import itertools
 from AppiumLibrary import AppiumLibrary
 from appium import webdriver
-from psutil import NoSuchProcess
+from psutil import Process, NoSuchProcess
 from robot.api.deco import keyword
 from robot.libraries.BuiltIn import BuiltIn
 
@@ -18,25 +17,29 @@ SCREENSHOT_COUNTER = itertools.count()
 
 class WinAppDriver:
     def __init__(self, driver_path=""):
-        self.f = open(os.devnull, 'w')
         self.process = None
         self.driver_path = driver_path
 
-    @keyword("Driver Setup")
     def set_up_driver(self, path=None):
         if path is None:
             path = self.driver_path
-        self.process = subprocess.Popen([path], shell=True, stdin=None, stdout=self.f,
+        try:
+            stdout = open(os.devnull, 'w')
+            self.process = subprocess.Popen([path], shell=True, stdin=None, stdout=stdout,
                                         stderr=None, close_fds=False)
+            stdout.close()
+        except:
+            stdout.close()
 
-    @keyword("Driver Teardown")
     def tear_down_driver(self):
         try:
-            process = psutil.Process(self.process.pid)
+            process = Process(self.process.pid)
             for pro in process.children(recursive=True):
                 pro.kill()
-            process.kill()
-        except NoSuchProcess:
+                pro.wait()
+            self.process.kill()
+            self.process.wait()
+        except (NoSuchProcess, AttributeError):
             os.system("taskkill /f /im WinAppDriver.exe")
 
 
