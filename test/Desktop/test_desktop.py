@@ -24,6 +24,13 @@ class TestInternal(unittest.TestCase):
         self.assertFalse(dl.winappdriver.process)
 
     @patch('subprocess.Popen')
+    def test_driver_setup_failure(self, Popen):
+        Popen.side_effect = Exception
+        dl = DesktopLibrary()
+        dl.driver_setup()
+        self.assertFalse(dl.winappdriver.process)
+
+    @patch('subprocess.Popen')
     def test_teardown_without_setup(self, Popen):
         Popen.return_value = 1
         dl = DesktopLibrary()
@@ -36,8 +43,10 @@ class TestInternal(unittest.TestCase):
         popen.return_value = 1
         dl = DesktopLibrary()
         # dl.winappdriver.process = MagicMock()
+        child_process = MagicMock()
         process.pid = 1
-        process.children = [2, 3]
+        process.return_value = process
+        process.children = [child_process]
         self.assertTrue(process)
         dl.driver_teardown()
         # process.children.kill.assert_called()

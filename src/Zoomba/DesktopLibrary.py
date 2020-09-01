@@ -28,6 +28,7 @@ class WinAppDriver:
             self.process = subprocess.Popen([path], stdout=stdout)
             stdout.close()
         except Exception:
+            self.process = None
             stdout.close()
 
     def tear_down_driver(self):
