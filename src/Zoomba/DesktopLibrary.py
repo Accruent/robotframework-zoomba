@@ -25,7 +25,7 @@ class WinAppDriver:
             path = self.driver_path
         try:
             stdout = open(os.devnull, 'w')
-            self.process = subprocess.Popen([path], shell=True, stdin=None, stdout=stdout,
+            self.process = subprocess.Popen([path], shell=False, stdin=None, stdout=stdout,
                                         stderr=None, close_fds=False)
             stdout.close()
         except:
