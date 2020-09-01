@@ -26,7 +26,7 @@ class WinAppDriver:
         try:
             stdout = open(os.devnull, 'w')
             self.process = subprocess.Popen([path], shell=False, stdin=None, stdout=stdout,
-                                        stderr=None, close_fds=False)
+                                            stderr=None, close_fds=False)
             stdout.close()
         except:
             stdout.close()
@@ -39,8 +39,10 @@ class WinAppDriver:
                 pro.wait()
             self.process.kill()
             self.process.wait()
+            self.process = None
         except (NoSuchProcess, AttributeError):
             os.system("taskkill /f /im WinAppDriver.exe")
+            self.process = None
 
 
 class DesktopLibrary(AppiumLibrary):
