@@ -32,13 +32,12 @@ class ReactSelect:
         multi = self._el.get_attribute("multiple")
         self.is_multiple = multi and multi != "false"
 
-    @property
     def options(self):
         """Returns a list of all options belonging to the React-Select container"""
         self.expand_select_list()
         return self._el.find_elements_by_xpath('./div[2]/div[1]/div')
 
-    @property
+    @property   # ToDo: evaluate if setting this decorator is necessary
     def is_expanded(self):
         """Checks if the React-Select container is expanded by checking if the Menu <div> exists as a child of the container"""
         menu_elements = self._el.find_elements_by_xpath('./div[2]')
