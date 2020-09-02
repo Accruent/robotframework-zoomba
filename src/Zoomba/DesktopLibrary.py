@@ -81,15 +81,19 @@ class DesktopLibrary(AppiumLibrary):
     def __init__(self, timeout=5, run_on_failure='Save Appium Screenshot',
                  driver_path="C:\\Program Files (x86)\\Windows Application Driver\\WinAppDriver.exe"):
         """DesktopLibrary can be imported with optional arguments.
+
         ``timeout`` is the default timeout used to wait for all waiting actions.
         It can be later set with `Set Appium Timeout`.
+
         ``run_on_failure`` specifies the name of a keyword (from any available
         libraries) to execute when a DesktopLibrary keyword fails.
         By default `Save Appium Screenshot` will be used to take a screenshot of the current page.
-        Using the value `No Operation` will disable this feature altogether. See
+        Using the value ``No Operation`` will disable this feature altogether. See
         `Register Keyword To Run On Failure` keyword for more information about this
         functionality.
+
         ``driver_path`` is the path to the WinAppDriver.exe file.
+
         Examples:
         | Library | DesktopLibrary | 10 | # Sets default timeout to 10 seconds                                                                             |
         | Library | DesktopLibrary | timeout=10 | run_on_failure=No Operation | # Sets default timeout to 10 seconds and does nothing on failure           |
@@ -133,8 +137,9 @@ class DesktopLibrary(AppiumLibrary):
     @keyword("Driver Setup")
     def driver_setup(self, path=None):
         """Starts the WinAppDriver.
+
         ``path`` can be provided if your winappdriver intallation is not in the default path of
-        'C:\Program Files (x86)\Windows Application Driver\WinAppDriver.exe'."""
+        ``C:\Program Files (x86)\Windows Application Driver\WinAppDriver.exe``."""
         self.winappdriver.set_up_driver(path)
 
     @keyword("Driver Teardown")
