@@ -89,9 +89,11 @@ class DesktopLibrary(AppiumLibrary):
         Using the value `No Operation` will disable this feature altogether. See
         `Register Keyword To Run On Failure` keyword for more information about this
         functionality.
+        ``driver_path`` is the path to the WinAppDriver.exe file.
         Examples:
         | Library | DesktopLibrary | 10 | # Sets default timeout to 10 seconds                                                                             |
         | Library | DesktopLibrary | timeout=10 | run_on_failure=No Operation | # Sets default timeout to 10 seconds and does nothing on failure           |
+        | Library | DesktopLibrary | timeout=10 | driver_path="C:/WinAppDriver.exe" | # Sets a new path for the WinAppDriver                               |
         """
         self.winappdriver = WinAppDriver(driver_path)
         super().__init__(timeout, run_on_failure)
@@ -129,17 +131,20 @@ class DesktopLibrary(AppiumLibrary):
         ]
 
     @keyword("Driver Setup")
-    def driver_setup(self):
-        self.winappdriver.set_up_driver()
+    def driver_setup(self, path=None):
+        """Starts the WinAppDriver.
+        ``path`` can be provided if your winappdriver intallation is not in the default path of
+        'C:\Program Files (x86)\Windows Application Driver\WinAppDriver.exe'."""
+        self.winappdriver.set_up_driver(path)
 
     @keyword("Driver Teardown")
     def driver_teardown(self):
+        """Stops the WinAppDriver."""
         self.winappdriver.tear_down_driver()
 
     @keyword("Maximize Window")
     def maximize_window(self):
-        """Maximizes the current application window.
-        """
+        """Maximizes the current application window."""
         driver = self._current_application()
         driver.maximize_window()
         return True
@@ -646,7 +651,6 @@ class DesktopLibrary(AppiumLibrary):
     def select_element_from_combobox(self, list_locator, element_locator, skip_to_desktop=False):
         """Selects the ``element_locator`` from the combobox found by ``list_locator``.
 
-        The keyword first checks the current application for the combobox list elements. If it is not found it will
         The keyword first checks the current application for the combobox list elements. If it is not found it will
         switch to the desktop session to look for the elements as many windows applications house the actual combobox
         items in a pane off of the desktop. ``skip_to_desktop`` can be set to ``True`` in order to go straight to the

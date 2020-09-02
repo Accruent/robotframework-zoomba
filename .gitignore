@@ -15,6 +15,6 @@ test/*/*.xml
 src/zoomba.egg-info/*
 src/robotframework_zoomba.egg-info/*
 .vscode/*
-/samples/log.html
-/samples/output.xml
-/samples/report.html
+log.html
+output.xml
+report.html
