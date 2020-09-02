@@ -41,8 +41,7 @@ class WinAppDriver:
             self.process.wait()
             self.process = None
         except (NoSuchProcess, AttributeError):
-            subprocess.call("taskkill /f /im WinAppDriver.exe", shell=False)
-            # os.system("taskkill /f /im WinAppDriver.exe")
+            subprocess.call("C:/Windows/system32/taskkill.exe /f /im WinAppDriver.exe", shell=False)
             self.process = None
 
 
