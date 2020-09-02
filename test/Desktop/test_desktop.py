@@ -1,22 +1,23 @@
-from selenium.common.exceptions import WebDriverException, NoSuchElementException
-from Zoomba.DesktopLibrary import DesktopLibrary
-import unittest
-from appium import webdriver
-import subprocess
-from unittest.mock import MagicMock, patch
 import sys
 import os
+import psutil
+import unittest
+import subprocess
+from selenium.common.exceptions import WebDriverException, NoSuchElementException
+from Zoomba.DesktopLibrary import DesktopLibrary
+from appium import webdriver
+from unittest.mock import MagicMock, patch
 sys.path.append(os.path.join(os.path.dirname(sys.path[0]), 'Helpers'))
 from webdriverremotemock import WebdriverRemoteMock
-import psutil
 
 
 class TestInternal(unittest.TestCase):
     def test_get_keyword_names_successful(self):
         DesktopLibrary().get_keyword_names()
 
+    @patch('subprocess.call')
     @patch('subprocess.Popen')
-    def test_driver_setup_and_teardown(self, Popen):
+    def test_driver_setup_and_teardown(self, Popen, call):
         Popen.return_value = 1
         dl = DesktopLibrary()
         dl.driver_setup()
@@ -31,9 +32,8 @@ class TestInternal(unittest.TestCase):
         dl.driver_setup()
         self.assertFalse(dl.winappdriver.process)
 
-    @patch('subprocess.Popen')
-    def test_teardown_without_setup(self, Popen):
-        Popen.return_value = 1
+    @patch('subprocess.call')
+    def test_teardown_without_setup(self, call):
         dl = DesktopLibrary()
         dl.driver_teardown()
         self.assertFalse(dl.winappdriver.process)
@@ -45,7 +45,6 @@ class TestInternal(unittest.TestCase):
         dl.winappdriver.process.pid = 1
         psutil.Process.create_time = MagicMock()
         psutil.Process.children = MagicMock(return_value=[mock_child])
-        dl.driver_setup()
         self.assertFalse(dl.winappdriver.process is None)
         dl.driver_teardown()
         self.assertTrue(dl.winappdriver.process is None)
