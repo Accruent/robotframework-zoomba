@@ -68,29 +68,30 @@ class DesktopLibrary(AppiumLibrary):
         libraries from being referenced and used.
         """
         return [
-            'maximize_window', 'open_application', 'wait_for_and_clear_text', 'wait_for_and_click_element',
-            'wait_for_and_click_text', 'wait_for_and_input_password', 'wait_for_and_input_text',
-            'wait_for_and_long_press', 'wait_until_element_contains', 'wait_until_element_does_not_contain',
-            'wait_until_element_is_enabled', 'wait_until_element_is_disabled', 'switch_application_by_name',
-            'mouse_over_element', 'wait_for_and_mouse_over_element', 'mouse_over_and_click_element',
-            'wait_for_and_mouse_over_and_click_element', 'mouse_over_text', 'wait_for_and_mouse_over_text',
-            'mouse_over_and_click_text', 'wait_for_and_mouse_over_and_click_text', 'click_a_point',
-            'context_click_a_point', 'mouse_over_and_context_click_element', 'mouse_over_and_context_click_text',
-            'mouse_over_by_offset', 'drag_and_drop', 'drag_and_drop_by_offset', 'send_keys', 'send_keys_to_element',
-            'capture_page_screenshot', 'save_appium_screenshot', 'select_element_from_combobox', 'get_source',
-            'click_text',
+            'maximize_window', 'open_application', 'wait_for_and_clear_text',
+            'wait_for_and_click_element', 'wait_for_and_input_password', 'wait_for_and_input_text',
+            'wait_for_and_long_press', 'wait_until_element_contains',
+            'wait_until_element_does_not_contain', 'wait_until_element_is_enabled',
+            'wait_until_element_is_disabled', 'switch_application_by_name', 'mouse_over_element',
+            'wait_for_and_mouse_over_element', 'mouse_over_and_click_element',
+            'wait_for_and_mouse_over_and_click_element', 'click_a_point', 'context_click_a_point',
+            'mouse_over_and_context_click_element', 'mouse_over_by_offset', 'drag_and_drop',
+            'drag_and_drop_by_offset', 'send_keys', 'send_keys_to_element',
+            'capture_page_screenshot', 'save_appium_screenshot', 'select_element_from_combobox',
             # External Libraries
-            'clear_text', 'click_button', 'click_element', 'close_all_applications', 'close_application',
-            'element_attribute_should_match', 'element_should_be_disabled', "element_should_be_enabled",
-            'element_should_be_visible', 'element_should_contain_text', 'element_should_not_contain_text',
-            'element_text_should_be', 'get_appium_sessionId', 'get_appium_timeout', 'get_capability',
-            'get_element_attribute', 'get_element_location', 'get_element_size', 'get_webelement',
-            'get_webelements', 'get_window_height', 'get_window_width', 'input_password', 'input_text',
-            'launch_application', 'log_source', 'long_press', 'page_should_contain_element', 'page_should_contain_text',
+            'clear_text', 'click_button', 'click_element', 'close_all_applications',
+            'close_application', 'element_attribute_should_match', 'element_should_be_disabled',
+            "element_should_be_enabled", 'element_should_be_visible', 'element_should_contain_text',
+            'element_should_not_contain_text', 'element_text_should_be', 'get_appium_sessionId',
+            'get_appium_timeout', 'get_capability', 'get_element_attribute', 'get_element_location',
+            'get_element_size', 'get_webelement', 'get_webelements', 'get_window_height',
+            'get_window_width', 'input_password', 'input_text', 'launch_application', 'log_source',
+            'long_press', 'page_should_contain_element', 'page_should_contain_text',
             'page_should_not_contain_element', 'page_should_not_contain_text', 'quit_application',
-            'register_keyword_to_run_on_failure', 'set_appium_timeout', 'switch_application', 'text_should_be_visible',
-            'wait_until_element_is_visible', 'wait_until_page_contains', 'wait_until_page_contains_element',
-            'wait_until_page_does_not_contain', 'wait_until_page_does_not_contain_element', 'get_matching_xpath_count',
+            'register_keyword_to_run_on_failure', 'set_appium_timeout', 'switch_application',
+            'text_should_be_visible', 'wait_until_element_is_visible', 'wait_until_page_contains',
+            'wait_until_page_contains_element', 'wait_until_page_does_not_contain',
+            'wait_until_page_does_not_contain_element', 'get_matching_xpath_count',
             'xpath_should_match_x_times'
         ]
 
@@ -246,19 +247,6 @@ class DesktopLibrary(AppiumLibrary):
         Use `Wait For And Mouse Over And Click Element` if this keyword gives issues in the application."""
         self._wait_until_page_contains_element(locator, timeout, error)
         self.click_element(locator)
-
-    @keyword("Click Text")
-    def click_text(self, text, exact_match=False):
-        """*DEPRECATED in DesktopLibrary 2.4.0* Use `Click Element` with the ``name`` prefix instead.
-        """
-        self._element_find_by_text(text, exact_match).click()
-
-    @keyword("Wait For And Click Text")
-    def wait_for_and_click_text(self, text, exact_match=False, timeout=None, error=None):
-        """*DEPRECATED in DesktopLibrary 2.4.0* Use `Wait For And Click Element` with the ``name`` prefix instead.
-        """
-        self._wait_until_page_contains(text, timeout, error)
-        self.click_text(text, exact_match)
 
     @keyword("Wait For And Input Password")
     def wait_for_and_input_password(self, locator, text, timeout=None, error=None):
@@ -416,47 +404,6 @@ class DesktopLibrary(AppiumLibrary):
         """
         self._wait_until_page_contains_element(locator, timeout, error)
         self.mouse_over_and_click_element(locator, double_click, x_offset, y_offset)
-
-    @keyword("Mouse Over Text")
-    def mouse_over_text(self, text, exact_match=False, x_offset=0, y_offset=0):
-        """*DEPRECATED in DesktopLibrary 2.4.0* Use `Mouse Over Element` with the ``name`` prefix instead.
-        """
-        driver = self._current_application()
-        element = self._element_find_by_text(text, exact_match)
-        actions = ActionChains(driver)
-        self._move_to_element(actions, element, x_offset, y_offset)
-        actions.perform()
-
-    @keyword("Wait For And Mouse Over Text")
-    def wait_for_and_mouse_over_text(self, text, exact_match=False, timeout=None, error=None, x_offset=0, y_offset=0):
-        """*DEPRECATED in DesktopLibrary 2.4.0* Use `Wait For And Mouse Over Element` with the ``name`` prefix instead.
-        """
-        self._wait_until_page_contains(text, timeout, error)
-        self.mouse_over_text(text, exact_match, x_offset, y_offset)
-
-    @keyword("Mouse Over And Click Text")
-    def mouse_over_and_click_text(self, text, exact_match=False, double_click=False, x_offset=0, y_offset=0):
-        """*DEPRECATED in DesktopLibrary 2.4.0* Use `Mouse Over And Click Element` with the ``name`` prefix instead.
-        """
-        self.mouse_over_text(text, exact_match=exact_match, x_offset=x_offset, y_offset=y_offset)
-        self.click_a_point(double_click=double_click)
-
-    @keyword("Mouse Over And Context Click Text")
-    def mouse_over_and_context_click_text(self, text, exact_match=False, x_offset=0, y_offset=0):
-        """*DEPRECATED in DesktopLibrary 2.4.0* Use `Mouse Over And Context Click Element` with the ``name``
-        prefix instead.
-        """
-        self.mouse_over_text(text, exact_match=exact_match, x_offset=x_offset, y_offset=y_offset)
-        self.context_click_a_point()
-
-    @keyword("Wait For And Mouse Over And Click Text")
-    def wait_for_and_mouse_over_and_click_text(self, text, exact_match=False, timeout=None, error=None,
-                                               double_click=False, x_offset=0, y_offset=0):
-        """*DEPRECATED in DesktopLibrary 2.4.0* Use `Wait For And Mouse Over And Click Element` with the ``name``
-         prefix instead.
-        """
-        self._wait_until_page_contains(text, timeout, error)
-        self.mouse_over_and_click_text(text, exact_match, double_click, x_offset, y_offset)
 
     @keyword("Mouse Over By Offset")
     def mouse_over_by_offset(self, x_offset=0, y_offset=0):
@@ -629,13 +576,6 @@ class DesktopLibrary(AppiumLibrary):
             self.switch_application(original_index)
 
     # Private
-    def _element_find_by_text(self, text, exact_match=False):
-        if exact_match:
-            _xpath = u'//*[@{}="{}"]'.format('Name', text)
-        else:
-            _xpath = u'//*[contains(@{},"{}")]'.format('Name', text)
-        return self._element_find(_xpath, True, True)
-
     def _move_to_element(self, actions, element, x_offset=0, y_offset=0):
         if x_offset != 0 or y_offset != 0:
             self._info('Moving to element "' + str(element) + '" with offset (%s,%s).' % (x_offset, y_offset))
@@ -693,12 +633,6 @@ class DesktopLibrary(AppiumLibrary):
                 prefix = locator_parts[0].strip().lower()
                 criteria = locator_parts[2].strip()
         return prefix, criteria
-    
-    def _wait_until_page_contains(self, text, timeout=None, error=None):
-        """Internal version to avoid duplicate screenshots"""
-        if not error:
-            error = "Text '%s' did not appear in <TIMEOUT>" % text
-        self._wait_until(timeout, error, self._is_text_present, text)
 
     def _wait_until_page_contains_element(self, locator, timeout=None, error=None):
         """Internal version to avoid duplicate screenshots"""
