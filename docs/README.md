@@ -94,7 +94,7 @@ Scroll Up To Text         text
 #### [Desktop Library](https://accruent.github.io/robotframework-zoomba/DesktopLibraryDocumentation.html):
 Also extends [AppiumLibrary](https://github.com/serhatbolsu/robotframework-appiumlibrary) to tailor it Windows desktop automation. This includes enhancements to base keywords such as [Open Application](https://accruent.github.io/robotframework-zoomba/DesktopLibraryDocumentation.html#Open%20Application) or [Click Element](https://accruent.github.io/robotframework-zoomba/DesktopLibraryDocumentation.html#Click%20Element) to perform better for windows. Other notable additions include:
 
-Start and Stop the WinAppDriver as needed (best used for suite setup/teardown:
+Start and Stop the WinAppDriver as needed (best used for suite setup/teardown):
 ```robotframework
 Driver Setup
 Driver Teardown
