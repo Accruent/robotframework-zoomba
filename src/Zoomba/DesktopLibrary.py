@@ -139,7 +139,7 @@ class DesktopLibrary(AppiumLibrary):
         """Starts the WinAppDriver.
 
         ``path`` can be provided if your winappdriver intallation is not in the default path of
-        ``C:\Program Files (x86)\Windows Application Driver\WinAppDriver.exe``."""
+        ``C:/Program Files (x86)/Windows Application Driver/WinAppDriver.exe``."""
         self.winappdriver.set_up_driver(path)
 
     @keyword("Driver Teardown")
