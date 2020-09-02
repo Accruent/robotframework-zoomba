@@ -1,9 +1,11 @@
+import os
+import subprocess
 import itertools
 from AppiumLibrary import AppiumLibrary
 from appium import webdriver
+from psutil import Process, NoSuchProcess
 from robot.api.deco import keyword
 from robot.libraries.BuiltIn import BuiltIn
-import subprocess
 
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.action_chains import ActionChains
@@ -11,6 +13,36 @@ from time import sleep, time
 
 zoomba = BuiltIn()
 SCREENSHOT_COUNTER = itertools.count()
+
+
+class WinAppDriver:
+    def __init__(self, driver_path=""):
+        self.process = None
+        self.driver_path = driver_path
+
+    def set_up_driver(self, path=None):
+        if path is None:
+            path = self.driver_path
+        try:
+            stdout = open(os.devnull, 'w')
+            self.process = subprocess.Popen([path], stdout=stdout)
+            stdout.close()
+        except Exception:
+            self.process = None
+            stdout.close()
+
+    def tear_down_driver(self):
+        try:
+            process = Process(self.process.pid)
+            for pro in process.children(recursive=True):
+                pro.kill()
+                pro.wait()
+            self.process.kill()
+            self.process.wait()
+            self.process = None
+        except (NoSuchProcess, AttributeError):
+            subprocess.call("C:/Windows/system32/taskkill.exe /f /im WinAppDriver.exe", shell=False)
+            self.process = None
 
 
 class DesktopLibrary(AppiumLibrary):
@@ -46,20 +78,28 @@ class DesktopLibrary(AppiumLibrary):
     ``Wait Until Page Contains`` or ``Wait Until Page Contains Element``.
     """
 
-    def __init__(self, timeout=5, run_on_failure='Save Appium Screenshot'):
+    def __init__(self, timeout=5, run_on_failure='Save Appium Screenshot',
+                 driver_path="C:\\Program Files (x86)\\Windows Application Driver\\WinAppDriver.exe"):
         """DesktopLibrary can be imported with optional arguments.
+
         ``timeout`` is the default timeout used to wait for all waiting actions.
         It can be later set with `Set Appium Timeout`.
+
         ``run_on_failure`` specifies the name of a keyword (from any available
         libraries) to execute when a DesktopLibrary keyword fails.
         By default `Save Appium Screenshot` will be used to take a screenshot of the current page.
-        Using the value `No Operation` will disable this feature altogether. See
+        Using the value ``No Operation`` will disable this feature altogether. See
         `Register Keyword To Run On Failure` keyword for more information about this
         functionality.
+
+        ``driver_path`` is the path to the WinAppDriver.exe file.
+
         Examples:
         | Library | DesktopLibrary | 10 | # Sets default timeout to 10 seconds                                                                             |
         | Library | DesktopLibrary | timeout=10 | run_on_failure=No Operation | # Sets default timeout to 10 seconds and does nothing on failure           |
+        | Library | DesktopLibrary | timeout=10 | driver_path="C:/WinAppDriver.exe" | # Sets a new path for the WinAppDriver                               |
         """
+        self.winappdriver = WinAppDriver(driver_path)
         super().__init__(timeout, run_on_failure)
 
     def get_keyword_names(self):
@@ -78,6 +118,7 @@ class DesktopLibrary(AppiumLibrary):
             'mouse_over_and_context_click_element', 'mouse_over_by_offset', 'drag_and_drop',
             'drag_and_drop_by_offset', 'send_keys', 'send_keys_to_element',
             'capture_page_screenshot', 'save_appium_screenshot', 'select_element_from_combobox',
+            'driver_setup', 'driver_teardown',
             # External Libraries
             'clear_text', 'click_button', 'click_element', 'close_all_applications',
             'close_application', 'element_attribute_should_match', 'element_should_be_disabled',
@@ -95,10 +136,22 @@ class DesktopLibrary(AppiumLibrary):
             'xpath_should_match_x_times'
         ]
 
+    @keyword("Driver Setup")
+    def driver_setup(self, path=None):
+        """Starts the WinAppDriver.
+
+        ``path`` can be provided if your winappdriver intallation is not in the default path of
+        ``C:/Program Files (x86)/Windows Application Driver/WinAppDriver.exe``."""
+        self.winappdriver.set_up_driver(path)
+
+    @keyword("Driver Teardown")
+    def driver_teardown(self):
+        """Stops the WinAppDriver."""
+        self.winappdriver.tear_down_driver()
+
     @keyword("Maximize Window")
     def maximize_window(self):
-        """Maximizes the current application window.
-        """
+        """Maximizes the current application window."""
         driver = self._current_application()
         driver.maximize_window()
         return True
