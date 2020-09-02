@@ -1,20 +1,22 @@
 *** Settings ***
-Documentation     Zoomba Desktop Library Tests. Requires Appium Server/WinAppDriver running on port 4723.
+Documentation     Zoomba Desktop Library Tests.
 Library           Zoomba.DesktopLibrary
 Suite Setup       Start App
 Test Setup        Launch Application
 Test Teardown     Quit Application
-Suite Teardown    Close All Applications
+Suite Teardown    Driver Teardown
 Force Tags        Windows
 
 *** Variables ***
 #${REMOTE_URL}           http://127.0.0.1:4723/wd/hub     #If using Appium
-${REMOTE_URL}           http://127.0.0.1:4723             #If Using WinAppDriver directly (suggested)
+${REMOTE_URL}           http://127.0.0.1:4723             #If Using WinAppDriver directly (suggested as 'Driver Setup'
+                                                          #will start it automatically)
 ${APP}                  Microsoft.WindowsCalculator_8wekyb3d8bbwe!App
 
 *** Keywords ***
 Start App
-    [Documentation]     Sets up the application for quick launching through 'Launch Application'
+    [Documentation]     Sets up the application for quick launching through 'Launch Application' and starts the winappdriver
+    Driver Setup
     Open Application    ${REMOTE_URL}     platformName=Windows    deviceName=Windows   app=${APP}
     Maximize Window
     Quit Application
@@ -111,7 +113,9 @@ Xpath Should Match X Times
 
 Select Element From Combobox Test
     Select Element From ComboBox      accessibility_id=TogglePaneButton         accessibility_id=Speed
+    Wait Until Page Contains Element  accessibility_id=TogglePaneButton
     Select Element From ComboBox      accessibility_id=Units1         name=Knots
+    Wait Until Page Contains Element  accessibility_id=TogglePaneButton
     Select Element From ComboBox      accessibility_id=TogglePaneButton         accessibility_id=Standard
 
 Switch To Desktop Test

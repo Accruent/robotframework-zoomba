@@ -1,11 +1,12 @@
-from selenium.common.exceptions import WebDriverException, NoSuchElementException
-from Zoomba.DesktopLibrary import DesktopLibrary
-import unittest
-from appium import webdriver
-import subprocess
-from unittest.mock import MagicMock, patch
 import sys
 import os
+import psutil
+import unittest
+import subprocess
+from selenium.common.exceptions import WebDriverException, NoSuchElementException
+from Zoomba.DesktopLibrary import DesktopLibrary
+from appium import webdriver
+from unittest.mock import MagicMock, patch
 sys.path.append(os.path.join(os.path.dirname(sys.path[0]), 'Helpers'))
 from webdriverremotemock import WebdriverRemoteMock
 
@@ -13,6 +14,40 @@ from webdriverremotemock import WebdriverRemoteMock
 class TestInternal(unittest.TestCase):
     def test_get_keyword_names_successful(self):
         DesktopLibrary().get_keyword_names()
+
+    @patch('subprocess.call')
+    @patch('subprocess.Popen')
+    def test_driver_setup_and_teardown(self, Popen, call):
+        Popen.return_value = 1
+        dl = DesktopLibrary()
+        dl.driver_setup()
+        self.assertTrue(dl.winappdriver.process)
+        dl.driver_teardown()
+        self.assertFalse(dl.winappdriver.process)
+
+    @patch('subprocess.Popen')
+    def test_driver_setup_failure(self, Popen):
+        Popen.side_effect = Exception
+        dl = DesktopLibrary()
+        dl.driver_setup()
+        self.assertFalse(dl.winappdriver.process)
+
+    @patch('subprocess.call')
+    def test_teardown_without_setup(self, call):
+        dl = DesktopLibrary()
+        dl.driver_teardown()
+        self.assertFalse(dl.winappdriver.process)
+
+    def test_driver_child_process_teardown(self):
+        mock_child = MagicMock()
+        dl = DesktopLibrary()
+        dl.winappdriver.process = MagicMock()
+        dl.winappdriver.process.pid = 1
+        psutil.Process.create_time = MagicMock()
+        psutil.Process.children = MagicMock(return_value=[mock_child])
+        self.assertFalse(dl.winappdriver.process is None)
+        dl.driver_teardown()
+        self.assertTrue(dl.winappdriver.process is None)
 
     def test_open_application_successful(self):
         dl = DesktopLibrary()
