@@ -334,3 +334,18 @@ class GUILibrary(SeleniumLibrary):
             timestamp = time()
             filename = 'selenium-screenshot-' + str(timestamp) + '-' + str(next(SCREENSHOT_COUNTER)) + '.png'
             return self.capture_page_screenshot(filename)
+
+    @keyword("Get Element CSS Attribute Value")
+    def get_element_css_attribute_value(self, locator, attribute):
+        """
+        """
+        css = self.get_webelement(locator)
+        attribute_value = zoomba.call_method(css, 'value_of_css_property', attribute)
+        return attribute_value
+
+    @keyword("Element CSS Attribute Value Should Be")
+    def element_css_attribute_value_should_be(self, locator, attribute, expected):
+        """
+        """
+        attribute_value = self.get_element_css_attribute_value(locator, attribute)
+        zoomba.should_be_equal(attribute_value, expected)
