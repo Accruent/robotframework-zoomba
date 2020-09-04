@@ -337,15 +337,27 @@ class GUILibrary(SeleniumLibrary):
 
     @keyword("Get Element CSS Attribute Value")
     def get_element_css_attribute_value(self, locator, attribute):
-        """
+        """Get the CSS attribute value of an element. This would be the values within the 'style' tag.
+
+        locator: (string) A selenium locator(CSS, XPATH, ID, NAME, etc)
+
+        attribute: (string) The attribute you wish to get the value for.
         """
         css = self.get_webelement(locator)
         attribute_value = zoomba.call_method(css, 'value_of_css_property', attribute)
         return attribute_value
 
     @keyword("Element CSS Attribute Value Should Be")
-    def element_css_attribute_value_should_be(self, locator, attribute, expected):
-        """
+    def element_css_attribute_value_should_be(self, locator, attribute, expected_value):
+        """Get the CSS attribute value of an element and compare it to an expected value.
+        This would be the values within the 'style' tag.
+
+        locator: (string) A selenium locator(CSS, XPATH, ID, NAME, etc)
+
+        attribute: (string) The attribute you wish to get the value for.
+
+        expected_value: (string) The expected attribute value to be compared against the actual
+        attribute value
         """
         attribute_value = self.get_element_css_attribute_value(locator, attribute)
-        zoomba.should_be_equal(attribute_value, expected)
+        zoomba.should_be_equal(attribute_value, expected_value)
