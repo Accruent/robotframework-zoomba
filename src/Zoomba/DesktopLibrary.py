@@ -1,6 +1,5 @@
 import os
 import subprocess
-import itertools
 from AppiumLibrary import AppiumLibrary
 from appium import webdriver
 from psutil import Process, NoSuchProcess
@@ -9,10 +8,11 @@ from robot.libraries.BuiltIn import BuiltIn
 
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.action_chains import ActionChains
-from time import sleep, time
+from time import sleep
+
+from .Helpers import AppiumHelpers
 
 zoomba = BuiltIn()
-SCREENSHOT_COUNTER = itertools.count()
 
 
 class WinAppDriver:
@@ -140,7 +140,7 @@ class DesktopLibrary(AppiumLibrary):
     def driver_setup(self, path=None):
         """Starts the WinAppDriver.
 
-        ``path`` can be provided if your winappdriver intallation is not in the default path of
+        ``path`` can be provided if your winappdriver installation is not in the default path of
         ``C:/Program Files (x86)/Windows Application Driver/WinAppDriver.exe``."""
         self.winappdriver.set_up_driver(path)
 
@@ -581,24 +581,12 @@ class DesktopLibrary(AppiumLibrary):
 
         See `Save Appium Screenshot` for a screenshot that will be unique across reports
         """
-        path, link = self._get_screenshot_paths(filename)
-
-        if hasattr(self._current_application(), 'get_screenshot_as_file'):
-            self._current_application().get_screenshot_as_file(path)
-        else:
-            self._current_application().save_screenshot(path)
-
-        # Image is shown on its own row and thus prev row is closed on purpose
-        self._html('</td></tr><tr><td colspan="3"><a href="%s">'
-                   '<img src="%s" width="800px"></a>' % (link, link))
-        return link
+        return AppiumHelpers.capture_page_screenshot(self, filename)
 
     @keyword("Save Appium Screenshot")
     def save_appium_screenshot(self):
         """Takes a screenshot with a unique filename to be stored in Robot Framework compiled reports."""
-        timestamp = time()
-        filename = 'appium-screenshot-' + str(timestamp) + '-' + str(next(SCREENSHOT_COUNTER)) + '.png'
-        return self.capture_page_screenshot(filename)
+        return AppiumHelpers.save_appium_screenshot(self)
 
     @keyword("Select Element From ComboBox")
     def select_element_from_combobox(self, list_locator, element_locator, skip_to_desktop=False):

@@ -122,3 +122,4 @@ Switch To Desktop Test
     Close Application
     Switch Application      Desktop
     Click Element           name=Start
+    Click Element           name=Start
