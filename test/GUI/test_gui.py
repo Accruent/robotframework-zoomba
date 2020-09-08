@@ -302,3 +302,15 @@ class TestInternal(unittest.TestCase):
         mock_gui.wait_until_page_contains_element.assert_called_with("some_locator", None)
         mock_gui.get_value = Mock(return_value="expected_value")
         robot_call.assert_called()
+
+    def test_get_element_css_attribute_value(self):
+        mock_gui = Mock()
+        mock_gui.get_webelement().value_of_css_property = Mock(return_value="some_attribute_value")
+        value = GUILibrary.get_element_css_attribute_value(mock_gui, "some_locator", "some_attribute")
+        self.assertEqual(value, "some_attribute_value")
+
+    def test_element_css_attribute_value_should_be(self):
+        mock_gui = Mock()
+        mock_gui.get_element_css_attribute_value = Mock(return_value="some_attribute_value")
+        GUILibrary.element_css_attribute_value_should_be(mock_gui, "some_locator", "some_attribute",
+                                                         "some_attribute_value")

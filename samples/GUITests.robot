@@ -119,3 +119,14 @@ Wait Until Element Contains Value
     [Teardown]                      Close All Browsers
     Input Text                      //input[@name='q']                                                  abc123
     Wait Until Element Contains Value  //input[@name='q']                                               abc123
+
+Get Element CSS Attribute Value
+    [Teardown]                      Close All Browsers
+    Test Case Setup    https://www.w3schools.com/html/html_examples.asp
+    ${value}=     Get Element CSS Attribute Value      //div[@id='googleSearch']       position
+    Should Be Equal     ${value}     absolute
+
+Element CSS Attribute Value Should Be
+    [Teardown]                      Close All Browsers
+    Test Case Setup    https://www.w3schools.com/html/html_examples.asp
+    Element CSS Attribute Value Should Be      //div[@id='googleSearch']       position       absolute
