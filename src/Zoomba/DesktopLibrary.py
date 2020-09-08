@@ -10,7 +10,7 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.action_chains import ActionChains
 from time import sleep
 
-from .Helpers import AppiumHelpers
+from .Helpers import AppiumCommon
 
 zoomba = BuiltIn()
 
@@ -311,8 +311,7 @@ class DesktopLibrary(AppiumLibrary):
 
         The difference between this keyword and `Wait For And Input Text` is that this keyword
         does not log the given password. See `introduction` for details about locating elements."""
-        self._wait_until_page_contains_element(locator, timeout, error)
-        self.input_password(locator, text)
+        AppiumCommon.wait_for_and_input_password(self, locator, text, timeout, error)
 
     @keyword("Wait For And Input Text")
     def wait_for_and_input_text(self, locator, text, timeout=None, error=None):
@@ -323,8 +322,7 @@ class DesktopLibrary(AppiumLibrary):
         ``error`` can be used to override the default error message.
 
         See `introduction` for details about locating elements."""
-        self._wait_until_page_contains_element(locator, timeout, error)
-        self.input_text(locator, text)
+        AppiumCommon.wait_for_and_input_text(self, locator, text, timeout, error)
 
     @keyword("Wait For And Long Press")
     def wait_for_and_long_press(self, locator, duration=10000, timeout=None, error=None):
@@ -335,7 +333,7 @@ class DesktopLibrary(AppiumLibrary):
         ``error`` can be used to override the default error message.
 
         See `introduction` for details about locating elements."""
-        AppiumHelpers.wait_for_and_long_press(self, locator, duration, timeout, error)
+        AppiumCommon.wait_for_and_long_press(self, locator, duration, timeout, error)
 
     @keyword("Wait Until Element Contains")
     def wait_until_element_contains(self, locator, text, timeout=None, error=None):
@@ -349,7 +347,7 @@ class DesktopLibrary(AppiumLibrary):
         `Wait Until Page Does Not Contain`
         `Wait Until Page Does Not Contain Element`
         """
-        AppiumHelpers.wait_until_element_contains(self, locator, text, timeout, error)
+        AppiumCommon.wait_until_element_contains(self, locator, text, timeout, error)
 
     @keyword("Wait Until Element Does Not Contain")
     def wait_until_element_does_not_contain(self, locator, text, timeout=None, error=None):
@@ -364,7 +362,7 @@ class DesktopLibrary(AppiumLibrary):
         `Wait Until Page Does Not Contain`
         `Wait Until Page Does Not Contain Element`
         """
-        AppiumHelpers.wait_until_element_does_not_contain(self, locator, text, timeout, error)
+        AppiumCommon.wait_until_element_does_not_contain(self, locator, text, timeout, error)
 
     @keyword("Wait Until Element Is Enabled")
     def wait_until_element_is_enabled(self, locator, timeout=None, error=None):
@@ -376,7 +374,7 @@ class DesktopLibrary(AppiumLibrary):
 
         See also `Wait Until Element Is Disabled`
         """
-        AppiumHelpers.wait_until_element_is_enabled(self, locator, timeout, error)
+        AppiumCommon.wait_until_element_is_enabled(self, locator, timeout, error)
 
     @keyword("Wait Until Element Is Disabled")
     def wait_until_element_is_disabled(self, locator, timeout=None, error=None):
@@ -388,7 +386,7 @@ class DesktopLibrary(AppiumLibrary):
 
         See also `Wait Until Element Is Disabled`
         """
-        AppiumHelpers.wait_until_element_is_disabled(self, locator, timeout, error)
+        AppiumCommon.wait_until_element_is_disabled(self, locator, timeout, error)
 
     @keyword("Mouse Over Element")
     def mouse_over_element(self, locator, x_offset=0, y_offset=0):
@@ -581,13 +579,13 @@ class DesktopLibrary(AppiumLibrary):
 
         See `Save Appium Screenshot` for a screenshot that will be unique across reports
         """
-        return AppiumHelpers.capture_page_screenshot(self, filename)
+        return AppiumCommon.capture_page_screenshot(self, filename)
 
     @keyword("Save Appium Screenshot")
     def save_appium_screenshot(self):
         """Takes a screenshot with a unique filename to be stored in Robot Framework compiled
         reports."""
-        return AppiumHelpers.save_appium_screenshot(self)
+        return AppiumCommon.save_appium_screenshot(self)
 
     @keyword("Select Element From ComboBox")
     def select_element_from_combobox(self, list_locator, element_locator, skip_to_desktop=False):
@@ -678,8 +676,8 @@ class DesktopLibrary(AppiumLibrary):
 
     def _wait_until_page_contains(self, text, timeout=None, error=None):
         """Internal version to avoid duplicate screenshots"""
-        AppiumHelpers.wait_until_page_contains(self, text, timeout, error)
+        AppiumCommon.wait_until_page_contains(self, text, timeout, error)
 
     def _wait_until_page_contains_element(self, locator, timeout=None, error=None):
         """Internal version to avoid duplicate screenshots"""
-        AppiumHelpers.wait_until_page_contains_element(self, locator, timeout, error)
+        AppiumCommon.wait_until_page_contains_element(self, locator, timeout, error)

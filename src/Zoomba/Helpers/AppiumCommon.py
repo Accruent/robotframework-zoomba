@@ -121,3 +121,28 @@ def wait_until_element_is_disabled(self, locator, timeout=None, error=None):
     """
     self._wait_until_page_contains_element(locator, timeout, error)
     self.element_should_be_disabled(locator)
+
+
+def wait_for_and_input_password(self, locator, text, timeout=None, error=None):
+    """Wait for and type the given password into the text field identified by ``locator``.
+
+    Fails if ``timeout`` expires before the element appears.
+
+    ``error`` can be used to override the default error message.
+
+    The difference between this keyword and `Wait For And Input Text` is that this keyword
+    does not log the given password. See `introduction` for details about locating elements."""
+    self._wait_until_page_contains_element(locator, timeout, error)
+    self.input_password(locator, text)
+
+
+def wait_for_and_input_text(self, locator, text, timeout=None, error=None):
+    """Wait for and type the given ``locator`` into text field identified by ``locator``.
+
+    Fails if ``timeout`` expires before the element appears.
+
+    ``error`` can be used to override the default error message.
+
+    See `introduction` for details about locating elements."""
+    self._wait_until_page_contains_element(locator, timeout, error)
+    self.input_text(locator, text)

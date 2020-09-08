@@ -3,7 +3,7 @@ from robot.api.deco import keyword
 from robot.libraries.BuiltIn import BuiltIn
 from selenium.webdriver.common.action_chains import ActionChains
 from time import time
-from .Helpers import AppiumHelpers
+from .Helpers import AppiumCommon
 
 zoomba = BuiltIn()
 
@@ -140,8 +140,7 @@ class MobileLibrary(AppiumLibrary):
 
         The difference between this keyword and `Wait For And Input Text` is that this keyword
         does not log the given password. See `introduction` for details about locating elements."""
-        self._wait_until_page_contains_element(locator, timeout, error)
-        self.input_password(locator, text)
+        AppiumCommon.wait_for_and_input_password(self, locator, text, timeout, error)
 
     @keyword("Wait For And Input Text")
     def wait_for_and_input_text(self, locator, text, timeout=None, error=None):
@@ -152,13 +151,12 @@ class MobileLibrary(AppiumLibrary):
         ``error`` can be used to override the default error message.
 
         See `introduction` for details about locating elements."""
-        self._wait_until_page_contains_element(locator, timeout, error)
-        self.input_text(locator, text)
+        AppiumCommon.wait_for_and_input_text(self, locator, text, timeout, error)
 
     @keyword("Wait For And Input Value")
     def wait_for_and_input_value(self, locator, value, timeout=None, error=None):
-        """Wait for and set the given ``value`` into the text field identified by ``locator``. This is an IOS only
-        keyword, input value makes use of set_value.
+        """Wait for and set the given ``value`` into the text field identified by ``locator``.
+        This is an IOS only keyword, input value makes use of set_value.
 
         Fails if ``timeout`` expires before the element appears.
 
@@ -178,7 +176,7 @@ class MobileLibrary(AppiumLibrary):
         ``error`` can be used to override the default error message.
 
         See `introduction` for details about locating elements."""
-        AppiumHelpers.wait_for_and_long_press(self, locator, duration, timeout, error)
+        AppiumCommon.wait_for_and_long_press(self, locator, duration, timeout, error)
 
     @keyword("Wait Until Element Contains")
     def wait_until_element_contains(self, locator, text, timeout=None, error=None):
@@ -191,7 +189,7 @@ class MobileLibrary(AppiumLibrary):
         See also `Wait Until Page Contains`,
         `Wait Until Page Does Not Contain`
         `Wait Until Page Does Not Contain Element`"""
-        AppiumHelpers.wait_until_element_contains(self, locator, text, timeout, error)
+        AppiumCommon.wait_until_element_contains(self, locator, text, timeout, error)
 
     @keyword("Wait Until Element Does Not Contain")
     def wait_until_element_does_not_contain(self, locator, text, timeout=None, error=None):
@@ -205,7 +203,7 @@ class MobileLibrary(AppiumLibrary):
         `Wait Until Page Contains`,
         `Wait Until Page Does Not Contain`
         `Wait Until Page Does Not Contain Element`"""
-        AppiumHelpers.wait_until_element_does_not_contain(self, locator, text, timeout, error)
+        AppiumCommon.wait_until_element_does_not_contain(self, locator, text, timeout, error)
 
     @keyword("Wait Until Element Is Enabled")
     def wait_until_element_is_enabled(self, locator, timeout=None, error=None):
@@ -216,7 +214,7 @@ class MobileLibrary(AppiumLibrary):
         ``error`` can be used to override the default error message.
 
         See also `Wait Until Element Is Disabled`"""
-        AppiumHelpers.wait_until_element_is_enabled(self, locator, timeout, error)
+        AppiumCommon.wait_until_element_is_enabled(self, locator, timeout, error)
 
     @keyword("Wait Until Element Is Disabled")
     def wait_until_element_is_disabled(self, locator, timeout=None, error=None):
@@ -227,7 +225,7 @@ class MobileLibrary(AppiumLibrary):
         ``error`` can be used to override the default error message.
 
         See also `Wait Until Element Is Disabled`"""
-        AppiumHelpers.wait_until_element_is_disabled(self, locator, timeout, error)
+        AppiumCommon.wait_until_element_is_disabled(self, locator, timeout, error)
 
     @keyword("Drag And Drop")
     def drag_and_drop(self, source, target):
@@ -306,19 +304,19 @@ class MobileLibrary(AppiumLibrary):
 
         See `Save Appium Screenshot` for a screenshot that will be unique across reports
         """
-        return AppiumHelpers.capture_page_screenshot(self, filename)
+        return AppiumCommon.capture_page_screenshot(self, filename)
 
     @keyword("Save Appium Screenshot")
     def save_appium_screenshot(self):
         """Takes a screenshot with a unique filename to be stored in Robot Framework compiled
         reports."""
-        return AppiumHelpers.save_appium_screenshot(self)
+        return AppiumCommon.save_appium_screenshot(self)
     
     # Private
     def _wait_until_page_contains(self, text, timeout=None, error=None):
         """Internal version to avoid duplicate screenshots"""
-        AppiumHelpers.wait_until_page_contains(self, text, timeout, error)
+        AppiumCommon.wait_until_page_contains(self, text, timeout, error)
 
     def _wait_until_page_contains_element(self, locator, timeout=None, error=None):
         """Internal version to avoid duplicate screenshots"""
-        AppiumHelpers.wait_until_page_contains_element(self, locator, timeout, error)
+        AppiumCommon.wait_until_page_contains_element(self, locator, timeout, error)
