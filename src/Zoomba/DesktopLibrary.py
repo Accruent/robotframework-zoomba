@@ -335,8 +335,7 @@ class DesktopLibrary(AppiumLibrary):
         ``error`` can be used to override the default error message.
 
         See `introduction` for details about locating elements."""
-        self._wait_until_page_contains_element(locator, timeout, error)
-        self.long_press(locator, duration)
+        AppiumHelpers.wait_for_and_long_press(self, locator, duration, timeout, error)
 
     @keyword("Wait Until Element Contains")
     def wait_until_element_contains(self, locator, text, timeout=None, error=None):
@@ -350,8 +349,7 @@ class DesktopLibrary(AppiumLibrary):
         `Wait Until Page Does Not Contain`
         `Wait Until Page Does Not Contain Element`
         """
-        self._wait_until_page_contains_element(locator, timeout, error)
-        self.element_should_contain_text(locator, text, error)
+        AppiumHelpers.wait_until_element_contains(self, locator, text, timeout, error)
 
     @keyword("Wait Until Element Does Not Contain")
     def wait_until_element_does_not_contain(self, locator, text, timeout=None, error=None):
@@ -366,8 +364,7 @@ class DesktopLibrary(AppiumLibrary):
         `Wait Until Page Does Not Contain`
         `Wait Until Page Does Not Contain Element`
         """
-        self._wait_until_page_contains_element(locator, timeout, error)
-        self.element_should_not_contain_text(locator, text, error)
+        AppiumHelpers.wait_until_element_does_not_contain(self, locator, text, timeout, error)
 
     @keyword("Wait Until Element Is Enabled")
     def wait_until_element_is_enabled(self, locator, timeout=None, error=None):
@@ -379,8 +376,7 @@ class DesktopLibrary(AppiumLibrary):
 
         See also `Wait Until Element Is Disabled`
         """
-        self._wait_until_page_contains_element(locator, timeout, error)
-        self.element_should_be_enabled(locator)
+        AppiumHelpers.wait_until_element_is_enabled(self, locator, timeout, error)
 
     @keyword("Wait Until Element Is Disabled")
     def wait_until_element_is_disabled(self, locator, timeout=None, error=None):
@@ -392,8 +388,7 @@ class DesktopLibrary(AppiumLibrary):
 
         See also `Wait Until Element Is Disabled`
         """
-        self._wait_until_page_contains_element(locator, timeout, error)
-        self.element_should_be_disabled(locator)
+        AppiumHelpers.wait_until_element_is_disabled(self, locator, timeout, error)
 
     @keyword("Mouse Over Element")
     def mouse_over_element(self, locator, x_offset=0, y_offset=0):
@@ -408,7 +403,8 @@ class DesktopLibrary(AppiumLibrary):
         actions.perform()
 
     @keyword("Wait For And Mouse Over Element")
-    def wait_for_and_mouse_over_element(self, locator, timeout=None, error=None, x_offset=0, y_offset=0):
+    def wait_for_and_mouse_over_element(self, locator, timeout=None, error=None, x_offset=0,
+                                        y_offset=0):
         """Waits for and moves the mouse over the given ``locator``.
 
         Fails if ``timeout`` expires before the element appears.
@@ -443,8 +439,8 @@ class DesktopLibrary(AppiumLibrary):
         self.context_click_a_point()
 
     @keyword("Wait For And Mouse Over And Click Element")
-    def wait_for_and_mouse_over_and_click_element(self, locator, timeout=None, error=None, double_click=False,
-                                                  x_offset=0, y_offset=0):
+    def wait_for_and_mouse_over_and_click_element(self, locator, timeout=None, error=None,
+                                                  double_click=False, x_offset=0, y_offset=0):
         """Waits for, moves the mouse over, and clicks the given ``locator``.
 
         Fails if ``timeout`` expires before the element appears.
@@ -503,7 +499,8 @@ class DesktopLibrary(AppiumLibrary):
 
     @keyword("Drag And Drop")
     def drag_and_drop(self, source, target):
-        """Drags the element found with the locator ``source`` to the element found with the locator ``target``.
+        """Drags the element found with the locator ``source`` to the element found with the
+        locator ``target``.
         """
         driver = self._current_application()
         source_element = self._element_find(source, True, True)
@@ -514,7 +511,8 @@ class DesktopLibrary(AppiumLibrary):
 
     @keyword("Drag And Drop By Offset")
     def drag_and_drop_by_offset(self, locator, x_offset=0, y_offset=0):
-        """Drags the element found with ``locator`` to the given ``x_offset`` and ``y_offset`` coordinates.
+        """Drags the element found with ``locator`` to the given ``x_offset`` and ``y_offset``
+        coordinates.
         """
         driver = self._current_application()
         element = self._element_find(locator, True, True)
@@ -529,7 +527,8 @@ class DesktopLibrary(AppiumLibrary):
         A list of special key codes can be found
         [https://seleniumhq.github.io/selenium/docs/api/py/webdriver/selenium.webdriver.common.keys.html|here]
 
-        Note that when sending in a modifier key (Ctrl, Alt, Shift) you will need to send the key again to release it.
+        Note that when sending in a modifier key (Ctrl, Alt, Shift) you will need to send the key
+        again to release it.
         |  Send Keys  |      a              |    b   |
         |  Send Keys  |      \\ue00        |    p    |    \\ue00     |
         """
@@ -550,7 +549,8 @@ class DesktopLibrary(AppiumLibrary):
         A list of special key codes can be found
         [https://seleniumhq.github.io/selenium/docs/api/py/webdriver/selenium.webdriver.common.keys.html|here]
 
-        Note that when sending in a modifier key (Ctrl, Alt, Shift) you will need to send the key again to release it.
+        Note that when sending in a modifier key (Ctrl, Alt, Shift) you will need to send the key
+        again to release it.
         |  Send Keys To Element  |     locator    |      a              |    b   |
         |  Send Keys To Element  |     locator    |      \\ue00        |    p    |    \\ue00     |
         """
@@ -585,7 +585,8 @@ class DesktopLibrary(AppiumLibrary):
 
     @keyword("Save Appium Screenshot")
     def save_appium_screenshot(self):
-        """Takes a screenshot with a unique filename to be stored in Robot Framework compiled reports."""
+        """Takes a screenshot with a unique filename to be stored in Robot Framework compiled
+        reports."""
         return AppiumHelpers.save_appium_screenshot(self)
 
     @keyword("Select Element From ComboBox")

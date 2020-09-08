@@ -52,3 +52,72 @@ def wait_until_page_contains_element(self, locator, timeout=None, error=None):
     if not error:
         error = "Element '%s' did not appear in <TIMEOUT>" % locator
     self._wait_until(timeout, error, self._is_element_present, locator)
+
+
+def wait_for_and_long_press(self, locator, duration=5000, timeout=None, error=None):
+    """Wait for and long press the element identified by ``locator`` with optional duration.
+
+    Fails if ``timeout`` expires before the element appears.
+
+    ``error`` can be used to override the default error message.
+
+    See `introduction` for details about locating elements."""
+    self._wait_until_page_contains_element(locator, timeout, error)
+    self.long_press(locator, duration)
+
+
+def wait_until_element_contains(self, locator, text, timeout=None, error=None):
+    """Waits until element specified with ``locator`` contains ``text``.
+
+    Fails if ``timeout`` expires before the element appears.
+
+    ``error`` can be used to override the default error message.
+
+    See also `Wait Until Page Contains`,
+    `Wait Until Page Does Not Contain`
+    `Wait Until Page Does Not Contain Element`
+    """
+    self._wait_until_page_contains_element(locator, timeout, error)
+    self.element_should_contain_text(locator, text, error)
+
+
+def wait_until_element_does_not_contain(self, locator, text, timeout=None, error=None):
+    """Waits until element specified with ``locator`` does not contain ``text``.
+
+    Fails if ``timeout`` expires before the element appears.
+
+    ``error`` can be used to override the default error message.
+
+    See also `Wait Until Element Contains`,
+    `Wait Until Page Contains`,
+    `Wait Until Page Does Not Contain`
+    `Wait Until Page Does Not Contain Element`
+    """
+    self._wait_until_page_contains_element(locator, timeout, error)
+    self.element_should_not_contain_text(locator, text, error)
+
+
+def wait_until_element_is_enabled(self, locator, timeout=None, error=None):
+    """Waits until element specified with ``locator`` is enabled.
+
+    Fails if ``timeout`` expires before the element appears.
+
+    ``error`` can be used to override the default error message.
+
+    See also `Wait Until Element Is Disabled`
+    """
+    self._wait_until_page_contains_element(locator, timeout, error)
+    self.element_should_be_enabled(locator)
+
+
+def wait_until_element_is_disabled(self, locator, timeout=None, error=None):
+    """Waits until element specified with ``locator`` is disabled.
+
+    Fails if ``timeout`` expires before the element appears.
+
+    ``error`` can be used to override the default error message.
+
+    See also `Wait Until Element Is Disabled`
+    """
+    self._wait_until_page_contains_element(locator, timeout, error)
+    self.element_should_be_disabled(locator)

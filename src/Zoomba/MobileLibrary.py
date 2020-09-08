@@ -178,8 +178,7 @@ class MobileLibrary(AppiumLibrary):
         ``error`` can be used to override the default error message.
 
         See `introduction` for details about locating elements."""
-        self._wait_until_page_contains_element(locator, timeout, error)
-        self.long_press(locator, duration)
+        AppiumHelpers.wait_for_and_long_press(self, locator, duration, timeout, error)
 
     @keyword("Wait Until Element Contains")
     def wait_until_element_contains(self, locator, text, timeout=None, error=None):
@@ -192,8 +191,7 @@ class MobileLibrary(AppiumLibrary):
         See also `Wait Until Page Contains`,
         `Wait Until Page Does Not Contain`
         `Wait Until Page Does Not Contain Element`"""
-        self._wait_until_page_contains_element(locator, timeout, error)
-        self.element_should_contain_text(locator, text, error)
+        AppiumHelpers.wait_until_element_contains(self, locator, text, timeout, error)
 
     @keyword("Wait Until Element Does Not Contain")
     def wait_until_element_does_not_contain(self, locator, text, timeout=None, error=None):
@@ -207,8 +205,7 @@ class MobileLibrary(AppiumLibrary):
         `Wait Until Page Contains`,
         `Wait Until Page Does Not Contain`
         `Wait Until Page Does Not Contain Element`"""
-        self._wait_until_page_contains_element(locator, timeout, error)
-        self.element_should_not_contain_text(locator, text, error)
+        AppiumHelpers.wait_until_element_does_not_contain(self, locator, text, timeout, error)
 
     @keyword("Wait Until Element Is Enabled")
     def wait_until_element_is_enabled(self, locator, timeout=None, error=None):
@@ -219,8 +216,7 @@ class MobileLibrary(AppiumLibrary):
         ``error`` can be used to override the default error message.
 
         See also `Wait Until Element Is Disabled`"""
-        self._wait_until_page_contains_element(locator, timeout, error)
-        self.element_should_be_enabled(locator)
+        AppiumHelpers.wait_until_element_is_enabled(self, locator, timeout, error)
 
     @keyword("Wait Until Element Is Disabled")
     def wait_until_element_is_disabled(self, locator, timeout=None, error=None):
@@ -231,12 +227,12 @@ class MobileLibrary(AppiumLibrary):
         ``error`` can be used to override the default error message.
 
         See also `Wait Until Element Is Disabled`"""
-        self._wait_until_page_contains_element(locator, timeout, error)
-        self.element_should_be_disabled(locator)
+        AppiumHelpers.wait_until_element_is_disabled(self, locator, timeout, error)
 
     @keyword("Drag And Drop")
     def drag_and_drop(self, source, target):
-        """Drags the element found with the locator ``source`` to the element found with the locator ``target``."""
+        """Drags the element found with the locator ``source`` to the element found with the
+        locator ``target``."""
         driver = self._current_application()
         source_element = self._element_find(source, True, True)
         target_element = self._element_find(target, True, True)
@@ -246,7 +242,8 @@ class MobileLibrary(AppiumLibrary):
 
     @keyword("Drag And Drop By Offset")
     def drag_and_drop_by_offset(self, locator, x_offset=0, y_offset=0):
-        """Drags the element found with ``locator`` to the given ``x_offset`` and ``y_offset`` coordinates."""
+        """Drags the element found with ``locator`` to the given ``x_offset`` and
+        ``y_offset`` coordinates."""
         driver = self._current_application()
         element = self._element_find(locator, True, True)
         actions = ActionChains(driver)
@@ -280,7 +277,8 @@ class MobileLibrary(AppiumLibrary):
             zoomba.fail(text + " was not found after " + str(swipe_count) + " swipes")
 
     @keyword("Wait For And Tap")
-    def wait_for_and_tap(self, locator, x_offset=None, y_offset=None, count=1, timeout=None, error=None):
+    def wait_for_and_tap(self, locator, x_offset=None, y_offset=None, count=1, timeout=None,
+                         error=None):
         """ Wait for and then Tap element identified by ``locator``.
         Args:
         - ``x_offset`` - (optional) x coordinate to tap, relative to the top left corner of the element.
@@ -312,7 +310,8 @@ class MobileLibrary(AppiumLibrary):
 
     @keyword("Save Appium Screenshot")
     def save_appium_screenshot(self):
-        """Takes a screenshot with a unique filename to be stored in Robot Framework compiled reports."""
+        """Takes a screenshot with a unique filename to be stored in Robot Framework compiled
+        reports."""
         return AppiumHelpers.save_appium_screenshot(self)
     
     # Private
