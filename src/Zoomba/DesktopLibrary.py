@@ -675,8 +675,10 @@ class DesktopLibrary(AppiumLibrary):
                 criteria = locator_parts[2].strip()
         return prefix, criteria
 
+    def _wait_until_page_contains(self, text, timeout=None, error=None):
+        """Internal version to avoid duplicate screenshots"""
+        AppiumHelpers.wait_until_page_contains(self, text, timeout, error)
+
     def _wait_until_page_contains_element(self, locator, timeout=None, error=None):
         """Internal version to avoid duplicate screenshots"""
-        if not error:
-            error = "Element '%s' did not appear in <TIMEOUT>" % locator
-        self._wait_until(timeout, error, self._is_element_present, locator)
+        AppiumHelpers.wait_until_page_contains_element(self, locator, timeout, error)
