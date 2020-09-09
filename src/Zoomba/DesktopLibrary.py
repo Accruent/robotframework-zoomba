@@ -1,16 +1,19 @@
 import os
 import subprocess
+import importlib
 from AppiumLibrary import AppiumLibrary
 from appium import webdriver
 from psutil import Process, NoSuchProcess
 from robot.api.deco import keyword
 from robot.libraries.BuiltIn import BuiltIn
-
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.action_chains import ActionChains
 from time import sleep
 
-from .Helpers import AppiumCommon
+try:
+    AppiumCommon = importlib.import_module('Helpers.AppiumCommon', package='Helpers')
+except ModuleNotFoundError:
+    AppiumCommon = importlib.import_module('.Helpers.AppiumCommon', package='Zoomba')
 
 zoomba = BuiltIn()
 
@@ -100,13 +103,15 @@ class DesktopLibrary(AppiumLibrary):
         | Library | DesktopLibrary | timeout=10 | driver_path="C:/WinAppDriver.exe" | # Sets a new path for the WinAppDriver                               |
         """
         self.winappdriver = WinAppDriver(driver_path)
+        
         super().__init__(timeout, run_on_failure)
 
     def get_keyword_names(self):
         """
-        This function restricts the keywords used in the library. This is to prevent incompatible keywords from imported
-        libraries from being referenced and used.
+        This function restricts the keywords used in the library. This is to prevent incompatible
+        keywords from imported libraries from being referenced and used.
         """
+        # self.save_appium_screenshot = save_appium_screenshot
         return [
             'maximize_window', 'open_application', 'wait_for_and_clear_text',
             'wait_for_and_click_element', 'wait_for_and_input_password', 'wait_for_and_input_text',
@@ -244,8 +249,9 @@ class DesktopLibrary(AppiumLibrary):
         """ Launch application. Application can be launched while Appium session running.
         This keyword can be used to launch application during test case or between test cases.
 
-        This keyword works while `Open Application` has a test running. This is good practice to `Launch Application`
-        and `Quit Application` between test cases. As Suite Setup is `Open Application`, `Test Setup` can be used to `Launch Application`
+        This keyword works while `Open Application` has a test running. This is good practice to
+        `Launch Application` and `Quit Application` between test cases. As Suite Setup is
+        `Open Application`, `Test Setup` can be used to `Launch Application`
 
         Example (syntax is just a representation, refer to RF Guide for usage of Setup/Teardown):
         | [Setup Suite] |
@@ -297,7 +303,8 @@ class DesktopLibrary(AppiumLibrary):
 
         See `introduction` for details about locating elements.
         
-        Use `Wait For And Mouse Over And Click Element` if this keyword gives issues in the application."""
+        Use `Wait For And Mouse Over And Click Element` if this keyword gives issues in the
+        application."""
         self._wait_until_page_contains_element(locator, timeout, error)
         self.click_element(locator)
 

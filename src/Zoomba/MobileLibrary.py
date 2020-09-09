@@ -1,9 +1,13 @@
+import importlib
 from AppiumLibrary import AppiumLibrary
 from robot.api.deco import keyword
 from robot.libraries.BuiltIn import BuiltIn
 from selenium.webdriver.common.action_chains import ActionChains
-from time import time
-from .Helpers import AppiumCommon
+
+try:
+    AppiumCommon = importlib.import_module('Helpers.AppiumCommon', package='Helpers')
+except ModuleNotFoundError:
+    AppiumCommon = importlib.import_module('.Helpers.AppiumCommon', package='Zoomba')
 
 zoomba = BuiltIn()
 
