@@ -308,15 +308,11 @@ class TestInternal(unittest.TestCase):
         mock_gui = Mock()
         GUILibrary.get_react_list_labels(mock_gui, "some_locator")
         mock_gui.find_element.assert_called_with("some_locator")
-        print(f'mock select: {mock_select.mock_calls}')
-        print(f'mock select method calls: {mock_select.method}')
-        mock_select.options.assert_called()  # How to test that options method was called? Is this even necessary?
+        print(f'mock select mock calls: {mock_select.mock_calls}')
+        mock_select.options.assert_called()  # How to test that options method was called?
 
-    @patch('Zoomba.ReactHelpers.ReactSelect.ReactSelect')
+    @patch('Zoomba.ReactHelpers.ReactSelect.ReactSelect')  # ToDo: Implement This test
     def test_get_react_list_labels_values(self, mock_select):
         mock_select.options.return_value = [{'text': 'foo'}, {'text': 'bar'}]
         mock_gui = Mock()
         options = GUILibrary.get_react_list_labels(mock_gui, "some_locator")
-        print(f'mock select: {mock_select.mock_calls}')
-        print(f'mock select method calls: {mock_select.options()}')
-        print(f'options: {options}')
