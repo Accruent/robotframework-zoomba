@@ -235,22 +235,14 @@ class MobileLibrary(AppiumLibrary):
     def drag_and_drop(self, source, target):
         """Drags the element found with the locator ``source`` to the element found with the
         locator ``target``."""
-        driver = self._current_application()
-        source_element = self._element_find(source, True, True)
-        target_element = self._element_find(target, True, True)
-        actions = ActionChains(driver)
-        zoomba.log("Dragging source element(" + str(source) + ") to target element(" + str(target) + ")")
-        actions.drag_and_drop(source_element, target_element).perform()
+        AppiumCommon.drag_and_drop(self, source, target)
 
     @keyword("Drag And Drop By Offset")
     def drag_and_drop_by_offset(self, locator, x_offset=0, y_offset=0):
-        """Drags the element found with ``locator`` to the given ``x_offset`` and
-        ``y_offset`` coordinates."""
-        driver = self._current_application()
-        element = self._element_find(locator, True, True)
-        actions = ActionChains(driver)
-        zoomba.log("Dragging locator element to offset: " + str(x_offset) + ", " + str(y_offset))
-        actions.drag_and_drop_by_offset(element, x_offset, y_offset).perform()
+        """Drags the element found with ``locator`` to the given ``x_offset`` and ``y_offset``
+        coordinates.
+        """
+        AppiumCommon.drag_and_drop_by_offset(self, locator, x_offset, y_offset)
 
     @keyword("Scroll Down To Text")
     def scroll_down_to_text(self, text, swipe_count=20):

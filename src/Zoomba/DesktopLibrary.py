@@ -466,7 +466,8 @@ class DesktopLibrary(AppiumLibrary):
         driver = self._current_application()
         actions = ActionChains(driver)
         actions.move_by_offset(x_offset, y_offset)
-        self._info('Moving mouse from current location with an offset of (%s,%s).' % (x_offset, y_offset))
+        self._info('Moving mouse from current location with an '
+                   'offset of (%s,%s).' % (x_offset, y_offset))
         actions.perform()
 
     @keyword("Click A Point")
@@ -485,7 +486,8 @@ class DesktopLibrary(AppiumLibrary):
             actions.double_click()
         else:
             actions.click()
-        self._info("Clicking on current mouse position with an offset of (%s,%s)." % (x_offset, y_offset))
+        self._info("Clicking on current mouse position with an "
+                   "offset of (%s,%s)." % (x_offset, y_offset))
         actions.perform()
 
     @keyword("Context Click A Point")
@@ -499,31 +501,22 @@ class DesktopLibrary(AppiumLibrary):
         if x_offset != 0 or y_offset != 0:
             actions.move_by_offset(x_offset, y_offset)
         actions.context_click()
-        self._info("Right-clicking on current mouse position with an offset of (%s,%s)." % (x_offset, y_offset))
+        self._info("Right-clicking on current mouse position with an "
+                   "offset of (%s,%s)." % (x_offset, y_offset))
         actions.perform()
 
     @keyword("Drag And Drop")
     def drag_and_drop(self, source, target):
         """Drags the element found with the locator ``source`` to the element found with the
-        locator ``target``.
-        """
-        driver = self._current_application()
-        source_element = self._element_find(source, True, True)
-        target_element = self._element_find(target, True, True)
-        actions = ActionChains(driver)
-        self._info('Dragging source element "%s" to target element "%s".' % (source, target))
-        actions.drag_and_drop(source_element, target_element).perform()
+        locator ``target``."""
+        AppiumCommon.drag_and_drop(self, source, target)
 
     @keyword("Drag And Drop By Offset")
     def drag_and_drop_by_offset(self, locator, x_offset=0, y_offset=0):
         """Drags the element found with ``locator`` to the given ``x_offset`` and ``y_offset``
         coordinates.
         """
-        driver = self._current_application()
-        element = self._element_find(locator, True, True)
-        actions = ActionChains(driver)
-        self._info('Dragging element "%s" by offset (%s, %s).' % (locator, x_offset, y_offset))
-        actions.drag_and_drop_by_offset(element, x_offset, y_offset).perform()
+        AppiumCommon.drag_and_drop_by_offset(self, locator, x_offset, y_offset)
 
     @keyword("Send Keys")
     def send_keys(self, *argv):

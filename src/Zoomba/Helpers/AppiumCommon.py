@@ -1,7 +1,10 @@
 import itertools
 from time import time
+from selenium.webdriver.common.action_chains import ActionChains
+from robot.libraries.BuiltIn import BuiltIn
 
 SCREENSHOT_COUNTER = itertools.count()
+zoomba = BuiltIn()
 
 
 def capture_page_screenshot(self, filename=None):
@@ -146,3 +149,25 @@ def wait_for_and_input_text(self, locator, text, timeout=None, error=None):
     See `introduction` for details about locating elements."""
     self._wait_until_page_contains_element(locator, timeout, error)
     self.input_text(locator, text)
+
+
+def drag_and_drop(self, source, target):
+    """Drags the element found with the locator ``source`` to the element found with the
+    locator ``target``."""
+    driver = self._current_application()
+    source_element = self._element_find(source, True, True)
+    target_element = self._element_find(target, True, True)
+    actions = ActionChains(driver)
+    zoomba.log('Dragging source element "%s" to target element "%s".' % (source, target))
+    actions.drag_and_drop(source_element, target_element).perform()
+
+
+def drag_and_drop_by_offset(self, locator, x_offset=0, y_offset=0):
+    """Drags the element found with ``locator`` to the given ``x_offset`` and ``y_offset``
+    coordinates.
+    """
+    driver = self._current_application()
+    element = self._element_find(locator, True, True)
+    actions = ActionChains(driver)
+    zoomba.log('Dragging element "%s" by offset (%s, %s).' % (locator, x_offset, y_offset))
+    actions.drag_and_drop_by_offset(element, x_offset, y_offset).perform()

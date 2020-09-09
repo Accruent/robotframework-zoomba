@@ -55,20 +55,6 @@ put_expected = \
         "updatedAt": "2020-06-10T18:36:10.183Z"
     }
 
-key_by_key_actual = json.dumps(
-    {
-        "id": 1,
-        "AssignedDate": "1234-34-45",
-        "NoneField": null,
-        "CreateDate": "2015-12-16T14:21:58Z",
-        "CreatedByEmail": "",
-        "CreatedByExternalId": "1234",
-        "CreatedByFirstName": "Bob",
-        "CreatedById": "318",
-        "CreatedByLastName": "Ross",
-        "CreatedByPhone": "(444) 444-4444"
-    })
-
 key_by_key_expected = \
     {
         "id": 1,
@@ -82,6 +68,8 @@ key_by_key_expected = \
         "CreatedByLastName": "Ross",
         "CreatedByPhone": "(444) 444-4444"
     }
+
+key_by_key_actual = json.dumps(key_by_key_expected)
 
 key_by_key_expected_error = \
     {
