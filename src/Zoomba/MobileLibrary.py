@@ -2,7 +2,6 @@ import importlib
 from AppiumLibrary import AppiumLibrary
 from robot.api.deco import keyword
 from robot.libraries.BuiltIn import BuiltIn
-from selenium.webdriver.common.action_chains import ActionChains
 
 try:
     AppiumCommon = importlib.import_module('Helpers.AppiumCommon', package='Helpers')
@@ -268,7 +267,7 @@ class MobileLibrary(AppiumLibrary):
             else:
                 self.swipe_by_percent(50, 50, 50, 75)  # use swipe by direction if its ever implemented
         if not found:
-            zoomba.fail(text + " was not found after " + str(swipe_count) + " swipes")
+            zoomba.fail("Text: " + text + " was not found after " + str(swipe_count) + " swipes")
 
     @keyword("Wait For And Tap")
     def wait_for_and_tap(self, locator, x_offset=None, y_offset=None, count=1, timeout=None,

@@ -103,7 +103,6 @@ class DesktopLibrary(AppiumLibrary):
         | Library | DesktopLibrary | timeout=10 | driver_path="C:/WinAppDriver.exe" | # Sets a new path for the WinAppDriver                               |
         """
         self.winappdriver = WinAppDriver(driver_path)
-        
         super().__init__(timeout, run_on_failure)
 
     def get_keyword_names(self):
@@ -157,8 +156,7 @@ class DesktopLibrary(AppiumLibrary):
     @keyword("Maximize Window")
     def maximize_window(self):
         """Maximizes the current application window."""
-        driver = self._current_application()
-        driver.maximize_window()
+        self._current_application().maximize_window()
         return True
 
     @keyword("Open Application")
@@ -268,8 +266,7 @@ class DesktopLibrary(AppiumLibrary):
         See `Quit Application` for quiting application but keeping Appium session running.
         """
         self._open_desktop_session(self._current_application().command_executor)
-        driver = self._current_application()
-        driver.launch_app()
+        self._current_application().launch_app()
 
     @keyword("Wait For And Clear Text")
     def wait_for_and_clear_text(self, locator, timeout=None, error=None):
@@ -401,9 +398,8 @@ class DesktopLibrary(AppiumLibrary):
 
         ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
         """
-        driver = self._current_application()
         element = self._element_find(locator, True, True)
-        actions = ActionChains(driver)
+        actions = ActionChains(self._current_application())
         self._move_to_element(actions, element, x_offset, y_offset)
         actions.perform()
 
@@ -463,8 +459,7 @@ class DesktopLibrary(AppiumLibrary):
     def mouse_over_by_offset(self, x_offset=0, y_offset=0):
         """Moves the mouse from its current location by the given ``x_offset`` and ``y_offset``.
         """
-        driver = self._current_application()
-        actions = ActionChains(driver)
+        actions = ActionChains(self._current_application())
         actions.move_by_offset(x_offset, y_offset)
         self._info('Moving mouse from current location with an '
                    'offset of (%s,%s).' % (x_offset, y_offset))
@@ -478,17 +473,15 @@ class DesktopLibrary(AppiumLibrary):
 
         ``double_click`` can be used to click twice.
         """
-        driver = self._current_application()
-        actions = ActionChains(driver)
+        actions = ActionChains(self._current_application())
         if x_offset != 0 or y_offset != 0:
             actions.move_by_offset(x_offset, y_offset)
-        if double_click:
-            actions.double_click()
-        else:
-            actions.click()
         self._info("Clicking on current mouse position with an "
                    "offset of (%s,%s)." % (x_offset, y_offset))
-        actions.perform()
+        if double_click:
+            actions.double_click().perform()
+        else:
+            actions.click().perform()
 
     @keyword("Context Click A Point")
     def context_click_a_point(self, x_offset=0, y_offset=0):
@@ -496,14 +489,12 @@ class DesktopLibrary(AppiumLibrary):
 
         ``x_offset`` and ``y_offset`` can be applied to give an offset.
         """
-        driver = self._current_application()
-        actions = ActionChains(driver)
+        actions = ActionChains(self._current_application())
         if x_offset != 0 or y_offset != 0:
             actions.move_by_offset(x_offset, y_offset)
-        actions.context_click()
         self._info("Right-clicking on current mouse position with an "
                    "offset of (%s,%s)." % (x_offset, y_offset))
-        actions.perform()
+        actions.context_click().perform()
 
     @keyword("Drag And Drop")
     def drag_and_drop(self, source, target):
@@ -530,8 +521,7 @@ class DesktopLibrary(AppiumLibrary):
         |  Send Keys  |      a              |    b   |
         |  Send Keys  |      \\ue00        |    p    |    \\ue00     |
         """
-        driver = self._current_application()
-        actions = ActionChains(driver)
+        actions = ActionChains(self._current_application())
         self._info('Sending keys to application')
         if argv:
             for each in argv:
@@ -552,8 +542,7 @@ class DesktopLibrary(AppiumLibrary):
         |  Send Keys To Element  |     locator    |      a              |    b   |
         |  Send Keys To Element  |     locator    |      \\ue00        |    p    |    \\ue00     |
         """
-        driver = self._current_application()
-        actions = ActionChains(driver)
+        actions = ActionChains(self._current_application())
         element = self._element_find(locator, True, True)
         self._info('Sending keys to element "%s".' % locator)
         if argv:
