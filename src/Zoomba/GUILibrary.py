@@ -90,6 +90,16 @@ class GUILibrary(SeleniumLibrary):
         self.wait_until_page_contains_element(locator, timeout)
         self.select_frame(locator)
 
+    @keyword("Select Nested Frame")
+    def select_nested_frame(self, *locators):
+        """Selects a frame nested in other frames
+
+        locators: (list) A list of selenium locators(CSS, XPATH, ID, NAME, etc)
+        """
+        for locator in locators:
+            self.wait_until_page_contains_element(locator)
+            self.select_frame(locator)
+
     @keyword("Unselect and Select Frame")
     def unselect_and_select_frame(self, locator, timeout=None):
         """This is a series of chained Selenium keywords, that first unselects the current iFrame, then executes a

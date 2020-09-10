@@ -44,6 +44,11 @@ Iframe keywords Test
     Unselect Frame
     Page Should Not Contain Element     //a[@href='default.asp'][@class='active']
 
+Nested Iframe keyword Test
+    [Teardown]      Close All Browsers
+    Test Case Setup    https://www.quackit.com/html/tags/html_iframe_tag.cfm
+    Select Nested Frame    //iframe[@name='result4']     //iframe[@src='/html/tags/html_iframe_tag_example.cfm']
+
 Mouse over Keywords Test
     [Setup]         Test Case Setup        https://jquery.com/
     [Teardown]      Close All Browsers
