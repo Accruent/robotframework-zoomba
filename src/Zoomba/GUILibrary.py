@@ -95,6 +95,9 @@ class GUILibrary(SeleniumLibrary):
         """Selects a frame nested in other frames
 
         locators: (list) A list of selenium locators(CSS, XPATH, ID, NAME, etc)
+
+        Example (Selects iframe3 after traversing iframe1 and iframe2):
+        |  `Select Nested Frame`  |  id-iframe1  |  id=iframe2  |  id=iframe3  |
         """
         for locator in locators:
             self.wait_until_page_contains_element(locator)
