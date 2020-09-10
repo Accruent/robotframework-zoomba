@@ -1,12 +1,14 @@
-import itertools
+import importlib
 from AppiumLibrary import AppiumLibrary
 from robot.api.deco import keyword
 from robot.libraries.BuiltIn import BuiltIn
-from selenium.webdriver.common.action_chains import ActionChains
-from time import time
+
+try:
+    AppiumCommon = importlib.import_module('Helpers.AppiumCommon', package='Helpers')
+except ModuleNotFoundError:
+    AppiumCommon = importlib.import_module('.Helpers.AppiumCommon', package='Zoomba')
 
 zoomba = BuiltIn()
-SCREENSHOT_COUNTER = itertools.count()
 
 
 class MobileLibrary(AppiumLibrary):
@@ -141,8 +143,7 @@ class MobileLibrary(AppiumLibrary):
 
         The difference between this keyword and `Wait For And Input Text` is that this keyword
         does not log the given password. See `introduction` for details about locating elements."""
-        self._wait_until_page_contains_element(locator, timeout, error)
-        self.input_password(locator, text)
+        AppiumCommon.wait_for_and_input_password(self, locator, text, timeout, error)
 
     @keyword("Wait For And Input Text")
     def wait_for_and_input_text(self, locator, text, timeout=None, error=None):
@@ -153,13 +154,12 @@ class MobileLibrary(AppiumLibrary):
         ``error`` can be used to override the default error message.
 
         See `introduction` for details about locating elements."""
-        self._wait_until_page_contains_element(locator, timeout, error)
-        self.input_text(locator, text)
+        AppiumCommon.wait_for_and_input_text(self, locator, text, timeout, error)
 
     @keyword("Wait For And Input Value")
     def wait_for_and_input_value(self, locator, value, timeout=None, error=None):
-        """Wait for and set the given ``value`` into the text field identified by ``locator``. This is an IOS only
-        keyword, input value makes use of set_value.
+        """Wait for and set the given ``value`` into the text field identified by ``locator``.
+        This is an IOS only keyword, input value makes use of set_value.
 
         Fails if ``timeout`` expires before the element appears.
 
@@ -179,8 +179,7 @@ class MobileLibrary(AppiumLibrary):
         ``error`` can be used to override the default error message.
 
         See `introduction` for details about locating elements."""
-        self._wait_until_page_contains_element(locator, timeout, error)
-        self.long_press(locator, duration)
+        AppiumCommon.wait_for_and_long_press(self, locator, duration, timeout, error)
 
     @keyword("Wait Until Element Contains")
     def wait_until_element_contains(self, locator, text, timeout=None, error=None):
@@ -193,8 +192,7 @@ class MobileLibrary(AppiumLibrary):
         See also `Wait Until Page Contains`,
         `Wait Until Page Does Not Contain`
         `Wait Until Page Does Not Contain Element`"""
-        self._wait_until_page_contains_element(locator, timeout, error)
-        self.element_should_contain_text(locator, text, error)
+        AppiumCommon.wait_until_element_contains(self, locator, text, timeout, error)
 
     @keyword("Wait Until Element Does Not Contain")
     def wait_until_element_does_not_contain(self, locator, text, timeout=None, error=None):
@@ -208,8 +206,7 @@ class MobileLibrary(AppiumLibrary):
         `Wait Until Page Contains`,
         `Wait Until Page Does Not Contain`
         `Wait Until Page Does Not Contain Element`"""
-        self._wait_until_page_contains_element(locator, timeout, error)
-        self.element_should_not_contain_text(locator, text, error)
+        AppiumCommon.wait_until_element_does_not_contain(self, locator, text, timeout, error)
 
     @keyword("Wait Until Element Is Enabled")
     def wait_until_element_is_enabled(self, locator, timeout=None, error=None):
@@ -220,8 +217,7 @@ class MobileLibrary(AppiumLibrary):
         ``error`` can be used to override the default error message.
 
         See also `Wait Until Element Is Disabled`"""
-        self._wait_until_page_contains_element(locator, timeout, error)
-        self.element_should_be_enabled(locator)
+        AppiumCommon.wait_until_element_is_enabled(self, locator, timeout, error)
 
     @keyword("Wait Until Element Is Disabled")
     def wait_until_element_is_disabled(self, locator, timeout=None, error=None):
@@ -232,27 +228,20 @@ class MobileLibrary(AppiumLibrary):
         ``error`` can be used to override the default error message.
 
         See also `Wait Until Element Is Disabled`"""
-        self._wait_until_page_contains_element(locator, timeout, error)
-        self.element_should_be_disabled(locator)
+        AppiumCommon.wait_until_element_is_disabled(self, locator, timeout, error)
 
     @keyword("Drag And Drop")
     def drag_and_drop(self, source, target):
-        """Drags the element found with the locator ``source`` to the element found with the locator ``target``."""
-        driver = self._current_application()
-        source_element = self._element_find(source, True, True)
-        target_element = self._element_find(target, True, True)
-        actions = ActionChains(driver)
-        zoomba.log("Dragging source element(" + str(source) + ") to target element(" + str(target) + ")")
-        actions.drag_and_drop(source_element, target_element).perform()
+        """Drags the element found with the locator ``source`` to the element found with the
+        locator ``target``."""
+        AppiumCommon.drag_and_drop(self, source, target)
 
     @keyword("Drag And Drop By Offset")
     def drag_and_drop_by_offset(self, locator, x_offset=0, y_offset=0):
-        """Drags the element found with ``locator`` to the given ``x_offset`` and ``y_offset`` coordinates."""
-        driver = self._current_application()
-        element = self._element_find(locator, True, True)
-        actions = ActionChains(driver)
-        zoomba.log("Dragging locator element to offset: " + str(x_offset) + ", " + str(y_offset))
-        actions.drag_and_drop_by_offset(element, x_offset, y_offset).perform()
+        """Drags the element found with ``locator`` to the given ``x_offset`` and ``y_offset``
+        coordinates.
+        """
+        AppiumCommon.drag_and_drop_by_offset(self, locator, x_offset, y_offset)
 
     @keyword("Scroll Down To Text")
     def scroll_down_to_text(self, text, swipe_count=20):
@@ -278,10 +267,11 @@ class MobileLibrary(AppiumLibrary):
             else:
                 self.swipe_by_percent(50, 50, 50, 75)  # use swipe by direction if its ever implemented
         if not found:
-            zoomba.fail(text + " was not found after " + str(swipe_count) + " swipes")
+            zoomba.fail("Text: " + text + " was not found after " + str(swipe_count) + " swipes")
 
     @keyword("Wait For And Tap")
-    def wait_for_and_tap(self, locator, x_offset=None, y_offset=None, count=1, timeout=None, error=None):
+    def wait_for_and_tap(self, locator, x_offset=None, y_offset=None, count=1, timeout=None,
+                         error=None):
         """ Wait for and then Tap element identified by ``locator``.
         Args:
         - ``x_offset`` - (optional) x coordinate to tap, relative to the top left corner of the element.
@@ -309,34 +299,19 @@ class MobileLibrary(AppiumLibrary):
 
         See `Save Appium Screenshot` for a screenshot that will be unique across reports
         """
-        path, link = self._get_screenshot_paths(filename)
-
-        if hasattr(self._current_application(), 'get_screenshot_as_file'):
-            self._current_application().get_screenshot_as_file(path)
-        else:
-            self._current_application().save_screenshot(path)
-
-        # Image is shown on its own row and thus prev row is closed on purpose
-        self._html('</td></tr><tr><td colspan="3"><a href="%s">'
-                   '<img src="%s" width="800px"></a>' % (link, link))
-        return link
+        return AppiumCommon.capture_page_screenshot(self, filename)
 
     @keyword("Save Appium Screenshot")
     def save_appium_screenshot(self):
-        """Takes a screenshot with a unique filename to be stored in Robot Framework compiled reports."""
-        timestamp = time()
-        filename = 'appium-screenshot-' + str(timestamp) + '-' + str(next(SCREENSHOT_COUNTER)) + '.png'
-        return self.capture_page_screenshot(filename)
+        """Takes a screenshot with a unique filename to be stored in Robot Framework compiled
+        reports."""
+        return AppiumCommon.save_appium_screenshot(self)
     
     # Private
     def _wait_until_page_contains(self, text, timeout=None, error=None):
         """Internal version to avoid duplicate screenshots"""
-        if not error:
-            error = "Text '%s' did not appear in <TIMEOUT>" % text
-        self._wait_until(timeout, error, self._is_text_present, text)
+        AppiumCommon.wait_until_page_contains(self, text, timeout, error)
 
     def _wait_until_page_contains_element(self, locator, timeout=None, error=None):
         """Internal version to avoid duplicate screenshots"""
-        if not error:
-            error = "Element '%s' did not appear in <TIMEOUT>" % locator
-        self._wait_until(timeout, error, self._is_element_present, locator)
+        AppiumCommon.wait_until_page_contains_element(self, locator, timeout, error)

@@ -462,7 +462,13 @@ class TestInternal(unittest.TestCase):
         DesktopLibrary.select_element_from_combobox(mock_desk, 'some_locator', 'another_locator', True)
         mock_desk.click_element.assert_called_with('another_locator')
 
+    def test_wait_until_page_contains_private(self):
+        mock_desk = MagicMock()
+        DesktopLibrary._wait_until_page_contains(mock_desk, 'some_text', 5)
+        mock_desk._wait_until.asser_called_with('some_text', 5)
+
     def test_wait_until_page_contains_element_private(self):
         mock_desk = MagicMock()
         DesktopLibrary._wait_until_page_contains_element(mock_desk, 'some_element', 5)
-        mock_desk._wait_until.asser_called_with('some_element', 5)
+        mock_desk._wait_until.assert_called_with(5, "Element 'some_element' did not appear in "
+                                                    "<TIMEOUT>", unittest.mock.ANY, 'some_element')
