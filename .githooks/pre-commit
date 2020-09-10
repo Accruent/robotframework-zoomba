@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 python docs/generate_docs.py
 git add docs/APILibraryDocumentation.html
 git add docs/GUILibraryDocumentation.html
