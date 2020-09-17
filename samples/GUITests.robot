@@ -1,6 +1,6 @@
 *** Settings ***
 Documentation   Zoomba GUI Library Tests
-Library         Zoomba.GUILibrary
+Library         Zoomba.GUILibrary    #plugins=Zoomba.Helpers.EdgePlugin    #Enable if using Edge
 
 *** Variables ***
 ${browser}     chrome
@@ -9,6 +9,8 @@ ${browser}     chrome
 Test Case Setup
     [Arguments]    ${url}=https://github.com/      ${browser}=${browser}
     Open Browser   ${url}    browser=${browser}
+    #Enable if using Edge:
+    #Open Browser   ${url}    browser=${browser}     options=use_chromium=True
     Maximize Browser Window
     Set Selenium Speed    0.2s
 
