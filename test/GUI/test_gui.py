@@ -332,7 +332,6 @@ class TestInternal(unittest.TestCase):
         mock_gui.find_element.assert_called_with("some_locator")
         ReactSelect.ReactSelect.options.assert_called()
 
-
     def test_get_react_list_labels_values(self):
         mock_gui = Mock()
         mock_webelement = Mock()
@@ -344,3 +343,27 @@ class TestInternal(unittest.TestCase):
         ReactSelect.ReactSelect.options = MagicMock(return_value=[mock_option1, mock_option2])
         mock_gui.find_element = Mock(return_value=mock_webelement)
         assert GUILibrary.get_react_list_labels(mock_gui, "some_locator") == ['option1', 'option2']
+
+    def test_react_select_is_expanded(self):
+        mock_webelement = Mock()
+        mock_child_element = Mock()
+        mock_webelement.tag_name = 'div'
+        mock_webelement.find_elements_by_xpath = Mock(return_value=[])
+        assert not ReactSelect.ReactSelect(mock_webelement).is_expanded()
+        mock_webelement.find_elements_by_xpath = Mock(return_value=[mock_child_element])
+        assert ReactSelect.ReactSelect(mock_webelement).is_expanded()
+
+    def test_react_select_is_expanded_error(self):
+        mock_webelement = Mock()
+        mock_child_element = Mock()
+        mock_webelement.tag_name = 'div'
+        mock_webelement.find_elements_by_xpath = Mock(return_value=[mock_child_element, mock_child_element])
+        with self.assertRaises(LookupError, msg="ReactSelect.is_expanded: Multiple selection menus found"):
+            ReactSelect.ReactSelect(mock_webelement).is_expanded()
+
+    def test_react_select_expand_select_list(self):
+        mock_webelement = Mock()
+        mock_webelement.tag_name = 'div'
+        ReactSelect.ReactSelect.is_expanded = MagicMock(return_value=False)
+        ReactSelect.ReactSelect(mock_webelement).expand_select_list()
+        mock_webelement.click.assert_called()
