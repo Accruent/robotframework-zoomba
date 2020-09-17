@@ -1,15 +1,51 @@
-import itertools
+import os
+import subprocess
+import importlib
 from AppiumLibrary import AppiumLibrary
 from appium import webdriver
+from psutil import Process, NoSuchProcess
 from robot.api.deco import keyword
 from robot.libraries.BuiltIn import BuiltIn
-import subprocess
-
+from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.action_chains import ActionChains
-from time import sleep, time
+from time import sleep
+
+try:
+    AppiumCommon = importlib.import_module('Helpers.AppiumCommon', package='Helpers')
+except ModuleNotFoundError:
+    AppiumCommon = importlib.import_module('.Helpers.AppiumCommon', package='Zoomba')
 
 zoomba = BuiltIn()
-SCREENSHOT_COUNTER = itertools.count()
+
+
+class WinAppDriver:
+    def __init__(self, driver_path=""):
+        self.process = None
+        self.driver_path = driver_path
+
+    def set_up_driver(self, path=None):
+        if path is None:
+            path = self.driver_path
+        try:
+            stdout = open(os.devnull, 'w')
+            self.process = subprocess.Popen([path], stdout=stdout)
+            stdout.close()
+        except Exception:
+            self.process = None
+            stdout.close()
+
+    def tear_down_driver(self):
+        try:
+            process = Process(self.process.pid)
+            for pro in process.children(recursive=True):
+                pro.kill()
+                pro.wait()
+            self.process.kill()
+            self.process.wait()
+            self.process = None
+        except (NoSuchProcess, AttributeError):
+            subprocess.call("C:/Windows/system32/taskkill.exe /f /im WinAppDriver.exe", shell=False)
+            self.process = None
 
 
 class DesktopLibrary(AppiumLibrary):
@@ -45,60 +81,82 @@ class DesktopLibrary(AppiumLibrary):
     ``Wait Until Page Contains`` or ``Wait Until Page Contains Element``.
     """
 
-    def __init__(self, timeout=5, run_on_failure='Save Appium Screenshot'):
+    def __init__(self, timeout=5, run_on_failure='Save Appium Screenshot',
+                 driver_path="C:\\Program Files (x86)\\Windows Application Driver\\WinAppDriver.exe"):
         """DesktopLibrary can be imported with optional arguments.
+
         ``timeout`` is the default timeout used to wait for all waiting actions.
         It can be later set with `Set Appium Timeout`.
+
         ``run_on_failure`` specifies the name of a keyword (from any available
         libraries) to execute when a DesktopLibrary keyword fails.
         By default `Save Appium Screenshot` will be used to take a screenshot of the current page.
-        Using the value `No Operation` will disable this feature altogether. See
+        Using the value ``No Operation`` will disable this feature altogether. See
         `Register Keyword To Run On Failure` keyword for more information about this
         functionality.
+
+        ``driver_path`` is the path to the WinAppDriver.exe file.
+
         Examples:
         | Library | DesktopLibrary | 10 | # Sets default timeout to 10 seconds                                                                             |
         | Library | DesktopLibrary | timeout=10 | run_on_failure=No Operation | # Sets default timeout to 10 seconds and does nothing on failure           |
+        | Library | DesktopLibrary | timeout=10 | driver_path="C:/WinAppDriver.exe" | # Sets a new path for the WinAppDriver                               |
         """
+        self.winappdriver = WinAppDriver(driver_path)
         super().__init__(timeout, run_on_failure)
 
     def get_keyword_names(self):
         """
-        This function restricts the keywords used in the library. This is to prevent incompatible keywords from imported
-        libraries from being referenced and used.
+        This function restricts the keywords used in the library. This is to prevent incompatible
+        keywords from imported libraries from being referenced and used.
         """
+        # self.save_appium_screenshot = save_appium_screenshot
         return [
-            'maximize_window', 'open_application', 'wait_for_and_clear_text', 'wait_for_and_click_element',
-            'wait_for_and_click_text', 'wait_for_and_input_password', 'wait_for_and_input_text',
-            'wait_for_and_long_press', 'wait_until_element_contains', 'wait_until_element_does_not_contain',
-            'wait_until_element_is_enabled', 'wait_until_element_is_disabled', 'switch_application_by_name',
-            'mouse_over_element', 'wait_for_and_mouse_over_element', 'mouse_over_and_click_element',
-            'wait_for_and_mouse_over_and_click_element', 'mouse_over_text', 'wait_for_and_mouse_over_text',
-            'mouse_over_and_click_text', 'wait_for_and_mouse_over_and_click_text', 'click_a_point',
-            'context_click_a_point', 'mouse_over_and_context_click_element', 'mouse_over_and_context_click_text',
-            'mouse_over_by_offset', 'drag_and_drop', 'drag_and_drop_by_offset', 'send_keys', 'send_keys_to_element',
-            'capture_page_screenshot', 'save_appium_screenshot', 'select_element_from_combobox', 'get_source',
-            'click_text',
+            'maximize_window', 'open_application', 'wait_for_and_clear_text',
+            'wait_for_and_click_element', 'wait_for_and_input_password', 'wait_for_and_input_text',
+            'wait_for_and_long_press', 'wait_until_element_contains',
+            'wait_until_element_does_not_contain', 'wait_until_element_is_enabled',
+            'wait_until_element_is_disabled', 'switch_application_by_name', 'mouse_over_element',
+            'wait_for_and_mouse_over_element', 'mouse_over_and_click_element',
+            'wait_for_and_mouse_over_and_click_element', 'click_a_point', 'context_click_a_point',
+            'mouse_over_and_context_click_element', 'mouse_over_by_offset', 'drag_and_drop',
+            'drag_and_drop_by_offset', 'send_keys', 'send_keys_to_element',
+            'capture_page_screenshot', 'save_appium_screenshot', 'select_element_from_combobox',
+            'driver_setup', 'driver_teardown',
             # External Libraries
-            'clear_text', 'click_button', 'click_element', 'close_all_applications', 'close_application',
-            'element_attribute_should_match', 'element_should_be_disabled', "element_should_be_enabled",
-            'element_should_be_visible', 'element_should_contain_text', 'element_should_not_contain_text',
-            'element_text_should_be', 'get_appium_sessionId', 'get_appium_timeout', 'get_capability',
-            'get_element_attribute', 'get_element_location', 'get_element_size', 'get_webelement',
-            'get_webelements', 'get_window_height', 'get_window_width', 'input_password', 'input_text',
-            'launch_application', 'log_source', 'long_press', 'page_should_contain_element', 'page_should_contain_text',
+            'clear_text', 'click_button', 'click_element', 'close_all_applications',
+            'close_application', 'element_attribute_should_match', 'element_should_be_disabled',
+            "element_should_be_enabled", 'element_should_be_visible', 'element_should_contain_text',
+            'element_should_not_contain_text', 'element_text_should_be', 'get_appium_sessionId',
+            'get_appium_timeout', 'get_capability', 'get_element_attribute', 'get_element_location',
+            'get_element_size', 'get_webelement', 'get_webelements', 'get_window_height',
+            'get_window_width', 'input_password', 'input_text', 'launch_application', 'log_source',
+            'long_press', 'page_should_contain_element', 'page_should_contain_text',
             'page_should_not_contain_element', 'page_should_not_contain_text', 'quit_application',
-            'register_keyword_to_run_on_failure', 'set_appium_timeout', 'switch_application', 'text_should_be_visible',
-            'wait_until_element_is_visible', 'wait_until_page_contains', 'wait_until_page_contains_element',
-            'wait_until_page_does_not_contain', 'wait_until_page_does_not_contain_element', 'get_matching_xpath_count',
+            'register_keyword_to_run_on_failure', 'set_appium_timeout', 'switch_application',
+            'text_should_be_visible', 'wait_until_element_is_visible', 'wait_until_page_contains',
+            'wait_until_page_contains_element', 'wait_until_page_does_not_contain',
+            'wait_until_page_does_not_contain_element', 'get_matching_xpath_count',
             'xpath_should_match_x_times'
         ]
 
+    @keyword("Driver Setup")
+    def driver_setup(self, path=None):
+        """Starts the WinAppDriver.
+
+        ``path`` can be provided if your winappdriver installation is not in the default path of
+        ``C:/Program Files (x86)/Windows Application Driver/WinAppDriver.exe``."""
+        self.winappdriver.set_up_driver(path)
+
+    @keyword("Driver Teardown")
+    def driver_teardown(self):
+        """Stops the WinAppDriver."""
+        self.winappdriver.tear_down_driver()
+
     @keyword("Maximize Window")
     def maximize_window(self):
-        """Maximizes the current application window.
-        """
-        driver = self._current_application()
-        driver.maximize_window()
+        """Maximizes the current application window."""
+        self._current_application().maximize_window()
         return True
 
     @keyword("Open Application")
@@ -138,7 +196,7 @@ class DesktopLibrary(AppiumLibrary):
         return self._cache.register(application, alias)
 
     @keyword("Switch Application By Name")
-    def switch_application_by_name(self, remote_url, window_name, alias=None, **kwargs):
+    def switch_application_by_name(self, remote_url, window_name, alias=None, timeout=5, **kwargs):
         """Switches to a currently opened window by ``window_name``.
         For the capabilities of appium server and Windows,
         Please check http://appium.io/docs/en/drivers/windows
@@ -146,6 +204,7 @@ class DesktopLibrary(AppiumLibrary):
         | remote_url          | Yes    | Appium server url                     |
         | window_name         | Yes    | Window name you wish to attach        |
         | alias               | No     | alias                                 |
+        | timeout             | No     | timeout to connect                    |
 
         Examples:
         | Switch Application By Name | http://localhost:4723/wd/hub | alias=Myapp1         | platformName=Windows            | deviceName=Windows           | window_name=MyApplication         |
@@ -159,11 +218,18 @@ class DesktopLibrary(AppiumLibrary):
             window = desktop_session.find_element_by_name(window_name)
             self._debug('Window_name "%s" found.' % window_name)
             window = hex(int(window.get_attribute("NativeWindowHandle")))
-        except Exception as e:
-            self._debug('Closing desktop session.')
-            zoomba.fail(
-                'Error finding window "' + window_name + '" in the desktop session. '
-                                                         'Is it a top level window handle?' + '. \n' + str(e))
+        except Exception:
+            try:
+                error = "Window '%s' did not appear in <TIMEOUT>" % window_name
+                self._wait_until(timeout, error, desktop_session.find_element_by_name, window_name)
+                window = desktop_session.find_element_by_name(window_name)
+                self._debug('Window_name "%s" found.' % window_name)
+                window = hex(int(window.get_attribute("NativeWindowHandle")))
+            except Exception as e:
+                self._debug('Closing desktop session.')
+                zoomba.fail(
+                    'Error finding window "' + window_name + '" in the desktop session. '
+                    'Is it a top level window handle?' + '. \n' + str(e))
         if "app" in desired_caps:
             del desired_caps["app"]
         desired_caps["appTopLevelWindow"] = window
@@ -181,8 +247,9 @@ class DesktopLibrary(AppiumLibrary):
         """ Launch application. Application can be launched while Appium session running.
         This keyword can be used to launch application during test case or between test cases.
 
-        This keyword works while `Open Application` has a test running. This is good practice to `Launch Application`
-        and `Quit Application` between test cases. As Suite Setup is `Open Application`, `Test Setup` can be used to `Launch Application`
+        This keyword works while `Open Application` has a test running. This is good practice to
+        `Launch Application` and `Quit Application` between test cases. As Suite Setup is
+        `Open Application`, `Test Setup` can be used to `Launch Application`
 
         Example (syntax is just a representation, refer to RF Guide for usage of Setup/Teardown):
         | [Setup Suite] |
@@ -199,8 +266,7 @@ class DesktopLibrary(AppiumLibrary):
         See `Quit Application` for quiting application but keeping Appium session running.
         """
         self._open_desktop_session(self._current_application().command_executor)
-        driver = self._current_application()
-        driver.launch_app()
+        self._current_application().launch_app()
 
     @keyword("Wait For And Clear Text")
     def wait_for_and_clear_text(self, locator, timeout=None, error=None):
@@ -234,22 +300,10 @@ class DesktopLibrary(AppiumLibrary):
 
         See `introduction` for details about locating elements.
         
-        Use `Wait For And Mouse Over And Click Element` if this keyword gives issues in the application."""
+        Use `Wait For And Mouse Over And Click Element` if this keyword gives issues in the
+        application."""
         self._wait_until_page_contains_element(locator, timeout, error)
         self.click_element(locator)
-
-    @keyword("Click Text")
-    def click_text(self, text, exact_match=False):
-        """*DEPRECATED in DesktopLibrary 2.4.0* Use `Click Element` with the ``name`` prefix instead.
-        """
-        self._element_find_by_text(text, exact_match).click()
-
-    @keyword("Wait For And Click Text")
-    def wait_for_and_click_text(self, text, exact_match=False, timeout=None, error=None):
-        """*DEPRECATED in DesktopLibrary 2.4.0* Use `Wait For And Click Element` with the ``name`` prefix instead.
-        """
-        self._wait_until_page_contains(text, timeout, error)
-        self.click_text(text, exact_match)
 
     @keyword("Wait For And Input Password")
     def wait_for_and_input_password(self, locator, text, timeout=None, error=None):
@@ -261,8 +315,7 @@ class DesktopLibrary(AppiumLibrary):
 
         The difference between this keyword and `Wait For And Input Text` is that this keyword
         does not log the given password. See `introduction` for details about locating elements."""
-        self._wait_until_page_contains_element(locator, timeout, error)
-        self.input_password(locator, text)
+        AppiumCommon.wait_for_and_input_password(self, locator, text, timeout, error)
 
     @keyword("Wait For And Input Text")
     def wait_for_and_input_text(self, locator, text, timeout=None, error=None):
@@ -273,8 +326,7 @@ class DesktopLibrary(AppiumLibrary):
         ``error`` can be used to override the default error message.
 
         See `introduction` for details about locating elements."""
-        self._wait_until_page_contains_element(locator, timeout, error)
-        self.input_text(locator, text)
+        AppiumCommon.wait_for_and_input_text(self, locator, text, timeout, error)
 
     @keyword("Wait For And Long Press")
     def wait_for_and_long_press(self, locator, duration=10000, timeout=None, error=None):
@@ -285,8 +337,7 @@ class DesktopLibrary(AppiumLibrary):
         ``error`` can be used to override the default error message.
 
         See `introduction` for details about locating elements."""
-        self._wait_until_page_contains_element(locator, timeout, error)
-        self.long_press(locator, duration)
+        AppiumCommon.wait_for_and_long_press(self, locator, duration, timeout, error)
 
     @keyword("Wait Until Element Contains")
     def wait_until_element_contains(self, locator, text, timeout=None, error=None):
@@ -300,8 +351,7 @@ class DesktopLibrary(AppiumLibrary):
         `Wait Until Page Does Not Contain`
         `Wait Until Page Does Not Contain Element`
         """
-        self._wait_until_page_contains_element(locator, timeout, error)
-        self.element_should_contain_text(locator, text, error)
+        AppiumCommon.wait_until_element_contains(self, locator, text, timeout, error)
 
     @keyword("Wait Until Element Does Not Contain")
     def wait_until_element_does_not_contain(self, locator, text, timeout=None, error=None):
@@ -316,8 +366,7 @@ class DesktopLibrary(AppiumLibrary):
         `Wait Until Page Does Not Contain`
         `Wait Until Page Does Not Contain Element`
         """
-        self._wait_until_page_contains_element(locator, timeout, error)
-        self.element_should_not_contain_text(locator, text, error)
+        AppiumCommon.wait_until_element_does_not_contain(self, locator, text, timeout, error)
 
     @keyword("Wait Until Element Is Enabled")
     def wait_until_element_is_enabled(self, locator, timeout=None, error=None):
@@ -329,8 +378,7 @@ class DesktopLibrary(AppiumLibrary):
 
         See also `Wait Until Element Is Disabled`
         """
-        self._wait_until_page_contains_element(locator, timeout, error)
-        self.element_should_be_enabled(locator)
+        AppiumCommon.wait_until_element_is_enabled(self, locator, timeout, error)
 
     @keyword("Wait Until Element Is Disabled")
     def wait_until_element_is_disabled(self, locator, timeout=None, error=None):
@@ -342,8 +390,7 @@ class DesktopLibrary(AppiumLibrary):
 
         See also `Wait Until Element Is Disabled`
         """
-        self._wait_until_page_contains_element(locator, timeout, error)
-        self.element_should_be_disabled(locator)
+        AppiumCommon.wait_until_element_is_disabled(self, locator, timeout, error)
 
     @keyword("Mouse Over Element")
     def mouse_over_element(self, locator, x_offset=0, y_offset=0):
@@ -351,14 +398,14 @@ class DesktopLibrary(AppiumLibrary):
 
         ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
         """
-        driver = self._current_application()
         element = self._element_find(locator, True, True)
-        actions = ActionChains(driver)
+        actions = ActionChains(self._current_application())
         self._move_to_element(actions, element, x_offset, y_offset)
         actions.perform()
 
     @keyword("Wait For And Mouse Over Element")
-    def wait_for_and_mouse_over_element(self, locator, timeout=None, error=None, x_offset=0, y_offset=0):
+    def wait_for_and_mouse_over_element(self, locator, timeout=None, error=None, x_offset=0,
+                                        y_offset=0):
         """Waits for and moves the mouse over the given ``locator``.
 
         Fails if ``timeout`` expires before the element appears.
@@ -393,8 +440,8 @@ class DesktopLibrary(AppiumLibrary):
         self.context_click_a_point()
 
     @keyword("Wait For And Mouse Over And Click Element")
-    def wait_for_and_mouse_over_and_click_element(self, locator, timeout=None, error=None, double_click=False,
-                                                  x_offset=0, y_offset=0):
+    def wait_for_and_mouse_over_and_click_element(self, locator, timeout=None, error=None,
+                                                  double_click=False, x_offset=0, y_offset=0):
         """Waits for, moves the mouse over, and clicks the given ``locator``.
 
         Fails if ``timeout`` expires before the element appears.
@@ -408,55 +455,14 @@ class DesktopLibrary(AppiumLibrary):
         self._wait_until_page_contains_element(locator, timeout, error)
         self.mouse_over_and_click_element(locator, double_click, x_offset, y_offset)
 
-    @keyword("Mouse Over Text")
-    def mouse_over_text(self, text, exact_match=False, x_offset=0, y_offset=0):
-        """*DEPRECATED in DesktopLibrary 2.4.0* Use `Mouse Over Element` with the ``name`` prefix instead.
-        """
-        driver = self._current_application()
-        element = self._element_find_by_text(text, exact_match)
-        actions = ActionChains(driver)
-        self._move_to_element(actions, element, x_offset, y_offset)
-        actions.perform()
-
-    @keyword("Wait For And Mouse Over Text")
-    def wait_for_and_mouse_over_text(self, text, exact_match=False, timeout=None, error=None, x_offset=0, y_offset=0):
-        """*DEPRECATED in DesktopLibrary 2.4.0* Use `Wait For And Mouse Over Element` with the ``name`` prefix instead.
-        """
-        self._wait_until_page_contains(text, timeout, error)
-        self.mouse_over_text(text, exact_match, x_offset, y_offset)
-
-    @keyword("Mouse Over And Click Text")
-    def mouse_over_and_click_text(self, text, exact_match=False, double_click=False, x_offset=0, y_offset=0):
-        """*DEPRECATED in DesktopLibrary 2.4.0* Use `Mouse Over And Click Element` with the ``name`` prefix instead.
-        """
-        self.mouse_over_text(text, exact_match=exact_match, x_offset=x_offset, y_offset=y_offset)
-        self.click_a_point(double_click=double_click)
-
-    @keyword("Mouse Over And Context Click Text")
-    def mouse_over_and_context_click_text(self, text, exact_match=False, x_offset=0, y_offset=0):
-        """*DEPRECATED in DesktopLibrary 2.4.0* Use `Mouse Over And Context Click Element` with the ``name``
-        prefix instead.
-        """
-        self.mouse_over_text(text, exact_match=exact_match, x_offset=x_offset, y_offset=y_offset)
-        self.context_click_a_point()
-
-    @keyword("Wait For And Mouse Over And Click Text")
-    def wait_for_and_mouse_over_and_click_text(self, text, exact_match=False, timeout=None, error=None,
-                                               double_click=False, x_offset=0, y_offset=0):
-        """*DEPRECATED in DesktopLibrary 2.4.0* Use `Wait For And Mouse Over And Click Element` with the ``name``
-         prefix instead.
-        """
-        self._wait_until_page_contains(text, timeout, error)
-        self.mouse_over_and_click_text(text, exact_match, double_click, x_offset, y_offset)
-
     @keyword("Mouse Over By Offset")
     def mouse_over_by_offset(self, x_offset=0, y_offset=0):
         """Moves the mouse from its current location by the given ``x_offset`` and ``y_offset``.
         """
-        driver = self._current_application()
-        actions = ActionChains(driver)
+        actions = ActionChains(self._current_application())
         actions.move_by_offset(x_offset, y_offset)
-        self._info('Moving mouse from current location with an offset of (%s,%s).' % (x_offset, y_offset))
+        self._info('Moving mouse from current location with an '
+                   'offset of (%s,%s).' % (x_offset, y_offset))
         actions.perform()
 
     @keyword("Click A Point")
@@ -467,16 +473,15 @@ class DesktopLibrary(AppiumLibrary):
 
         ``double_click`` can be used to click twice.
         """
-        driver = self._current_application()
-        actions = ActionChains(driver)
+        actions = ActionChains(self._current_application())
         if x_offset != 0 or y_offset != 0:
             actions.move_by_offset(x_offset, y_offset)
+        self._info("Clicking on current mouse position with an "
+                   "offset of (%s,%s)." % (x_offset, y_offset))
         if double_click:
-            actions.double_click()
+            actions.double_click().perform()
         else:
-            actions.click()
-        self._info("Clicking on current mouse position with an offset of (%s,%s)." % (x_offset, y_offset))
-        actions.perform()
+            actions.click().perform()
 
     @keyword("Context Click A Point")
     def context_click_a_point(self, x_offset=0, y_offset=0):
@@ -484,34 +489,25 @@ class DesktopLibrary(AppiumLibrary):
 
         ``x_offset`` and ``y_offset`` can be applied to give an offset.
         """
-        driver = self._current_application()
-        actions = ActionChains(driver)
+        actions = ActionChains(self._current_application())
         if x_offset != 0 or y_offset != 0:
             actions.move_by_offset(x_offset, y_offset)
-        actions.context_click()
-        self._info("Right-clicking on current mouse position with an offset of (%s,%s)." % (x_offset, y_offset))
-        actions.perform()
+        self._info("Right-clicking on current mouse position with an "
+                   "offset of (%s,%s)." % (x_offset, y_offset))
+        actions.context_click().perform()
 
     @keyword("Drag And Drop")
     def drag_and_drop(self, source, target):
-        """Drags the element found with the locator ``source`` to the element found with the locator ``target``.
-        """
-        driver = self._current_application()
-        source_element = self._element_find(source, True, True)
-        target_element = self._element_find(target, True, True)
-        actions = ActionChains(driver)
-        self._info('Dragging source element "%s" to target element "%s".' % (source, target))
-        actions.drag_and_drop(source_element, target_element).perform()
+        """Drags the element found with the locator ``source`` to the element found with the
+        locator ``target``."""
+        AppiumCommon.drag_and_drop(self, source, target)
 
     @keyword("Drag And Drop By Offset")
     def drag_and_drop_by_offset(self, locator, x_offset=0, y_offset=0):
-        """Drags the element found with ``locator`` to the given ``x_offset`` and ``y_offset`` coordinates.
+        """Drags the element found with ``locator`` to the given ``x_offset`` and ``y_offset``
+        coordinates.
         """
-        driver = self._current_application()
-        element = self._element_find(locator, True, True)
-        actions = ActionChains(driver)
-        self._info('Dragging element "%s" by offset (%s, %s).' % (locator, x_offset, y_offset))
-        actions.drag_and_drop_by_offset(element, x_offset, y_offset).perform()
+        AppiumCommon.drag_and_drop_by_offset(self, locator, x_offset, y_offset)
 
     @keyword("Send Keys")
     def send_keys(self, *argv):
@@ -520,12 +516,12 @@ class DesktopLibrary(AppiumLibrary):
         A list of special key codes can be found
         [https://seleniumhq.github.io/selenium/docs/api/py/webdriver/selenium.webdriver.common.keys.html|here]
 
-        Note that when sending in a modifier key (Ctrl, Alt, Shift) you will need to send the key again to release it.
+        Note that when sending in a modifier key (Ctrl, Alt, Shift) you will need to send the key
+        again to release it.
         |  Send Keys  |      a              |    b   |
         |  Send Keys  |      \\ue00        |    p    |    \\ue00     |
         """
-        driver = self._current_application()
-        actions = ActionChains(driver)
+        actions = ActionChains(self._current_application())
         self._info('Sending keys to application')
         if argv:
             for each in argv:
@@ -541,12 +537,12 @@ class DesktopLibrary(AppiumLibrary):
         A list of special key codes can be found
         [https://seleniumhq.github.io/selenium/docs/api/py/webdriver/selenium.webdriver.common.keys.html|here]
 
-        Note that when sending in a modifier key (Ctrl, Alt, Shift) you will need to send the key again to release it.
+        Note that when sending in a modifier key (Ctrl, Alt, Shift) you will need to send the key
+        again to release it.
         |  Send Keys To Element  |     locator    |      a              |    b   |
         |  Send Keys To Element  |     locator    |      \\ue00        |    p    |    \\ue00     |
         """
-        driver = self._current_application()
-        actions = ActionChains(driver)
+        actions = ActionChains(self._current_application())
         element = self._element_find(locator, True, True)
         self._info('Sending keys to element "%s".' % locator)
         if argv:
@@ -572,24 +568,13 @@ class DesktopLibrary(AppiumLibrary):
 
         See `Save Appium Screenshot` for a screenshot that will be unique across reports
         """
-        path, link = self._get_screenshot_paths(filename)
-
-        if hasattr(self._current_application(), 'get_screenshot_as_file'):
-            self._current_application().get_screenshot_as_file(path)
-        else:
-            self._current_application().save_screenshot(path)
-
-        # Image is shown on its own row and thus prev row is closed on purpose
-        self._html('</td></tr><tr><td colspan="3"><a href="%s">'
-                   '<img src="%s" width="800px"></a>' % (link, link))
-        return link
+        return AppiumCommon.capture_page_screenshot(self, filename)
 
     @keyword("Save Appium Screenshot")
     def save_appium_screenshot(self):
-        """Takes a screenshot with a unique filename to be stored in Robot Framework compiled reports."""
-        timestamp = time()
-        filename = 'appium-screenshot-' + str(timestamp) + '-' + str(next(SCREENSHOT_COUNTER)) + '.png'
-        return self.capture_page_screenshot(filename)
+        """Takes a screenshot with a unique filename to be stored in Robot Framework compiled
+        reports."""
+        return AppiumCommon.save_appium_screenshot(self)
 
     @keyword("Select Element From ComboBox")
     def select_element_from_combobox(self, list_locator, element_locator, skip_to_desktop=False):
@@ -603,22 +588,23 @@ class DesktopLibrary(AppiumLibrary):
         try:
             if skip_to_desktop:
                 raise ValueError("Skipping to desktop session")
-            self._element_find(element_locator, True, True)
-            self.click_element(element_locator)
+            try:
+                self._element_find(element_locator, True, True)
+                self.click_element(element_locator)
+            except NoSuchElementException:
+                self._wait_until_page_contains_element(element_locator, self.get_appium_timeout())
+                self.click_element(element_locator)
         except ValueError:
             original_index = self._cache.current_index
             self.switch_application('Desktop')
-            self.click_element(element_locator)
+            try:
+                self.click_element(element_locator)
+            except NoSuchElementException:
+                self._wait_until_page_contains_element(element_locator, self.get_appium_timeout())
+                self.click_element(element_locator)
             self.switch_application(original_index)
 
     # Private
-    def _element_find_by_text(self, text, exact_match=False):
-        if exact_match:
-            _xpath = u'//*[@{}="{}"]'.format('Name', text)
-        else:
-            _xpath = u'//*[contains(@{},"{}")]'.format('Name', text)
-        return self._element_find(_xpath, True, True)
-
     def _move_to_element(self, actions, element, x_offset=0, y_offset=0):
         if x_offset != 0 or y_offset != 0:
             self._info('Moving to element "' + str(element) + '" with offset (%s,%s).' % (x_offset, y_offset))
@@ -676,15 +662,11 @@ class DesktopLibrary(AppiumLibrary):
                 prefix = locator_parts[0].strip().lower()
                 criteria = locator_parts[2].strip()
         return prefix, criteria
-    
+
     def _wait_until_page_contains(self, text, timeout=None, error=None):
         """Internal version to avoid duplicate screenshots"""
-        if not error:
-            error = "Text '%s' did not appear in <TIMEOUT>" % text
-        self._wait_until(timeout, error, self._is_text_present, text)
+        AppiumCommon.wait_until_page_contains(self, text, timeout, error)
 
     def _wait_until_page_contains_element(self, locator, timeout=None, error=None):
         """Internal version to avoid duplicate screenshots"""
-        if not error:
-            error = "Element '%s' did not appear in <TIMEOUT>" % locator
-        self._wait_until(timeout, error, self._is_element_present, locator)
+        AppiumCommon.wait_until_page_contains_element(self, locator, timeout, error)

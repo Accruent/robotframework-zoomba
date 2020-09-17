@@ -1,0 +1,6 @@
+component_depth: 3
+languages:
+- python
+exclude:
+- /samples/APITestsData.py
+
