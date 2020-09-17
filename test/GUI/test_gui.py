@@ -2,10 +2,11 @@
 import unittest
 import os
 import sys
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 from unittest.mock import Mock
 from unittest.mock import PropertyMock
 from Zoomba.GUILibrary import GUILibrary
+from Zoomba.ReactHelpers import ReactSelect
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../src/')))
 
@@ -303,13 +304,15 @@ class TestInternal(unittest.TestCase):
         mock_gui.get_value = Mock(return_value="expected_value")
         robot_call.assert_called()
 
-    @patch('Zoomba.ReactHelpers.ReactSelect.ReactSelect')
-    def test_get_react_list_labels_simple(self, mock_select):
+    def test_get_react_list_labels_simple(self):
         mock_gui = Mock()
+        mock_webelement = Mock()
+        mock_webelement.tag_name.lower = Mock(return_value='div')
+        ReactSelect.ReactSelect.options = MagicMock()
+        mock_gui.find_element = Mock(return_value=mock_webelement)
         GUILibrary.get_react_list_labels(mock_gui, "some_locator")
         mock_gui.find_element.assert_called_with("some_locator")
-        print(f'mock select mock calls: {mock_select.mock_calls}')
-        mock_select.options.assert_called()  # How to test that options method was called?
+        ReactSelect.ReactSelect.options.assert_called()
 
     @patch('Zoomba.ReactHelpers.ReactSelect.ReactSelect')  # ToDo: Implement This test
     def test_get_react_list_labels_values(self, mock_select):
