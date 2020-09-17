@@ -22,6 +22,7 @@ class EdgePlugin(BrowserManagementKeywords):
 
 class _EdgePluginWebDriverCreator(WebDriverCreator):
     def __init__(self, log_dir):
+        super().__init__(log_dir)
         self.log_dir = log_dir
         self.selenium_options = _EdgePluginSeleniumOptions()
 
