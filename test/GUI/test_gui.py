@@ -314,8 +314,14 @@ class TestInternal(unittest.TestCase):
         mock_gui.find_element.assert_called_with("some_locator")
         ReactSelect.ReactSelect.options.assert_called()
 
-    @patch('Zoomba.ReactHelpers.ReactSelect.ReactSelect')  # ToDo: Implement This test
-    def test_get_react_list_labels_values(self, mock_select):
-        mock_select.options.return_value = [{'text': 'foo'}, {'text': 'bar'}]
+    def test_get_react_list_labels_values(self):
         mock_gui = Mock()
-        options = GUILibrary.get_react_list_labels(mock_gui, "some_locator")
+        mock_webelement = Mock()
+        mock_webelement.tag_name.lower = Mock(return_value='div')
+        mock_option1 = Mock()
+        mock_option1.text = 'option1'
+        mock_option2 = Mock()
+        mock_option2.text = 'option2'
+        ReactSelect.ReactSelect.options = MagicMock(return_value=[mock_option1, mock_option2])
+        mock_gui.find_element = Mock(return_value=mock_webelement)
+        assert GUILibrary.get_react_list_labels(mock_gui, "some_locator") == ['option1', 'option2']
