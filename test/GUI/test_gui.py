@@ -344,6 +344,20 @@ class TestInternal(unittest.TestCase):
         mock_gui.find_element = Mock(return_value=mock_webelement)
         assert GUILibrary.get_react_list_labels(mock_gui, "some_locator") == ['option1', 'option2']
 
+    def test_react_select_options_simple(self):
+        mock_webelement = Mock()
+        mock_webelement.tag_name = 'div'
+        ReactSelect.ReactSelect.expand_select_list = MagicMock()
+        ReactSelect.ReactSelect(mock_webelement).options()
+        ReactSelect.ReactSelect.expand_select_list.assert_called()
+
+    def test_react_select_options(self):
+        mock_webelement = Mock()
+        mock_webelement.tag_name = 'div'
+        mock_webelement.find_elements_by_xpath = MagicMock(return_value=["some child element", "another child element"])
+        ReactSelect.ReactSelect.is_expanded = MagicMock(return_value=True)
+        assert ReactSelect.ReactSelect(mock_webelement).options() == ["some child element", "another child element"]
+
     def test_react_select_is_expanded(self):
         mock_webelement = Mock()
         mock_child_element = Mock()
@@ -366,4 +380,12 @@ class TestInternal(unittest.TestCase):
         mock_webelement.tag_name = 'div'
         ReactSelect.ReactSelect.is_expanded = MagicMock(return_value=False)
         ReactSelect.ReactSelect(mock_webelement).expand_select_list()
+        ReactSelect.ReactSelect.is_expanded.assert_called()
         mock_webelement.click.assert_called()
+
+    def test_react_select_expand_select_list_already_expanded(self):
+        mock_webelement = Mock()
+        mock_webelement.tag_name = 'div'
+        ReactSelect.ReactSelect.is_expanded = MagicMock(return_value=True)
+        ReactSelect.ReactSelect(mock_webelement).expand_select_list()
+        mock_webelement.click.assert_not_called()
