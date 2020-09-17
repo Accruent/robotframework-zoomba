@@ -44,6 +44,11 @@ Iframe keywords Test
     Unselect Frame
     Page Should Not Contain Element     //a[@href='default.asp'][@class='active']
 
+Nested Iframe keyword Test
+    [Teardown]      Close All Browsers
+    Test Case Setup    https://www.quackit.com/html/tags/html_iframe_tag.cfm
+    Select Nested Frame    //iframe[@name='result4']     //iframe[@src='/html/tags/html_iframe_tag_example.cfm']
+
 Mouse over Keywords Test
     [Setup]         Test Case Setup        https://jquery.com/
     [Teardown]      Close All Browsers
@@ -106,20 +111,27 @@ Scroll To Bottom of Page Test
     Wait Until Element Is Visible                   //div[@id='res']
     scroll to bottom of page
 
-Wait Until Window Opens Test
-    [Setup]         Test Case Setup        https://www.seleniumeasy.com/test/window-popup-modal-demo.html
+Wait Until Window Tests
     [Teardown]                      Close All Browsers
-    Click Element                   //a[contains(text(),'Follow On Twitter')]
-    Wait Until Window Opens         Selenium Easy (@seleniumeasy) / Twitter     10
-
-Wait For and Select Window Test
-    [Setup]         Test Case Setup        https://www.seleniumeasy.com/test/window-popup-modal-demo.html
-    [Teardown]                      Close All Browsers
-    Click Element                   //a[contains(text(),'Follow On Twitter')]
-    Wait For and Select Window      Selenium Easy (@seleniumeasy) / Twitter     10
+    Test Case Setup    https://www.quackit.com/html/codes/html_popup_window_code.cfm
+    Wait For And Select Frame       //iframe[@name='result1']
+    Click Element                   //a[contains(text(),'Open a popup window')]
+    Wait Until Window Opens         Popup Example     10
+    Wait For and Select Window      Popup Example     10
 
 Wait Until Element Contains Value
     [Setup]         Test Case Setup        http://www.google.com
     [Teardown]                      Close All Browsers
     Input Text                      //input[@name='q']                                                  abc123
     Wait Until Element Contains Value  //input[@name='q']                                               abc123
+
+Get Element CSS Attribute Value
+    [Teardown]                      Close All Browsers
+    Test Case Setup    https://www.w3schools.com/html/html_examples.asp
+    ${value}=     Get Element CSS Attribute Value      //div[@id='googleSearch']       position
+    Should Be Equal     ${value}     absolute
+
+Element CSS Attribute Value Should Be
+    [Teardown]                      Close All Browsers
+    Test Case Setup    https://www.w3schools.com/html/html_examples.asp
+    Element CSS Attribute Value Should Be      //div[@id='googleSearch']       position       absolute

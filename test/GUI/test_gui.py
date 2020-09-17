@@ -97,6 +97,12 @@ class TestInternal(unittest.TestCase):
         mock_gui.wait_for_and_select_frame.assert_called_with("some_locator", 7.5)
         mock_gui.unselect_frame.assert_called()
 
+    def test_select_nested_frame(self):
+        mock_gui = Mock()
+        GUILibrary.select_nested_frame(mock_gui, "some_locator", "another_locator", "one_more")
+        mock_gui.wait_until_page_contains_element.assert_called_with("one_more")
+        mock_gui.select_frame.assert_called_with("one_more")
+
     def test_wait_for_and_select_from_list_simple(self):
         mock_gui = Mock()
         mock_gui.timeout = 12
@@ -304,6 +310,18 @@ class TestInternal(unittest.TestCase):
         mock_gui.get_value = Mock(return_value="expected_value")
         robot_call.assert_called()
 
+    def test_get_element_css_attribute_value(self):
+        mock_gui = Mock()
+        mock_gui.get_webelement().value_of_css_property = Mock(return_value="some_attribute_value")
+        value = GUILibrary.get_element_css_attribute_value(mock_gui, "some_locator", "some_attribute")
+        self.assertEqual(value, "some_attribute_value")
+
+    def test_element_css_attribute_value_should_be(self):
+        mock_gui = Mock()
+        mock_gui.get_element_css_attribute_value = Mock(return_value="some_attribute_value")
+        GUILibrary.element_css_attribute_value_should_be(mock_gui, "some_locator", "some_attribute",
+                                                         "some_attribute_value")
+
     def test_get_react_list_labels_simple(self):
         mock_gui = Mock()
         mock_webelement = Mock()
@@ -313,6 +331,7 @@ class TestInternal(unittest.TestCase):
         GUILibrary.get_react_list_labels(mock_gui, "some_locator")
         mock_gui.find_element.assert_called_with("some_locator")
         ReactSelect.ReactSelect.options.assert_called()
+
 
     def test_get_react_list_labels_values(self):
         mock_gui = Mock()

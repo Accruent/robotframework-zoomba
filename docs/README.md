@@ -5,7 +5,6 @@ Zoomba
 [![Coverage Status](https://coveralls.io/repos/github/Accruent/robotframework-zoomba/badge.svg?branch=master)](https://coveralls.io/github/Accruent/robotframework-zoomba?branch=master)
 [![CodeFactor](https://www.codefactor.io/repository/github/accruent/robotframework-zoomba/badge)](https://www.codefactor.io/repository/github/accruent/robotframework-zoomba)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/Accruent/robotframework-zoomba.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Accruent/robotframework-zoomba/alerts/)
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FAccruent%2Frobotframework-zoomba.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FAccruent%2Frobotframework-zoomba?ref=badge_shield)
 
 Introduction
 --------------
@@ -94,6 +93,11 @@ Scroll Up To Text         text
 #### [Desktop Library](https://accruent.github.io/robotframework-zoomba/DesktopLibraryDocumentation.html):
 Also extends [AppiumLibrary](https://github.com/serhatbolsu/robotframework-appiumlibrary) to tailor it Windows desktop automation. This includes enhancements to base keywords such as [Open Application](https://accruent.github.io/robotframework-zoomba/DesktopLibraryDocumentation.html#Open%20Application) or [Click Element](https://accruent.github.io/robotframework-zoomba/DesktopLibraryDocumentation.html#Click%20Element) to perform better for windows. Other notable additions include:
 
+Start and Stop the WinAppDriver as needed (best used for suite setup/teardown):
+```robotframework
+Driver Setup
+Driver Teardown
+```
 Easily switching to new windows or the desktop session:
 ```robotframework
 Switch Application      Desktop
@@ -150,7 +154,7 @@ Library    Zoomba.DesktopLibrary
 Additional Setup Information
 ---------------------------------
 
-If you plan to run Mobile or Windows desktop automation you will need to have a running appium server. To do so first have [Node](https://nodejs.org/en/download/)
+If you plan to run Mobile automation you will need to have a running appium server. To do so first have [Node](https://nodejs.org/en/download/)
 installed and then run the following:
 ```python
 npm install -g appium
@@ -159,6 +163,8 @@ appium
 Alternatively [Appium Desktop](https://github.com/appium/appium-desktop/releases) can be used.
 
 For Windows automation we suggest [installing and using the WinAppDriver](https://github.com/Microsoft/WinAppDriver/releases) without Appium as it seems to be much more stable.
+
+Make sure to [enable developer mode on your system](https://www.howtogeek.com/292914/what-is-developer-mode-in-windows-10/#:~:text=How%20to%20Enable%20Developer%20Mode,be%20put%20into%20Developer%20Mode.) to allow the WinAppDriver to work.
 
 Examples
 ------------

@@ -1,11 +1,12 @@
-from selenium.common.exceptions import WebDriverException
-from Zoomba.DesktopLibrary import DesktopLibrary
-import unittest
-from appium import webdriver
-import subprocess
-from unittest.mock import MagicMock, patch
 import sys
 import os
+import psutil
+import unittest
+import subprocess
+from selenium.common.exceptions import WebDriverException, NoSuchElementException
+from Zoomba.DesktopLibrary import DesktopLibrary
+from appium import webdriver
+from unittest.mock import MagicMock, patch
 sys.path.append(os.path.join(os.path.dirname(sys.path[0]), 'Helpers'))
 from webdriverremotemock import WebdriverRemoteMock
 
@@ -13,6 +14,40 @@ from webdriverremotemock import WebdriverRemoteMock
 class TestInternal(unittest.TestCase):
     def test_get_keyword_names_successful(self):
         DesktopLibrary().get_keyword_names()
+
+    @patch('subprocess.call')
+    @patch('subprocess.Popen')
+    def test_driver_setup_and_teardown(self, Popen, call):
+        Popen.return_value = 1
+        dl = DesktopLibrary()
+        dl.driver_setup()
+        self.assertTrue(dl.winappdriver.process)
+        dl.driver_teardown()
+        self.assertFalse(dl.winappdriver.process)
+
+    @patch('subprocess.Popen')
+    def test_driver_setup_failure(self, Popen):
+        Popen.side_effect = Exception
+        dl = DesktopLibrary()
+        dl.driver_setup()
+        self.assertFalse(dl.winappdriver.process)
+
+    @patch('subprocess.call')
+    def test_teardown_without_setup(self, call):
+        dl = DesktopLibrary()
+        dl.driver_teardown()
+        self.assertFalse(dl.winappdriver.process)
+
+    def test_driver_child_process_teardown(self):
+        mock_child = MagicMock()
+        dl = DesktopLibrary()
+        dl.winappdriver.process = MagicMock()
+        dl.winappdriver.process.pid = 1
+        psutil.Process.create_time = MagicMock()
+        psutil.Process.children = MagicMock(return_value=[mock_child])
+        self.assertFalse(dl.winappdriver.process is None)
+        dl.driver_teardown()
+        self.assertTrue(dl.winappdriver.process is None)
 
     def test_open_application_successful(self):
         dl = DesktopLibrary()
@@ -52,12 +87,22 @@ class TestInternal(unittest.TestCase):
         dl = DesktopLibrary()
         dl._run_on_failure = MagicMock()
         webdriver.Remote = WebdriverRemoteMock
-        webdriver.Remote.find_element_by_name = MagicMock(side_effect=WebDriverException)
+        webdriver.Remote.find_element_by_name = MagicMock(side_effect=[WebDriverException, WebDriverException])
         self.assertRaisesRegex(AssertionError, 'Error finding window "test" in the desktop session. Is it a top level '
                                                'window handle?.', dl.switch_application_by_name,
                                                'remote_url', window_name='test')
 
     def test_switch_application_failure_2(self):
+        dl = DesktopLibrary()
+        dl._run_on_failure = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        webdriver.Remote.find_element_by_name = MagicMock()
+        webdriver.Remote.find_element_by_name.side_effect = [WebDriverException, "Window", "Window"]
+        self.assertRaisesRegex(AssertionError, 'Error finding window "test" in the desktop session. Is it a top level '
+                                               'window handle?.', dl.switch_application_by_name,
+                                               'remote_url', window_name='test')
+
+    def test_switch_application_failure_3(self):
         dl = DesktopLibrary()
         dl._run_on_failure = MagicMock()
         web_driver_mock = WebdriverRemoteMock
@@ -94,26 +139,6 @@ class TestInternal(unittest.TestCase):
         mock_desk = MagicMock()
         DesktopLibrary.click_element(mock_desk, "some_locator")
         mock_desk._element_find.assert_called_with("some_locator", True, True)
-
-    def test_click_text(self):
-        mock_desk = MagicMock()
-        DesktopLibrary.click_text(mock_desk, "some_text")
-        mock_desk._element_find_by_text.assert_called_with("some_text", False)
-
-    def test_click_text_exact(self):
-        mock_desk = MagicMock()
-        DesktopLibrary.click_text(mock_desk, "some_text", True)
-        mock_desk._element_find_by_text.assert_called_with("some_text", True)
-
-    def test_wait_for_and_click_text(self):
-        mock_desk = MagicMock()
-        DesktopLibrary.wait_for_and_click_text(mock_desk, "some_text")
-        mock_desk.click_text.assert_called_with("some_text", False)
-
-    def test_wait_for_and_click_text_exact(self):
-        mock_desk = MagicMock()
-        DesktopLibrary.wait_for_and_click_text(mock_desk, "some_text", True)
-        mock_desk.click_text.assert_called_with("some_text", True)
 
     def test_wait_for_and_input_password(self):
         mock_desk = MagicMock()
@@ -214,81 +239,6 @@ class TestInternal(unittest.TestCase):
         mock_desk = MagicMock()
         DesktopLibrary.wait_for_and_mouse_over_and_click_element(mock_desk, "some_locator", double_click=True)
         mock_desk.mouse_over_and_click_element.assert_called_with("some_locator", True, 0, 0)
-
-    def test_mouse_over_text(self):
-        mock_desk = MagicMock()
-        DesktopLibrary.mouse_over_text(mock_desk, "some_text")
-        mock_desk._move_to_element.assert_called_with(unittest.mock.ANY, unittest.mock.ANY, 0, 0)
-
-    def test_mouse_over_text_with_offset(self):
-        mock_desk = MagicMock()
-        DesktopLibrary.mouse_over_text(mock_desk, "some_text", True, x_offset=100, y_offset=100)
-        mock_desk._move_to_element.assert_called_with(unittest.mock.ANY, unittest.mock.ANY, 100, 100)
-
-    def test_mouse_over_and_click_text(self):
-        mock_desk = MagicMock()
-        DesktopLibrary.mouse_over_and_click_text(mock_desk, "some_text")
-        mock_desk.mouse_over_text.assert_called_with("some_text", exact_match=False, x_offset=0, y_offset=0)
-        mock_desk.click_a_point.assert_called_with(double_click=False)
-
-    def test_mouse_over_and_click_text_with_offset(self):
-        mock_desk = MagicMock()
-        DesktopLibrary.mouse_over_and_click_text(mock_desk, "some_text", x_offset=100, y_offset=100)
-        mock_desk.mouse_over_text.assert_called_with("some_text", exact_match=False, x_offset=100, y_offset=100)
-        mock_desk.click_a_point.assert_called_with(double_click=False)
-
-    def test_mouse_over_and_context_click_text(self):
-        mock_desk = MagicMock()
-        DesktopLibrary.mouse_over_and_context_click_text(mock_desk, "some_text")
-        mock_desk.mouse_over_text.assert_called_with("some_text", exact_match=False, x_offset=0, y_offset=0)
-        mock_desk.context_click_a_point.assert_called_with()
-
-    def test_mouse_over_and_context_click_text_with_offset(self):
-        mock_desk = MagicMock()
-        DesktopLibrary.mouse_over_and_context_click_text(mock_desk, "some_text", x_offset=100, y_offset=100)
-        mock_desk.mouse_over_text.assert_called_with("some_text", exact_match=False, x_offset=100, y_offset=100)
-        mock_desk.context_click_a_point.assert_called_with()
-
-    def test_mouse_over_and_click_text_with_double_click(self):
-        mock_desk = MagicMock()
-        DesktopLibrary.mouse_over_and_click_text(mock_desk, "some_text", True, double_click=True)
-        mock_desk.mouse_over_text.assert_called_with("some_text", exact_match=True, x_offset=0, y_offset=0)
-        mock_desk.click_a_point.assert_called_with(double_click=True)
-
-    def test_wait_for_and_mouse_over_text(self):
-        mock_desk = MagicMock()
-        DesktopLibrary.wait_for_and_mouse_over_text(mock_desk, "some_text")
-        mock_desk.mouse_over_text.assert_called_with("some_text", False, 0, 0)
-
-    def test_wait_for_and_mouse_over_text_with_offset(self):
-        mock_desk = MagicMock()
-        DesktopLibrary.wait_for_and_mouse_over_text(mock_desk, "some_text", x_offset=100, y_offset=100)
-        mock_desk.mouse_over_text.assert_called_with("some_text", False, 100, 100)
-
-    def test_wait_for_and_mouse_over_and_click_text(self):
-        mock_desk = MagicMock()
-        DesktopLibrary.wait_for_and_mouse_over_and_click_text(mock_desk, "some_text")
-        mock_desk.mouse_over_and_click_text.assert_called_with("some_text", False, False, 0, 0)
-
-    def test_wait_for_and_mouse_over_and_click_text_with_offset(self):
-        mock_desk = MagicMock()
-        DesktopLibrary.wait_for_and_mouse_over_and_click_text(mock_desk, "some_text", x_offset=100, y_offset=100)
-        mock_desk.mouse_over_and_click_text.assert_called_with("some_text", False, False, 100, 100)
-
-    def test_wait_for_and_mouse_over_and_click_text_with_double_click(self):
-        mock_desk = MagicMock()
-        DesktopLibrary.wait_for_and_mouse_over_and_click_text(mock_desk, "some_text", True, double_click=True)
-        mock_desk.mouse_over_and_click_text.assert_called_with("some_text", True, True, 0, 0)
-
-    def test_element_find_by_text(self):
-        mock_desk = MagicMock()
-        DesktopLibrary._element_find_by_text(mock_desk, "some_text")
-        mock_desk._element_find.assert_called_with(unittest.mock.ANY, True, True)
-
-    def test_element_find_by_text_exact(self):
-        mock_desk = MagicMock()
-        DesktopLibrary._element_find_by_text(mock_desk, "some_text", True)
-        mock_desk._element_find.assert_called_with(unittest.mock.ANY, True, True)
 
     def test_element_find_by_name(self):
         mock_desk = MagicMock()
@@ -500,6 +450,18 @@ class TestInternal(unittest.TestCase):
         DesktopLibrary.select_element_from_combobox(mock_desk, 'some_locator', 'another_locator', True)
         mock_desk.click_element.assert_called_with('another_locator')
 
+    def test_select_from_combobox_retry(self):
+        mock_desk = MagicMock()
+        mock_desk.click_element = MagicMock(side_effect=[True, NoSuchElementException, True])
+        DesktopLibrary.select_element_from_combobox(mock_desk, 'some_locator', 'another_locator')
+        mock_desk.click_element.assert_called_with('another_locator')
+
+    def test_select_from_combobox_retry_desktop(self):
+        mock_desk = MagicMock()
+        mock_desk.click_element = MagicMock(side_effect=[True, NoSuchElementException, True])
+        DesktopLibrary.select_element_from_combobox(mock_desk, 'some_locator', 'another_locator', True)
+        mock_desk.click_element.assert_called_with('another_locator')
+
     def test_wait_until_page_contains_private(self):
         mock_desk = MagicMock()
         DesktopLibrary._wait_until_page_contains(mock_desk, 'some_text', 5)
@@ -508,4 +470,5 @@ class TestInternal(unittest.TestCase):
     def test_wait_until_page_contains_element_private(self):
         mock_desk = MagicMock()
         DesktopLibrary._wait_until_page_contains_element(mock_desk, 'some_element', 5)
-        mock_desk._wait_until.asser_called_with('some_element', 5)
+        mock_desk._wait_until.assert_called_with(5, "Element 'some_element' did not appear in "
+                                                    "<TIMEOUT>", unittest.mock.ANY, 'some_element')
