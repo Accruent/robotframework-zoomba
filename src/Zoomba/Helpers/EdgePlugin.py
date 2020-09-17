@@ -7,13 +7,13 @@ from msedge.selenium_tools import Edge as EdgePluginDriver
 
 
 class EdgePlugin(BrowserManagementKeywords):
-    '''
+    """
     This plugin is used to adapt SeleniumLibrary to run Edge browser
     (even chromium based version) with stable selenium version (3.141).
     It uses special msedge-selenium-tools
     that allows driving the new Microsoft Edge (Chromium) browser
     and use the latest functionality with no need to update to the alpha 4th selenium version.
-    '''
+    """
 
     def __init__(self, ctx):
         BrowserManagementKeywords.__init__(self, ctx)
@@ -41,10 +41,8 @@ class _EdgePluginWebDriverCreator(WebDriverCreator):
 
 
 class _EdgePluginSeleniumOptions(SeleniumOptions):
-
     def _import_options(self, browser):
         if browser == 'edge':
             options = importlib.import_module('msedge.selenium_tools.options')
             return options.Options
-        else:
-            return super(_EdgePluginSeleniumOptions, self)._import_options(browser)
+        return super(_EdgePluginSeleniumOptions, self)._import_options(browser)
