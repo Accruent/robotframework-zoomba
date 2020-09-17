@@ -1,6 +1,6 @@
 *** Settings ***
 Documentation   Zoomba GUI Library Tests
-Library         ../../src/Zoomba/GUILibrary.py
+Library         ../../src/Zoomba/GUILibrary.py       plugins=Zoomba.Helpers.EdgePlugin
 
 *** Variables ***
 ${browser}     chrome
