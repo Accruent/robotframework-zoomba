@@ -33,7 +33,9 @@ class ReactSelect:
         return self._el.find_elements_by_xpath('./div[2]/div[1]/div')
 
     def is_expanded(self):
-        """Checks if the React-Select container is expanded by checking if the Menu <div> exists as a child of the container"""
+        """Checks if the React-Select container is expanded by checking if the Menu <div>
+        exists as a child of the container
+        """
         menu_elements = self._el.find_elements_by_xpath('./div[2]')
         if len(menu_elements) == 0:
             return False

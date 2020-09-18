@@ -41,5 +41,5 @@ setup(name='robotframework-zoomba',
         Framework :: Robot Framework :: Library
         """.strip().splitlines(),
       package_dir={'': 'src'},
-      packages=['Zoomba', 'Zoomba/Helpers', 'Zoomba/ReactHelpers']
+      packages=['Zoomba', 'Zoomba/Helpers']
       )

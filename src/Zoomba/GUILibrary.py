@@ -9,9 +9,9 @@ import importlib
 
 # Importing ReactSelect
 try:
-    RS = importlib.import_module('ReactHelpers.ReactSelect', package='ReactHelpers')
+    RS = importlib.import_module('Helpers.ReactSelect', package='Helpers')
 except ModuleNotFoundError:
-    RS = importlib.import_module('.ReactHelpers.ReactSelect', package='Zoomba')
+    RS = importlib.import_module('.Helpers.ReactSelect', package='Zoomba')
 
 
 zoomba = BuiltIn()
