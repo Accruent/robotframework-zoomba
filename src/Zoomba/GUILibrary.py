@@ -384,6 +384,12 @@ class GUILibrary(SeleniumLibrary):
 
     @keyword("Get React List Labels")
     def get_react_list_labels(self, locator):
+        """This keyword grabs the labels from a React-Select list. See https://react-select.com/home for
+        more information on React-Select components.
+
+        locator: (string) A selenium locator(CSS, XPATH, ID, NAME, etc)
+
+        """
         react_select_container = self.find_element(locator)
         options = RS.ReactSelect(react_select_container).options()
         return [opt.text for opt in options]
