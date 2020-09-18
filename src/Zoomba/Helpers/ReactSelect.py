@@ -1,12 +1,20 @@
-# Similar to the Select class found in the Selenium Library:
-#   https://github.com/SeleniumHQ/selenium/blob/trunk/py/selenium/webdriver/support/select.py
-# Uses <div> tags instead of <select> & <option>
-# See the ReactHelpers/README.md for more information on the structure of React-Select components
+"""
+This module is for the ReactSelect class, which mimics the Selenium Library Select class, but for React-Select components.
+See: https://github.com/SeleniumHQ/selenium/blob/trunk/py/selenium/webdriver/support/select.py
+
+See the Helpers/ReactHelpersREADME.md for more information on the structure of React-Select components
+
+"""
 
 from selenium.common.exceptions import UnexpectedTagNameException
 
 
 class ReactSelect:
+    """React Select
+
+    This class is for helper methods for the Zoomba GUI Library, specifically for React-Select components.
+    React-Select components use <div> tags instead of the traditional <select> & <option>.
+    """
 
     def __init__(self, webelement):
         """
@@ -44,6 +52,7 @@ class ReactSelect:
         raise LookupError("ReactSelect.is_expanded: Multiple selection menus found")
 
     def expand_select_list(self):
+        """Expands the Select list only if it's collapsed"""
         is_expanded = self.is_expanded()
         if not is_expanded:
             self._el.click()
