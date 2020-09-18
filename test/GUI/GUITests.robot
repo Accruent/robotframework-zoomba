@@ -1,6 +1,7 @@
 *** Settings ***
 Documentation   Zoomba GUI Library Tests
 Library         ../../src/Zoomba/GUILibrary.py
+Library         Collections
 
 *** Variables ***
 ${browser}     chrome
@@ -136,3 +137,13 @@ Element CSS Attribute Value Should Be
     [Teardown]                      Close All Browsers
     Test Case Setup    https://www.w3schools.com/html/html_examples.asp
     Element CSS Attribute Value Should Be      //div[@id='googleSearch']       position       absolute
+
+Get React List Items Test
+    [Setup]     Test Case Setup         https://react-select.com/home
+    [Teardown]  Close All Browsers
+    ${selectXpath}=             Set Variable        //*[@id="root"]/div/div[2]/div[2]/div/div/div[1]/div[2]
+    ${expectedLabels}=          Create List         Ocean    Blue    Purple    Red    Orange    Yellow    Green    Forest    Slate    Silver
+    Wait Until Page Contains Element                ${selectXpath}
+    Scroll Element Into View                        ${selectXpath}
+    ${actualLabels}=    Get React List Labels       ${selectXpath}
+    Lists Should Be Equal       ${expectedLabels}   ${actualLabels}     ignore_order=True

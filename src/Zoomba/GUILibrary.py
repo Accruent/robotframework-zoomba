@@ -5,12 +5,19 @@ from robot.api.deco import keyword
 from robot.libraries.Collections import Collections
 from time import time
 from robot.utils import is_string
+import importlib
+
+# Importing ReactSelect
+try:
+    RS = importlib.import_module('Helpers.ReactSelect', package='Helpers')
+except ModuleNotFoundError:
+    RS = importlib.import_module('.Helpers.ReactSelect', package='Zoomba')
+
 
 zoomba = BuiltIn()
 zoomba_collections = Collections()
 
 SCREENSHOT_COUNTER = itertools.count()
-
 
 class GUILibrary(SeleniumLibrary):
     """Zoomba GUI Library
@@ -374,3 +381,15 @@ class GUILibrary(SeleniumLibrary):
         """
         attribute_value = self.get_element_css_attribute_value(locator, attribute)
         zoomba.should_be_equal(attribute_value, expected_value)
+
+    @keyword("Get React List Labels")
+    def get_react_list_labels(self, locator):
+        """This keyword grabs the labels from a React-Select list. See https://react-select.com/home for
+        more information on React-Select components.
+
+        locator: (string) A selenium locator(CSS, XPATH, ID, NAME, etc)
+
+        """
+        react_select_container = self.find_element(locator)
+        options = RS.ReactSelect(react_select_container).options()
+        return [opt.text for opt in options]
