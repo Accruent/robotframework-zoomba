@@ -6,7 +6,7 @@ from unittest.mock import patch, MagicMock
 from unittest.mock import Mock
 from unittest.mock import PropertyMock
 from Zoomba.GUILibrary import GUILibrary
-from Zoomba.Helpers import ReactSelect
+from Zoomba.Helpers import ReactSelect, EdgePlugin
 from selenium.common.exceptions import UnexpectedTagNameException
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../src/')))
@@ -404,3 +404,6 @@ class TestInternal(unittest.TestCase):
         with patch('Zoomba.Helpers.ReactSelect.ReactSelect.is_expanded', return_value=True):
             ReactSelect.ReactSelect(mock_webelement).expand_select_list()
             mock_webelement.click.assert_not_called()
+
+# class TestEdgePlugin(unittest.TestCase):
+#     def test_
