@@ -7,6 +7,7 @@ from unittest.mock import Mock
 from unittest.mock import PropertyMock
 from Zoomba.GUILibrary import GUILibrary
 from Zoomba.ReactHelpers import ReactSelect
+from selenium.common.exceptions import UnexpectedTagNameException
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../src/')))
 
@@ -326,11 +327,11 @@ class TestInternal(unittest.TestCase):
         mock_gui = Mock()
         mock_webelement = Mock()
         mock_webelement.tag_name.lower = Mock(return_value='div')
-        ReactSelect.ReactSelect.options = MagicMock()
         mock_gui.find_element = Mock(return_value=mock_webelement)
-        GUILibrary.get_react_list_labels(mock_gui, "some_locator")
-        mock_gui.find_element.assert_called_with("some_locator")
-        ReactSelect.ReactSelect.options.assert_called()
+        with patch('Zoomba.ReactHelpers.ReactSelect.ReactSelect.options') as mock_options:
+            GUILibrary.get_react_list_labels(mock_gui, "some_locator")
+            mock_gui.find_element.assert_called_with("some_locator")
+            mock_options.assert_called()
 
     def test_get_react_list_labels_values(self):
         mock_gui = Mock()
@@ -340,52 +341,66 @@ class TestInternal(unittest.TestCase):
         mock_option1.text = 'option1'
         mock_option2 = Mock()
         mock_option2.text = 'option2'
-        ReactSelect.ReactSelect.options = MagicMock(return_value=[mock_option1, mock_option2])
         mock_gui.find_element = Mock(return_value=mock_webelement)
-        assert GUILibrary.get_react_list_labels(mock_gui, "some_locator") == ['option1', 'option2']
+        with patch('Zoomba.ReactHelpers.ReactSelect.ReactSelect.options', return_value=[mock_option1, mock_option2]):
+            assert GUILibrary.get_react_list_labels(mock_gui, "some_locator") == ['option1', 'option2']
+
+    def test_react_select_init(self):
+        mock_webelement = Mock()
+        mock_webelement.tag_name = 'div'
+        RS = ReactSelect.ReactSelect(mock_webelement)
+        self.assertEqual(RS._el, mock_webelement)
+
+    def test_react_select_init_tag_check(self):
+        mock_webelement = Mock()
+        mock_webelement.tag_name = 'span'
+        with self.assertRaises(UnexpectedTagNameException, msg="ReactSelect only works on <div> elements, not on <span>"):
+            ReactSelect.ReactSelect(mock_webelement)
 
     def test_react_select_options_simple(self):
         mock_webelement = Mock()
         mock_webelement.tag_name = 'div'
-        ReactSelect.ReactSelect.expand_select_list = MagicMock()
-        ReactSelect.ReactSelect(mock_webelement).options()
-        ReactSelect.ReactSelect.expand_select_list.assert_called()
+        with patch('Zoomba.ReactHelpers.ReactSelect.ReactSelect.expand_select_list') as mock_expand_select_list:
+            ReactSelect.ReactSelect(mock_webelement).options()
+            mock_expand_select_list.assert_called()
 
     def test_react_select_options(self):
         mock_webelement = Mock()
         mock_webelement.tag_name = 'div'
         mock_webelement.find_elements_by_xpath = MagicMock(return_value=["some child element", "another child element"])
-        ReactSelect.ReactSelect.is_expanded = MagicMock(return_value=True)
-        assert ReactSelect.ReactSelect(mock_webelement).options() == ["some child element", "another child element"]
+        with patch('Zoomba.ReactHelpers.ReactSelect.ReactSelect.expand_select_list', return_value=True):
+            assert ReactSelect.ReactSelect(mock_webelement).options() == ["some child element", "another child element"]
 
     def test_react_select_is_expanded(self):
         mock_webelement = Mock()
-        mock_child_element = Mock()
+        mock_webelement.tag_name = 'div'
+        mock_webelement.find_elements_by_xpath = Mock(return_value=["some child element"])
+        assert ReactSelect.ReactSelect(mock_webelement).is_expanded()
+
+    def test_react_select_is_expanded_no_elements(self):
+        mock_webelement = Mock()
         mock_webelement.tag_name = 'div'
         mock_webelement.find_elements_by_xpath = Mock(return_value=[])
         assert not ReactSelect.ReactSelect(mock_webelement).is_expanded()
-        mock_webelement.find_elements_by_xpath = Mock(return_value=[mock_child_element])
-        assert ReactSelect.ReactSelect(mock_webelement).is_expanded()
 
     def test_react_select_is_expanded_error(self):
         mock_webelement = Mock()
-        mock_child_element = Mock()
         mock_webelement.tag_name = 'div'
-        mock_webelement.find_elements_by_xpath = Mock(return_value=[mock_child_element, mock_child_element])
+        mock_webelement.find_elements_by_xpath = Mock(return_value=["some child element", "another child element"])
         with self.assertRaises(LookupError, msg="ReactSelect.is_expanded: Multiple selection menus found"):
             ReactSelect.ReactSelect(mock_webelement).is_expanded()
 
     def test_react_select_expand_select_list(self):
         mock_webelement = Mock()
         mock_webelement.tag_name = 'div'
-        ReactSelect.ReactSelect.is_expanded = MagicMock(return_value=False)
-        ReactSelect.ReactSelect(mock_webelement).expand_select_list()
-        ReactSelect.ReactSelect.is_expanded.assert_called()
-        mock_webelement.click.assert_called()
+        with patch('Zoomba.ReactHelpers.ReactSelect.ReactSelect.is_expanded', return_value=False) as mock_is_expanded:
+            ReactSelect.ReactSelect(mock_webelement).expand_select_list()
+            mock_is_expanded.assert_called()
+            mock_webelement.click.assert_called()
 
     def test_react_select_expand_select_list_already_expanded(self):
         mock_webelement = Mock()
         mock_webelement.tag_name = 'div'
-        ReactSelect.ReactSelect.is_expanded = MagicMock(return_value=True)
-        ReactSelect.ReactSelect(mock_webelement).expand_select_list()
-        mock_webelement.click.assert_not_called()
+        with patch('Zoomba.ReactHelpers.ReactSelect.ReactSelect.is_expanded', return_value=True):
+            ReactSelect.ReactSelect(mock_webelement).expand_select_list()
+            mock_webelement.click.assert_not_called()
