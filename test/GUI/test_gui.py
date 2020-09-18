@@ -409,4 +409,7 @@ class TestInternal(unittest.TestCase):
 class TestEdgePlugin(unittest.TestCase):
     def test_edge_plugin(self):
         plugin = EdgePlugin.EdgePlugin(GUILibrary)
-        # plugin._webdriver_creator()
+        driver = EdgePlugin._EdgePluginWebDriverCreator(EdgePlugin.WebDriverCreator)
+        caps = {}
+        driver.create_edge(desired_capabilities=caps, remote_url="false")
+        # plugin.
