@@ -39,8 +39,7 @@ class ReactSelect:
             return False
         elif len(menu_elements) == 1:
             return True
-        else:
-            raise LookupError("ReactSelect.is_expanded: Multiple selection menus found")
+        raise LookupError("ReactSelect.is_expanded: Multiple selection menus found")
 
     def expand_select_list(self):
         is_expanded = self.is_expanded()
