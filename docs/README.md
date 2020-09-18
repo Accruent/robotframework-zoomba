@@ -151,6 +151,13 @@ Library    Zoomba.MobileLibrary
 Library    Zoomba.DesktopLibrary
 ```
 
+If you are using Microsoft Edge (Chromium version) you will need the following plugin and option set:
+```python
+Library    Zoomba.GUILibrary     plugins=Zoomba.Helpers.EdgePlugin
+
+Open Browser   https://www.google.com    browser=Edge     options=use_chromium=True
+```
+
 Additional Setup Information
 ---------------------------------
 
