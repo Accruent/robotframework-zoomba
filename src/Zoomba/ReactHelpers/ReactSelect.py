@@ -43,7 +43,5 @@ class ReactSelect:
 
     def expand_select_list(self):
         is_expanded = self.is_expanded()
-        if is_expanded:
-            pass
-        else:
+        if not is_expanded:
             self._el.click()
