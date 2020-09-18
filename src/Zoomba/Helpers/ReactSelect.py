@@ -14,6 +14,10 @@ class ReactSelect:
 
     This class is for helper methods for the Zoomba GUI Library, specifically for React-Select components.
     React-Select components use <div> tags instead of the traditional <select> & <option>.
+    Zoomba.GUILibrary method Example:
+            from ReactSelect import ReactSelect as RS
+            react_select_container = self.find_element(locator)
+            options = RS.ReactSelect(react_select_container).options()
     """
 
     def __init__(self, webelement):
@@ -22,12 +26,8 @@ class ReactSelect:
         then an UnexpectedTagNameException is thrown.
 
         :Args:
-         - webelement - The React-Select container <div> element.
+         - webelement - Web element representing the React-Select container <div> element.
 
-        Example:
-            from ReactSelect import ReactSelect as RS
-            react_select_container = self.find_element(locator)
-            options = RS.ReactSelect(react_select_container).options()
         """
         if webelement.tag_name.lower() != "div":
             raise UnexpectedTagNameException(
