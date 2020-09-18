@@ -37,7 +37,7 @@ class ReactSelect:
         menu_elements = self._el.find_elements_by_xpath('./div[2]')
         if len(menu_elements) == 0:
             return False
-        elif len(menu_elements) == 1:
+        if len(menu_elements) == 1:
             return True
         raise LookupError("ReactSelect.is_expanded: Multiple selection menus found")
 
