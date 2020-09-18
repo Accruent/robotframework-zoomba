@@ -405,5 +405,8 @@ class TestInternal(unittest.TestCase):
             ReactSelect.ReactSelect(mock_webelement).expand_select_list()
             mock_webelement.click.assert_not_called()
 
-# class TestEdgePlugin(unittest.TestCase):
-#     def test_
+
+class TestEdgePlugin(unittest.TestCase):
+    def test_edge_plugin(self):
+        plugin = EdgePlugin.EdgePlugin(GUILibrary)
+        # plugin._webdriver_creator()
