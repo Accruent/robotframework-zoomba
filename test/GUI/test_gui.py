@@ -11,7 +11,7 @@ from selenium.common.exceptions import UnexpectedTagNameException
 import msedge.selenium_tools
 import selenium.webdriver.remote.remote_connection
 import selenium.webdriver.remote.webdriver
-import robot.utils.robottypes
+import SeleniumLibrary.utils
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../src/')))
 
@@ -413,7 +413,7 @@ class TestInternal(unittest.TestCase):
 class TestEdgePlugin(unittest.TestCase):
     # @patch("robot.utils.robottypes.is_truthy")
     def test_edge_plugin(self):
-        robot.utils.robottypes.is_truthy = MagicMock(return_value=True)
+        SeleniumLibrary.utils.is_truthy = MagicMock(return_value=True)
         plugin = EdgePlugin.EdgePlugin(GUILibrary)
         msedge.selenium_tools.Edge = MagicMock()
         # selenium.webdriver.remote.remote_connection.RemoteConnection._request = MagicMock()
@@ -423,9 +423,9 @@ class TestEdgePlugin(unittest.TestCase):
         caps = {}
         driver.create_edge(desired_capabilities=caps, remote_url="false")  # plugin.
 
-    @patch("SeleniumLibrary.utils.is_falsy")
-    def test_edge_plugin_2(self, is_falsy):
-        is_falsy = MagicMock(return_value=True)
+    # @patch("SeleniumLibrary.utils.is_falsy")
+    def test_edge_plugin_2(self):
+        SeleniumLibrary.utils.is_falsy = MagicMock(return_value=True)
         plugin = EdgePlugin.EdgePlugin(GUILibrary)
         msedge.selenium_tools.Edge = MagicMock()
         # selenium.webdriver.remote.remote_connection.RemoteConnection._request = MagicMock()
