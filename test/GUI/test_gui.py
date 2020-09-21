@@ -410,20 +410,21 @@ class TestInternal(unittest.TestCase):
 
 
 class TestEdgePlugin(unittest.TestCase):
-    # @patch("SeleniumLibrary.keywords.webdrivertools.WebDriverCreator")
-    # @patch("msedge.selenium_tools.service.Service")
     @patch("SeleniumLibrary.utils.is_truthy")
     def test_edge_plugin(self, is_truthy):
-        is_truthy = MagicMock(return_value=True)
+        is_truthy = MagicMock()
         plugin = EdgePlugin.EdgePlugin(GUILibrary)
+        msedge.selenium_tools.Edge = MagicMock()
+        # selenium.webdriver.remote.remote_connection.RemoteConnection._request = MagicMock()
+        msedge.selenium_tools.service.Service.start = MagicMock()
+        selenium.webdriver.remote.webdriver.WebDriver.start_session = MagicMock()
         driver = EdgePlugin._EdgePluginWebDriverCreator(MagicMock())
         caps = {}
-        # driver.create_edge(desired_capabilities=caps, remote_url="false")
-        # plugin.
+        driver.create_edge(desired_capabilities=caps, remote_url="false")  # plugin.
 
     @patch("SeleniumLibrary.utils.is_falsy")
     def test_edge_plugin_2(self, is_falsy):
-        is_falsy = MagicMock(return_value=True)
+        is_falsy = MagicMock()
         plugin = EdgePlugin.EdgePlugin(GUILibrary)
         msedge.selenium_tools.Edge = MagicMock()
         # selenium.webdriver.remote.remote_connection.RemoteConnection._request = MagicMock()
