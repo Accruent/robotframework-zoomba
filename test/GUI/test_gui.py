@@ -427,6 +427,7 @@ class TestEdgePlugin(unittest.TestCase):
         plugin = EdgePlugin.EdgePlugin(GUILibrary)
         msedge.selenium_tools.Edge = MagicMock()
         # selenium.webdriver.remote.remote_connection.RemoteConnection._request = MagicMock()
+        msedge.selenium_tools.service.Service.start = MagicMock()
         selenium.webdriver.remote.webdriver.WebDriver.start_session = MagicMock()
         driver = EdgePlugin._EdgePluginWebDriverCreator(MagicMock())
         caps = {}
