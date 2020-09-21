@@ -407,7 +407,9 @@ class TestInternal(unittest.TestCase):
 
 
 class TestEdgePlugin(unittest.TestCase):
-    def test_edge_plugin(self):
+    @patch("SeleniumLibrary.keywords.webdrivertools.WebDriverCreator")
+    @patch("msedge.selenium_tools.Edge")
+    def test_edge_plugin(self, EdgeDriver, WebDriverCreator):
         plugin = EdgePlugin.EdgePlugin(GUILibrary)
         driver = EdgePlugin._EdgePluginWebDriverCreator(EdgePlugin.WebDriverCreator)
         caps = {}
