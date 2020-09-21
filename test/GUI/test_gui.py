@@ -8,6 +8,9 @@ from unittest.mock import PropertyMock
 from Zoomba.GUILibrary import GUILibrary
 from Zoomba.Helpers import ReactSelect, EdgePlugin
 from selenium.common.exceptions import UnexpectedTagNameException
+import msedge.selenium_tools
+import selenium.webdriver.remote.remote_connection
+import selenium.webdriver.remote.webdriver
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../src/')))
 
@@ -417,6 +420,17 @@ class TestEdgePlugin(unittest.TestCase):
         caps = {}
         # driver.create_edge(desired_capabilities=caps, remote_url="false")
         # plugin.
+
+    @patch("SeleniumLibrary.utils.is_falsy")
+    def test_edge_plugin_2(self, is_falsy):
+        is_falsy = MagicMock(return_value=True)
+        plugin = EdgePlugin.EdgePlugin(GUILibrary)
+        msedge.selenium_tools.Edge = MagicMock()
+        # selenium.webdriver.remote.remote_connection.RemoteConnection._request = MagicMock()
+        selenium.webdriver.remote.webdriver.WebDriver.start_session = MagicMock()
+        driver = EdgePlugin._EdgePluginWebDriverCreator(MagicMock())
+        caps = {}
+        driver.create_edge(desired_capabilities=caps, remote_url="false")  # plugin.
 
     # @patch("SeleniumLibrary.keywords.webdrivertools.WebDriverCreator")
     # @patch("msedge.selenium_tools.service.Service")
