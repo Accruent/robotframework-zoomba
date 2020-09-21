@@ -425,15 +425,16 @@ class TestEdgePlugin(unittest.TestCase):
 
     # @patch("SeleniumLibrary.utils.is_falsy")
     def test_edge_plugin_2(self):
-        SeleniumLibrary.utils.is_falsy = MagicMock(return_value=True)
-        plugin = EdgePlugin.EdgePlugin(GUILibrary)
-        msedge.selenium_tools.Edge = MagicMock()
-        # selenium.webdriver.remote.remote_connection.RemoteConnection._request = MagicMock()
-        msedge.selenium_tools.service.Service.start = MagicMock()
-        selenium.webdriver.remote.webdriver.WebDriver.start_session = MagicMock()
-        driver = EdgePlugin._EdgePluginWebDriverCreator(MagicMock())
-        caps = {}
-        driver.create_edge(desired_capabilities=caps, remote_url="false")  # plugin.
+        # SeleniumLibrary.utils.is_falsy = MagicMock(return_value=True)
+        # plugin = EdgePlugin.EdgePlugin(GUILibrary)
+        # msedge.selenium_tools.Edge = MagicMock()
+        # # selenium.webdriver.remote.remote_connection.RemoteConnection._request = MagicMock()
+        # msedge.selenium_tools.service.Service.start = MagicMock()
+        # selenium.webdriver.remote.webdriver.WebDriver.start_session = MagicMock()
+        # driver = EdgePlugin._EdgePluginWebDriverCreator(MagicMock())
+        # caps = {}
+        # driver.create_edge(desired_capabilities=caps, remote_url="false")  # plugin.
+        EdgePlugin._EdgePluginSeleniumOptions._import_options(MagicMock(), 'edge')
 
     # @patch("SeleniumLibrary.keywords.webdrivertools.WebDriverCreator")
     # @patch("msedge.selenium_tools.service.Service")
