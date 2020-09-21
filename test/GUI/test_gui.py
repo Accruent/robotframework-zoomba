@@ -421,7 +421,7 @@ class TestEdgePlugin(unittest.TestCase):
         selenium.webdriver.remote.webdriver.WebDriver.start_session = MagicMock()
         driver = EdgePlugin._EdgePluginWebDriverCreator(MagicMock())
         caps = {}
-        driver.create_edge(desired_capabilities=caps, remote_url="false")  # plugin.
+        driver.create_edge(desired_capabilities=caps, remote_url="http://127.0.0.1", executable_path=False)  # plugin.
 
     # @patch("SeleniumLibrary.utils.is_falsy")
     def test_edge_plugin_2(self):
