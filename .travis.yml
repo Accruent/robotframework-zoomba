@@ -17,7 +17,6 @@ install:
 - pip install .
 - pip install coveralls
 - pip install pytest-cov
-- pip install msedge-selenium-tools
 before_script:
 - LATEST_CHROMEDRIVER_VERSION=`curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE"`
 - wget "http://chromedriver.storage.googleapis.com/${LATEST_CHROMEDRIVER_VERSION}/chromedriver_linux64.zip"
