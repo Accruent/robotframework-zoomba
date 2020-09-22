@@ -14,7 +14,6 @@ class EdgePlugin(BrowserManagementKeywords):
     that allows driving the new Microsoft Edge (Chromium) browser
     and use the latest functionality with no need to update to the alpha 4th selenium version.
     """
-
     def __init__(self, ctx):
         BrowserManagementKeywords.__init__(self, ctx)
         self._webdriver_creator = _EdgePluginWebDriverCreator(self.log_dir)
