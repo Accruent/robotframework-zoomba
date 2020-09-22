@@ -413,21 +413,34 @@ class TestInternal(unittest.TestCase):
 class TestEdgePlugin(unittest.TestCase):
     # @patch("robot.utils.robottypes.is_truthy")
     def test_edge_plugin(self):
-        SeleniumLibrary.utils.is_truthy = MagicMock(return_value=True)
+        # SeleniumLibrary.utils.is_truthy = MagicMock(return_value=True)
         plugin = EdgePlugin.EdgePlugin(GUILibrary)
         msedge.selenium_tools.Edge = MagicMock()
         # selenium.webdriver.remote.remote_connection.RemoteConnection._request = MagicMock()
         msedge.selenium_tools.service.Service.start = MagicMock()
         selenium.webdriver.remote.webdriver.WebDriver.start_session = MagicMock()
         driver = EdgePlugin._EdgePluginWebDriverCreator(MagicMock())
-        caps = {}
-        driver.create_edge(desired_capabilities=caps, remote_url="http://127.0.0.1",
+        driver.create_edge(desired_capabilities={}, remote_url="http://127.0.0.1",
                            executable_path='Sure')
 
-    # @patch("SeleniumLibrary.utils.is_falsy")
     def test_edge_plugin_2(self):
-        MockOptions = MagicMock()
-        EdgePlugin._EdgePluginSeleniumOptions._import_options(MockOptions, 'edge')
+        # SeleniumLibrary.utils.is_truthy = MagicMock(return_value=False)
+        plugin = EdgePlugin.EdgePlugin(GUILibrary)
+        msedge.selenium_tools.Edge = MagicMock()
+        # selenium.webdriver.remote.remote_connection.RemoteConnection._request = MagicMock()
+        msedge.selenium_tools.service.Service.start = MagicMock()
+        selenium.webdriver.remote.webdriver.WebDriver.start_session = MagicMock()
+        driver = EdgePlugin._EdgePluginWebDriverCreator(MagicMock())
+        driver.create_edge(desired_capabilities={}, remote_url="No",
+                           executable_path='Sure')
+
+    @patch("SeleniumLibrary.keywords.webdrivertools.SeleniumOptions")
+    def test_edge_plugin_3(self, options):
+        # MockOptions = MagicMock()
+        # options = MagicMock()
+        EdgePlugin._EdgePluginSeleniumOptions._import_options(options, 'edge')
+        # EdgePlugin._EdgePluginSeleniumOptions._import_options(options, 'other_browser')
+        self.assertRaises(TypeError, EdgePlugin._EdgePluginSeleniumOptions._import_options, options, 'other_browser')
         # MockOptions._import_options.assert_called()
 
     # @patch("SeleniumLibrary.keywords.webdrivertools.WebDriverCreator")
