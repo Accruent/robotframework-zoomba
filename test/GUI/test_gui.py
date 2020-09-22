@@ -2,16 +2,15 @@
 import unittest
 import os
 import sys
+import msedge.selenium_tools
+import selenium.webdriver.remote.remote_connection
+import selenium.webdriver.remote.webdriver
 from unittest.mock import patch, MagicMock
 from unittest.mock import Mock
 from unittest.mock import PropertyMock
 from Zoomba.GUILibrary import GUILibrary
 from Zoomba.Helpers import ReactSelect, EdgePlugin
 from selenium.common.exceptions import UnexpectedTagNameException
-import msedge.selenium_tools
-import selenium.webdriver.remote.remote_connection
-import selenium.webdriver.remote.webdriver
-import SeleniumLibrary.utils
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../src/')))
 
