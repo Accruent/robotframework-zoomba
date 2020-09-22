@@ -424,7 +424,7 @@ class TestEdgePlugin(unittest.TestCase):
                            executable_path='Sure')
 
     def test_edge_plugin_2(self):
-        # SeleniumLibrary.utils.is_truthy = MagicMock(return_value=False)
+        SeleniumLibrary.utils.is_truthy = MagicMock(return_value=False)
         plugin = EdgePlugin.EdgePlugin(GUILibrary)
         msedge.selenium_tools.Edge = MagicMock()
         # selenium.webdriver.remote.remote_connection.RemoteConnection._request = MagicMock()
@@ -432,7 +432,7 @@ class TestEdgePlugin(unittest.TestCase):
         selenium.webdriver.remote.webdriver.WebDriver.start_session = MagicMock()
         driver = EdgePlugin._EdgePluginWebDriverCreator(MagicMock())
         driver.create_edge(desired_capabilities={}, remote_url="No",
-                           executable_path='Sure')
+                           executable_path='')
 
     @patch("SeleniumLibrary.keywords.webdrivertools.SeleniumOptions")
     def test_edge_plugin_3(self, options):
