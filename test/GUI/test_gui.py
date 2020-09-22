@@ -412,22 +412,23 @@ class TestInternal(unittest.TestCase):
 
 class TestEdgePlugin(unittest.TestCase):
     def test_edge_plugin(self):
-        # plugin = EdgePlugin.EdgePlugin(GUILibrary)
         msedge.selenium_tools.Edge = MagicMock()
         msedge.selenium_tools.service.Service.start = MagicMock()
         selenium.webdriver.remote.webdriver.WebDriver.start_session = MagicMock()
+        EdgePlugin.EdgePlugin(GUILibrary)
         driver = EdgePlugin._EdgePluginWebDriverCreator(MagicMock())
         driver.create_edge(desired_capabilities={}, remote_url="http://127.0.0.1",
                            executable_path='Sure')
+        selenium.webdriver.remote.webdriver.WebDriver.start_session.assert_called()
 
     def test_edge_plugin_2(self):
-        # plugin = EdgePlugin.EdgePlugin(GUILibrary)
         msedge.selenium_tools.Edge = MagicMock()
         msedge.selenium_tools.service.Service.start = MagicMock()
         selenium.webdriver.remote.webdriver.WebDriver.start_session = MagicMock()
         driver = EdgePlugin._EdgePluginWebDriverCreator(MagicMock())
         driver.create_edge(desired_capabilities={}, remote_url="No",
                            executable_path='')
+        selenium.webdriver.remote.webdriver.WebDriver.start_session.assert_called()
 
     @patch("SeleniumLibrary.keywords.webdrivertools.SeleniumOptions")
     def test_edge_plugin_3(self, options):
