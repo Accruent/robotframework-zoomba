@@ -9,14 +9,14 @@ Zoomba
 Introduction
 --------------
 
-Zoomba is a collection of libraries spanning GUI, REST API, SOAP API, Mobile, and Windows Desktop automation using [Robot Framework](https://github.com/robotframework/robotframework).
+Robotframework-Zoomba is a collection of libraries spanning GUI, REST API, SOAP API, Mobile, and Windows Desktop (WinAppDriver) automation using [Robot Framework](https://github.com/robotframework/robotframework).
 These libraries are extensions of existing libraries [SeleniumLibrary](https://github.com/robotframework/SeleniumLibrary), [Requests](https://github.com/bulkan/robotframework-requests), 
 [SudsLibrary](https://github.com/aljcalandra/robotframework-sudslibrary), and [AppiumLibrary](https://github.com/serhatbolsu/robotframework-appiumlibrary).
 
 Zoomba adds a significant amount of data validation support for REST and SOAP APIs, extends functionality for typical Web GUI automation, and
 extends AppiumLibrary functionality to support Windows desktop automation.
 
-As a team beginning the journey of automation with Robot Framework - we found that there was some time spent ramping up our libraries and Zoomba aims to make that process easier for new projects.
+As a team beginning the journey of automation with Robot Framework - we found that there was some time spent ramping up our libraries and Robotframework-Zoomba aims to make that process easier for new projects.
 
 See the **Keyword Documentation** for the [API](https://accruent.github.io/robotframework-zoomba/APILibraryDocumentation.html), [SOAP](https://accruent.github.io/robotframework-zoomba/SOAPLibraryDocumentation.html),
 [GUI](https://accruent.github.io/robotframework-zoomba/GUILibraryDocumentation.html), [Mobile](https://accruent.github.io/robotframework-zoomba/MobileLibraryDocumentation.html), or [Desktop](https://accruent.github.io/robotframework-zoomba/DesktopLibraryDocumentation.html) library for more specific information about the functionality.
