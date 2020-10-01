@@ -1,4 +1,4 @@
-Zoomba
+RobotFramework-Zoomba
 ===========
 [![PyPI version](https://badge.fury.io/py/robotframework-zoomba.svg)](https://badge.fury.io/py/robotframework-zoomba)
 [![Build Status](https://travis-ci.com/Accruent/robotframework-zoomba.svg?branch=master)](https://travis-ci.com/Accruent/robotframework-zoomba)
