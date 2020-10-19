@@ -50,13 +50,6 @@ def wait_until_page_contains(self, text, timeout=None, error=None):
     self._wait_until(timeout, error, self._is_text_present, text)
 
 
-def wait_until_page_contains_element(self, locator, timeout=None, error=None):
-    """Internal version to avoid duplicate screenshots"""
-    if not error:
-        error = "Element '%s' did not appear in <TIMEOUT>" % locator
-    self._wait_until(timeout, error, self._is_element_present, locator)
-
-
 def wait_for_and_long_press(self, locator, duration=5000, timeout=None, error=None):
     """Wait for and long press the element identified by ``locator`` with optional duration.
 

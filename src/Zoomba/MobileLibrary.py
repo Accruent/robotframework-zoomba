@@ -314,4 +314,6 @@ class MobileLibrary(AppiumLibrary):
 
     def _wait_until_page_contains_element(self, locator, timeout=None, error=None):
         """Internal version to avoid duplicate screenshots"""
-        AppiumCommon.wait_until_page_contains_element(self, locator, timeout, error)
+        if not error:
+            error = "Element '%s' did not appear in <TIMEOUT>" % locator
+        self._wait_until(timeout, error, self._is_element_present, locator)
