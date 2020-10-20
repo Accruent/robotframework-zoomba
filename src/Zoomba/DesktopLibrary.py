@@ -180,9 +180,9 @@ class DesktopLibrary(AppiumLibrary):
         desired_caps = kwargs
 
         if window_name:
-            """If the app has a splash screen we need to supply the window_name of the final window.
-            This code path will start the application and then attach to the correct window via
-            the window_name."""
+            # If the app has a splash screen we need to supply the window_name of the final window.
+            # This code path will start the application and then attach to the correct window via
+            # the window_name.
             self._info('Opening application "%s"' % desired_caps['app'])
             subprocess.Popen(desired_caps['app'])
             if splash_delay > 0:
