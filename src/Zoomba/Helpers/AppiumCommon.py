@@ -37,7 +37,8 @@ def capture_page_screenshot(self, filename=None):
 
 
 def save_appium_screenshot(self):
-    """Takes a screenshot with a unique filename to be stored in Robot Framework compiled reports."""
+    """Takes a screenshot with a unique filename to be stored
+    in Robot Framework compiled reports."""
     timestamp = time()
     filename = 'appium-screenshot-' + str(timestamp) + '-' + str(next(SCREENSHOT_COUNTER)) + '.png'
     return self.capture_page_screenshot(filename)
