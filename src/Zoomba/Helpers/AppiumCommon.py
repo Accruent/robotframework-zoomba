@@ -37,7 +37,8 @@ def capture_page_screenshot(self, filename=None):
 
 
 def save_appium_screenshot(self):
-    """Takes a screenshot with a unique filename to be stored in Robot Framework compiled reports."""
+    """Takes a screenshot with a unique filename to be stored
+    in Robot Framework compiled reports."""
     timestamp = time()
     filename = 'appium-screenshot-' + str(timestamp) + '-' + str(next(SCREENSHOT_COUNTER)) + '.png'
     return self.capture_page_screenshot(filename)
@@ -48,13 +49,6 @@ def wait_until_page_contains(self, text, timeout=None, error=None):
     if not error:
         error = "Text '%s' did not appear in <TIMEOUT>" % text
     self._wait_until(timeout, error, self._is_text_present, text)
-
-
-def wait_until_page_contains_element(self, locator, timeout=None, error=None):
-    """Internal version to avoid duplicate screenshots"""
-    if not error:
-        error = "Element '%s' did not appear in <TIMEOUT>" % locator
-    self._wait_until(timeout, error, self._is_element_present, locator)
 
 
 def wait_for_and_long_press(self, locator, duration=5000, timeout=None, error=None):

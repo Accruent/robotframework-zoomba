@@ -110,7 +110,6 @@ class DesktopLibrary(AppiumLibrary):
         This function restricts the keywords used in the library. This is to prevent incompatible
         keywords from imported libraries from being referenced and used.
         """
-        # self.save_appium_screenshot = save_appium_screenshot
         return [
             'maximize_window', 'open_application', 'wait_for_and_clear_text',
             'wait_for_and_click_element', 'wait_for_and_input_password', 'wait_for_and_input_text',
@@ -181,14 +180,16 @@ class DesktopLibrary(AppiumLibrary):
         desired_caps = kwargs
 
         if window_name:
-            # If the app has a splash screen we need to supply the window_name of the final window. This code path will
-            # start the application and then attach to the correct window via the window_name.
+            # If the app has a splash screen we need to supply the window_name of the final window.
+            # This code path will start the application and then attach to the correct window via
+            # the window_name.
             self._info('Opening application "%s"' % desired_caps['app'])
             subprocess.Popen(desired_caps['app'])
             if splash_delay > 0:
                 self._info('Waiting %s seconds for splash screen' % splash_delay)
                 sleep(splash_delay)
-            return self.switch_application_by_name(remote_url, alias=alias, window_name=window_name, **kwargs)
+            return self.switch_application_by_name(remote_url, alias=alias, window_name=window_name,
+                                                   **kwargs)
         # global application
         self._open_desktop_session(remote_url)
         application = webdriver.Remote(str(remote_url), desired_caps)
@@ -669,4 +670,6 @@ class DesktopLibrary(AppiumLibrary):
 
     def _wait_until_page_contains_element(self, locator, timeout=None, error=None):
         """Internal version to avoid duplicate screenshots"""
-        AppiumCommon.wait_until_page_contains_element(self, locator, timeout, error)
+        if not error:
+            error = "Element '%s' did not appear in <TIMEOUT>" % locator
+        self._wait_until(timeout, error, self._element_find, locator, True)
