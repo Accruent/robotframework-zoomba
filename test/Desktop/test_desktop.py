@@ -504,10 +504,38 @@ class TestInternal(unittest.TestCase):
         DesktopLibrary.select_element_from_combobox(mock_desk, 'some_locator', 'another_locator')
         mock_desk.click_element.assert_called_with('another_locator')
 
-    def test_select_from_combobox_retry_desktop(self):
+    def test_select_elements_from_menu_retry_desktop(self):
         mock_desk = MagicMock()
         mock_desk.click_element = MagicMock(side_effect=[True, NoSuchElementException, True])
-        DesktopLibrary.select_element_from_combobox(mock_desk, 'some_locator', 'another_locator', True)
+        DesktopLibrary.select_elements_from_menu(mock_desk, 'some_locator', 'another_locator')
+        mock_desk.click_element.assert_called_with('another_locator')
+
+    def test_select_elements_from_menu_no_desktop(self):
+        mock_desk = MagicMock()
+        DesktopLibrary.select_elements_from_menu(mock_desk, 'some_locator', 'another_locator')
+        mock_desk.click_element.assert_called_with('another_locator')
+
+    # def test_sselect_elements_from_menu_with_desktop(self):
+    #     mock_desk = MagicMock()
+    #     mock_desk.click_element = MagicMock(side_effect=[True, ValueError, True])
+    #     DesktopLibrary.select_elements_from_menu(mock_desk, 'some_locator', 'another_locator')
+    #     mock_desk.click_element.assert_called_with('another_locator')
+
+    # def test_select_from_combobox_skip_to_desktop(self):
+    #     mock_desk = MagicMock()
+    #     DesktopLibrary.select_element_from_combobox(mock_desk, 'some_locator', 'another_locator', True)
+    #     mock_desk.click_element.assert_called_with('another_locator')
+
+    def test_select_elements_from_menu_retry(self):
+        mock_desk = MagicMock()
+        mock_desk.click_element = MagicMock(side_effect=[True, NoSuchElementException, True])
+        DesktopLibrary.select_elements_from_menu(mock_desk, 'some_locator', 'another_locator')
+        mock_desk.click_element.assert_called_with('another_locator')
+
+    def test_select_elements_from_menu_desktop(self):
+        mock_desk = MagicMock()
+        mock_desk.click_element = MagicMock(side_effect=[True, NoSuchElementException, True])
+        DesktopLibrary.select_elements_from_menu(mock_desk, 'some_locator', 'another_locator')
         mock_desk.click_element.assert_called_with('another_locator')
 
     def test_wait_until_page_contains_private(self):
