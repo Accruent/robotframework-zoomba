@@ -120,6 +120,10 @@ Select Element From Combobox Test
     Wait Until Page Contains Element  accessibility_id=TogglePaneButton
     Select Element From ComboBox      accessibility_id=TogglePaneButton         accessibility_id=Standard
 
+Select Elements From Menu Test
+    Select Elements From Menu        name=Two      name=Three      name=Four
+    Wait Until Element Contains       accessibility_id=CalculatorResults       234
+
 Switch To Desktop Test
     Close Application
     Switch Application      Desktop
