@@ -624,11 +624,10 @@ class DesktopLibrary(AppiumLibrary):
             for each in args[count:]:
                 try:
                     self.click_element(each)
-                    count += 1
                 except NoSuchElementException:
                     self._wait_until_page_contains_element(each, self.get_appium_timeout())
                     self.click_element(each)
-                    count += 1
+                count += 1
             self.switch_application(original_index)
 
     # Private
