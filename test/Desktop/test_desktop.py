@@ -12,6 +12,11 @@ from webdriverremotemock import WebdriverRemoteMock
 from time import sleep
 
 
+def _long_running_function():
+    while True:
+        return 'Error'
+
+
 class TestInternal(unittest.TestCase):
     def test_get_keyword_names_successful(self):
         DesktopLibrary().get_keyword_names()
@@ -504,9 +509,21 @@ class TestInternal(unittest.TestCase):
         DesktopLibrary.select_element_from_combobox(mock_desk, 'some_locator', 'another_locator')
         mock_desk.click_element.assert_called_with('another_locator')
 
+    def test_select_from_combobox_retry_desktop(self):
+        mock_desk = MagicMock()
+        mock_desk.click_element = MagicMock(side_effect=[True, NoSuchElementException, True])
+        DesktopLibrary.select_element_from_combobox(mock_desk, 'some_locator', 'another_locator', True)
+        mock_desk.click_element.assert_called_with('another_locator')
+
     def test_select_elements_from_menu_retry_desktop(self):
         mock_desk = MagicMock()
         mock_desk.click_element = MagicMock(side_effect=[True, NoSuchElementException, True])
+        DesktopLibrary.select_elements_from_menu(mock_desk, 'some_locator', 'another_locator')
+        mock_desk.click_element.assert_called_with('another_locator')
+
+    def test_select_elements_from_menu_retry_desktop_2(self):
+        mock_desk = MagicMock()
+        mock_desk.click_element = MagicMock(side_effect=[True, NoSuchElementException, NoSuchElementException, True])
         DesktopLibrary.select_elements_from_menu(mock_desk, 'some_locator', 'another_locator')
         mock_desk.click_element.assert_called_with('another_locator')
 
@@ -514,17 +531,6 @@ class TestInternal(unittest.TestCase):
         mock_desk = MagicMock()
         DesktopLibrary.select_elements_from_menu(mock_desk, 'some_locator', 'another_locator')
         mock_desk.click_element.assert_called_with('another_locator')
-
-    # def test_sselect_elements_from_menu_with_desktop(self):
-    #     mock_desk = MagicMock()
-    #     mock_desk.click_element = MagicMock(side_effect=[True, ValueError, True])
-    #     DesktopLibrary.select_elements_from_menu(mock_desk, 'some_locator', 'another_locator')
-    #     mock_desk.click_element.assert_called_with('another_locator')
-
-    # def test_select_from_combobox_skip_to_desktop(self):
-    #     mock_desk = MagicMock()
-    #     DesktopLibrary.select_element_from_combobox(mock_desk, 'some_locator', 'another_locator', True)
-    #     mock_desk.click_element.assert_called_with('another_locator')
 
     def test_select_elements_from_menu_retry(self):
         mock_desk = MagicMock()
@@ -551,6 +557,6 @@ class TestInternal(unittest.TestCase):
 
     def test_wait_until_no_error_timeout(self):
         mock_desk = MagicMock()
-        mock_desk._format_timeout = MagicMock(return_value='1')
-        DesktopLibrary._wait_until(mock_desk, 1, "<TIMEOUT>", sleep, 2)
-        mock_desk._wait_until_no_error.assert_called_with(1, unittest.mock.ANY)
+        self.assertRaisesRegex(AssertionError,
+                               'Error', DesktopLibrary._wait_until_no_error, mock_desk,
+                               1, _long_running_function)
