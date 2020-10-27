@@ -471,5 +471,4 @@ class TestInternal(unittest.TestCase):
         mock_desk = MagicMock()
         DesktopLibrary._wait_until_page_contains_element(mock_desk, 'some_element', 5)
         mock_desk._wait_until.assert_called_with(5, "Element 'some_element' did not appear in "
-                                                 "<TIMEOUT>", unittest.mock.ANY, 'some_element',
-                                                 True)
+                                                 "<TIMEOUT>", unittest.mock.ANY, 'some_element')

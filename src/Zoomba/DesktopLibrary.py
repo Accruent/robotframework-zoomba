@@ -122,7 +122,7 @@ class DesktopLibrary(AppiumLibrary):
             'mouse_over_and_context_click_element', 'mouse_over_by_offset', 'drag_and_drop',
             'drag_and_drop_by_offset', 'send_keys', 'send_keys_to_element',
             'capture_page_screenshot', 'save_appium_screenshot', 'select_element_from_combobox',
-            'driver_setup', 'driver_teardown', 'select_element_from_menu',
+            'driver_setup', 'driver_teardown', 'select_elements_from_menu',
             # External Libraries
             'clear_text', 'click_button', 'click_element', 'close_all_applications',
             'close_application', 'element_attribute_should_match', 'element_should_be_disabled',
@@ -606,14 +606,16 @@ class DesktopLibrary(AppiumLibrary):
                 self.click_element(element_locator)
             self.switch_application(original_index)
 
-    @keyword("Select Element From Menu")
-    def select_element_from_menu(self, *args):
-        """"""
-        self.click_element(args[0])
-        count = 1
+    @keyword("Select Elements From Menu")
+    def select_elements_from_menu(self, *args):
+        """Selects n number of elements in the order they are given. This is useful for working
+        though a nested menu listing of elements.
+
+        On failure this keyword wil attempt to select the elements from the desktop session due to
+        the nature of some pop-out menus"""
+        count = 0
         try:
-            for each in args[count:]:
-                self._element_find(each, True, True)
+            for each in args:
                 self.click_element(each)
                 count += 1
         except NoSuchElementException:
@@ -718,7 +720,6 @@ class DesktopLibrary(AppiumLibrary):
         """Internal version to avoid duplicate screenshots"""
         if not error:
             error = "Element '%s' did not appear in <TIMEOUT>" % locator
-        # self._wait_until(timeout, error, self._element_find, locator, True)
         self._wait_until(timeout, error, self._is_element_present, locator)
 
     # Overrides to prevent expensive log_source call
