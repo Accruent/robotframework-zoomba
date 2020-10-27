@@ -619,16 +619,13 @@ class DesktopLibrary(AppiumLibrary):
                 self.click_element(each)
                 count += 1
         except NoSuchElementException:
-            print('failed to find normally, checking desktop')
             original_index = self._cache.current_index
             self.switch_application('Desktop')
             for each in args[count:]:
                 try:
-                    print('trying to find ' + each)
                     self.click_element(each)
                     count += 1
                 except NoSuchElementException:
-                    print('trying to find ' + each + ' again')
                     self._wait_until_page_contains_element(each, self.get_appium_timeout())
                     self.click_element(each)
                     count += 1
@@ -666,9 +663,7 @@ class DesktopLibrary(AppiumLibrary):
                 return driver.find_elements_by_xpath(criteria)
             return driver.find_elements_by_accessibility_id(criteria)
         if prefix == 'name':
-            print('internal find_by_name')
             if first_only:
-                print('internal fin_by_name_first_only')
                 return driver.find_element_by_name(criteria)
             return driver.find_elements_by_name(criteria)
         if prefix == 'class':
