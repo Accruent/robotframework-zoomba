@@ -531,18 +531,6 @@ class TestInternal(unittest.TestCase):
         DesktopLibrary.select_elements_from_menu(mock_desk, 'some_locator', 'another_locator')
         mock_desk.click_element.assert_called_with('another_locator')
 
-    def test_select_elements_from_menu_retry(self):
-        mock_desk = MagicMock()
-        mock_desk.click_element = MagicMock(side_effect=[True, NoSuchElementException, True])
-        DesktopLibrary.select_elements_from_menu(mock_desk, 'some_locator', 'another_locator')
-        mock_desk.click_element.assert_called_with('another_locator')
-
-    def test_select_elements_from_menu_desktop(self):
-        mock_desk = MagicMock()
-        mock_desk.click_element = MagicMock(side_effect=[True, NoSuchElementException, True])
-        DesktopLibrary.select_elements_from_menu(mock_desk, 'some_locator', 'another_locator')
-        mock_desk.click_element.assert_called_with('another_locator')
-
     def test_wait_until_page_contains_private(self):
         mock_desk = MagicMock()
         DesktopLibrary._wait_until_page_contains(mock_desk, 'some_text', 5)
