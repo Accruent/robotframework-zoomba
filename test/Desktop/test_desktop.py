@@ -9,7 +9,6 @@ from appium import webdriver
 from unittest.mock import MagicMock, patch
 sys.path.append(os.path.join(os.path.dirname(sys.path[0]), 'Helpers'))
 from webdriverremotemock import WebdriverRemoteMock
-from time import sleep
 
 
 def _long_running_function():
