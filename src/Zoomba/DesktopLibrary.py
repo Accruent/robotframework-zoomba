@@ -608,11 +608,11 @@ class DesktopLibrary(AppiumLibrary):
 
     @keyword("Select Elements From Menu")
     def select_elements_from_menu(self, *args):
-        """Selects n number of elements in the order they are given. This is useful for working
+        """Selects N number of elements in the order they are given. This is useful for working
         though a nested menu listing of elements.
 
         On failure this keyword wil attempt to select the elements from the desktop session due to
-        the nature of some pop-out menus"""
+        the nature of some pop-out menus in Windows."""
         count = 0
         try:
             for each in args:
