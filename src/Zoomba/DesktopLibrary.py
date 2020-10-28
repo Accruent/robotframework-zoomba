@@ -8,7 +8,8 @@ from robot.api.deco import keyword
 from robot.libraries.BuiltIn import BuiltIn
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.action_chains import ActionChains
-from time import sleep
+from time import sleep, time
+from robot import utils
 
 try:
     AppiumCommon = importlib.import_module('Helpers.AppiumCommon', package='Helpers')
@@ -121,7 +122,7 @@ class DesktopLibrary(AppiumLibrary):
             'mouse_over_and_context_click_element', 'mouse_over_by_offset', 'drag_and_drop',
             'drag_and_drop_by_offset', 'send_keys', 'send_keys_to_element',
             'capture_page_screenshot', 'save_appium_screenshot', 'select_element_from_combobox',
-            'driver_setup', 'driver_teardown',
+            'driver_setup', 'driver_teardown', 'select_elements_from_menu',
             # External Libraries
             'clear_text', 'click_button', 'click_element', 'close_all_applications',
             'close_application', 'element_attribute_should_match', 'element_should_be_disabled',
@@ -605,6 +606,30 @@ class DesktopLibrary(AppiumLibrary):
                 self.click_element(element_locator)
             self.switch_application(original_index)
 
+    @keyword("Select Elements From Menu")
+    def select_elements_from_menu(self, *args):
+        """Selects N number of elements in the order they are given. This is useful for working
+        though a nested menu listing of elements.
+
+        On failure this keyword wil attempt to select the elements from the desktop session due to
+        the nature of some pop-out menus in Windows."""
+        count = 0
+        try:
+            for each in args:
+                self.click_element(each)
+                count += 1
+        except NoSuchElementException:
+            original_index = self._cache.current_index
+            self.switch_application('Desktop')
+            for each in args[count:]:
+                try:
+                    self.click_element(each)
+                except NoSuchElementException:
+                    self._wait_until_page_contains_element(each, self.get_appium_timeout())
+                    self.click_element(each)
+                count += 1
+            self.switch_application(original_index)
+
     # Private
     def _move_to_element(self, actions, element, x_offset=0, y_offset=0):
         if x_offset != 0 or y_offset != 0:
@@ -654,6 +679,23 @@ class DesktopLibrary(AppiumLibrary):
             return driver.find_elements_by_accessibility_id(criteria)
         zoomba.fail("Element locator with prefix '" + prefix + "' is not supported")
 
+    def _is_element_present(self, locator):
+        prefix, criteria = self._parse_locator(locator)
+        driver = self._current_application()
+        if prefix is None:
+            if criteria.startswith('//'):
+                return len(driver.find_elements_by_xpath(criteria)) > 0
+            return len(driver.find_elements_by_accessibility_id(criteria)) > 0
+        if prefix == 'name':
+            return len(driver.find_elements_by_name(criteria)) > 0
+        if prefix == 'class':
+            return len(driver.find_elements_by_class_name(criteria)) > 0
+        if prefix == 'xpath':
+            return len(driver.find_elements_by_xpath(criteria)) > 0
+        if prefix == 'accessibility_id':
+            return len(driver.find_elements_by_accessibility_id(criteria)) > 0
+        zoomba.fail("Element locator with prefix '" + prefix + "' is not supported")
+
     def _parse_locator(self, locator):
         prefix = None
         criteria = locator
@@ -672,4 +714,16 @@ class DesktopLibrary(AppiumLibrary):
         """Internal version to avoid duplicate screenshots"""
         if not error:
             error = "Element '%s' did not appear in <TIMEOUT>" % locator
-        self._wait_until(timeout, error, self._element_find, locator, True)
+        self._wait_until(timeout, error, self._is_element_present, locator)
+
+    # Overrides to prevent expensive log_source call
+    def _wait_until_no_error(self, timeout, wait_func, *args):
+        timeout = utils.timestr_to_secs(timeout) if timeout is not None else self._timeout_in_secs
+        max_time = time() + timeout
+        while True:
+            timeout_error = wait_func(*args)
+            if not timeout_error:
+                return
+            if time() > max_time:
+                raise AssertionError(timeout_error)
+            sleep(0.2)

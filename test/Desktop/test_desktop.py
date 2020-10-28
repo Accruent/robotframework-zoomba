@@ -11,6 +11,11 @@ sys.path.append(os.path.join(os.path.dirname(sys.path[0]), 'Helpers'))
 from webdriverremotemock import WebdriverRemoteMock
 
 
+def _long_running_function():
+    while True:
+        return 'Error'
+
+
 class TestInternal(unittest.TestCase):
     def test_get_keyword_names_successful(self):
         DesktopLibrary().get_keyword_names()
@@ -318,6 +323,53 @@ class TestInternal(unittest.TestCase):
         self.assertRaisesRegex(AssertionError, "Element locator with prefix 'blockbuster_id' is not supported",
                                DesktopLibrary._element_find, mock_desk, "blockbuster_id=123456789", True, True)
 
+    def test_is_element_present_by_name(self):
+        mock_desk = MagicMock()
+        mock_desk._parse_locator = MagicMock(return_value=['name', 'Capture'])
+        DesktopLibrary._is_element_present(mock_desk, "Name='Capture'")
+        mock_desk._current_application().find_elements_by_name.assert_called_with('Capture')
+
+    def test_is_element_present_by_accessibility_id(self):
+        mock_desk = MagicMock()
+        mock_desk._parse_locator = MagicMock(return_value=['accessibility_id', 'Capture'])
+        DesktopLibrary._is_element_present(mock_desk, "accessibility_id='Capture'")
+        mock_desk._current_application().find_elements_by_accessibility_id.assert_called_with(
+            'Capture')
+
+    def test_is_element_present_by_class_name(self):
+        mock_desk = MagicMock()
+        mock_desk._parse_locator = MagicMock(return_value=['class', 'Capture'])
+        DesktopLibrary._is_element_present(mock_desk, "class='Capture'")
+        mock_desk._current_application().find_elements_by_class_name.assert_called_with('Capture')
+
+    def test_is_element_present_by_xpath(self):
+        mock_desk = MagicMock()
+        mock_desk._parse_locator = MagicMock(return_value=['xpath', 'Capture'])
+        DesktopLibrary._is_element_present(mock_desk, "xpath=//TreeItem[@Name='Capture']")
+        mock_desk._current_application().find_elements_by_xpath.assert_called_with('Capture')
+
+    def test_is_element_present_by_default_xpath(self):
+        mock_desk = MagicMock()
+        mock_desk._parse_locator = MagicMock(return_value=[None, "//TreeItem[@Name='Capture']"])
+        DesktopLibrary._is_element_present(mock_desk, "//TreeItem[@Name='Capture']")
+        mock_desk._current_application().find_elements_by_xpath.assert_called_with(
+            "//TreeItem[@Name='Capture']")
+
+    def test_is_element_present_by_default_accessibility_id(self):
+        mock_desk = MagicMock()
+        mock_desk._parse_locator = MagicMock(return_value=[None, "Capture"])
+        DesktopLibrary._is_element_present(mock_desk, "Capture")
+        mock_desk._current_application().find_elements_by_accessibility_id.assert_called_with(
+            'Capture')
+
+    def test_is_element_present_fail(self):
+        mock_desk = MagicMock()
+        mock_desk._parse_locator = MagicMock(return_value=['blockbuster_id', '123456789'])
+        self.assertRaisesRegex(AssertionError,
+                               "Element locator with prefix 'blockbuster_id' is not supported",
+                               DesktopLibrary._is_element_present, mock_desk,
+                               "blockbuster_id=123456789")
+
     def test_parse_locator_xpath(self):
         mock_desk = MagicMock()
         parse = DesktopLibrary._parse_locator(mock_desk, '//test')
@@ -462,6 +514,23 @@ class TestInternal(unittest.TestCase):
         DesktopLibrary.select_element_from_combobox(mock_desk, 'some_locator', 'another_locator', True)
         mock_desk.click_element.assert_called_with('another_locator')
 
+    def test_select_elements_from_menu_retry_desktop(self):
+        mock_desk = MagicMock()
+        mock_desk.click_element = MagicMock(side_effect=[True, NoSuchElementException, True])
+        DesktopLibrary.select_elements_from_menu(mock_desk, 'some_locator', 'another_locator')
+        mock_desk.click_element.assert_called_with('another_locator')
+
+    def test_select_elements_from_menu_retry_desktop_2(self):
+        mock_desk = MagicMock()
+        mock_desk.click_element = MagicMock(side_effect=[True, NoSuchElementException, NoSuchElementException, True])
+        DesktopLibrary.select_elements_from_menu(mock_desk, 'some_locator', 'another_locator')
+        mock_desk.click_element.assert_called_with('another_locator')
+
+    def test_select_elements_from_menu_no_desktop(self):
+        mock_desk = MagicMock()
+        DesktopLibrary.select_elements_from_menu(mock_desk, 'some_locator', 'another_locator')
+        mock_desk.click_element.assert_called_with('another_locator')
+
     def test_wait_until_page_contains_private(self):
         mock_desk = MagicMock()
         DesktopLibrary._wait_until_page_contains(mock_desk, 'some_text', 5)
@@ -471,5 +540,10 @@ class TestInternal(unittest.TestCase):
         mock_desk = MagicMock()
         DesktopLibrary._wait_until_page_contains_element(mock_desk, 'some_element', 5)
         mock_desk._wait_until.assert_called_with(5, "Element 'some_element' did not appear in "
-                                                 "<TIMEOUT>", unittest.mock.ANY, 'some_element',
-                                                 True)
+                                                 "<TIMEOUT>", unittest.mock.ANY, 'some_element')
+
+    def test_wait_until_no_error_timeout(self):
+        mock_desk = MagicMock()
+        self.assertRaisesRegex(AssertionError,
+                               'Error', DesktopLibrary._wait_until_no_error, mock_desk,
+                               1, _long_running_function)

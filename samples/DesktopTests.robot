@@ -94,9 +94,11 @@ Send Keys Keyword Test
     Send Keys    24     \ue025     2      \ue007
     Page Should Contain Text    26
 
-Send Keys with Modifier (Ctrl + v)
-    Send Keys               \ue009    v    \ue009
-    Wait Until Element Contains       accessibility_id=CalculatorResults    Display is Invalid input
+Send Keys with Modifier (Alt + 2)
+    Send Keys               \ue00A    2    \ue00A
+    Wait Until Page Contains Element          Name=Scientific Calculator mode
+    Send Keys               \ue00A    1    \ue00A
+    Wait Until Page Contains Element          Name=Standard Calculator mode
 
 Send Keys To Element Keyword Test
     Send Keys To Element   name=Display is 0    24     \ue025     2      \ue007
@@ -117,6 +119,10 @@ Select Element From Combobox Test
     Select Element From ComboBox      accessibility_id=Units1         name=Knots
     Wait Until Page Contains Element  accessibility_id=TogglePaneButton
     Select Element From ComboBox      accessibility_id=TogglePaneButton         accessibility_id=Standard
+
+Select Elements From Menu Test
+    Select Elements From Menu        name=Two      name=Three      name=Four
+    Wait Until Element Contains       accessibility_id=CalculatorResults       234
 
 Switch To Desktop Test
     Close Application
