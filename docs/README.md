@@ -194,4 +194,4 @@ Support
 ---------------
 General Robot Framework questions should be directed to the [community forum](https://forum.robotframework.org/).
 
-Contact the team at `robosquad@accruent.com` or create an issue with specific requests or questions regarding the Zoomba libraries!
+Create an issue with any specific requests or questions regarding the Zoomba libraries or you can contact the team at `robosquad@accruent.com`!
