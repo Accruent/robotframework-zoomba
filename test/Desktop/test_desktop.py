@@ -130,10 +130,8 @@ class TestInternal(unittest.TestCase):
         dl = DesktopLibrary()
         dl._run_on_failure = MagicMock()
         webdriver.Remote = WebdriverRemoteMock
-        webdriver.Remote.find_element_by_xpath = MagicMock(side_effect=[WebDriverException, 'Window', 'Window'])
-        self.assertRaisesRegex(AssertionError, 'Error finding window "test" in the desktop session. Is it a top level '
-                                               'window handle?.', dl.switch_application_by_name,
-                                               'remote_url', window_name='test', exact_match=False)
+        webdriver.Remote.find_element_by_xpath = MagicMock(side_effect=[WebDriverException, MagicMock(), MagicMock()])
+        dl.switch_application_by_name('remote_url', window_name='test', exact_match=False)
 
     def test_launch_application_successful(self):
         dl = DesktopLibrary()
