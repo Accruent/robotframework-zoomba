@@ -641,7 +641,7 @@ class DesktopLibrary(AppiumLibrary):
         count = 0
         try:
             for each in args:
-                if count is 0:
+                if count == 0:
                     self.mouse_over_and_context_click_element(each)
                 else:
                     self.click_element(each)
@@ -651,12 +651,12 @@ class DesktopLibrary(AppiumLibrary):
             self.switch_application('Desktop')
             for each in args[count:]:
                 try:
-                    if count is 0:
+                    if count == 0:
                         self.mouse_over_and_context_click_element(each)
                     else:
                         self.click_element(each)
                 except NoSuchElementException:
-                    if count is 0:
+                    if count == 0:
                         self._wait_until_page_contains_element(each, self.get_appium_timeout())
                         self.mouse_over_and_context_click_element(each)
                     else:
