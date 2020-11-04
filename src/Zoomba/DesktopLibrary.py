@@ -172,7 +172,7 @@ class DesktopLibrary(AppiumLibrary):
         | alias               | No     | Alias                                                                |
         | window_name         | No     | Window name you wish to attach, usually after a splash screen        |
         | splash_delay        | No     | Delay used when waiting for a splash screen to load, in seconds      |
-        | exact_match         | No     | window_name must match exactly?                                      |
+        | exact_match         | No     | Window name must match exactly?                                      |
 
         Examples:
         | Open Application | http://localhost:4723/wd/hub | alias=Myapp1         | platformName=Windows            | deviceName=Windows           | app=your.app          |
