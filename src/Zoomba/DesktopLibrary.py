@@ -677,6 +677,10 @@ class DesktopLibrary(AppiumLibrary):
             if first_only:
                 return driver.find_element_by_accessibility_id(criteria)
             return driver.find_elements_by_accessibility_id(criteria)
+        if prefix == 'image':
+            if first_only:
+                return driver.find_element_by_image(criteria)
+            return driver.find_elements_by_image(criteria)
         zoomba.fail("Element locator with prefix '" + prefix + "' is not supported")
 
     def _is_element_present(self, locator):
