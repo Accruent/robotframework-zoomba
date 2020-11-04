@@ -123,6 +123,7 @@ class DesktopLibrary(AppiumLibrary):
             'drag_and_drop_by_offset', 'send_keys', 'send_keys_to_element',
             'capture_page_screenshot', 'save_appium_screenshot', 'select_element_from_combobox',
             'driver_setup', 'driver_teardown', 'select_elements_from_menu',
+            'select_elements_from_context_menu',
             # External Libraries
             'clear_text', 'click_button', 'click_element', 'close_all_applications',
             'close_application', 'element_attribute_should_match', 'element_should_be_disabled',
@@ -611,7 +612,7 @@ class DesktopLibrary(AppiumLibrary):
         """Selects N number of elements in the order they are given. This is useful for working
         though a nested menu listing of elements.
 
-        On failure this keyword wil attempt to select the elements from the desktop session due to
+        On failure this keyword will attempt to select the elements from the desktop session due to
         the nature of some pop-out menus in Windows."""
         count = 0
         try:
@@ -627,6 +628,40 @@ class DesktopLibrary(AppiumLibrary):
                 except NoSuchElementException:
                     self._wait_until_page_contains_element(each, self.get_appium_timeout())
                     self.click_element(each)
+                count += 1
+            self.switch_application(original_index)
+
+    @keyword("Select Elements From Context Menu")
+    def select_elements_from_context_menu(self, *args):
+        """Context clicks the first element and then selects N number of elements in the order they
+        are given. This is useful for working though a nested context menu listing of elements.
+
+        On failure this keyword will attempt to select the elements from the desktop session due to
+        the nature of some pop-out menus in Windows."""
+        count = 0
+        try:
+            for each in args:
+                if count == 0:
+                    self.mouse_over_and_context_click_element(each)
+                else:
+                    self.click_element(each)
+                count += 1
+        except NoSuchElementException:
+            original_index = self._cache.current_index
+            self.switch_application('Desktop')
+            for each in args[count:]:
+                try:
+                    if count == 0:
+                        self.mouse_over_and_context_click_element(each)
+                    else:
+                        self.click_element(each)
+                except NoSuchElementException:
+                    if count == 0:
+                        self._wait_until_page_contains_element(each, self.get_appium_timeout())
+                        self.mouse_over_and_context_click_element(each)
+                    else:
+                        self._wait_until_page_contains_element(each, self.get_appium_timeout())
+                        self.click_element(each)
                 count += 1
             self.switch_application(original_index)
 
