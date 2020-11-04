@@ -545,6 +545,13 @@ class TestInternal(unittest.TestCase):
         mock_desk.click_element.mouse_over_and_context_click('some_locator')
         mock_desk.click_element.assert_called_with('another_locator')
 
+    def test_select_elements_from_context_menu_retry_desktop_3(self):
+        mock_desk = MagicMock()
+        mock_desk.click_element = MagicMock(side_effect=[NoSuchElementException, NoSuchElementException, True, True])
+        DesktopLibrary.select_elements_from_context_menu(mock_desk, 'some_locator', 'another_locator')
+        mock_desk.click_element.mouse_over_and_context_click('some_locator')
+        mock_desk.click_element.assert_called_with('another_locator')
+
     def test_select_elements_from_context_menu_no_desktop(self):
         mock_desk = MagicMock()
         DesktopLibrary.select_elements_from_context_menu(mock_desk, 'some_locator', 'another_locator')
