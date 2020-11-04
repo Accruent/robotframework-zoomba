@@ -199,7 +199,8 @@ class DesktopLibrary(AppiumLibrary):
         return self._cache.register(application, alias)
 
     @keyword("Switch Application By Name")
-    def switch_application_by_name(self, remote_url, window_name, alias=None, timeout=5, **kwargs):
+    def switch_application_by_name(self, remote_url, window_name, alias=None, timeout=5,
+                                   exact_match=True, **kwargs):
         """Switches to a currently opened window by ``window_name``.
         For the capabilities of appium server and Windows,
         Please check http://appium.io/docs/en/drivers/windows
@@ -208,24 +209,36 @@ class DesktopLibrary(AppiumLibrary):
         | window_name         | Yes    | Window name you wish to attach        |
         | alias               | No     | alias                                 |
         | timeout             | No     | timeout to connect                    |
+        | exact_match         | No     | window_name must match exactly?       |
 
         Examples:
         | Switch Application By Name | http://localhost:4723/wd/hub | alias=Myapp1         | platformName=Windows            | deviceName=Windows           | window_name=MyApplication         |
+        | Switch Application By Name | http://localhost:4723/wd/hub | window_name=MyApp    |  exact_match=False  |
 
         A session for the root desktop will also be opened and can be switched to by running the following:
         | Switch Application | Desktop         |
         """
         desired_caps = kwargs
         desktop_session = self._open_desktop_session(remote_url)
+        window_xpath = '//*[contains(@Name, "' + window_name + '")]'
         try:
-            window = desktop_session.find_element_by_name(window_name)
+            if exact_match:
+                window = desktop_session.find_element_by_name(window_name)
+            else:
+                window = desktop_session.find_element_by_xpath(window_xpath)
             self._debug('Window_name "%s" found.' % window_name)
             window = hex(int(window.get_attribute("NativeWindowHandle")))
         except Exception:
             try:
                 error = "Window '%s' did not appear in <TIMEOUT>" % window_name
-                self._wait_until(timeout, error, desktop_session.find_element_by_name, window_name)
-                window = desktop_session.find_element_by_name(window_name)
+                if exact_match:
+                    self._wait_until(timeout, error, desktop_session.find_element_by_name,
+                                     window_name)
+                    window = desktop_session.find_element_by_name(window_name)
+                else:
+                    self._wait_until(timeout, error, desktop_session.find_element_by_xpath,
+                                     window_xpath)
+                    window = desktop_session.find_element_by_xpath(window_xpath)
                 self._debug('Window_name "%s" found.' % window_name)
                 window = hex(int(window.get_attribute("NativeWindowHandle")))
             except Exception as e:
