@@ -161,7 +161,8 @@ class DesktopLibrary(AppiumLibrary):
         return True
 
     @keyword("Open Application")
-    def open_application(self, remote_url, alias=None, window_name=None, splash_delay=0, **kwargs):
+    def open_application(self, remote_url, alias=None, window_name=None, splash_delay=0,
+                         exact_match=True, **kwargs):
         """Opens a new application to given Appium server.
         If your application has a splash screen please supply the window name of the final window that will appear.
         For the capabilities of appium server and Windows please check http://appium.io/docs/en/drivers/windows
@@ -171,10 +172,12 @@ class DesktopLibrary(AppiumLibrary):
         | alias               | No     | Alias                                                                |
         | window_name         | No     | Window name you wish to attach, usually after a splash screen        |
         | splash_delay        | No     | Delay used when waiting for a splash screen to load, in seconds      |
+        | exact_match         | No     | window_name must match exactly?                                      |
 
         Examples:
         | Open Application | http://localhost:4723/wd/hub | alias=Myapp1         | platformName=Windows            | deviceName=Windows           | app=your.app          |
         | Open Application | http://localhost:4723/wd/hub | alias=Myapp1         | platformName=Windows            | deviceName=Windows           | app=your.app          | window_name=MyApplication          | splash_delay=5          |
+        | Open Application | http://localhost:4723/wd/hub | alias=Myapp1         | platformName=Windows            | deviceName=Windows           | app=your.app          | window_name=MyApplication          | exact_match=False       |
 
         A session for the root desktop will also be opened and can be switched to by running the following:
         | Switch Application | Desktop         |
@@ -191,7 +194,7 @@ class DesktopLibrary(AppiumLibrary):
                 self._info('Waiting %s seconds for splash screen' % splash_delay)
                 sleep(splash_delay)
             return self.switch_application_by_name(remote_url, alias=alias, window_name=window_name,
-                                                   **kwargs)
+                                                   exact_match=exact_match, **kwargs)
         # global application
         self._open_desktop_session(remote_url)
         application = webdriver.Remote(str(remote_url), desired_caps)
