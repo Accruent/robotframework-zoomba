@@ -88,6 +88,15 @@ class TestInternal(unittest.TestCase):
         dl.open_application('remote_url', window_name='test2', app='testApp', splash_delay=1)
         self.assertTrue(dl._cache.current)
 
+    def test_open_application_window_name_non_exact(self):
+        dl = DesktopLibrary()
+        subprocess.Popen = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        webdriver.Remote.find_element_by_xpath = MagicMock()
+        self.assertFalse(dl._cache.current)
+        dl.open_application('remote_url', window_name='test', app='testApp', exact_match=False)
+        self.assertTrue(dl._cache.current)
+
     def test_switch_application_failure(self):
         dl = DesktopLibrary()
         dl._run_on_failure = MagicMock()
@@ -116,6 +125,13 @@ class TestInternal(unittest.TestCase):
         web_driver_mock.quit = MagicMock(return_value=True)
         self.assertRaisesRegex(AssertionError, 'Error connecting webdriver to window "test".',
                                dl.switch_application_by_name, 'remote_url', window_name='test')
+
+    def test_switch_application_failure_4(self):
+        dl = DesktopLibrary()
+        dl._run_on_failure = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        webdriver.Remote.find_element_by_xpath = MagicMock(side_effect=[WebDriverException, MagicMock(), MagicMock()])
+        dl.switch_application_by_name('remote_url', window_name='test', exact_match=False)
 
     def test_launch_application_successful(self):
         dl = DesktopLibrary()

@@ -161,7 +161,8 @@ class DesktopLibrary(AppiumLibrary):
         return True
 
     @keyword("Open Application")
-    def open_application(self, remote_url, alias=None, window_name=None, splash_delay=0, **kwargs):
+    def open_application(self, remote_url, alias=None, window_name=None, splash_delay=0,
+                         exact_match=True, **kwargs):
         """Opens a new application to given Appium server.
         If your application has a splash screen please supply the window name of the final window that will appear.
         For the capabilities of appium server and Windows please check http://appium.io/docs/en/drivers/windows
@@ -171,10 +172,12 @@ class DesktopLibrary(AppiumLibrary):
         | alias               | No     | Alias                                                                |
         | window_name         | No     | Window name you wish to attach, usually after a splash screen        |
         | splash_delay        | No     | Delay used when waiting for a splash screen to load, in seconds      |
+        | exact_match         | No     | Set to False if window_name does not need to match exactly           |
 
         Examples:
         | Open Application | http://localhost:4723/wd/hub | alias=Myapp1         | platformName=Windows            | deviceName=Windows           | app=your.app          |
         | Open Application | http://localhost:4723/wd/hub | alias=Myapp1         | platformName=Windows            | deviceName=Windows           | app=your.app          | window_name=MyApplication          | splash_delay=5          |
+        | Open Application | http://localhost:4723/wd/hub | alias=Myapp1         | platformName=Windows            | deviceName=Windows           | app=your.app          | window_name=MyApplication          | exact_match=False       |
 
         A session for the root desktop will also be opened and can be switched to by running the following:
         | Switch Application | Desktop         |
@@ -191,7 +194,7 @@ class DesktopLibrary(AppiumLibrary):
                 self._info('Waiting %s seconds for splash screen' % splash_delay)
                 sleep(splash_delay)
             return self.switch_application_by_name(remote_url, alias=alias, window_name=window_name,
-                                                   **kwargs)
+                                                   exact_match=exact_match, **kwargs)
         # global application
         self._open_desktop_session(remote_url)
         application = webdriver.Remote(str(remote_url), desired_caps)
@@ -199,7 +202,8 @@ class DesktopLibrary(AppiumLibrary):
         return self._cache.register(application, alias)
 
     @keyword("Switch Application By Name")
-    def switch_application_by_name(self, remote_url, window_name, alias=None, timeout=5, **kwargs):
+    def switch_application_by_name(self, remote_url, window_name, alias=None, timeout=5,
+                                   exact_match=True, **kwargs):
         """Switches to a currently opened window by ``window_name``.
         For the capabilities of appium server and Windows,
         Please check http://appium.io/docs/en/drivers/windows
@@ -208,24 +212,36 @@ class DesktopLibrary(AppiumLibrary):
         | window_name         | Yes    | Window name you wish to attach        |
         | alias               | No     | alias                                 |
         | timeout             | No     | timeout to connect                    |
+        | exact_match         | No     | Set to False if window_name does not need to match exactly       |
 
         Examples:
         | Switch Application By Name | http://localhost:4723/wd/hub | alias=Myapp1         | platformName=Windows            | deviceName=Windows           | window_name=MyApplication         |
+        | Switch Application By Name | http://localhost:4723/wd/hub | window_name=MyApp    |  exact_match=False  |
 
         A session for the root desktop will also be opened and can be switched to by running the following:
         | Switch Application | Desktop         |
         """
         desired_caps = kwargs
         desktop_session = self._open_desktop_session(remote_url)
+        window_xpath = '//*[contains(@Name, "' + window_name + '")]'
         try:
-            window = desktop_session.find_element_by_name(window_name)
+            if exact_match:
+                window = desktop_session.find_element_by_name(window_name)
+            else:
+                window = desktop_session.find_element_by_xpath(window_xpath)
             self._debug('Window_name "%s" found.' % window_name)
             window = hex(int(window.get_attribute("NativeWindowHandle")))
         except Exception:
             try:
                 error = "Window '%s' did not appear in <TIMEOUT>" % window_name
-                self._wait_until(timeout, error, desktop_session.find_element_by_name, window_name)
-                window = desktop_session.find_element_by_name(window_name)
+                if exact_match:
+                    self._wait_until(timeout, error, desktop_session.find_element_by_name,
+                                     window_name)
+                    window = desktop_session.find_element_by_name(window_name)
+                else:
+                    self._wait_until(timeout, error, desktop_session.find_element_by_xpath,
+                                     window_xpath)
+                    window = desktop_session.find_element_by_xpath(window_xpath)
                 self._debug('Window_name "%s" found.' % window_name)
                 window = hex(int(window.get_attribute("NativeWindowHandle")))
             except Exception as e:
