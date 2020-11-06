@@ -120,14 +120,16 @@ The ability to send key commands to the application:
 Send Keys     \\ue00      p     \\ue00
 Send Keys To Element    locator     a     b     c
 ```
-Selecting an element from a combobox:
+Selecting an element from a combobox or a menu:
 ```robotframework
 Select Element From ComboBox     combobox_locator      element_locator
+Select Elements From Menu     locator_1    locator_2   locator_n
+Select Elements From Context Menu     locator_1    locator_2   locator_n
 ```
 
 Selecting an element by an image file (Appium v1.18.0 and higher only):
 ```robotframework
-Wait For And Clikc Element     image=file.png
+Wait For And Click Element     image=file.png
 ```
 
 Getting Started
@@ -205,4 +207,4 @@ Support
 ---------------
 General Robot Framework questions should be directed to the [community forum](https://forum.robotframework.org/).
 
-For questions and issues specific to Zoomba please create an issue here on Github or you can contact the team at [robosquad@accruent.com](robosquad@accruent.com).
+For questions and issues specific to Zoomba please create an issue here on Github. Otherwise you can contact the team at [robosquad@accruent.com](robosquad@accruent.com).
