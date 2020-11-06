@@ -88,6 +88,15 @@ class TestInternal(unittest.TestCase):
         dl.open_application('remote_url', window_name='test2', app='testApp', splash_delay=1)
         self.assertTrue(dl._cache.current)
 
+    def test_open_application_window_name_non_exact(self):
+        dl = DesktopLibrary()
+        subprocess.Popen = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        webdriver.Remote.find_element_by_xpath = MagicMock()
+        self.assertFalse(dl._cache.current)
+        dl.open_application('remote_url', window_name='test', app='testApp', exact_match=False)
+        self.assertTrue(dl._cache.current)
+
     def test_switch_application_failure(self):
         dl = DesktopLibrary()
         dl._run_on_failure = MagicMock()
@@ -116,6 +125,13 @@ class TestInternal(unittest.TestCase):
         web_driver_mock.quit = MagicMock(return_value=True)
         self.assertRaisesRegex(AssertionError, 'Error connecting webdriver to window "test".',
                                dl.switch_application_by_name, 'remote_url', window_name='test')
+
+    def test_switch_application_failure_4(self):
+        dl = DesktopLibrary()
+        dl._run_on_failure = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        webdriver.Remote.find_element_by_xpath = MagicMock(side_effect=[WebDriverException, MagicMock(), MagicMock()])
+        dl.switch_application_by_name('remote_url', window_name='test', exact_match=False)
 
     def test_launch_application_successful(self):
         dl = DesktopLibrary()
@@ -529,6 +545,33 @@ class TestInternal(unittest.TestCase):
     def test_select_elements_from_menu_no_desktop(self):
         mock_desk = MagicMock()
         DesktopLibrary.select_elements_from_menu(mock_desk, 'some_locator', 'another_locator')
+        mock_desk.click_element.assert_called_with('another_locator')
+
+    def test_select_elements_from_context_menu_retry_desktop(self):
+        mock_desk = MagicMock()
+        mock_desk.mouse_over_and_context_click_element = MagicMock(side_effect=[NoSuchElementException, True, True])
+        DesktopLibrary.select_elements_from_context_menu(mock_desk, 'some_locator', 'another_locator')
+        mock_desk.click_element.mouse_over_and_context_click('some_locator')
+        mock_desk.click_element.assert_called_with('another_locator')
+
+    def test_select_elements_from_context_menu_retry_desktop_2(self):
+        mock_desk = MagicMock()
+        mock_desk.mouse_over_and_context_click_element = MagicMock(side_effect=[NoSuchElementException, NoSuchElementException, True, True])
+        DesktopLibrary.select_elements_from_context_menu(mock_desk, 'some_locator', 'another_locator')
+        mock_desk.click_element.mouse_over_and_context_click('some_locator')
+        mock_desk.click_element.assert_called_with('another_locator')
+
+    def test_select_elements_from_context_menu_retry_desktop_3(self):
+        mock_desk = MagicMock()
+        mock_desk.click_element = MagicMock(side_effect=[NoSuchElementException, NoSuchElementException, True, True])
+        DesktopLibrary.select_elements_from_context_menu(mock_desk, 'some_locator', 'another_locator')
+        mock_desk.click_element.mouse_over_and_context_click('some_locator')
+        mock_desk.click_element.assert_called_with('another_locator')
+
+    def test_select_elements_from_context_menu_no_desktop(self):
+        mock_desk = MagicMock()
+        DesktopLibrary.select_elements_from_context_menu(mock_desk, 'some_locator', 'another_locator')
+        mock_desk.click_element.mouse_over_and_context_click('some_locator')
         mock_desk.click_element.assert_called_with('another_locator')
 
     def test_wait_until_page_contains_private(self):
