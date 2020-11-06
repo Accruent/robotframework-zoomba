@@ -6,7 +6,7 @@ from appium import webdriver
 from psutil import Process, NoSuchProcess
 from robot.api.deco import keyword
 from robot.libraries.BuiltIn import BuiltIn
-from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import NoSuchElementException, InvalidSelectorException
 from selenium.webdriver.common.action_chains import ActionChains
 from time import sleep, time
 from robot import utils
@@ -698,6 +698,11 @@ class DesktopLibrary(AppiumLibrary):
             return len(driver.find_elements_by_xpath(criteria)) > 0
         if prefix == 'accessibility_id':
             return len(driver.find_elements_by_accessibility_id(criteria)) > 0
+        if prefix == 'image':
+            try:
+                return len(driver.find_elements_by_image(criteria)) > 0
+            except InvalidSelectorException:
+                zoomba.fail("Selecting by image is only available when using Appium")
         zoomba.fail("Element locator with prefix '" + prefix + "' is not supported")
 
     def _parse_locator(self, locator):
