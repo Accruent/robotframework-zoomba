@@ -704,8 +704,8 @@ class DesktopLibrary(AppiumLibrary):
             return self._cache.get_connection(alias)
         except RuntimeError:
             self._debug('Creating new desktop session')
-            desktop_capabilities = dict({"app": "Root", "platformName": "Windows", "deviceName": "Windows",
-                                         "newCommandTimeout": 3600})
+            desktop_capabilities = dict({"app": "Root", "platformName": "Windows",
+                                         "deviceName": "Windows", "newCommandTimeout": 3600})
             desktop_session = webdriver.Remote(str(remote_url), desktop_capabilities)
             self._cache.register(desktop_session, alias=alias)
             return desktop_session
@@ -738,15 +738,13 @@ class DesktopLibrary(AppiumLibrary):
                 return driver.find_element_by_accessibility_id(criteria)
             return driver.find_elements_by_accessibility_id(criteria)
         if prefix == 'image':
-            if first_only:
-                try:
-                    return driver.find_element_by_image(criteria)
-                except InvalidSelectorException:
-                    zoomba.fail("Selecting by image is only available when using Appium v1.18.0 or higher")
             try:
+                if first_only:
+                    return driver.find_element_by_image(criteria)
                 return driver.find_elements_by_image(criteria)
             except InvalidSelectorException:
-                zoomba.fail("Selecting by image is only available when using Appium v1.18.0 or higher")
+                zoomba.fail("Selecting by image is only available when using Appium "
+                            "v1.18.0 or higher")
         zoomba.fail("Element locator with prefix '" + prefix + "' is not supported")
 
     def _is_element_present(self, locator):
