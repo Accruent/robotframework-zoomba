@@ -223,7 +223,7 @@ class DesktopLibrary(AppiumLibrary):
         """
         desired_caps = kwargs
         desktop_session = self._open_desktop_session(remote_url)
-        window_xpath = '//*[contains(@Name, "' + window_name + '")]'
+        window_xpath = '//Window[contains(@Name, "' + window_name + '")]'
         try:
             if exact_match:
                 window = desktop_session.find_element_by_name(window_name)
