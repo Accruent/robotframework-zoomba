@@ -120,9 +120,16 @@ The ability to send key commands to the application:
 Send Keys     \\ue00      p     \\ue00
 Send Keys To Element    locator     a     b     c
 ```
-Selecting an element from a combobox:
+Selecting an element from a combobox or a menu:
 ```robotframework
 Select Element From ComboBox     combobox_locator      element_locator
+Select Elements From Menu     locator_1    locator_2   locator_n
+Select Elements From Context Menu     locator_1    locator_2   locator_n
+```
+
+Selecting an element by an image file (Appium v1.18.0 and higher only):
+```robotframework
+Wait For And Click Element     image=file.png
 ```
 
 Getting Started
@@ -167,9 +174,15 @@ installed and then run the following:
 npm install -g appium
 appium
 ```
+
+To use the `image` locator strategy you will need to install [opencv4nodejs](https://github.com/justadudewhohacks/opencv4nodejs) via the following command:
+```python
+npm install -g opencv4nodejs
+```
+
 Alternatively [Appium Desktop](https://github.com/appium/appium-desktop/releases) can be used.
 
-For Windows automation we suggest [installing and using the WinAppDriver](https://github.com/Microsoft/WinAppDriver/releases) without Appium as it seems to be much more stable.
+For Windows automation we suggest [installing and using the WinAppDriver](https://github.com/Microsoft/WinAppDriver/releases) without Appium as it seems to be a bit faster and more stable.
 
 Make sure to [enable developer mode on your system](https://www.howtogeek.com/292914/what-is-developer-mode-in-windows-10/#:~:text=How%20to%20Enable%20Developer%20Mode,be%20put%20into%20Developer%20Mode.) to allow the WinAppDriver to work.
 
@@ -194,4 +207,4 @@ Support
 ---------------
 General Robot Framework questions should be directed to the [community forum](https://forum.robotframework.org/).
 
-Create an issue with any specific requests or questions regarding the Zoomba libraries or you can contact the team at `robosquad@accruent.com`!
+For questions and issues specific to Zoomba please create an issue here on Github. Otherwise you can contact the team at [robosquad@accruent.com](robosquad@accruent.com).

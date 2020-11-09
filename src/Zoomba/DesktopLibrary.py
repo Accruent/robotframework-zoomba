@@ -6,7 +6,7 @@ from appium import webdriver
 from psutil import Process, NoSuchProcess
 from robot.api.deco import keyword
 from robot.libraries.BuiltIn import BuiltIn
-from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import NoSuchElementException, InvalidSelectorException
 from selenium.webdriver.common.action_chains import ActionChains
 from time import sleep, time
 from robot import utils
@@ -71,6 +71,9 @@ class DesktopLibrary(AppiumLibrary):
     |       class        |              ClassName             | Click Element `|` class=UIAPickerWheel            |
     |       name         |                Name                | Click Element `|` name=my_element                 |
     |       xpath        |                N/A                 | Click Element `|` xpath=//Button[@Name="Close"]   |
+    |       image        |                N/A                 | Click Element `|` image=file.png                  |
+
+    The ``image`` locator strategy can only be used with Appium v1.18.0 or higher.
 
     Example tests using the windows calculator are located in the tests directory.
 
@@ -146,12 +149,16 @@ class DesktopLibrary(AppiumLibrary):
         """Starts the WinAppDriver.
 
         ``path`` can be provided if your winappdriver installation is not in the default path of
-        ``C:/Program Files (x86)/Windows Application Driver/WinAppDriver.exe``."""
+        ``C:/Program Files (x86)/Windows Application Driver/WinAppDriver.exe``.
+
+        Not to be used with Appium."""
         self.winappdriver.set_up_driver(path)
 
     @keyword("Driver Teardown")
     def driver_teardown(self):
-        """Stops the WinAppDriver."""
+        """Stops the WinAppDriver.
+
+        Not to be used with Appium."""
         self.winappdriver.tear_down_driver()
 
     @keyword("Maximize Window")
@@ -302,7 +309,9 @@ class DesktopLibrary(AppiumLibrary):
     def click_element(self, locator):
         """Click element identified by `locator`.
 
-        Supported prefixes: ``accessibility_id``, ``name``, ``class``, ``xpath``
+        Supported prefixes: ``accessibility_id``, ``name``, ``class``, ``xpath``, and ``image``
+
+        The ``image`` locator strategy can only be used with Appium v1.18.0 and newer.
 
         If no prefix is given ``click element`` defaults to ``accessibility_id`` or ``xpath``
         """
@@ -582,7 +591,7 @@ class DesktopLibrary(AppiumLibrary):
         given in absolute format.
 
         `css` can be used to modify how the screenshot is taken. By default
-        the bakground color is changed to avoid possible problems with
+        the background color is changed to avoid possible problems with
         background leaking when the page layout is somehow broken.
 
         See `Save Appium Screenshot` for a screenshot that will be unique across reports
@@ -695,8 +704,8 @@ class DesktopLibrary(AppiumLibrary):
             return self._cache.get_connection(alias)
         except RuntimeError:
             self._debug('Creating new desktop session')
-            desktop_capabilities = dict({"app": "Root", "platformName": "Windows", "deviceName": "Windows",
-                                         "newCommandTimeout": 3600})
+            desktop_capabilities = dict({"app": "Root", "platformName": "Windows",
+                                         "deviceName": "Windows", "newCommandTimeout": 3600})
             desktop_session = webdriver.Remote(str(remote_url), desktop_capabilities)
             self._cache.register(desktop_session, alias=alias)
             return desktop_session
@@ -728,6 +737,14 @@ class DesktopLibrary(AppiumLibrary):
             if first_only:
                 return driver.find_element_by_accessibility_id(criteria)
             return driver.find_elements_by_accessibility_id(criteria)
+        if prefix == 'image':
+            try:
+                if first_only:
+                    return driver.find_element_by_image(criteria)
+                return driver.find_elements_by_image(criteria)
+            except InvalidSelectorException:
+                zoomba.fail("Selecting by image is only available when using Appium "
+                            "v1.18.0 or higher")
         zoomba.fail("Element locator with prefix '" + prefix + "' is not supported")
 
     def _is_element_present(self, locator):
@@ -745,6 +762,11 @@ class DesktopLibrary(AppiumLibrary):
             return len(driver.find_elements_by_xpath(criteria)) > 0
         if prefix == 'accessibility_id':
             return len(driver.find_elements_by_accessibility_id(criteria)) > 0
+        if prefix == 'image':
+            try:
+                return len(driver.find_elements_by_image(criteria)) > 0
+            except InvalidSelectorException:
+                zoomba.fail("Selecting by image is only available when using Appium v1.18.0 or higher")
         zoomba.fail("Element locator with prefix '" + prefix + "' is not supported")
 
     def _parse_locator(self, locator):

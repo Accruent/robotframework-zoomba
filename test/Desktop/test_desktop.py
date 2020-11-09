@@ -3,7 +3,8 @@ import os
 import psutil
 import unittest
 import subprocess
-from selenium.common.exceptions import WebDriverException, NoSuchElementException
+from selenium.common.exceptions import WebDriverException, NoSuchElementException, \
+    InvalidSelectorException
 from Zoomba.DesktopLibrary import DesktopLibrary
 from appium import webdriver
 from unittest.mock import MagicMock, patch
@@ -273,6 +274,36 @@ class TestInternal(unittest.TestCase):
         DesktopLibrary._element_find(mock_desk, "Name='Capture'", False, True)
         mock_desk._current_application().find_elements_by_name.assert_called_with('Capture')
 
+    def test_element_find_by_image(self):
+        mock_desk = MagicMock()
+        mock_desk._parse_locator = MagicMock(return_value=['image', 'file.png'])
+        DesktopLibrary._element_find(mock_desk, "image='file.png", True, True)
+        mock_desk._current_application().find_element_by_image.assert_called_with('file.png')
+
+    def test_element_find_by_image_fail(self):
+        mock_desk = MagicMock()
+        mock_desk._parse_locator = MagicMock(return_value=['image', 'file.png'])
+        mock_desk._current_application().find_element_by_image = \
+            MagicMock(side_effect=InvalidSelectorException)
+        self.assertRaisesRegex(AssertionError, 'Selecting by image is only available when using '
+                               'Appium v1.18.0 or higher', DesktopLibrary._element_find, mock_desk,
+                               'file.png', True, True)
+
+    def test_elements_find_by_image(self):
+        mock_desk = MagicMock()
+        mock_desk._parse_locator = MagicMock(return_value=['image', 'file.png'])
+        DesktopLibrary._element_find(mock_desk, "image='file.png", False, True)
+        mock_desk._current_application().find_elements_by_image.assert_called_with('file.png')
+
+    def test_elements_find_by_image_fail(self):
+        mock_desk = MagicMock()
+        mock_desk._parse_locator = MagicMock(return_value=['image', 'file.png'])
+        mock_desk._current_application().find_elements_by_image = \
+            MagicMock(side_effect=InvalidSelectorException)
+        self.assertRaisesRegex(AssertionError, 'Selecting by image is only available when using '
+                               'Appium v1.18.0 or higher', DesktopLibrary._element_find, mock_desk,
+                               'file.png', False, True)
+
     def test_element_find_by_accessibility_id(self):
         mock_desk = MagicMock()
         mock_desk._parse_locator = MagicMock(return_value=['accessibility_id', 'Capture'])
@@ -377,6 +408,21 @@ class TestInternal(unittest.TestCase):
         DesktopLibrary._is_element_present(mock_desk, "Capture")
         mock_desk._current_application().find_elements_by_accessibility_id.assert_called_with(
             'Capture')
+
+    def test_is_element_present_by_image(self):
+        mock_desk = MagicMock()
+        mock_desk._parse_locator = MagicMock(return_value=['image', 'file.png'])
+        DesktopLibrary._is_element_present(mock_desk, "image='file.png")
+        mock_desk._current_application().find_elements_by_image.assert_called_with('file.png')
+
+    def test_is_element_present_by_image_fail(self):
+        mock_desk = MagicMock()
+        mock_desk._parse_locator = MagicMock(return_value=['image', 'file.png'])
+        mock_desk._current_application().find_elements_by_image = \
+            MagicMock(side_effect=InvalidSelectorException)
+        self.assertRaisesRegex(AssertionError, 'Selecting by image is only available when using '
+                               'Appium v1.18.0 or higher', DesktopLibrary._is_element_present, mock_desk,
+                               'file.png')
 
     def test_is_element_present_fail(self):
         mock_desk = MagicMock()
