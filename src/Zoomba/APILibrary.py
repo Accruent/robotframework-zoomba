@@ -270,7 +270,6 @@ class APILibrary(object):
                     continue
                 if isinstance(value, list):
                     if full_list_validation and len(value) != len(actual_dictionary[key]):
-                    # if len(value) != len(actual_dictionary[key]):
                         zoomba.fail("Arrays not the same length:" + \
                                     "\nExpected: " + str(value) + \
                                     "\nActual: " + str(actual_dictionary[key]))

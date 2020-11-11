@@ -143,6 +143,13 @@ class TestInternal(unittest.TestCase):
                                      unmatched_keys_list=unmatched)
         assert unmatched == [('------------------\nKey: a[0].b[0].c', 'Expected: 5', 'Actual: 4')]
 
+    def test_key_by_key_validator_partial_list(self):
+        library = APILibrary()
+        library.key_by_key_validator(
+            {"result": {"locations": [{"name": "Loc-1", "sys_id": "1"},
+                                      {"name": "Loc-2", "sys_id": "2"}]}},
+            {"result": {"locations": [{"name": "Loc-1", "sys_id": "1"}]}})
+
     def test__unmatched_list_check_parent_not_list_not_equal(self):
         unmatched = [('------------------\nKey: c', 'Expected: 5', 'Actual: 4')]
         _unmatched_list_check(unmatched, 0, "a", index=None, parent_key="b", is_list=False)
