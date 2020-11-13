@@ -143,8 +143,14 @@ class TestInternal(unittest.TestCase):
                                      unmatched_keys_list=unmatched)
         assert unmatched == [('------------------\nKey: a[0].b[0].c', 'Expected: 5', 'Actual: 4')]
 
-    def test__unmatched_list_check_parent_not_list_not_equal(self):
+    def test_key_by_key_validator_partial_list(self):
         library = APILibrary()
+        library.key_by_key_validator(
+            {"result": {"locations": [{"name": "Loc-1", "sys_id": "1"},
+                                      {"name": "Loc-2", "sys_id": "2"}]}},
+            {"result": {"locations": [{"name": "Loc-1", "sys_id": "1"}]}})
+
+    def test__unmatched_list_check_parent_not_list_not_equal(self):
         unmatched = [('------------------\nKey: c', 'Expected: 5', 'Actual: 4')]
         _unmatched_list_check(unmatched, 0, "a", index=None, parent_key="b", is_list=False)
         assert unmatched == [('------------------\nKey: a.c', 'Expected: 5', 'Actual: 4')]
@@ -164,7 +170,7 @@ class TestInternal(unittest.TestCase):
     @patch('robot.libraries.BuiltIn.BuiltIn.fail')
     def test_key_by_key_validator_list_not_same_length_fail(self, fail):
         library = APILibrary()
-        library.key_by_key_validator({"a": ["1", "2"]}, {"a": ["1"]})
+        library.key_by_key_validator({"a": ["1", "2"]}, {"a": ["1"]}, full_list_validation=True)
         fail.assert_called_with("Arrays not the same length:\nExpected: ['1']\nActual: ['1', '2']")
 
     @patch('robot.libraries.BuiltIn.BuiltIn.fail')
