@@ -5,6 +5,6 @@ robotframework-sudslibrary-aljcalandra==1.1
 requests==2.25.0
 selenium==3.141.0
 python-dateutil==2.8.1
-robotframework-appiumlibrary==1.5.0.6
+robotframework-appiumlibrary==1.5.0.7
 psutil==5.7.3
 msedge-selenium-tools==3.141.2
