@@ -8,6 +8,8 @@ from robot.api.deco import keyword
 from robot.libraries.BuiltIn import BuiltIn
 from selenium.common.exceptions import NoSuchElementException, InvalidSelectorException
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.touch_actions import TouchActions
+
 from time import sleep, time
 from robot import utils
 
@@ -126,7 +128,10 @@ class DesktopLibrary(AppiumLibrary):
             'drag_and_drop_by_offset', 'send_keys', 'send_keys_to_element',
             'capture_page_screenshot', 'save_appium_screenshot', 'select_element_from_combobox',
             'driver_setup', 'driver_teardown', 'select_elements_from_menu',
-            'select_elements_from_context_menu',
+            'select_elements_from_context_menu', 'drag_and_drop_by_touch',
+            'drag_and_drop_by_touch_offset', 'wait_for_and_tap', 'wait_for_and_double_tap',
+            'double_tap', 'flick', 'flick_from_element', 'scroll', 'scroll_from_element',
+            'wait_for_and_flick_from_element', 'wait_for_and_scroll_from_element',
             # External Libraries
             'clear_text', 'click_button', 'click_element', 'close_all_applications',
             'close_application', 'element_attribute_should_match', 'element_should_be_disabled',
@@ -141,7 +146,7 @@ class DesktopLibrary(AppiumLibrary):
             'text_should_be_visible', 'wait_until_element_is_visible', 'wait_until_page_contains',
             'wait_until_page_contains_element', 'wait_until_page_does_not_contain',
             'wait_until_page_does_not_contain_element', 'get_matching_xpath_count',
-            'xpath_should_match_x_times'
+            'xpath_should_match_x_times', 'tap'
         ]
 
     @keyword("Driver Setup")
@@ -204,6 +209,8 @@ class DesktopLibrary(AppiumLibrary):
                                                    exact_match=exact_match, **kwargs)
         # global application
         self._open_desktop_session(remote_url)
+        if "platformName" not in desired_caps:
+            desired_caps["platformName"] = "Windows"
         application = webdriver.Remote(str(remote_url), desired_caps)
         self._debug('Opened application with session id %s' % application.session_id)
         return self._cache.register(application, alias)
@@ -258,6 +265,8 @@ class DesktopLibrary(AppiumLibrary):
                     'Is it a top level window handle?' + '. \n' + str(e))
         if "app" in desired_caps:
             del desired_caps["app"]
+        if "platformName" not in desired_caps:
+            desired_caps["platformName"] = "Windows"
         desired_caps["appTopLevelWindow"] = window
         # global application
         try:
@@ -689,6 +698,130 @@ class DesktopLibrary(AppiumLibrary):
                         self.click_element(each)
                 count += 1
             self.switch_application(original_index)
+
+    @keyword("Drag And Drop by Touch")
+    def drag_and_drop_by_touch(self, source, target):
+        """Drags the element found with the locator ``source`` to the element found with the
+        locator ``target`` using touch actions."""
+        source_element = self._element_find(source, True, True)
+        target_element = self._element_find(target, True, True)
+        actions = TouchActions(self._current_application())
+        source_x_center = source_element.location.get('x') + (source_element.size.get('width') / 2)
+        source_y_center = source_element.location.get('y') + (source_element.size.get('height') / 2)
+        target_x_center = target_element.location.get('x') + (target_element.size.get('width') / 2)
+        target_y_center = target_element.location.get('y') + (target_element.size.get('height') / 2)
+        actions.tap_and_hold(source_x_center, source_y_center).release(target_x_center, target_y_center).perform()
+
+    @keyword("Drag And Drop by Touch Offset")
+    def drag_and_drop_by_touch_offset(self, locator, x_offset=0, y_offset=0):
+        """Drags the element found with ``locator `` to the given ``x_offset`` and ``y_offset``
+        coordinates using touch actions."""
+        source_element = self._element_find(locator, True, True)
+        actions = TouchActions(self._current_application())
+        source_x_center = source_element.location.get('x') + (source_element.size.get('width') / 2)
+        source_y_center = source_element.location.get('y') + (source_element.size.get('height') / 2)
+        actions.tap_and_hold(source_x_center, source_y_center).release(x_offset, y_offset).perform()
+
+    @keyword("Double Tap")
+    def double_tap(self, locator):
+        """ Double tap element identified by ``locator``."""
+        element = self._element_find(locator, True, True)
+        action = TouchActions(self._current_application())
+        action.double_tap(element).perform()
+
+    @keyword("Wait For And Tap")
+    def wait_for_and_tap(self, locator, timeout=None, error=None):
+        """Wait for and tap the element identified by ``locator``.
+
+        Fails if ``timeout`` expires before the element appears.
+
+        ``error`` can be used to override the default error message.
+
+        See `introduction` for details about locating elements."""
+        self._wait_until_page_contains_element(locator, timeout, error)
+        self.tap(locator)
+
+    @keyword("Wait For And Double Tap")
+    def wait_for_and_double_tap(self, locator, timeout=None, error=None):
+        """Wait for and double tap the element identified by ``locator``.
+
+        Fails if ``timeout`` expires before the element appears.
+
+        ``error`` can be used to override the default error message.
+
+        See `introduction` for details about locating elements."""
+        self._wait_until_page_contains_element(locator, timeout, error)
+        self.double_tap(locator)
+
+    @keyword("Flick")
+    def flick(self, x_speed, y_speed):
+        """ Flicks from current position.
+
+         ``x_speed`` is the X speed in pixels per second.
+
+         ``y_speed`` is the Y speed in pixels per second."""
+        action = TouchActions(self._current_application())
+        action.flick(x_speed, y_speed).perform()
+
+    @keyword("Flick From Element")
+    def flick_from_element(self, locator, x_offset, y_offset, speed):
+        """ Flicks starting at ``locator``.
+
+        ``x_offset`` is X offset to flick to.
+
+        ``y_offset`` is Y offset to flick to.
+
+        ``speed`` is Pixels per second to flick."""
+        element = self._element_find(locator, True, True)
+        action = TouchActions(self._current_application())
+        action.flick_element(element, x_offset, y_offset, speed).perform()
+
+    @keyword("Wait For And Flick From Element")
+    def wait_for_and_flick_from_element(self, locator, x_offset, y_offset, speed,
+                                        timeout=None, error=None):
+        """Wait for and flick from element identified by ``locator``.
+
+        Fails if ``timeout`` expires before the element appears.
+
+        ``error`` can be used to override the default error message.
+
+        See `introduction` for details about locating elements."""
+        self._wait_until_page_contains_element(locator, timeout, error)
+        self.flick_from_element(locator, x_offset, y_offset, speed)
+
+    @keyword("Scroll")
+    def scroll(self, x_offset, y_offset):
+        """ Scrolls from current position.
+
+         ``x_offset`` is the X offset to scroll to.
+
+         ``y_offset`` is the Y offset to scroll to."""
+        action = TouchActions(self._current_application())
+        action.scroll(x_offset, y_offset).perform()
+
+    @keyword("Scroll From Element")
+    def scroll_from_element(self, locator, x_offset, y_offset):
+        """ Scrolls starting from ``locator``.
+
+         ``x_offset`` is the X offset to scroll to.
+
+         ``y_offset`` is the Y offset to scroll to."""
+        element = self._element_find(locator, True, True)
+        action = TouchActions(self._current_application())
+        action.scroll_from_element(element, x_offset, y_offset).perform()
+
+    @keyword("Wait For And Scroll From Element")
+    def wait_for_and_scroll_from_element(self, locator, x_offset, y_offset,
+                                         timeout=None, error=None):
+        """Wait for and scroll from element identified by ``locator``.
+
+        Fails if ``timeout`` expires before the element appears.
+
+        ``error`` can be used to override the default error message.
+
+        See `introduction` for details about locating elements."""
+        self._wait_until_page_contains_element(locator, timeout, error)
+        self.scroll_from_element(locator, x_offset, y_offset)
 
     # Private
     def _move_to_element(self, actions, element, x_offset=0, y_offset=0):
