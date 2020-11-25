@@ -3,8 +3,8 @@ Documentation     Zoomba Desktop Library Tests.
 Library           Zoomba.DesktopLibrary
 Suite Setup       Start App
 Test Setup        Launch Application
-Test Teardown     Quit Application
-Suite Teardown    Close All Applications
+#Test Teardown     Quit Application
+#Suite Teardown    Close All Applications
 Force Tags        Windows
 
 *** Variables ***
@@ -129,6 +129,20 @@ Drag And Drop By Touch Tests
     drag and drop by touch      accessibility_id=AppName       name=Five
     drag and drop by touch offset      accessibility_id=AppName     100    100
     Maximize Window
+
+Tap Tests
+    Tap    name=Five
+    Double Tap    name=Five
+    Wait Until Element Contains       accessibility_id=CalculatorResults      555
+
+Flick Tests
+    Select Element From ComboBox      accessibility_id=TogglePaneButton         accessibility_id=Graphing
+    Wait Until Page Contains Element  accessibility_id=TogglePaneButton
+    Flick      100    100
+    Wait For And Click Element        accessibility_id=TogglePaneButton
+    Flick From Element                accessibility_id=Standard       0      -100    10
+    Wait Until Page Contains Element  accessibility_id=Standard
+    Wait For And Click Element        accessibility_id=Standard
 
 Switch To Desktop Test
     Close Application

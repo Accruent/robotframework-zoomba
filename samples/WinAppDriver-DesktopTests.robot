@@ -131,6 +131,20 @@ Drag And Drop By Touch Tests
     drag and drop by touch offset      accessibility_id=AppName     100    100
     Maximize Window
 
+Tap Tests
+    Tap    name=Five
+    Double Tap    name=Five
+    Wait Until Element Contains       accessibility_id=CalculatorResults      555
+
+Flick Tests
+    Select Element From ComboBox      accessibility_id=TogglePaneButton         accessibility_id=Graphing
+    Wait Until Page Contains Element  accessibility_id=TogglePaneButton
+    Flick      100    100
+    Wait For And Click Element        accessibility_id=TogglePaneButton
+    Flick From Element                accessibility_id=Standard       0      -100    10
+    Wait Until Page Contains Element  accessibility_id=Standard
+    Wait For And Click Element        accessibility_id=Standard
+
 Switch To Desktop Test
     Close Application
     Switch Application      Desktop

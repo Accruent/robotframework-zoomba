@@ -129,7 +129,8 @@ class DesktopLibrary(AppiumLibrary):
             'capture_page_screenshot', 'save_appium_screenshot', 'select_element_from_combobox',
             'driver_setup', 'driver_teardown', 'select_elements_from_menu',
             'select_elements_from_context_menu', 'drag_and_drop_by_touch',
-            'drag_and_drop_by_touch_offset',
+            'drag_and_drop_by_touch_offset', 'double_tap', 'flick', 'flick_from_element',
+            'scroll', 'scroll_from_element',
             # External Libraries
             'clear_text', 'click_button', 'click_element', 'close_all_applications',
             'close_application', 'element_attribute_should_match', 'element_should_be_disabled',
@@ -697,22 +698,6 @@ class DesktopLibrary(AppiumLibrary):
                 count += 1
             self.switch_application(original_index)
 
-    # @keyword("Tap Down")
-    # def tap_down(self, locator):
-    #     """"""
-    #     element = self._element_find(locator, True, True)
-    #     action = TouchAction(self._current_application())
-    #     # TouchAction(self._current_application()).move_to()
-    #     action.press(element)
-    #     action.move_to(el=None, x=100, y=100).perform()
-
-    # @keyword("Move")
-    # def move(self):
-    #     """"""
-    #     # element = self._element_find(locator, True, True)
-    #     action = TouchAction(self._current_application())
-    #     action.move_to(x=100, y=100).perform()
-
     @keyword("Drag And Drop by Touch")
     def drag_and_drop_by_touch(self, source, target):
         """Drags the element found with ``source`` to the given ``x_offset`` and ``y_offset``
@@ -735,6 +720,57 @@ class DesktopLibrary(AppiumLibrary):
         source_x_center = source_element.location.get('x') + (source_element.size.get('width') / 2)
         source_y_center = source_element.location.get('y') + (source_element.size.get('height') / 2)
         actions.tap_and_hold(source_x_center, source_y_center).release(x_offset, y_offset).perform()
+
+    @keyword("Double Tap")
+    def double_tap(self, locator):
+        """ Double tap element identified by ``locator``."""
+        element = self._element_find(locator, True, True)
+        action = TouchActions(self._current_application())
+        action.double_tap(element).perform()
+
+    @keyword("Flick")
+    def flick(self, x_speed, y_speed):
+        """ Flicks from current position.
+
+         `xspeed` is the X speed in pixels per second.
+
+         `yspeed` is the Y speed in pixels per second."""
+        action = TouchActions(self._current_application())
+        action.flick(x_speed, y_speed).perform()
+
+    @keyword("Flick From Element")
+    def flick_from_element(self, locator, x_offset, y_offset, speed):
+        """ Flicks starting at `locator`.
+
+        `xoffset` is X offset to flick to.
+
+        `yoffset` is Y offset to flick to.
+
+        `speed` is Pixels per second to flick."""
+        element = self._element_find(locator, True, True)
+        action = TouchActions(self._current_application())
+        action.flick_element(element, x_offset, y_offset, speed).perform()
+
+    @keyword("Scroll")
+    def scroll(self, x_offset, y_offset):
+        """ Scrolls from current position.
+
+         `x_offset` is the X offset to scroll to.
+
+         `y_offset` is the Y offset to scroll to."""
+        action = TouchActions(self._current_application())
+        action.scroll(x_offset, y_offset).perform()
+
+    @keyword("Scroll From Element")
+    def scroll_from_element(self, locator, x_offset, y_offset):
+        """ Scrolls starting from `locator`.
+
+         `x_offset` is the X offset to scroll to.
+
+         `y_offset` is the Y offset to scroll to."""
+        element = self._element_find(locator, True, True)
+        action = TouchActions(self._current_application())
+        action.scroll_from_element(element, x_offset, y_offset).perform()
 
     # Private
     def _move_to_element(self, actions, element, x_offset=0, y_offset=0):
@@ -834,18 +870,6 @@ class DesktopLibrary(AppiumLibrary):
         if not error:
             error = "Element '%s' did not appear in <TIMEOUT>" % locator
         self._wait_until(timeout, error, self._is_element_present, locator)
-
-    # def _tap_and_hold(self, actions, element):
-    #     # actions._add_action('press', self._get_opts(el, x, y, pressure=pressure))
-    #     # element = self._element_find(locator, True, True)
-    #     actions._actions.append(lambda: actions._driver.execute(Command.TOUCH_DOWN,
-    #         {'element': element.id}))
-    #     return actions
-    #
-    # def _move(self, actions, xcoord, ycoord):
-    #     actions._actions.append(
-    #         lambda: actions._driver.execute(Command.TOUCH_MOVE, {'x': int(xcoord), 'y': int(ycoord)}))
-    #     return actions
 
     # Overrides to prevent expensive log_source call
     def _wait_until_no_error(self, timeout, wait_func, *args):
