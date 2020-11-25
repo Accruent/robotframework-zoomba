@@ -133,8 +133,10 @@ Drag And Drop By Touch Tests
 
 Tap Tests
     Tap    name=Five
+    Wait For And Tap     name=Five
     Double Tap    name=Five
-    Wait Until Element Contains       accessibility_id=CalculatorResults      555
+    Wait For And Double Tap     name=Five
+    Wait Until Element Contains       accessibility_id=CalculatorResults      555,555
 
 Flick Tests
     Select Element From ComboBox      accessibility_id=TogglePaneButton         accessibility_id=Graphing

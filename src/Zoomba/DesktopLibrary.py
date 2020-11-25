@@ -129,8 +129,8 @@ class DesktopLibrary(AppiumLibrary):
             'capture_page_screenshot', 'save_appium_screenshot', 'select_element_from_combobox',
             'driver_setup', 'driver_teardown', 'select_elements_from_menu',
             'select_elements_from_context_menu', 'drag_and_drop_by_touch',
-            'drag_and_drop_by_touch_offset', 'double_tap', 'flick', 'flick_from_element',
-            'scroll', 'scroll_from_element',
+            'drag_and_drop_by_touch_offset', 'wait_for_and_tap', 'wait_for_and_double_tap',
+            'double_tap', 'flick', 'flick_from_element', 'scroll', 'scroll_from_element',
             # External Libraries
             'clear_text', 'click_button', 'click_element', 'close_all_applications',
             'close_application', 'element_attribute_should_match', 'element_should_be_disabled',
@@ -728,6 +728,30 @@ class DesktopLibrary(AppiumLibrary):
         action = TouchActions(self._current_application())
         action.double_tap(element).perform()
 
+    @keyword("Wait For And Tap")
+    def wait_for_and_tap(self, locator, timeout=None, error=None):
+        """Wait for and tap the element identified by ``locator``.
+
+        Fails if ``timeout`` expires before the element appears.
+
+        ``error`` can be used to override the default error message.
+
+        See `introduction` for details about locating elements."""
+        self._wait_until_page_contains_element(locator, timeout, error)
+        self.tap(locator)
+
+    @keyword("Wait For And Double Tap")
+    def wait_for_and_double_tap(self, locator, timeout=None, error=None):
+        """Wait for and double tap the element identified by ``locator``.
+
+        Fails if ``timeout`` expires before the element appears.
+
+        ``error`` can be used to override the default error message.
+
+        See `introduction` for details about locating elements."""
+        self._wait_until_page_contains_element(locator, timeout, error)
+        self.double_tap(locator)
+
     @keyword("Flick")
     def flick(self, x_speed, y_speed):
         """ Flicks from current position.
@@ -751,6 +775,19 @@ class DesktopLibrary(AppiumLibrary):
         action = TouchActions(self._current_application())
         action.flick_element(element, x_offset, y_offset, speed).perform()
 
+    @keyword("Wait For And Flick From Element")
+    def wait_for_and_flick_from_element(self, locator, x_offset, y_offset, speed,
+                                        timeout=None, error=None):
+        """Wait for and flick from element identified by ``locator``.
+
+        Fails if ``timeout`` expires before the element appears.
+
+        ``error`` can be used to override the default error message.
+
+        See `introduction` for details about locating elements."""
+        self._wait_until_page_contains_element(locator, timeout, error)
+        self.flick_from_element(locator, x_offset, y_offset, speed)
+
     @keyword("Scroll")
     def scroll(self, x_offset, y_offset):
         """ Scrolls from current position.
@@ -771,6 +808,19 @@ class DesktopLibrary(AppiumLibrary):
         element = self._element_find(locator, True, True)
         action = TouchActions(self._current_application())
         action.scroll_from_element(element, x_offset, y_offset).perform()
+
+    @keyword("Wait For And Scroll From Element")
+    def wait_for_and_scroll_from_element(self, locator, x_offset, y_offset,
+                                         timeout=None, error=None):
+        """Wait for and scroll from element identified by ``locator``.
+
+        Fails if ``timeout`` expires before the element appears.
+
+        ``error`` can be used to override the default error message.
+
+        See `introduction` for details about locating elements."""
+        self._wait_until_page_contains_element(locator, timeout, error)
+        self.scroll_from_element(locator, x_offset, y_offset)
 
     # Private
     def _move_to_element(self, actions, element, x_offset=0, y_offset=0):

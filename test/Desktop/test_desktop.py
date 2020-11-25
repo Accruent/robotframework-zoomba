@@ -649,6 +649,11 @@ class TestInternal(unittest.TestCase):
         DesktopLibrary.flick_from_element(mock_desk, "some_locator", 50, 100, 10)
         flick_element.assert_called_with(unittest.mock.ANY, 50, 100, 10)
 
+    def test_wait_for_and_flick_from_element(self):
+        mock_desk = MagicMock()
+        DesktopLibrary.wait_for_and_flick_from_element(mock_desk, "some_locator", 50, 100, 10)
+        mock_desk.flick_from_element.assert_called_with(unittest.mock.ANY, 50, 100, 10)
+
     @patch("selenium.webdriver.common.touch_actions.TouchActions.scroll")
     def test_scroll(self, scroll):
         mock_desk = MagicMock()
@@ -661,11 +666,26 @@ class TestInternal(unittest.TestCase):
         DesktopLibrary.scroll_from_element(mock_desk, "some_locator", 50, 100)
         scroll_from_element.assert_called_with(unittest.mock.ANY, 50, 100)
 
+    def test_wait_for_and_scroll_from_element(self):
+        mock_desk = MagicMock()
+        DesktopLibrary.wait_for_and_scroll_from_element(mock_desk, "some_locator", 50, 100)
+        mock_desk.scroll_from_element.assert_called_with(unittest.mock.ANY, 50, 100)
+
     @patch("selenium.webdriver.common.touch_actions.TouchActions.double_tap")
     def test_double_tap(self, double_tap):
         mock_desk = MagicMock()
         DesktopLibrary.double_tap(mock_desk,  "some_locator")
         double_tap.assert_called_with(unittest.mock.ANY)
+
+    def test_wait_for_and_tap(self):
+        mock_desk = MagicMock()
+        DesktopLibrary.wait_for_and_tap(mock_desk, "some_locator")
+        mock_desk.tap.assert_called_with(unittest.mock.ANY)
+
+    def test_wait_for_and_double_tap(self):
+        mock_desk = MagicMock()
+        DesktopLibrary.wait_for_and_double_tap(mock_desk, "some_locator")
+        mock_desk.double_tap.assert_called_with(unittest.mock.ANY)
 
     @patch("selenium.webdriver.common.touch_actions.TouchActions.tap_and_hold")
     def test_drag_and_drop_by_touch(self, tap_and_hold):
