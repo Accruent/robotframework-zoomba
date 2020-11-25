@@ -636,3 +636,33 @@ class TestInternal(unittest.TestCase):
         self.assertRaisesRegex(AssertionError,
                                'Error', DesktopLibrary._wait_until_no_error, mock_desk,
                                1, _long_running_function)
+
+    @patch("selenium.webdriver.common.touch_actions.TouchActions.flick")
+    def test_flick(self, flick):
+        mock_desk = MagicMock()
+        DesktopLibrary.flick(mock_desk, 100, 100)
+        flick.assert_called_with(100, 100)
+
+    @patch("selenium.webdriver.common.touch_actions.TouchActions.flick_element")
+    def test_flick_from_element(self, flick_element):
+        mock_desk = MagicMock()
+        DesktopLibrary.flick_from_element(mock_desk, "some_locator", 100, 100, 10)
+        flick_element.assert_called_with(unittest.mock.ANY, 100, 100, 10)
+
+    @patch("selenium.webdriver.common.touch_actions.TouchActions.scroll")
+    def test_scroll(self, scroll):
+        mock_desk = MagicMock()
+        DesktopLibrary.scroll(mock_desk, 100, 100)
+        scroll.assert_called_with(100, 100)
+
+    @patch("selenium.webdriver.common.touch_actions.TouchActions.scroll_from_element")
+    def test_scroll_from_element(self, scroll_from_element):
+        mock_desk = MagicMock()
+        DesktopLibrary.scroll_from_element(mock_desk, "some_locator", 100, 100)
+        scroll_from_element.assert_called_with(unittest.mock.ANY, 100, 100)
+
+    @patch("selenium.webdriver.common.touch_actions.TouchActions.double_tap")
+    def test_double_tap(self, double_tap):
+        mock_desk = MagicMock()
+        DesktopLibrary.double_tap(mock_desk,  "some_locator")
+        double_tap.assert_called_with(unittest.mock.ANY)
