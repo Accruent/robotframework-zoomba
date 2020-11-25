@@ -700,8 +700,8 @@ class DesktopLibrary(AppiumLibrary):
 
     @keyword("Drag And Drop by Touch")
     def drag_and_drop_by_touch(self, source, target):
-        """Drags the element found with ``source`` to the given ``x_offset`` and ``y_offset``
-        coordinates using touch actions."""
+        """Drags the element found with the locator ``source`` to the element found with the
+        locator ``target`` using touch actions."""
         source_element = self._element_find(source, True, True)
         target_element = self._element_find(target, True, True)
         actions = TouchActions(self._current_application())
@@ -713,8 +713,8 @@ class DesktopLibrary(AppiumLibrary):
 
     @keyword("Drag And Drop by Touch Offset")
     def drag_and_drop_by_touch_offset(self, locator, x_offset=0, y_offset=0):
-        """Drags the element found with the locator ``source`` to the element found with the
-        locator ``target`` using touch actions."""
+        """Drags the element found with ``locator `` to the given ``x_offset`` and ``y_offset``
+        coordinates using touch actions."""
         source_element = self._element_find(locator, True, True)
         actions = TouchActions(self._current_application())
         source_x_center = source_element.location.get('x') + (source_element.size.get('width') / 2)
@@ -732,21 +732,21 @@ class DesktopLibrary(AppiumLibrary):
     def flick(self, x_speed, y_speed):
         """ Flicks from current position.
 
-         `xspeed` is the X speed in pixels per second.
+         ``x_speed`` is the X speed in pixels per second.
 
-         `yspeed` is the Y speed in pixels per second."""
+         ``y_speed`` is the Y speed in pixels per second."""
         action = TouchActions(self._current_application())
         action.flick(x_speed, y_speed).perform()
 
     @keyword("Flick From Element")
     def flick_from_element(self, locator, x_offset, y_offset, speed):
-        """ Flicks starting at `locator`.
+        """ Flicks starting at ``locator``.
 
-        `xoffset` is X offset to flick to.
+        ``x_offset`` is X offset to flick to.
 
-        `yoffset` is Y offset to flick to.
+        ``y_offset`` is Y offset to flick to.
 
-        `speed` is Pixels per second to flick."""
+        ``speed`` is Pixels per second to flick."""
         element = self._element_find(locator, True, True)
         action = TouchActions(self._current_application())
         action.flick_element(element, x_offset, y_offset, speed).perform()
@@ -755,19 +755,19 @@ class DesktopLibrary(AppiumLibrary):
     def scroll(self, x_offset, y_offset):
         """ Scrolls from current position.
 
-         `x_offset` is the X offset to scroll to.
+         ``x_offset`` is the X offset to scroll to.
 
-         `y_offset` is the Y offset to scroll to."""
+         ``y_offset`` is the Y offset to scroll to."""
         action = TouchActions(self._current_application())
         action.scroll(x_offset, y_offset).perform()
 
     @keyword("Scroll From Element")
     def scroll_from_element(self, locator, x_offset, y_offset):
-        """ Scrolls starting from `locator`.
+        """ Scrolls starting from ``locator``.
 
-         `x_offset` is the X offset to scroll to.
+         ``x_offset`` is the X offset to scroll to.
 
-         `y_offset` is the Y offset to scroll to."""
+         ``y_offset`` is the Y offset to scroll to."""
         element = self._element_find(locator, True, True)
         action = TouchActions(self._current_application())
         action.scroll_from_element(element, x_offset, y_offset).perform()
