@@ -122,10 +122,6 @@ Select Elements From Menu Test
     Select Elements From Menu        name=Two      name=Three      name=Four
     Wait Until Element Contains       accessibility_id=CalculatorResults       234
 
-Tap Element test
-    Tap      accessibility_id=num2Button
-    Wait Until Element Contains       accessibility_id=CalculatorResults      2
-
 Drag And Drop By Touch Tests
     drag and drop by touch      accessibility_id=AppName       name=Five
     drag and drop by touch offset      accessibility_id=AppName     100    100
@@ -144,6 +140,7 @@ Flick Tests
     Flick      100    100
     Wait For And Click Element        accessibility_id=TogglePaneButton
     Flick From Element                accessibility_id=Standard       0      -100    10
+    Wait For And Flick From Element   accessibility_id=Standard       0      -100    10
     Wait Until Page Contains Element  accessibility_id=Standard
     Wait For And Click Element        accessibility_id=Standard
 

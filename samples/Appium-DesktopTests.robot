@@ -143,6 +143,7 @@ Flick Tests
     Flick      100    100
     Wait For And Click Element        accessibility_id=TogglePaneButton
     Flick From Element                accessibility_id=Standard       0      -100    10
+    Wait For And Flick From Element   accessibility_id=Standard       0      -100    10
     Wait Until Page Contains Element  accessibility_id=Standard
     Wait For And Click Element        accessibility_id=Standard
 

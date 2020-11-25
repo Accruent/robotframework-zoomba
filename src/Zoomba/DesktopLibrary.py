@@ -131,6 +131,7 @@ class DesktopLibrary(AppiumLibrary):
             'select_elements_from_context_menu', 'drag_and_drop_by_touch',
             'drag_and_drop_by_touch_offset', 'wait_for_and_tap', 'wait_for_and_double_tap',
             'double_tap', 'flick', 'flick_from_element', 'scroll', 'scroll_from_element',
+            'wait_for_and_flick_from_element', 'wait_for_and_scroll_from_element',
             # External Libraries
             'clear_text', 'click_button', 'click_element', 'close_all_applications',
             'close_application', 'element_attribute_should_match', 'element_should_be_disabled',
