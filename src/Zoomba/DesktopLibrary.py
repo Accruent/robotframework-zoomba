@@ -8,6 +8,8 @@ from robot.api.deco import keyword
 from robot.libraries.BuiltIn import BuiltIn
 from selenium.common.exceptions import NoSuchElementException, InvalidSelectorException
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.touch_actions import TouchActions
+
 from time import sleep, time
 from robot import utils
 
@@ -126,7 +128,8 @@ class DesktopLibrary(AppiumLibrary):
             'drag_and_drop_by_offset', 'send_keys', 'send_keys_to_element',
             'capture_page_screenshot', 'save_appium_screenshot', 'select_element_from_combobox',
             'driver_setup', 'driver_teardown', 'select_elements_from_menu',
-            'select_elements_from_context_menu',
+            'select_elements_from_context_menu', 'drag_and_drop_by_touch',
+            'drag_and_drop_by_touch_offset',
             # External Libraries
             'clear_text', 'click_button', 'click_element', 'close_all_applications',
             'close_application', 'element_attribute_should_match', 'element_should_be_disabled',
@@ -141,7 +144,7 @@ class DesktopLibrary(AppiumLibrary):
             'text_should_be_visible', 'wait_until_element_is_visible', 'wait_until_page_contains',
             'wait_until_page_contains_element', 'wait_until_page_does_not_contain',
             'wait_until_page_does_not_contain_element', 'get_matching_xpath_count',
-            'xpath_should_match_x_times'
+            'xpath_should_match_x_times', 'tap'
         ]
 
     @keyword("Driver Setup")
@@ -204,6 +207,8 @@ class DesktopLibrary(AppiumLibrary):
                                                    exact_match=exact_match, **kwargs)
         # global application
         self._open_desktop_session(remote_url)
+        if "platformName" not in desired_caps:
+            desired_caps["platformName"] = "Windows"
         application = webdriver.Remote(str(remote_url), desired_caps)
         self._debug('Opened application with session id %s' % application.session_id)
         return self._cache.register(application, alias)
@@ -258,6 +263,8 @@ class DesktopLibrary(AppiumLibrary):
                     'Is it a top level window handle?' + '. \n' + str(e))
         if "app" in desired_caps:
             del desired_caps["app"]
+        if "platformName" not in desired_caps:
+            desired_caps["platformName"] = "Windows"
         desired_caps["appTopLevelWindow"] = window
         # global application
         try:
@@ -690,6 +697,45 @@ class DesktopLibrary(AppiumLibrary):
                 count += 1
             self.switch_application(original_index)
 
+    # @keyword("Tap Down")
+    # def tap_down(self, locator):
+    #     """"""
+    #     element = self._element_find(locator, True, True)
+    #     action = TouchAction(self._current_application())
+    #     # TouchAction(self._current_application()).move_to()
+    #     action.press(element)
+    #     action.move_to(el=None, x=100, y=100).perform()
+
+    # @keyword("Move")
+    # def move(self):
+    #     """"""
+    #     # element = self._element_find(locator, True, True)
+    #     action = TouchAction(self._current_application())
+    #     action.move_to(x=100, y=100).perform()
+
+    @keyword("Drag And Drop by Touch")
+    def drag_and_drop_by_touch(self, source, target):
+        """Drags the element found with ``source`` to the given ``x_offset`` and ``y_offset``
+        coordinates using touch actions."""
+        source_element = self._element_find(source, True, True)
+        target_element = self._element_find(target, True, True)
+        actions = TouchActions(self._current_application())
+        source_x_center = source_element.location.get('x') + (source_element.size.get('width') / 2)
+        source_y_center = source_element.location.get('y') + (source_element.size.get('height') / 2)
+        target_x_center = target_element.location.get('x') + (target_element.size.get('width') / 2)
+        target_y_center = target_element.location.get('y') + (target_element.size.get('height') / 2)
+        actions.tap_and_hold(source_x_center, source_y_center).release(target_x_center, target_y_center).perform()
+
+    @keyword("Drag And Drop by Touch Offset")
+    def drag_and_drop_by_touch_offset(self, locator, x_offset=0, y_offset=0):
+        """Drags the element found with the locator ``source`` to the element found with the
+        locator ``target`` using touch actions."""
+        source_element = self._element_find(locator, True, True)
+        actions = TouchActions(self._current_application())
+        source_x_center = source_element.location.get('x') + (source_element.size.get('width') / 2)
+        source_y_center = source_element.location.get('y') + (source_element.size.get('height') / 2)
+        actions.tap_and_hold(source_x_center, source_y_center).release(x_offset, y_offset).perform()
+
     # Private
     def _move_to_element(self, actions, element, x_offset=0, y_offset=0):
         if x_offset != 0 or y_offset != 0:
@@ -788,6 +834,18 @@ class DesktopLibrary(AppiumLibrary):
         if not error:
             error = "Element '%s' did not appear in <TIMEOUT>" % locator
         self._wait_until(timeout, error, self._is_element_present, locator)
+
+    # def _tap_and_hold(self, actions, element):
+    #     # actions._add_action('press', self._get_opts(el, x, y, pressure=pressure))
+    #     # element = self._element_find(locator, True, True)
+    #     actions._actions.append(lambda: actions._driver.execute(Command.TOUCH_DOWN,
+    #         {'element': element.id}))
+    #     return actions
+    #
+    # def _move(self, actions, xcoord, ycoord):
+    #     actions._actions.append(
+    #         lambda: actions._driver.execute(Command.TOUCH_MOVE, {'x': int(xcoord), 'y': int(ycoord)}))
+    #     return actions
 
     # Overrides to prevent expensive log_source call
     def _wait_until_no_error(self, timeout, wait_func, *args):

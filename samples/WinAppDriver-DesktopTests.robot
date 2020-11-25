@@ -122,6 +122,15 @@ Select Elements From Menu Test
     Select Elements From Menu        name=Two      name=Three      name=Four
     Wait Until Element Contains       accessibility_id=CalculatorResults       234
 
+Tap Element test
+    Tap      accessibility_id=num2Button
+    Wait Until Element Contains       accessibility_id=CalculatorResults      2
+
+Drag And Drop By Touch Tests
+    drag and drop by touch      accessibility_id=AppName       name=Five
+    drag and drop by touch offset      accessibility_id=AppName     100    100
+    Maximize Window
+
 Switch To Desktop Test
     Close Application
     Switch Application      Desktop
