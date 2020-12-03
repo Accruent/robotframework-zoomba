@@ -106,6 +106,10 @@ class TestInternal(unittest.TestCase):
         library = APILibrary()
         library.key_by_key_validator({"a": [1]}, {"a": [1]})
 
+    def test_key_by_key_validator_list_empty(self):
+        library = APILibrary()
+        library.key_by_key_validator({"a": []}, {"a": []})
+
     def test_key_by_key_validator_simple_ignored_key(self):
         library = APILibrary()
         library.key_by_key_validator({"a": ["1"]}, {"a": ["1"]}, ["a"])
