@@ -361,7 +361,10 @@ class APILibrary(object):
                                 "\nActual: " + str(actual_dictionary[key]))
                     continue
             else:
-                actual_item = actual_dictionary[key][index]
+                if len(actual_dictionary[key]) == 0:
+                    actual_item = ''
+                else:
+                    actual_item = actual_dictionary[key][index]
                 temp_actual_dict = {key: actual_item}
                 temp_expected_dict = {key: item}
                 if unmatched_keys_list:
