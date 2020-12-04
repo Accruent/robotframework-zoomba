@@ -164,6 +164,9 @@ class DesktopLibrary(AppiumLibrary):
 
         `Start Screen Recording` is used hand in hand with `Stop Screen Recording`.
         See `Stop Screen Recording` for more details.
+
+        Keyword requires Appium to be used.
+
         Example:
             | `Start Screen Recording`  |                   | # starts a screen record session  |
             | ....     keyword actions  |                   |                                   |
@@ -196,6 +199,8 @@ class DesktopLibrary(AppiumLibrary):
          - ``password`` The password for the remote authentication.
 
          - ``method`` The http multipart upload method name. The _PUT_ one is used by default.
+
+         Keyword requires Appium to be used.
 
         Example:
             | `Start Screen Recording`  |                   | # starts a screen record session  |
