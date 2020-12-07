@@ -147,6 +147,15 @@ Flick Tests
     Wait Until Page Contains Element  accessibility_id=Standard
     Wait For And Click Element        accessibility_id=Standard
 
+Screen Recording Keyword Test - See video with logs or in log.html
+    Start Screen Recording
+    Wait For And Click Element       accessibility_id=num2Button
+    Wait For And Click Element       accessibility_id=num3Button
+    Wait For And Click Element       accessibility_id=num4Button
+    Wait For And Click Element       accessibility_id=num5Button
+    Wait Until Element Contains       accessibility_id=CalculatorResults      2,345
+    Stop Screen Recording
+
 Switch To Desktop Test
     Close Application
     Switch Application      Desktop

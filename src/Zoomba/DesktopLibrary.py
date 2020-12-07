@@ -9,9 +9,9 @@ from robot.libraries.BuiltIn import BuiltIn
 from selenium.common.exceptions import NoSuchElementException, InvalidSelectorException
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.touch_actions import TouchActions
-
 from time import sleep, time
 from robot import utils
+from base64 import b64decode
 
 try:
     AppiumCommon = importlib.import_module('Helpers.AppiumCommon', package='Helpers')
@@ -132,6 +132,7 @@ class DesktopLibrary(AppiumLibrary):
             'drag_and_drop_by_touch_offset', 'wait_for_and_tap', 'wait_for_and_double_tap',
             'double_tap', 'flick', 'flick_from_element', 'scroll', 'scroll_from_element',
             'wait_for_and_flick_from_element', 'wait_for_and_scroll_from_element',
+            'start_screen_recording', 'stop_screen_recording',
             # External Libraries
             'clear_text', 'click_button', 'click_element', 'close_all_applications',
             'close_application', 'element_attribute_should_match', 'element_should_be_disabled',
@@ -148,6 +149,79 @@ class DesktopLibrary(AppiumLibrary):
             'wait_until_page_does_not_contain_element', 'get_matching_xpath_count',
             'xpath_should_match_x_times', 'tap'
         ]
+
+    # Screen Recorder - adapted from AppiumLibrary
+    @keyword("Start Screen Recording")
+    def start_screen_recording(self, time_limit='180s', **options):
+        """Starts an asynchronous Screen Recording for the current open application.
+
+        ``timeLimit`` sets the actual time limit of the recorded video (defaulting to 180 seconds).
+
+        `Start Screen Recording` is used hand in hand with `Stop Screen Recording`.
+        See `Stop Screen Recording` for more details.
+
+        Keyword requires Appium to be used.
+
+        Example:
+            | `Start Screen Recording`  |                   | # starts a screen record session  |
+            | ....     keyword actions  |                   |                                   |
+            | `Stop Screen Recording`   | filename=output   | # saves the recorded session      |
+        """
+        options['time_limit'] = utils.timestr_to_secs(time_limit)
+        self._output_format = '.mp4'
+        if self._recording is None:
+            self._recording = self._current_application().start_recording_screen(**options)
+
+    @keyword("Stop Screen Recording")
+    def stop_screen_recording(self, filename=None, **options):
+        """Gathers the output from the previously started screen recording  \
+            to a media file, then embeds it to the log.html(Android Only).
+
+        Requires an active or exhausted Screen Recording Session.
+        See `Start Screen Recording` for more details.
+
+        === Optional Args ===
+
+         - ``remotePath`` The path to the remote location, where the resulting video should be  \
+            uploaded. The following protocols are supported _http/https_, ftp. Null or empty  \
+                string value (the default setting) means the content of resulting file should   \
+                    be encoded as Base64 and passed as the endpoint response value. An          \
+                        exception will be thrown if the generated media file is too big to fit  \
+                            into the available process memory.
+
+         - ``username`` The name of the user for the remote authentication.
+
+         - ``password`` The password for the remote authentication.
+
+         - ``method`` The http multipart upload method name. The _PUT_ one is used by default.
+
+         Keyword requires Appium to be used.
+
+        Example:
+            | `Start Screen Recording`  |                   | # starts a screen record session  |
+            | ....     keyword actions  |                   |                                   |
+            | `Stop Screen Recording`   | filename=output   | # saves the recorded session      |
+        """
+        self._recording = self._current_application().stop_recording_screen(**options)
+        return self._save_recording(filename, options)
+
+    def _save_recording(self, filename, options):
+        path, link = self._get_screenrecord_paths(options, filename)
+        decoded = b64decode(self._recording)
+        with open(path, 'wb') as screenrecording:
+            screenrecording.write(decoded)
+        # Embed the Screen Recording to the log file
+        if not self._is_remotepath_set(options):
+            self._html('</td></tr><tr><td colspan="3"><a href="{vid}">'
+                       '<video width="800px" controls>'
+                       '<source src="{vid}" type="video/mp4">'
+                       '</video></a>'.format(vid=link)
+                       )
+        # Empty Screen Record Variable
+        self._recording = None
+        return path
+
+    # End Screen Recorder Keywords
 
     @keyword("Driver Setup")
     def driver_setup(self, path=None):
