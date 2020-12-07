@@ -701,8 +701,11 @@ class TestInternal(unittest.TestCase):
 
     def test_start_screen_recording(self):
         mock_desk = MagicMock()
+        mock_desk._recording = None
         DesktopLibrary.start_screen_recording(mock_desk)
 
     def test_stop_screen_recording(self):
         mock_desk = MagicMock()
+        mock_desk._recording = None
+        DesktopLibrary.start_screen_recording(mock_desk)
         DesktopLibrary.stop_screen_recording(mock_desk)
