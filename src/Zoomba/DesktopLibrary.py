@@ -109,10 +109,6 @@ class DesktopLibrary(AppiumLibrary):
         | Library | DesktopLibrary | timeout=10 | driver_path="C:/WinAppDriver.exe" | # Sets a new path for the WinAppDriver                               |
         """
         self.winappdriver = WinAppDriver(driver_path)
-        # self.recorder = _ScreenrecordKeywords()
-        self._screenrecord_index = 0
-        self._recording = None
-        self._output_format = None
         super().__init__(timeout, run_on_failure)
 
     def get_keyword_names(self):
