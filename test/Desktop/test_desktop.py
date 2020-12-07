@@ -698,3 +698,11 @@ class TestInternal(unittest.TestCase):
         mock_desk = MagicMock()
         DesktopLibrary.drag_and_drop_by_touch_offset(mock_desk, "some_locator", 50, 100)
         tap_and_hold.assert_called_with(unittest.mock.ANY, unittest.mock.ANY)
+
+    def test_start_screen_recording(self):
+        mock_desk = MagicMock()
+        DesktopLibrary.start_screen_recording(mock_desk)
+
+    def test_stop_screen_recording(self):
+        mock_desk = MagicMock()
+        DesktopLibrary.stop_screen_recording(mock_desk)

@@ -1,6 +1,4 @@
 import os
-import robot
-import base64
 import subprocess
 import importlib
 from AppiumLibrary import AppiumLibrary
@@ -11,9 +9,9 @@ from robot.libraries.BuiltIn import BuiltIn
 from selenium.common.exceptions import NoSuchElementException, InvalidSelectorException
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.touch_actions import TouchActions
-
 from time import sleep, time
 from robot import utils
+from base64 import b64decode
 
 try:
     AppiumCommon = importlib.import_module('Helpers.AppiumCommon', package='Helpers')
@@ -172,7 +170,7 @@ class DesktopLibrary(AppiumLibrary):
             | ....     keyword actions  |                   |                                   |
             | `Stop Screen Recording`   | filename=output   | # saves the recorded session      |
         """
-        options['time_limit'] = robot.utils.timestr_to_secs(time_limit)
+        options['time_limit'] = utils.timestr_to_secs(time_limit)
         self._output_format = '.mp4'
         if self._recording is None:
             self._recording = self._current_application().start_recording_screen(**options)
@@ -212,7 +210,7 @@ class DesktopLibrary(AppiumLibrary):
 
     def _save_recording(self, filename, options):
         path, link = self._get_screenrecord_paths(options, filename)
-        decoded = base64.b64decode(self._recording)
+        decoded = b64decode(self._recording)
         with open(path, 'wb') as screenrecording:
             screenrecording.write(decoded)
         # Embed the Screen Recording to the log file
