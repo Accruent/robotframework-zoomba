@@ -132,6 +132,7 @@ class DesktopLibrary(AppiumLibrary):
             'drag_and_drop_by_touch_offset', 'wait_for_and_tap', 'wait_for_and_double_tap',
             'double_tap', 'flick', 'flick_from_element', 'scroll', 'scroll_from_element',
             'wait_for_and_flick_from_element', 'wait_for_and_scroll_from_element',
+            'start_screen_recording', 'stop_screen_recording',
             # External Libraries
             'clear_text', 'click_button', 'click_element', 'close_all_applications',
             'close_application', 'element_attribute_should_match', 'element_should_be_disabled',
@@ -146,7 +147,7 @@ class DesktopLibrary(AppiumLibrary):
             'text_should_be_visible', 'wait_until_element_is_visible', 'wait_until_page_contains',
             'wait_until_page_contains_element', 'wait_until_page_does_not_contain',
             'wait_until_page_does_not_contain_element', 'get_matching_xpath_count',
-            'xpath_should_match_x_times', 'tap', 'start_screen_recording', 'stop_screen_recording'
+            'xpath_should_match_x_times', 'tap'
         ]
 
     # Screen Recorder - adapted from AppiumLibrary
