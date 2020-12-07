@@ -698,3 +698,26 @@ class TestInternal(unittest.TestCase):
         mock_desk = MagicMock()
         DesktopLibrary.drag_and_drop_by_touch_offset(mock_desk, "some_locator", 50, 100)
         tap_and_hold.assert_called_with(unittest.mock.ANY, unittest.mock.ANY)
+
+    def test_start_screen_recording(self):
+        mock_desk = MagicMock()
+        mock_desk._recording = None
+        DesktopLibrary.start_screen_recording(mock_desk)
+        self.assertTrue(mock_desk._recording == unittest.mock.ANY)
+
+    def test_stop_screen_recording(self):
+        mock_desk = MagicMock()
+        mock_desk._recording = None
+        DesktopLibrary.start_screen_recording(mock_desk)
+        file = DesktopLibrary.stop_screen_recording(mock_desk)
+        self.assertTrue(file == unittest.mock.ANY)
+
+    def test_save_recording(self):
+        mock_desk = MagicMock()
+        mock_desk._recording = b'some data'
+        mock_desk._is_remotepath_set = MagicMock(return_value=False)
+        options = ["username=test"]
+        mock_desk._get_screenrecord_paths = MagicMock(return_value=("path", "link"))
+        file = DesktopLibrary._save_recording(mock_desk, "filename", options)
+        self.assertTrue(file == "path")
+        os.remove("path")
