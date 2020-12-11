@@ -1,0 +1,1 @@
+include LICENSE version.py requirements.txt docs/README.md
