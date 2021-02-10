@@ -20,7 +20,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install .
           pip install coveralls mock pytest-cov
+          sudo apt-get update
+          sudo apt-get -y -q install xvfb scrot zip curl libxml2-dev libxslt1-dev
       - name: Run Unit Tests
-        run: pytest --cov src -v
+        run: |
+          pytest --cov src -v
       - name: Run Robot Tests
-        run: robot -e BrokenORWindowsORMobile test
+        run: |
+          ${{ matrix.set_display }}
+          robot -e BrokenORWindowsORMobile test
