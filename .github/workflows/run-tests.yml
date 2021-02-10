@@ -18,5 +18,6 @@ jobs:
           pip install .
           pip install coveralls mock pytest-cov
       - name: Run Unit Tests
-        run: |
-          pytest --cov src -v
+        run: pytest --cov src -v
+      - name: Run Robot Tests
+        run: robot -e BrokenORWindowsORMobile test
