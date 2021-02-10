@@ -37,7 +37,7 @@ jobs:
           debug: true
 
   coveralls_finish:
-    needs: test
+    needs: run-tests
     runs-on: ubuntu-latest
     steps:
       - name: Coveralls Finished
