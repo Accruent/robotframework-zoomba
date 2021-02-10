@@ -26,7 +26,7 @@ jobs:
         uses: actions/setup-ruby@v1
         with:
           ruby-version: 2.6
-        run: gem install coveralls-lcov
+      - run: gem install coveralls-lcov
       - name: Run Unit Tests
         run: |
           pytest --cov src -v
