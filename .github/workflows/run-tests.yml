@@ -3,7 +3,7 @@ on: [push, pull_request]
 jobs:
   run-tests:
     runs-on: ubuntu-latest
-      strategy:
+    strategy:
         matrix:
           python-version: [ 3.6, 3.7, 3.8 ]
     steps:
