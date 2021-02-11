@@ -44,18 +44,17 @@ jobs:
 #        with:
 #          github-token: ${{ secrets.GITHUB_TOKEN }}
 
-#      - name: Coveralls
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#        run: |
-#          coveralls
-
       - name: Coveralls
-        uses: AndreMiras/coveralls-python-action@develop
-        with:
-          flag-name: Run Unit Tests
-          base-path: src
-          debug: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          coveralls
+
+#      - name: Coveralls
+#        uses: AndreMiras/coveralls-python-action@develop
+#        with:
+#          flag-name: Run Unit Tests
+#          debug: true
 
 #      - name: Coveralls
 #        uses: AndreMiras/coveralls-python-action@develop
