@@ -1,5 +1,11 @@
 name: run-tests
-on: [pull_request]
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
 jobs:
   run-tests:
     runs-on: ubuntu-latest
