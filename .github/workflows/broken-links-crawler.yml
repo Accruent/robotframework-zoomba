@@ -1,4 +1,4 @@
-name: Broken-Links-Crawler
+name: Broken Links Crawler
 on:
   push:
     branches:
