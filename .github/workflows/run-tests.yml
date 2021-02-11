@@ -31,23 +31,30 @@ jobs:
       - name: Run Unit Tests
         run: |
           pytest --cov src -v
-      - name: Convert Coveralls File
-        run: |
-          coveralls --output=coverage.json
-          coveralls-lcov -v -n coverage.info > coverage.json
+#      - name: Convert Coveralls File
+#        run: |
+#          coveralls --output=coverage.json
+#          coveralls-lcov -v -n coverage.info > coverage.json
       - name: Run Robot Tests
         run: |
           ${{ matrix.set_display }}
           robot -e BrokenORWindowsORMobile test
-      - name: Coveralls
-        uses: coverallsapp/github-action@master
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+#      - name: Coveralls
+#        uses: coverallsapp/github-action@master
+#        with:
+#          github-token: ${{ secrets.GITHUB_TOKEN }}
+
 #      - name: Coveralls
 #        env:
 #          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 #        run: |
 #          coveralls
+
+      - name: Coveralls
+        uses: AndreMiras/coveralls-python-action@develop
+        with:
+          flag-name: Run Unit Tests
+          debug: true
 
 #      - name: Coveralls
 #        uses: AndreMiras/coveralls-python-action@develop
