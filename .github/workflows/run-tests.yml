@@ -30,7 +30,7 @@ jobs:
       - run: gem install coveralls-lcov
       - name: Run Unit Tests
         run: |
-          pytest --cov src -v
+          pytest --cov=src -v
 #      - name: Convert Coveralls File
 #        run: |
 #          coveralls --output=coverage.json
