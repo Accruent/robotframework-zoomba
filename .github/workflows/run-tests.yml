@@ -54,6 +54,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.github_token }}
           flag-name: run-${{ matrix.python-version }}
           parallel: true
+          debug: true
         run: |
           coveralls --service=github
 
@@ -79,4 +80,5 @@ jobs:
         with:
           parallel-finished: true
           github-token: ${{ secrets.github_token }}
+          debug: true
 
