@@ -1,9 +1,11 @@
 name: Broken-Links-Crawler
 on:
   push:
-    branches: [ master ]
+    branches:
+      - master
   pull_request:
-    branches: [ master ]
+    branches:
+      - master
 jobs:
   check_broken_links:
     runs-on: ubuntu-latest

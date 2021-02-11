@@ -9,7 +9,7 @@ Force Tags        Windows
 
 *** Variables ***
 ${REMOTE_URL}           http://127.0.0.1:4723
-${APP}                  Microsoft.WindowsCalculator_8wekyb3d8bbwe!App
+${APP}                  C:/Windows/System32/notepad.exe
 
 *** Keywords ***
 Start App
