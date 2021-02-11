@@ -5,7 +5,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
         matrix:
-          python-version: [ 3.6, 3.7, 3.8 ]
+#          python-version: [ 3.6, 3.7, 3.8 ]
+          python-version: [ 3.6 ]
           include:
             - os: ubuntu-latest
               set_display: export DISPLAY=:99; Xvfb :99 -screen 0 1024x768x24 -ac -noreset & sleep 3
@@ -30,7 +31,7 @@ jobs:
       - name: Run Unit Tests
         run: |
           pytest --cov src -v
-      - name: Convert Coverals File
+      - name: Convert Coveralls File
         run: |
           coveralls --output=coverage.json
           coveralls-lcov -v -n coverage.info > coverage.json
