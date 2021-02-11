@@ -51,7 +51,7 @@ jobs:
 
       - name: Coveralls Parallel
         env:
-          github-token: ${{ secrets.github_token }}
+          GITHUB_TOKEN: ${{ secrets.github_token }}
           flag-name: run-${{ matrix.python-version }}
           parallel: true
         run: |
