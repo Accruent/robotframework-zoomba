@@ -71,14 +71,14 @@ jobs:
 #          flag-name: Run Unit Tests
 #          debug: true
 #
-  coveralls_finish:
-    needs: run-tests
-    runs-on: ubuntu-latest
-    steps:
-      - name: Coveralls Finished
-        uses: coverallsapp/github-action@master
-        with:
-          parallel-finished: true
-          github-token: ${{ secrets.github_token }}
-          debug: true
+#  coveralls_finish:
+#    needs: run-tests
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Coveralls Finished
+#        uses: coverallsapp/github-action@master
+#        with:
+#          parallel-finished: true
+#          github-token: ${{ secrets.github_token }}
+#          debug: true
 
