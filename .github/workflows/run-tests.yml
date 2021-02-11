@@ -26,59 +26,21 @@ jobs:
         uses: actions/setup-ruby@v1
         with:
           ruby-version: 2.6
-      - run: gem install coveralls-lcov
+
+#      - run: gem install coveralls-lcov
       - name: Run Unit Tests
         run: |
           pytest --cov=src -v
-#      - name: Convert Coveralls File
-#        run: |
-#          coveralls --output=coverage.json
-#          coveralls-lcov -v -n coverage.info > coverage.json
+
       - name: Run Robot Tests
         run: |
           ${{ matrix.set_display }}
           robot -e BrokenORWindowsORMobile test
-#      - name: Coveralls
-#        uses: coverallsapp/github-action@master
-#        with:
-#          github-token: ${{ secrets.GITHUB_TOKEN }}
 
-#      - name: Coveralls
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#        run: |
-#          coveralls --service=github
-
-      - name: Coveralls Parallel
+      - name: Coveralls
         env:
           GITHUB_TOKEN: ${{ secrets.github_token }}
           flag-name: run-${{ matrix.python-version }}
           parallel: true
-          debug: true
         run: |
           coveralls --service=github
-
-#      - name: Coveralls
-#        uses: AndreMiras/coveralls-python-action@develop
-#        with:
-#          flag-name: Run Unit Tests
-#          debug: true
-
-#      - name: Coveralls
-#        uses: AndreMiras/coveralls-python-action@develop
-#        with:
-#          parallel: true
-#          flag-name: Run Unit Tests
-#          debug: true
-#
-#  coveralls_finish:
-#    needs: run-tests
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Coveralls Finished
-#        uses: coverallsapp/github-action@master
-#        with:
-#          parallel-finished: true
-#          github-token: ${{ secrets.github_token }}
-#          debug: true
-
