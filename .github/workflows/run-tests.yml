@@ -5,8 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
         matrix:
-#          python-version: [ 3.6, 3.7, 3.8 ]
-          python-version: [ 3.6 ]
+          python-version: [ 3.6, 3.7, 3.8 ]
           include:
             - os: ubuntu-latest
               set_display: export DISPLAY=:99; Xvfb :99 -screen 0 1024x768x24 -ac -noreset & sleep 3
@@ -44,11 +43,18 @@ jobs:
 #        with:
 #          github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Coveralls
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          coveralls --service=github
+#      - name: Coveralls
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        run: |
+#          coveralls --service=github
+
+      - name: Coveralls Parallel
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.github_token }}
+          flag-name: run-${{ matrix.python-version }}
+          parallel: true
 
 #      - name: Coveralls
 #        uses: AndreMiras/coveralls-python-action@develop
@@ -63,13 +69,13 @@ jobs:
 #          flag-name: Run Unit Tests
 #          debug: true
 #
-#  coveralls_finish:
-#    needs: run-tests
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Coveralls Finished
-#        uses: AndreMiras/coveralls-python-action@develop
-#        with:
-#          parallel-finished: true
-#          debug: true
+  coveralls_finish:
+    needs: run-tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Coveralls Finished
+        uses: coverallsapp/github-action@master
+        with:
+          parallel-finished: true
+          github-token: ${{ secrets.github_token }}
 
