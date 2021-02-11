@@ -15,6 +15,7 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
@@ -22,12 +23,7 @@ jobs:
           pip install coveralls mock pytest-cov
           sudo apt-get update
           sudo apt-get -y -q install xvfb scrot zip curl libxml2-dev libxslt1-dev
-      - name: Ruby dependency
-        uses: actions/setup-ruby@v1
-        with:
-          ruby-version: 2.6
 
-#      - run: gem install coveralls-lcov
       - name: Run Unit Tests
         run: |
           pytest --cov=src -v
