@@ -54,6 +54,7 @@ jobs:
         uses: AndreMiras/coveralls-python-action@develop
         with:
           flag-name: Run Unit Tests
+          base-path: src
           debug: true
 
 #      - name: Coveralls
