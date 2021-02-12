@@ -9,6 +9,7 @@ from robot.libraries.BuiltIn import BuiltIn
 from selenium.common.exceptions import NoSuchElementException, InvalidSelectorException
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.touch_actions import TouchActions
+from appium.webdriver.common.touch_action import TouchAction
 from time import sleep, time
 from robot import utils
 from base64 import b64decode
@@ -109,6 +110,7 @@ class DesktopLibrary(AppiumLibrary):
         | Library | DesktopLibrary | timeout=10 | driver_path="C:/WinAppDriver.exe" | # Sets a new path for the WinAppDriver                               |
         """
         self.winappdriver = WinAppDriver(driver_path)
+        self.element = None
         super().__init__(timeout, run_on_failure)
 
     def get_keyword_names(self):
@@ -387,7 +389,8 @@ class DesktopLibrary(AppiumLibrary):
 
         See `introduction` for details about locating elements."""
         self._wait_until_page_contains_element(locator, timeout, error)
-        self.clear_text(locator)
+        self._info("Clear text field '%s'" % locator)
+        self.element.clear()
 
     def click_element(self, locator):
         """Click element identified by `locator`.
@@ -414,7 +417,7 @@ class DesktopLibrary(AppiumLibrary):
         Use `Wait For And Mouse Over And Click Element` if this keyword gives issues in the
         application."""
         self._wait_until_page_contains_element(locator, timeout, error)
-        self.click_element(locator)
+        self.element.click()
 
     @keyword("Wait For And Input Password")
     def wait_for_and_input_password(self, locator, text, timeout=None, error=None):
@@ -426,7 +429,8 @@ class DesktopLibrary(AppiumLibrary):
 
         The difference between this keyword and `Wait For And Input Text` is that this keyword
         does not log the given password. See `introduction` for details about locating elements."""
-        AppiumCommon.wait_for_and_input_password(self, locator, text, timeout, error)
+        self._wait_until_page_contains_element(locator, timeout, error)
+        self.input_password(locator, text)
 
     @keyword("Wait For And Input Text")
     def wait_for_and_input_text(self, locator, text, timeout=None, error=None):
@@ -437,10 +441,11 @@ class DesktopLibrary(AppiumLibrary):
         ``error`` can be used to override the default error message.
 
         See `introduction` for details about locating elements."""
-        AppiumCommon.wait_for_and_input_text(self, locator, text, timeout, error)
+        self._wait_until_page_contains_element(locator, timeout, error)
+        self.input_text(locator, text)
 
     @keyword("Wait For And Long Press")
-    def wait_for_and_long_press(self, locator, duration=10000, timeout=None, error=None):
+    def wait_for_and_long_press(self, locator, duration=5000, timeout=None, error=None):
         """Wait for and long press the element identified by ``locator`` with optional duration.
 
         Fails if ``timeout`` expires before the element appears.
@@ -448,7 +453,10 @@ class DesktopLibrary(AppiumLibrary):
         ``error`` can be used to override the default error message.
 
         See `introduction` for details about locating elements."""
-        AppiumCommon.wait_for_and_long_press(self, locator, duration, timeout, error)
+        self._wait_until_page_contains_element(locator, timeout, error)
+        driver = self._current_application()
+        actions = TouchAction(driver)
+        actions.press(self.element).wait(duration).release().perform()
 
     @keyword("Wait Until Element Contains")
     def wait_until_element_contains(self, locator, text, timeout=None, error=None):
@@ -462,7 +470,8 @@ class DesktopLibrary(AppiumLibrary):
         `Wait Until Page Does Not Contain`
         `Wait Until Page Does Not Contain Element`
         """
-        AppiumCommon.wait_until_element_contains(self, locator, text, timeout, error)
+        self._wait_until_page_contains_element(locator, timeout, error)
+        self.element_should_contain_text(self.element, text, error)
 
     @keyword("Wait Until Element Does Not Contain")
     def wait_until_element_does_not_contain(self, locator, text, timeout=None, error=None):
@@ -477,7 +486,8 @@ class DesktopLibrary(AppiumLibrary):
         `Wait Until Page Does Not Contain`
         `Wait Until Page Does Not Contain Element`
         """
-        AppiumCommon.wait_until_element_does_not_contain(self, locator, text, timeout, error)
+        self._wait_until_page_contains_element(locator, timeout, error)
+        self.element_should_not_contain_text(locator, text, error)
 
     @keyword("Wait Until Element Is Enabled")
     def wait_until_element_is_enabled(self, locator, timeout=None, error=None):
@@ -489,7 +499,8 @@ class DesktopLibrary(AppiumLibrary):
 
         See also `Wait Until Element Is Disabled`
         """
-        AppiumCommon.wait_until_element_is_enabled(self, locator, timeout, error)
+        self._wait_until_page_contains_element(locator, timeout, error)
+        self.element_should_be_enabled(locator)
 
     @keyword("Wait Until Element Is Disabled")
     def wait_until_element_is_disabled(self, locator, timeout=None, error=None):
@@ -501,7 +512,8 @@ class DesktopLibrary(AppiumLibrary):
 
         See also `Wait Until Element Is Disabled`
         """
-        AppiumCommon.wait_until_element_is_disabled(self, locator, timeout, error)
+        self._wait_until_page_contains_element(locator, timeout, error)
+        self.element_should_be_disabled(locator)
 
     @keyword("Mouse Over Element")
     def mouse_over_element(self, locator, x_offset=0, y_offset=0):
@@ -509,7 +521,10 @@ class DesktopLibrary(AppiumLibrary):
 
         ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
         """
-        element = self._element_find(locator, True, True)
+        if locator == self.element:
+            element = self.element
+        else:
+            element = self._element_find(locator, True, True)
         actions = ActionChains(self._current_application())
         self._move_to_element(actions, element, x_offset, y_offset)
         actions.perform()
@@ -526,7 +541,7 @@ class DesktopLibrary(AppiumLibrary):
         ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
         """
         self._wait_until_page_contains_element(locator, timeout, error)
-        self.mouse_over_element(locator, x_offset, y_offset)
+        self.mouse_over_element(self.element, x_offset, y_offset)
 
     @keyword("Mouse Over And Click Element")
     def mouse_over_and_click_element(self, locator, double_click=False, x_offset=0, y_offset=0):
@@ -564,7 +579,7 @@ class DesktopLibrary(AppiumLibrary):
         ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
         """
         self._wait_until_page_contains_element(locator, timeout, error)
-        self.mouse_over_and_click_element(locator, double_click, x_offset, y_offset)
+        self.mouse_over_and_click_element(self.element, double_click, x_offset, y_offset)
 
     @keyword("Mouse Over By Offset")
     def mouse_over_by_offset(self, x_offset=0, y_offset=0):
@@ -959,22 +974,27 @@ class DesktopLibrary(AppiumLibrary):
         driver = self._current_application()
         if prefix is None:
             if criteria.startswith('//'):
-                return len(driver.find_elements_by_xpath(criteria)) > 0
-            return len(driver.find_elements_by_accessibility_id(criteria)) > 0
-        if prefix == 'name':
-            return len(driver.find_elements_by_name(criteria)) > 0
-        if prefix == 'class':
-            return len(driver.find_elements_by_class_name(criteria)) > 0
-        if prefix == 'xpath':
-            return len(driver.find_elements_by_xpath(criteria)) > 0
-        if prefix == 'accessibility_id':
-            return len(driver.find_elements_by_accessibility_id(criteria)) > 0
-        if prefix == 'image':
+                elements_list = driver.find_elements_by_xpath(criteria)
+            else:
+                elements_list = driver.find_elements_by_accessibility_id(criteria)
+        elif prefix == 'name':
+            elements_list = driver.find_elements_by_name(criteria)
+        elif prefix == 'class':
+            elements_list = driver.find_elements_by_class_name(criteria)
+        elif prefix == 'xpath':
+            elements_list = driver.find_elements_by_xpath(criteria)
+        elif prefix == 'accessibility_id':
+            elements_list = driver.find_elements_by_accessibility_id(criteria)
+        elif prefix == 'image':
             try:
-                return len(driver.find_elements_by_image(criteria)) > 0
+                elements_list = driver.find_elements_by_image(criteria)
             except InvalidSelectorException:
                 zoomba.fail("Selecting by image is only available when using Appium v1.18.0 or higher")
-        zoomba.fail("Element locator with prefix '" + prefix + "' is not supported")
+        else:
+            zoomba.fail("Element locator with prefix '" + prefix + "' is not supported")
+        if len(elements_list) > 0:
+            self.element = elements_list[0]
+        return len(elements_list) > 0
 
     def _parse_locator(self, locator):
         prefix = None
@@ -1007,3 +1027,12 @@ class DesktopLibrary(AppiumLibrary):
             if time() > max_time:
                 raise AssertionError(timeout_error)
             sleep(0.2)
+
+    def _get_text(self, locator):
+        if locator == self.element:
+            element = self.element
+        else:
+            element = self._element_find(locator, True, True)
+        if element is not None:
+            return element.text
+        return None
