@@ -110,7 +110,7 @@ class DesktopLibrary(AppiumLibrary):
         | Library | DesktopLibrary | timeout=10 | driver_path="C:/WinAppDriver.exe" | # Sets a new path for the WinAppDriver                               |
         """
         self.winappdriver = WinAppDriver(driver_path)
-        self.element = None
+        self.current_element = None
         super().__init__(timeout, run_on_failure)
 
     def get_keyword_names(self):
@@ -390,7 +390,7 @@ class DesktopLibrary(AppiumLibrary):
         See `introduction` for details about locating elements."""
         self._wait_until_page_contains_element(locator, timeout, error)
         self._info("Clear text field '%s'" % locator)
-        self.element.clear()
+        self.current_element.clear()
 
     def click_element(self, locator):
         """Click element identified by `locator`.
@@ -417,7 +417,8 @@ class DesktopLibrary(AppiumLibrary):
         Use `Wait For And Mouse Over And Click Element` if this keyword gives issues in the
         application."""
         self._wait_until_page_contains_element(locator, timeout, error)
-        self.element.click()
+        self._info("Clicking element '%s'." % locator)
+        self.current_element.click()
 
     @keyword("Wait For And Input Password")
     def wait_for_and_input_password(self, locator, text, timeout=None, error=None):
@@ -430,7 +431,8 @@ class DesktopLibrary(AppiumLibrary):
         The difference between this keyword and `Wait For And Input Text` is that this keyword
         does not log the given password. See `introduction` for details about locating elements."""
         self._wait_until_page_contains_element(locator, timeout, error)
-        self.input_password(locator, text)
+        self._info("Typing password into text field '%s'" % locator)
+        self.current_element.send_keys(text)
 
     @keyword("Wait For And Input Text")
     def wait_for_and_input_text(self, locator, text, timeout=None, error=None):
@@ -442,7 +444,8 @@ class DesktopLibrary(AppiumLibrary):
 
         See `introduction` for details about locating elements."""
         self._wait_until_page_contains_element(locator, timeout, error)
-        self.input_text(locator, text)
+        self._info("Typing text '%s' into text field '%s'" % (text, locator))
+        self.current_element.send_keys(text)
 
     @keyword("Wait For And Long Press")
     def wait_for_and_long_press(self, locator, duration=5000, timeout=None, error=None):
@@ -454,9 +457,8 @@ class DesktopLibrary(AppiumLibrary):
 
         See `introduction` for details about locating elements."""
         self._wait_until_page_contains_element(locator, timeout, error)
-        driver = self._current_application()
-        actions = TouchAction(driver)
-        actions.press(self.element).wait(duration).release().perform()
+        actions = TouchAction(self._current_application())
+        actions.press(self.current_element).wait(duration).release().perform()
 
     @keyword("Wait Until Element Contains")
     def wait_until_element_contains(self, locator, text, timeout=None, error=None):
@@ -471,7 +473,7 @@ class DesktopLibrary(AppiumLibrary):
         `Wait Until Page Does Not Contain Element`
         """
         self._wait_until_page_contains_element(locator, timeout, error)
-        self.element_should_contain_text(self.element, text, error)
+        self.element_should_contain_text(self.current_element, text, error)
 
     @keyword("Wait Until Element Does Not Contain")
     def wait_until_element_does_not_contain(self, locator, text, timeout=None, error=None):
@@ -487,7 +489,19 @@ class DesktopLibrary(AppiumLibrary):
         `Wait Until Page Does Not Contain Element`
         """
         self._wait_until_page_contains_element(locator, timeout, error)
-        self.element_should_not_contain_text(locator, text, error)
+        self.element_should_not_contain_text(self.current_element, text, error)
+
+    @keyword("Element Should Be Enabled")
+    def element_should_be_enabled(self, locator, loglevel='INFO'):
+        """Verifies that element identified with locator is enabled."""
+        if locator == self.current_element:
+            element = self.current_element
+        else:
+            element = self._element_find(locator, True, True)
+        if not element.is_enabled():
+            raise AssertionError("Element '%s' should be enabled "
+                                 "but did not" % locator)
+        self._info("Element '%s' is enabled ." % locator)
 
     @keyword("Wait Until Element Is Enabled")
     def wait_until_element_is_enabled(self, locator, timeout=None, error=None):
@@ -497,10 +511,21 @@ class DesktopLibrary(AppiumLibrary):
 
         ``error`` can be used to override the default error message.
 
-        See also `Wait Until Element Is Disabled`
-        """
+        See also `Wait Until Element Is Disabled`"""
         self._wait_until_page_contains_element(locator, timeout, error)
-        self.element_should_be_enabled(locator)
+        self.element_should_be_enabled(self.current_element)
+
+    @keyword("Element Should Be Disabled")
+    def element_should_be_disabled(self, locator, loglevel='INFO'):
+        """Verifies that element identified with locator is disabled."""
+        if locator == self.current_element:
+            element = self.current_element
+        else:
+            element = self._element_find(locator, True, True)
+        if element.is_enabled():
+            raise AssertionError("Element '%s' should be disabled "
+                                 "but did not" % locator)
+        self._info("Element '%s' is disabled ." % locator)
 
     @keyword("Wait Until Element Is Disabled")
     def wait_until_element_is_disabled(self, locator, timeout=None, error=None):
@@ -510,19 +535,17 @@ class DesktopLibrary(AppiumLibrary):
 
         ``error`` can be used to override the default error message.
 
-        See also `Wait Until Element Is Disabled`
-        """
+        See also `Wait Until Element Is Enabled`"""
         self._wait_until_page_contains_element(locator, timeout, error)
-        self.element_should_be_disabled(locator)
+        self.element_should_be_disabled(self.current_element)
 
     @keyword("Mouse Over Element")
     def mouse_over_element(self, locator, x_offset=0, y_offset=0):
         """Moves the mouse over the given ``locator``.
 
-        ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
-        """
-        if locator == self.element:
-            element = self.element
+        ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate."""
+        if locator == self.current_element:
+            element = self.current_element
         else:
             element = self._element_find(locator, True, True)
         actions = ActionChains(self._current_application())
@@ -538,10 +561,9 @@ class DesktopLibrary(AppiumLibrary):
 
         ``error`` can be used to override the default error message.
 
-        ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
-        """
+        ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate."""
         self._wait_until_page_contains_element(locator, timeout, error)
-        self.mouse_over_element(self.element, x_offset, y_offset)
+        self.mouse_over_element(self.current_element, x_offset, y_offset)
 
     @keyword("Mouse Over And Click Element")
     def mouse_over_and_click_element(self, locator, double_click=False, x_offset=0, y_offset=0):
@@ -549,8 +571,7 @@ class DesktopLibrary(AppiumLibrary):
 
         ``double_click`` can be used to click twice.
 
-        ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
-        """
+        ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate."""
         self.mouse_over_element(locator, x_offset=x_offset, y_offset=y_offset)
         self.click_a_point(double_click=double_click)
 
@@ -560,8 +581,7 @@ class DesktopLibrary(AppiumLibrary):
 
         ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
 
-        See also `Mouse Over And Click Element`
-        """
+        See also `Mouse Over And Click Element`"""
         self.mouse_over_element(locator, x_offset=x_offset, y_offset=y_offset)
         self.context_click_a_point()
 
@@ -576,20 +596,17 @@ class DesktopLibrary(AppiumLibrary):
 
         ``double_click`` can be used to click twice.
 
-        ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate.
-        """
+        ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate."""
         self._wait_until_page_contains_element(locator, timeout, error)
-        self.mouse_over_and_click_element(self.element, double_click, x_offset, y_offset)
+        self.mouse_over_and_click_element(self.current_element, double_click, x_offset, y_offset)
 
     @keyword("Mouse Over By Offset")
     def mouse_over_by_offset(self, x_offset=0, y_offset=0):
-        """Moves the mouse from its current location by the given ``x_offset`` and ``y_offset``.
-        """
+        """Moves the mouse from its current location by the given ``x_offset`` and ``y_offset``."""
         actions = ActionChains(self._current_application())
-        actions.move_by_offset(x_offset, y_offset)
         self._info('Moving mouse from current location with an '
                    'offset of (%s,%s).' % (x_offset, y_offset))
-        actions.perform()
+        actions.move_by_offset(x_offset, y_offset).perform()
 
     @keyword("Click A Point")
     def click_a_point(self, x_offset=0, y_offset=0, double_click=False):
@@ -597,8 +614,7 @@ class DesktopLibrary(AppiumLibrary):
 
         ``x_offset`` and ``y_offset`` can be applied to give an offset.
 
-        ``double_click`` can be used to click twice.
-        """
+        ``double_click`` can be used to click twice."""
         actions = ActionChains(self._current_application())
         if x_offset != 0 or y_offset != 0:
             actions.move_by_offset(x_offset, y_offset)
@@ -613,8 +629,7 @@ class DesktopLibrary(AppiumLibrary):
     def context_click_a_point(self, x_offset=0, y_offset=0):
         """Right-clicks the current mouse location.
 
-        ``x_offset`` and ``y_offset`` can be applied to give an offset.
-        """
+        ``x_offset`` and ``y_offset`` can be applied to give an offset."""
         actions = ActionChains(self._current_application())
         if x_offset != 0 or y_offset != 0:
             actions.move_by_offset(x_offset, y_offset)
@@ -631,8 +646,7 @@ class DesktopLibrary(AppiumLibrary):
     @keyword("Drag And Drop By Offset")
     def drag_and_drop_by_offset(self, locator, x_offset=0, y_offset=0):
         """Drags the element found with ``locator`` to the given ``x_offset`` and ``y_offset``
-        coordinates.
-        """
+        coordinates."""
         AppiumCommon.drag_and_drop_by_offset(self, locator, x_offset, y_offset)
 
     @keyword("Send Keys")
@@ -732,8 +746,8 @@ class DesktopLibrary(AppiumLibrary):
 
     @keyword("Select Elements From Menu")
     def select_elements_from_menu(self, *args):
-        """Selects N number of elements in the order they are given. This is useful for working
-        though a nested menu listing of elements.
+        """Selects N number of elements (given as locators) in the order they are given. This is
+        useful for working though a nested menu listing of elements.
 
         On failure this keyword will attempt to select the elements from the desktop session due to
         the nature of some pop-out menus in Windows."""
@@ -756,8 +770,9 @@ class DesktopLibrary(AppiumLibrary):
 
     @keyword("Select Elements From Context Menu")
     def select_elements_from_context_menu(self, *args):
-        """Context clicks the first element and then selects N number of elements in the order they
-        are given. This is useful for working though a nested context menu listing of elements.
+        """Context clicks the first element and then selects N number of elements (given as
+        locators) in the order they are given. This is useful for working though a nested context
+        menu listing of elements.
 
         On failure this keyword will attempt to select the elements from the desktop session due to
         the nature of some pop-out menus in Windows."""
@@ -814,7 +829,11 @@ class DesktopLibrary(AppiumLibrary):
     @keyword("Double Tap")
     def double_tap(self, locator):
         """ Double tap element identified by ``locator``."""
-        element = self._element_find(locator, True, True)
+        if locator == self.current_element:
+            element = self.current_element
+        else:
+            element = self._element_find(locator, True, True)
+        self._info("Double Tapping on locator %s." % locator)
         action = TouchActions(self._current_application())
         action.double_tap(element).perform()
 
@@ -828,7 +847,9 @@ class DesktopLibrary(AppiumLibrary):
 
         See `introduction` for details about locating elements."""
         self._wait_until_page_contains_element(locator, timeout, error)
-        self.tap(locator)
+        self._info("Tapping on locator %s." % locator)
+        action = TouchAction(self._current_application())
+        action.tap(self.current_element).perform()
 
     @keyword("Wait For And Double Tap")
     def wait_for_and_double_tap(self, locator, timeout=None, error=None):
@@ -840,7 +861,7 @@ class DesktopLibrary(AppiumLibrary):
 
         See `introduction` for details about locating elements."""
         self._wait_until_page_contains_element(locator, timeout, error)
-        self.double_tap(locator)
+        self.double_tap(self.current_element)
 
     @keyword("Flick")
     def flick(self, x_speed, y_speed):
@@ -861,7 +882,10 @@ class DesktopLibrary(AppiumLibrary):
         ``y_offset`` is Y offset to flick to.
 
         ``speed`` is Pixels per second to flick."""
-        element = self._element_find(locator, True, True)
+        if locator == self.current_element:
+            element = self.current_element
+        else:
+            element = self._element_find(locator, True, True)
         action = TouchActions(self._current_application())
         action.flick_element(element, x_offset, y_offset, speed).perform()
 
@@ -876,7 +900,7 @@ class DesktopLibrary(AppiumLibrary):
 
         See `introduction` for details about locating elements."""
         self._wait_until_page_contains_element(locator, timeout, error)
-        self.flick_from_element(locator, x_offset, y_offset, speed)
+        self.flick_from_element(self.current_element, x_offset, y_offset, speed)
 
     @keyword("Scroll")
     def scroll(self, x_offset, y_offset):
@@ -895,7 +919,10 @@ class DesktopLibrary(AppiumLibrary):
          ``x_offset`` is the X offset to scroll to.
 
          ``y_offset`` is the Y offset to scroll to."""
-        element = self._element_find(locator, True, True)
+        if locator == self.current_element:
+            element = self.current_element
+        else:
+            element = self._element_find(locator, True, True)
         action = TouchActions(self._current_application())
         action.scroll_from_element(element, x_offset, y_offset).perform()
 
@@ -910,7 +937,7 @@ class DesktopLibrary(AppiumLibrary):
 
         See `introduction` for details about locating elements."""
         self._wait_until_page_contains_element(locator, timeout, error)
-        self.scroll_from_element(locator, x_offset, y_offset)
+        self.scroll_from_element(self.current_element, x_offset, y_offset)
 
     # Private
     def _move_to_element(self, actions, element, x_offset=0, y_offset=0):
@@ -993,7 +1020,7 @@ class DesktopLibrary(AppiumLibrary):
         else:
             zoomba.fail("Element locator with prefix '" + prefix + "' is not supported")
         if len(elements_list) > 0:
-            self.element = elements_list[0]
+            self.current_element = elements_list[0]
         return len(elements_list) > 0
 
     def _parse_locator(self, locator):
@@ -1029,8 +1056,8 @@ class DesktopLibrary(AppiumLibrary):
             sleep(0.2)
 
     def _get_text(self, locator):
-        if locator == self.element:
-            element = self.element
+        if locator == self.current_element:
+            element = self.current_element
         else:
             element = self._element_find(locator, True, True)
         if element is not None:

@@ -150,12 +150,12 @@ class TestInternal(unittest.TestCase):
     def test_wait_for_and_clear_text_simple(self):
         mock_desk = MagicMock()
         DesktopLibrary.wait_for_and_clear_text(mock_desk, "some_locator")
-        mock_desk.clear_text.assert_called_with("some_locator")
+        mock_desk.current_element.clear.assert_called()
 
     def test_wait_for_and_click_element(self):
         mock_desk = MagicMock()
         DesktopLibrary.wait_for_and_click_element(mock_desk, "some_locator")
-        mock_desk.click_element.assert_called_with("some_locator")
+        mock_desk.current_element.click.assert_called()
 
     def test_click_element(self):
         mock_desk = MagicMock()
@@ -165,17 +165,19 @@ class TestInternal(unittest.TestCase):
     def test_wait_for_and_input_password(self):
         mock_desk = MagicMock()
         DesktopLibrary.wait_for_and_input_password(mock_desk, "some_locator", "some_text")
-        mock_desk.input_password.assert_called_with("some_locator", "some_text")
+        mock_desk.current_element.send_keys.assert_called_with("some_text")
 
     def test_wait_for_and_input_text(self):
         mock_desk = MagicMock()
         DesktopLibrary.wait_for_and_input_text(mock_desk, "some_locator", "some_text")
-        mock_desk.input_text.assert_called_with("some_locator", "some_text")
+        mock_desk.current_element.send_keys.assert_called_with("some_text")
 
-    def test_wait_for_and_long_press(self):
+    @patch("appium.webdriver.common.touch_action")
+    def test_wait_for_and_long_press(self, touch_action):
         mock_desk = MagicMock()
         DesktopLibrary.wait_for_and_long_press(mock_desk, "some_locator", 1000)
-        mock_desk.long_press.assert_called_with("some_locator", 1000)
+        touch_action.TouchAction.press.assert_called()
+        # mock_desk.long_press.assert_called_with("some_locator", 1000)
 
     def test_wait_until_element_contains(self):
         mock_desk = MagicMock()
