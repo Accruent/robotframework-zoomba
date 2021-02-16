@@ -172,32 +172,31 @@ class TestInternal(unittest.TestCase):
         DesktopLibrary.wait_for_and_input_text(mock_desk, "some_locator", "some_text")
         mock_desk.current_element.send_keys.assert_called_with("some_text")
 
-    @patch("appium.webdriver.common.touch_action")
-    def test_wait_for_and_long_press(self, touch_action):
+    @patch("appium.webdriver.common.touch_action.TouchAction.press")
+    def test_wait_for_and_long_press(self, press):
         mock_desk = MagicMock()
         DesktopLibrary.wait_for_and_long_press(mock_desk, "some_locator", 1000)
-        touch_action.TouchAction.press.assert_called()
-        # mock_desk.long_press.assert_called_with("some_locator", 1000)
+        press.assert_called()
 
     def test_wait_until_element_contains(self):
         mock_desk = MagicMock()
         DesktopLibrary.wait_until_element_contains(mock_desk, "some_locator", 'test_text')
-        mock_desk.element_should_contain_text.assert_called_with("some_locator", "test_text", None)
+        mock_desk.element_should_contain_text.assert_called_with(unittest.mock.ANY, "test_text", None)
 
     def test_wait_until_element_does_not_contain(self):
         mock_desk = MagicMock()
         DesktopLibrary.wait_until_element_does_not_contain(mock_desk, "some_locator", 'test_text')
-        mock_desk.element_should_not_contain_text.assert_called_with("some_locator", "test_text", None)
+        mock_desk.element_should_not_contain_text.assert_called_with(unittest.mock.ANY, "test_text", None)
 
     def test_wait_until_element_is_enabled(self):
         mock_desk = MagicMock()
         DesktopLibrary.wait_until_element_is_enabled(mock_desk, "some_locator")
-        mock_desk.element_should_be_enabled.assert_called_with("some_locator")
+        mock_desk.element_should_be_enabled.assert_called_with(unittest.mock.ANY)
 
     def test_wait_until_element_is_disabled(self):
         mock_desk = MagicMock()
         DesktopLibrary.wait_until_element_is_disabled(mock_desk, "some_locator")
-        mock_desk.element_should_be_disabled.assert_called_with("some_locator")
+        mock_desk.element_should_be_disabled.assert_called_with(unittest.mock.ANY)
 
     def test_mouse_over_element(self):
         mock_desk = MagicMock()
@@ -242,27 +241,27 @@ class TestInternal(unittest.TestCase):
     def test_wait_for_and_mouse_over_element(self):
         mock_desk = MagicMock()
         DesktopLibrary.wait_for_and_mouse_over_element(mock_desk, "some_locator")
-        mock_desk.mouse_over_element.assert_called_with("some_locator", 0, 0)
+        mock_desk.mouse_over_element.assert_called_with(unittest.mock.ANY, 0, 0)
 
     def test_wait_for_and_mouse_over_element_with_offset(self):
         mock_desk = MagicMock()
         DesktopLibrary.wait_for_and_mouse_over_element(mock_desk, "some_locator", x_offset=100, y_offset=100)
-        mock_desk.mouse_over_element.assert_called_with("some_locator", 100, 100)
+        mock_desk.mouse_over_element.assert_called_with(unittest.mock.ANY, 100, 100)
 
     def test_wait_for_and_mouse_over_and_click_element(self):
         mock_desk = MagicMock()
         DesktopLibrary.wait_for_and_mouse_over_and_click_element(mock_desk, "some_locator")
-        mock_desk.mouse_over_and_click_element.assert_called_with("some_locator", False, 0, 0)
+        mock_desk.mouse_over_and_click_element.assert_called_with(unittest.mock.ANY, False, 0, 0)
 
     def test_wait_for_and_mouse_over_and_click_element_with_offset(self):
         mock_desk = MagicMock()
         DesktopLibrary.wait_for_and_mouse_over_and_click_element(mock_desk, "some_locator", x_offset=100, y_offset=100)
-        mock_desk.mouse_over_and_click_element.assert_called_with("some_locator", False, 100, 100)
+        mock_desk.mouse_over_and_click_element.assert_called_with(unittest.mock.ANY, False, 100, 100)
 
     def test_wait_for_and_mouse_over_and_click_element_with_double_click(self):
         mock_desk = MagicMock()
         DesktopLibrary.wait_for_and_mouse_over_and_click_element(mock_desk, "some_locator", double_click=True)
-        mock_desk.mouse_over_and_click_element.assert_called_with("some_locator", True, 0, 0)
+        mock_desk.mouse_over_and_click_element.assert_called_with(unittest.mock.ANY, True, 0, 0)
 
     def test_element_find_by_name(self):
         mock_desk = MagicMock()
@@ -679,10 +678,11 @@ class TestInternal(unittest.TestCase):
         DesktopLibrary.double_tap(mock_desk,  "some_locator")
         double_tap.assert_called_with(unittest.mock.ANY)
 
-    def test_wait_for_and_tap(self):
+    @patch("appium.webdriver.common.touch_action.TouchAction.tap")
+    def test_wait_for_and_tap(self, tap):
         mock_desk = MagicMock()
         DesktopLibrary.wait_for_and_tap(mock_desk, "some_locator")
-        mock_desk.tap.assert_called_with(unittest.mock.ANY)
+        tap.assert_called_with(unittest.mock.ANY)
 
     def test_wait_for_and_double_tap(self):
         mock_desk = MagicMock()
