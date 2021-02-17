@@ -246,7 +246,7 @@ class TestInternal(unittest.TestCase):
     def test_mouse_over_element_current_element_set(self):
         mock_desk = MagicMock()
         mock_desk.current_element = MagicMock()
-        DesktopLibrary.mouse_over_element(mock_desk, "some_locator")
+        DesktopLibrary.mouse_over_element(mock_desk, mock_desk.current_element)
         mock_desk._move_to_element.assert_called_with(unittest.mock.ANY, unittest.mock.ANY, 0, 0)
 
     def test_mouse_over_element_with_offset(self):
@@ -708,7 +708,7 @@ class TestInternal(unittest.TestCase):
     def test_flick_from_element_current_element_set(self, flick_element):
         mock_desk = MagicMock()
         mock_desk.current_element = MagicMock()
-        DesktopLibrary.flick_from_element(mock_desk, "some_locator", 50, 100, 10)
+        DesktopLibrary.flick_from_element(mock_desk, mock_desk.current_element, 50, 100, 10)
         flick_element.assert_called_with(unittest.mock.ANY, 50, 100, 10)
 
     def test_wait_for_and_flick_from_element(self):
@@ -732,7 +732,7 @@ class TestInternal(unittest.TestCase):
     def test_scroll_from_element_current_element_set(self, scroll_from_element):
         mock_desk = MagicMock()
         mock_desk.current_element = MagicMock()
-        DesktopLibrary.scroll_from_element(mock_desk, "some_locator", 50, 100)
+        DesktopLibrary.scroll_from_element(mock_desk, mock_desk.current_element, 50, 100)
         scroll_from_element.assert_called_with(unittest.mock.ANY, 50, 100)
 
     def test_wait_for_and_scroll_from_element(self):
@@ -750,7 +750,7 @@ class TestInternal(unittest.TestCase):
     def test_double_tap_current_element_set(self, double_tap):
         mock_desk = MagicMock()
         mock_desk.current_element = MagicMock()
-        DesktopLibrary.double_tap(mock_desk, "some_locator")
+        DesktopLibrary.double_tap(mock_desk, mock_desk.current_element)
         double_tap.assert_called_with(unittest.mock.ANY)
 
     @patch("appium.webdriver.common.touch_action.TouchAction.tap")
