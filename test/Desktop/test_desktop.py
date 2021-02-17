@@ -150,12 +150,12 @@ class TestInternal(unittest.TestCase):
     def test_wait_for_and_clear_text_simple(self):
         mock_desk = MagicMock()
         DesktopLibrary.wait_for_and_clear_text(mock_desk, "some_locator")
-        mock_desk.clear_text.assert_called_with("some_locator")
+        mock_desk.current_element.clear.assert_called()
 
     def test_wait_for_and_click_element(self):
         mock_desk = MagicMock()
         DesktopLibrary.wait_for_and_click_element(mock_desk, "some_locator")
-        mock_desk.click_element.assert_called_with("some_locator")
+        mock_desk.current_element.click.assert_called()
 
     def test_click_element(self):
         mock_desk = MagicMock()
@@ -165,41 +165,89 @@ class TestInternal(unittest.TestCase):
     def test_wait_for_and_input_password(self):
         mock_desk = MagicMock()
         DesktopLibrary.wait_for_and_input_password(mock_desk, "some_locator", "some_text")
-        mock_desk.input_password.assert_called_with("some_locator", "some_text")
+        mock_desk.current_element.send_keys.assert_called_with("some_text")
 
     def test_wait_for_and_input_text(self):
         mock_desk = MagicMock()
         DesktopLibrary.wait_for_and_input_text(mock_desk, "some_locator", "some_text")
-        mock_desk.input_text.assert_called_with("some_locator", "some_text")
+        mock_desk.current_element.send_keys.assert_called_with("some_text")
 
-    def test_wait_for_and_long_press(self):
+    @patch("appium.webdriver.common.touch_action.TouchAction.press")
+    def test_wait_for_and_long_press(self, press):
         mock_desk = MagicMock()
         DesktopLibrary.wait_for_and_long_press(mock_desk, "some_locator", 1000)
-        mock_desk.long_press.assert_called_with("some_locator", 1000)
+        press.assert_called()
 
     def test_wait_until_element_contains(self):
         mock_desk = MagicMock()
         DesktopLibrary.wait_until_element_contains(mock_desk, "some_locator", 'test_text')
-        mock_desk.element_should_contain_text.assert_called_with("some_locator", "test_text", None)
+        mock_desk.element_should_contain_text.assert_called_with(unittest.mock.ANY, "test_text", None)
 
     def test_wait_until_element_does_not_contain(self):
         mock_desk = MagicMock()
         DesktopLibrary.wait_until_element_does_not_contain(mock_desk, "some_locator", 'test_text')
-        mock_desk.element_should_not_contain_text.assert_called_with("some_locator", "test_text", None)
+        mock_desk.element_should_not_contain_text.assert_called_with(unittest.mock.ANY, "test_text", None)
+
+    def test_element_should_be_enabled(self):
+        mock_desk = MagicMock()
+        mock_desk._check_for_cached_element().is_enabled = MagicMock(return_value=True)
+        DesktopLibrary.element_should_be_enabled(mock_desk, "some_locator")
+        mock_desk._check_for_cached_element().is_enabled.assert_called_with()
+
+    def test_element_should_be_enabled_error(self):
+        mock_desk = MagicMock()
+        mock_desk._check_for_cached_element().is_enabled = MagicMock(return_value=False)
+        self.assertRaisesRegex(AssertionError, "Element 'some_locator' should be enabled but did "
+                               "not", DesktopLibrary.element_should_be_enabled, mock_desk,
+                               "some_locator")
+        mock_desk._check_for_cached_element().is_enabled.assert_called_with()
+
+    def test_element_should_be_enabled_current_element_set(self):
+        mock_desk = MagicMock()
+        mock_desk._check_for_cached_element().is_enabled = MagicMock(return_value=True)
+        DesktopLibrary.element_should_be_enabled(mock_desk, mock_desk.current_element)
+        mock_desk._check_for_cached_element().is_enabled.assert_called_with()
+
+    def test_element_should_be_disabled(self):
+        mock_desk = MagicMock()
+        mock_desk._check_for_cached_element().is_enabled = MagicMock(return_value=False)
+        DesktopLibrary.element_should_be_disabled(mock_desk, "some_locator")
+        mock_desk._check_for_cached_element().is_enabled.assert_called_with()
+
+    def test_element_should_be_disabled_error(self):
+        mock_desk = MagicMock()
+        mock_desk._check_for_cached_element().is_enabled = MagicMock(return_value=True)
+        self.assertRaisesRegex(AssertionError, "Element 'some_locator' should be disabled but did "
+                               "not", DesktopLibrary.element_should_be_disabled, mock_desk,
+                               "some_locator")
+        mock_desk._check_for_cached_element().is_enabled.assert_called_with()
+
+    def test_element_should_be_disabled_current_element_set(self):
+        mock_desk = MagicMock()
+        mock_desk.current_element = MagicMock()
+        mock_desk._check_for_cached_element().is_enabled = MagicMock(return_value=False)
+        DesktopLibrary.element_should_be_disabled(mock_desk, mock_desk.current_element)
+        mock_desk._check_for_cached_element().is_enabled.assert_called_with()
 
     def test_wait_until_element_is_enabled(self):
         mock_desk = MagicMock()
         DesktopLibrary.wait_until_element_is_enabled(mock_desk, "some_locator")
-        mock_desk.element_should_be_enabled.assert_called_with("some_locator")
+        mock_desk.element_should_be_enabled.assert_called_with(unittest.mock.ANY)
 
     def test_wait_until_element_is_disabled(self):
         mock_desk = MagicMock()
         DesktopLibrary.wait_until_element_is_disabled(mock_desk, "some_locator")
-        mock_desk.element_should_be_disabled.assert_called_with("some_locator")
+        mock_desk.element_should_be_disabled.assert_called_with(unittest.mock.ANY)
 
     def test_mouse_over_element(self):
         mock_desk = MagicMock()
         DesktopLibrary.mouse_over_element(mock_desk, "some_locator")
+        mock_desk._move_to_element.assert_called_with(unittest.mock.ANY, unittest.mock.ANY, 0, 0)
+
+    def test_mouse_over_element_current_element_set(self):
+        mock_desk = MagicMock()
+        mock_desk.current_element = MagicMock()
+        DesktopLibrary.mouse_over_element(mock_desk, mock_desk.current_element)
         mock_desk._move_to_element.assert_called_with(unittest.mock.ANY, unittest.mock.ANY, 0, 0)
 
     def test_mouse_over_element_with_offset(self):
@@ -240,27 +288,27 @@ class TestInternal(unittest.TestCase):
     def test_wait_for_and_mouse_over_element(self):
         mock_desk = MagicMock()
         DesktopLibrary.wait_for_and_mouse_over_element(mock_desk, "some_locator")
-        mock_desk.mouse_over_element.assert_called_with("some_locator", 0, 0)
+        mock_desk.mouse_over_element.assert_called_with(unittest.mock.ANY, 0, 0)
 
     def test_wait_for_and_mouse_over_element_with_offset(self):
         mock_desk = MagicMock()
         DesktopLibrary.wait_for_and_mouse_over_element(mock_desk, "some_locator", x_offset=100, y_offset=100)
-        mock_desk.mouse_over_element.assert_called_with("some_locator", 100, 100)
+        mock_desk.mouse_over_element.assert_called_with(unittest.mock.ANY, 100, 100)
 
     def test_wait_for_and_mouse_over_and_click_element(self):
         mock_desk = MagicMock()
         DesktopLibrary.wait_for_and_mouse_over_and_click_element(mock_desk, "some_locator")
-        mock_desk.mouse_over_and_click_element.assert_called_with("some_locator", False, 0, 0)
+        mock_desk.mouse_over_and_click_element.assert_called_with(unittest.mock.ANY, False, 0, 0)
 
     def test_wait_for_and_mouse_over_and_click_element_with_offset(self):
         mock_desk = MagicMock()
         DesktopLibrary.wait_for_and_mouse_over_and_click_element(mock_desk, "some_locator", x_offset=100, y_offset=100)
-        mock_desk.mouse_over_and_click_element.assert_called_with("some_locator", False, 100, 100)
+        mock_desk.mouse_over_and_click_element.assert_called_with(unittest.mock.ANY, False, 100, 100)
 
     def test_wait_for_and_mouse_over_and_click_element_with_double_click(self):
         mock_desk = MagicMock()
         DesktopLibrary.wait_for_and_mouse_over_and_click_element(mock_desk, "some_locator", double_click=True)
-        mock_desk.mouse_over_and_click_element.assert_called_with("some_locator", True, 0, 0)
+        mock_desk.mouse_over_and_click_element.assert_called_with(unittest.mock.ANY, True, 0, 0)
 
     def test_element_find_by_name(self):
         mock_desk = MagicMock()
@@ -431,6 +479,14 @@ class TestInternal(unittest.TestCase):
                                "Element locator with prefix 'blockbuster_id' is not supported",
                                DesktopLibrary._is_element_present, mock_desk,
                                "blockbuster_id=123456789")
+
+    def test_is_element_present_list_greater_than_0(self):
+        mock_desk = MagicMock()
+        mock_desk._parse_locator = MagicMock(return_value=['name', 'Capture'])
+        mock_desk._current_application().find_elements_by_name = \
+            MagicMock(return_value=[MagicMock(), MagicMock()])
+        DesktopLibrary._is_element_present(mock_desk, "Name='Capture'")
+        mock_desk._current_application().find_elements_by_name.assert_called_with('Capture')
 
     def test_parse_locator_xpath(self):
         mock_desk = MagicMock()
@@ -649,6 +705,13 @@ class TestInternal(unittest.TestCase):
         DesktopLibrary.flick_from_element(mock_desk, "some_locator", 50, 100, 10)
         flick_element.assert_called_with(unittest.mock.ANY, 50, 100, 10)
 
+    @patch("selenium.webdriver.common.touch_actions.TouchActions.flick_element")
+    def test_flick_from_element_current_element_set(self, flick_element):
+        mock_desk = MagicMock()
+        mock_desk.current_element = MagicMock()
+        DesktopLibrary.flick_from_element(mock_desk, mock_desk.current_element, 50, 100, 10)
+        flick_element.assert_called_with(unittest.mock.ANY, 50, 100, 10)
+
     def test_wait_for_and_flick_from_element(self):
         mock_desk = MagicMock()
         DesktopLibrary.wait_for_and_flick_from_element(mock_desk, "some_locator", 50, 100, 10)
@@ -666,6 +729,13 @@ class TestInternal(unittest.TestCase):
         DesktopLibrary.scroll_from_element(mock_desk, "some_locator", 50, 100)
         scroll_from_element.assert_called_with(unittest.mock.ANY, 50, 100)
 
+    @patch("selenium.webdriver.common.touch_actions.TouchActions.scroll_from_element")
+    def test_scroll_from_element_current_element_set(self, scroll_from_element):
+        mock_desk = MagicMock()
+        mock_desk.current_element = MagicMock()
+        DesktopLibrary.scroll_from_element(mock_desk, mock_desk.current_element, 50, 100)
+        scroll_from_element.assert_called_with(unittest.mock.ANY, 50, 100)
+
     def test_wait_for_and_scroll_from_element(self):
         mock_desk = MagicMock()
         DesktopLibrary.wait_for_and_scroll_from_element(mock_desk, "some_locator", 50, 100)
@@ -677,10 +747,18 @@ class TestInternal(unittest.TestCase):
         DesktopLibrary.double_tap(mock_desk,  "some_locator")
         double_tap.assert_called_with(unittest.mock.ANY)
 
-    def test_wait_for_and_tap(self):
+    @patch("selenium.webdriver.common.touch_actions.TouchActions.double_tap")
+    def test_double_tap_current_element_set(self, double_tap):
+        mock_desk = MagicMock()
+        mock_desk.current_element = MagicMock()
+        DesktopLibrary.double_tap(mock_desk, mock_desk.current_element)
+        double_tap.assert_called_with(unittest.mock.ANY)
+
+    @patch("appium.webdriver.common.touch_action.TouchAction.tap")
+    def test_wait_for_and_tap(self, tap):
         mock_desk = MagicMock()
         DesktopLibrary.wait_for_and_tap(mock_desk, "some_locator")
-        mock_desk.tap.assert_called_with(unittest.mock.ANY)
+        tap.assert_called_with(unittest.mock.ANY)
 
     def test_wait_for_and_double_tap(self):
         mock_desk = MagicMock()
@@ -721,3 +799,32 @@ class TestInternal(unittest.TestCase):
         file = DesktopLibrary._save_recording(mock_desk, "filename", options)
         self.assertTrue(file == "path")
         os.remove("path")
+
+    def test_get_text(self):
+        mock_desk = MagicMock()
+        mock_desk.current_element = None
+        DesktopLibrary._get_text(mock_desk, 1)
+        mock_desk._check_for_cached_element.assert_called_with(1)
+
+    def test_get_text_current_element_set(self):
+        mock_desk = MagicMock()
+        mock_desk.current_element = MagicMock()
+        DesktopLibrary._get_text(mock_desk, mock_desk.current_element)
+        mock_desk._element_find.assert_not_called()
+
+    def test_get_text_element_none(self):
+        mock_desk = MagicMock()
+        mock_desk._check_for_cached_element = MagicMock(return_value=None)
+        result = DesktopLibrary._get_text(mock_desk, mock_desk.current_element)
+        self.assertEqual(result, None)
+
+    def test_check_for_cached_element_true(self):
+        mock_desk = MagicMock()
+        mock_desk.current_element = "a locator"
+        result = DesktopLibrary._check_for_cached_element(mock_desk, "a locator")
+        self.assertEqual(result, "a locator")
+
+    def test_check_for_cached_element_false(self):
+        mock_desk = MagicMock()
+        DesktopLibrary._check_for_cached_element(mock_desk, "a locator")
+        mock_desk._element_find.assert_called_with("a locator", True, True)
