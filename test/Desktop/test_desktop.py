@@ -188,6 +188,46 @@ class TestInternal(unittest.TestCase):
         DesktopLibrary.wait_until_element_does_not_contain(mock_desk, "some_locator", 'test_text')
         mock_desk.element_should_not_contain_text.assert_called_with(unittest.mock.ANY, "test_text", None)
 
+    def test_element_should_be_enabled(self):
+        mock_desk = MagicMock()
+        mock_desk._element_find().is_enabled = MagicMock(return_value=True)
+        DesktopLibrary.element_should_be_enabled(mock_desk, "some_locator")
+        mock_desk._element_find().is_enabled.assert_called_with()
+
+    def test_element_should_be_enabled_error(self):
+        mock_desk = MagicMock()
+        mock_desk._element_find().is_enabled = MagicMock(return_value=False)
+        self.assertRaisesRegex(AssertionError, "Element 'some_locator' should be enabled but did "
+                               "not", DesktopLibrary.element_should_be_enabled, mock_desk,
+                               "some_locator")
+        mock_desk._element_find().is_enabled.assert_called_with()
+
+    def test_element_should_be_enabled_current_element_set(self):
+        mock_desk = MagicMock()
+        mock_desk.current_element.is_enabled = MagicMock(return_value=True)
+        DesktopLibrary.element_should_be_enabled(mock_desk, mock_desk.current_element)
+        mock_desk.current_element.is_enabled.assert_called_with()
+
+    def test_element_should_be_disabled(self):
+        mock_desk = MagicMock()
+        mock_desk._element_find().is_enabled = MagicMock(return_value=False)
+        DesktopLibrary.element_should_be_disabled(mock_desk, "some_locator")
+        mock_desk._element_find().is_enabled.assert_called_with()
+
+    def test_element_should_be_disabled_error(self):
+        mock_desk = MagicMock()
+        mock_desk._element_find().is_enabled = MagicMock(return_value=True)
+        self.assertRaisesRegex(AssertionError, "Element 'some_locator' should be disabled but did "
+                               "not", DesktopLibrary.element_should_be_disabled, mock_desk,
+                               "some_locator")
+        mock_desk._element_find().is_enabled.assert_called_with()
+
+    def test_element_should_be_disabled_current_element_set(self):
+        mock_desk = MagicMock()
+        mock_desk.current_element.is_enabled = MagicMock(return_value=False)
+        DesktopLibrary.element_should_be_disabled(mock_desk, mock_desk.current_element)
+        mock_desk.current_element.is_enabled.assert_called_with()
+
     def test_wait_until_element_is_enabled(self):
         mock_desk = MagicMock()
         DesktopLibrary.wait_until_element_is_enabled(mock_desk, "some_locator")
