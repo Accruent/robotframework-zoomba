@@ -1045,7 +1045,6 @@ class DesktopLibrary(AppiumLibrary):
 
     def _check_for_cached_element(self, locator):
         if locator == self.current_element:
-            element = self.current_element
+            return self.current_element
         else:
-            element = self._element_find(locator, True, True)
-        return element
+            return self._element_find(locator, True, True)

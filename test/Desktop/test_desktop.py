@@ -190,43 +190,44 @@ class TestInternal(unittest.TestCase):
 
     def test_element_should_be_enabled(self):
         mock_desk = MagicMock()
-        mock_desk._element_find().is_enabled = MagicMock(return_value=True)
+        mock_desk._check_for_cached_element().is_enabled = MagicMock(return_value=True)
         DesktopLibrary.element_should_be_enabled(mock_desk, "some_locator")
-        mock_desk._element_find().is_enabled.assert_called_with()
+        mock_desk._check_for_cached_element().is_enabled.assert_called_with()
 
     def test_element_should_be_enabled_error(self):
         mock_desk = MagicMock()
-        mock_desk._element_find().is_enabled = MagicMock(return_value=False)
+        mock_desk._check_for_cached_element().is_enabled = MagicMock(return_value=False)
         self.assertRaisesRegex(AssertionError, "Element 'some_locator' should be enabled but did "
                                "not", DesktopLibrary.element_should_be_enabled, mock_desk,
                                "some_locator")
-        mock_desk._element_find().is_enabled.assert_called_with()
+        mock_desk._check_for_cached_element().is_enabled.assert_called_with()
 
     def test_element_should_be_enabled_current_element_set(self):
         mock_desk = MagicMock()
-        mock_desk.current_element.is_enabled = MagicMock(return_value=True)
+        mock_desk._check_for_cached_element().is_enabled = MagicMock(return_value=True)
         DesktopLibrary.element_should_be_enabled(mock_desk, mock_desk.current_element)
-        mock_desk.current_element.is_enabled.assert_called_with()
+        mock_desk._check_for_cached_element().is_enabled.assert_called_with()
 
     def test_element_should_be_disabled(self):
         mock_desk = MagicMock()
-        mock_desk._element_find().is_enabled = MagicMock(return_value=False)
+        mock_desk._check_for_cached_element().is_enabled = MagicMock(return_value=False)
         DesktopLibrary.element_should_be_disabled(mock_desk, "some_locator")
-        mock_desk._element_find().is_enabled.assert_called_with()
+        mock_desk._check_for_cached_element().is_enabled.assert_called_with()
 
     def test_element_should_be_disabled_error(self):
         mock_desk = MagicMock()
-        mock_desk._element_find().is_enabled = MagicMock(return_value=True)
+        mock_desk._check_for_cached_element().is_enabled = MagicMock(return_value=True)
         self.assertRaisesRegex(AssertionError, "Element 'some_locator' should be disabled but did "
                                "not", DesktopLibrary.element_should_be_disabled, mock_desk,
                                "some_locator")
-        mock_desk._element_find().is_enabled.assert_called_with()
+        mock_desk._check_for_cached_element().is_enabled.assert_called_with()
 
     def test_element_should_be_disabled_current_element_set(self):
         mock_desk = MagicMock()
-        mock_desk.current_element.is_enabled = MagicMock(return_value=False)
+        mock_desk.current_element = MagicMock()
+        mock_desk._check_for_cached_element().is_enabled = MagicMock(return_value=False)
         DesktopLibrary.element_should_be_disabled(mock_desk, mock_desk.current_element)
-        mock_desk.current_element.is_enabled.assert_called_with()
+        mock_desk._check_for_cached_element().is_enabled.assert_called_with()
 
     def test_wait_until_element_is_enabled(self):
         mock_desk = MagicMock()
@@ -801,8 +802,9 @@ class TestInternal(unittest.TestCase):
 
     def test_get_text(self):
         mock_desk = MagicMock()
-        DesktopLibrary._get_text(mock_desk, "some_locator")
-        mock_desk._element_find.assert_called_with("some_locator", True, True)
+        mock_desk.current_element = None
+        DesktopLibrary._get_text(mock_desk, 1)
+        mock_desk._check_for_cached_element.assert_called_with(1)
 
     def test_get_text_current_element_set(self):
         mock_desk = MagicMock()
@@ -812,6 +814,6 @@ class TestInternal(unittest.TestCase):
 
     def test_get_text_element_none(self):
         mock_desk = MagicMock()
-        mock_desk.current_element = None
+        mock_desk._check_for_cached_element = MagicMock(return_value=None)
         result = DesktopLibrary._get_text(mock_desk, mock_desk.current_element)
         self.assertEqual(result, None)
