@@ -243,6 +243,12 @@ class TestInternal(unittest.TestCase):
         DesktopLibrary.mouse_over_element(mock_desk, "some_locator")
         mock_desk._move_to_element.assert_called_with(unittest.mock.ANY, unittest.mock.ANY, 0, 0)
 
+    def test_mouse_over_element_current_element_set(self):
+        mock_desk = MagicMock()
+        mock_desk.current_element = MagicMock()
+        DesktopLibrary.mouse_over_element(mock_desk, "some_locator")
+        mock_desk._move_to_element.assert_called_with(unittest.mock.ANY, unittest.mock.ANY, 0, 0)
+
     def test_mouse_over_element_with_offset(self):
         mock_desk = MagicMock()
         DesktopLibrary.mouse_over_element(mock_desk, "some_locator", x_offset=100, y_offset=100)
@@ -473,6 +479,14 @@ class TestInternal(unittest.TestCase):
                                DesktopLibrary._is_element_present, mock_desk,
                                "blockbuster_id=123456789")
 
+    def test_is_element_present_list_greater_than_0(self):
+        mock_desk = MagicMock()
+        mock_desk._parse_locator = MagicMock(return_value=['name', 'Capture'])
+        mock_desk._current_application().find_elements_by_name = \
+            MagicMock(return_value=[MagicMock(), MagicMock()])
+        DesktopLibrary._is_element_present(mock_desk, "Name='Capture'")
+        mock_desk._current_application().find_elements_by_name.assert_called_with('Capture')
+
     def test_parse_locator_xpath(self):
         mock_desk = MagicMock()
         parse = DesktopLibrary._parse_locator(mock_desk, '//test')
@@ -690,6 +704,13 @@ class TestInternal(unittest.TestCase):
         DesktopLibrary.flick_from_element(mock_desk, "some_locator", 50, 100, 10)
         flick_element.assert_called_with(unittest.mock.ANY, 50, 100, 10)
 
+    @patch("selenium.webdriver.common.touch_actions.TouchActions.flick_element")
+    def test_flick_from_element_current_element_set(self, flick_element):
+        mock_desk = MagicMock()
+        mock_desk.current_element = MagicMock()
+        DesktopLibrary.flick_from_element(mock_desk, "some_locator", 50, 100, 10)
+        flick_element.assert_called_with(unittest.mock.ANY, 50, 100, 10)
+
     def test_wait_for_and_flick_from_element(self):
         mock_desk = MagicMock()
         DesktopLibrary.wait_for_and_flick_from_element(mock_desk, "some_locator", 50, 100, 10)
@@ -707,6 +728,13 @@ class TestInternal(unittest.TestCase):
         DesktopLibrary.scroll_from_element(mock_desk, "some_locator", 50, 100)
         scroll_from_element.assert_called_with(unittest.mock.ANY, 50, 100)
 
+    @patch("selenium.webdriver.common.touch_actions.TouchActions.scroll_from_element")
+    def test_scroll_from_element_current_element_set(self, scroll_from_element):
+        mock_desk = MagicMock()
+        mock_desk.current_element = MagicMock()
+        DesktopLibrary.scroll_from_element(mock_desk, "some_locator", 50, 100)
+        scroll_from_element.assert_called_with(unittest.mock.ANY, 50, 100)
+
     def test_wait_for_and_scroll_from_element(self):
         mock_desk = MagicMock()
         DesktopLibrary.wait_for_and_scroll_from_element(mock_desk, "some_locator", 50, 100)
@@ -716,6 +744,13 @@ class TestInternal(unittest.TestCase):
     def test_double_tap(self, double_tap):
         mock_desk = MagicMock()
         DesktopLibrary.double_tap(mock_desk,  "some_locator")
+        double_tap.assert_called_with(unittest.mock.ANY)
+
+    @patch("selenium.webdriver.common.touch_actions.TouchActions.double_tap")
+    def test_double_tap_current_element_set(self, double_tap):
+        mock_desk = MagicMock()
+        mock_desk.current_element = MagicMock()
+        DesktopLibrary.double_tap(mock_desk, "some_locator")
         double_tap.assert_called_with(unittest.mock.ANY)
 
     @patch("appium.webdriver.common.touch_action.TouchAction.tap")
@@ -763,3 +798,20 @@ class TestInternal(unittest.TestCase):
         file = DesktopLibrary._save_recording(mock_desk, "filename", options)
         self.assertTrue(file == "path")
         os.remove("path")
+
+    def test_get_text(self):
+        mock_desk = MagicMock()
+        DesktopLibrary._get_text(mock_desk, "some_locator")
+        mock_desk._element_find.assert_called_with("some_locator", True, True)
+
+    def test_get_text_current_element_set(self):
+        mock_desk = MagicMock()
+        mock_desk.current_element = MagicMock()
+        DesktopLibrary._get_text(mock_desk, mock_desk.current_element)
+        mock_desk._element_find.assert_not_called()
+
+    def test_get_text_element_none(self):
+        mock_desk = MagicMock()
+        mock_desk.current_element = None
+        result = DesktopLibrary._get_text(mock_desk, mock_desk.current_element)
+        self.assertEqual(result, None)
