@@ -448,7 +448,7 @@ class DesktopLibrary(AppiumLibrary):
         self.current_element.send_keys(text)
 
     @keyword("Wait For And Long Press")
-    def wait_for_and_long_press(self, locator, duration=5000, timeout=None, error=None):
+    def wait_for_and_long_press(self, locator, duration=10000, timeout=None, error=None):
         """Wait for and long press the element identified by ``locator`` with optional duration.
 
         Fails if ``timeout`` expires before the element appears.
@@ -494,10 +494,7 @@ class DesktopLibrary(AppiumLibrary):
     @keyword("Element Should Be Enabled")
     def element_should_be_enabled(self, locator, loglevel='INFO'):
         """Verifies that element identified with locator is enabled."""
-        if locator == self.current_element:
-            element = self.current_element
-        else:
-            element = self._element_find(locator, True, True)
+        element = self._check_for_cached_element(locator)
         if not element.is_enabled():
             raise AssertionError("Element '%s' should be enabled "
                                  "but did not" % locator)
@@ -518,10 +515,7 @@ class DesktopLibrary(AppiumLibrary):
     @keyword("Element Should Be Disabled")
     def element_should_be_disabled(self, locator, loglevel='INFO'):
         """Verifies that element identified with locator is disabled."""
-        if locator == self.current_element:
-            element = self.current_element
-        else:
-            element = self._element_find(locator, True, True)
+        element = self._check_for_cached_element(locator)
         if element.is_enabled():
             raise AssertionError("Element '%s' should be disabled "
                                  "but did not" % locator)
@@ -544,10 +538,7 @@ class DesktopLibrary(AppiumLibrary):
         """Moves the mouse over the given ``locator``.
 
         ``x_offset`` and ``y_offset`` can be used to move to a specific coordinate."""
-        if locator == self.current_element:
-            element = self.current_element
-        else:
-            element = self._element_find(locator, True, True)
+        element = self._check_for_cached_element(locator)
         actions = ActionChains(self._current_application())
         self._move_to_element(actions, element, x_offset, y_offset)
         actions.perform()
@@ -829,10 +820,7 @@ class DesktopLibrary(AppiumLibrary):
     @keyword("Double Tap")
     def double_tap(self, locator):
         """ Double tap element identified by ``locator``."""
-        if locator == self.current_element:
-            element = self.current_element
-        else:
-            element = self._element_find(locator, True, True)
+        element = self._check_for_cached_element(locator)
         self._info("Double Tapping on locator %s." % locator)
         action = TouchActions(self._current_application())
         action.double_tap(element).perform()
@@ -882,10 +870,7 @@ class DesktopLibrary(AppiumLibrary):
         ``y_offset`` is Y offset to flick to.
 
         ``speed`` is Pixels per second to flick."""
-        if locator == self.current_element:
-            element = self.current_element
-        else:
-            element = self._element_find(locator, True, True)
+        element = self._check_for_cached_element(locator)
         action = TouchActions(self._current_application())
         action.flick_element(element, x_offset, y_offset, speed).perform()
 
@@ -919,10 +904,7 @@ class DesktopLibrary(AppiumLibrary):
          ``x_offset`` is the X offset to scroll to.
 
          ``y_offset`` is the Y offset to scroll to."""
-        if locator == self.current_element:
-            element = self.current_element
-        else:
-            element = self._element_find(locator, True, True)
+        element = self._check_for_cached_element(locator)
         action = TouchActions(self._current_application())
         action.scroll_from_element(element, x_offset, y_offset).perform()
 
@@ -1056,10 +1038,15 @@ class DesktopLibrary(AppiumLibrary):
             sleep(0.2)
 
     def _get_text(self, locator):
+        element = self._check_for_cached_element(locator)
+        if element is not None:
+            return element.text
+        return None
+
+    def _check_for_cached_element(self, locator):
         if locator == self.current_element:
             element = self.current_element
         else:
             element = self._element_find(locator, True, True)
-        if element is not None:
-            return element.text
-        return None
+        return element
+
