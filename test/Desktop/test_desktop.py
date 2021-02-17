@@ -817,3 +817,15 @@ class TestInternal(unittest.TestCase):
         mock_desk._check_for_cached_element = MagicMock(return_value=None)
         result = DesktopLibrary._get_text(mock_desk, mock_desk.current_element)
         self.assertEqual(result, None)
+
+    def test_check_for_cached_element_true(self):
+        mock_desk = MagicMock()
+        mock_desk.current_element = "a locator"
+        result = DesktopLibrary._check_for_cached_element(mock_desk, "a locator")
+        self.assertEqual(result, "a locator")
+
+    def test_check_for_cached_element_false(self):
+        mock_desk = MagicMock()
+        DesktopLibrary._check_for_cached_element(mock_desk, "a locator")
+        mock_desk._element_find.assert_called_with("a locator", True, True)
+
