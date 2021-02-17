@@ -828,4 +828,3 @@ class TestInternal(unittest.TestCase):
         mock_desk = MagicMock()
         DesktopLibrary._check_for_cached_element(mock_desk, "a locator")
         mock_desk._element_find.assert_called_with("a locator", True, True)
-
