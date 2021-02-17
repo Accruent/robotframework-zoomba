@@ -1049,4 +1049,3 @@ class DesktopLibrary(AppiumLibrary):
         else:
             element = self._element_find(locator, True, True)
         return element
-
