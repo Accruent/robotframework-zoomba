@@ -240,6 +240,7 @@ class DesktopLibrary(AppiumLibrary):
         """Stops the WinAppDriver.
 
         Not to be used with Appium."""
+        self._cache.close_all()
         self.winappdriver.tear_down_driver()
 
     @keyword("Maximize Window")
