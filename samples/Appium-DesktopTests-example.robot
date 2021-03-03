@@ -2,7 +2,7 @@
 Documentation     Zoomba Desktop Library Tests.
 Library           Zoomba.DesktopLibrary
 Suite Setup       Start App
-Suite Teardown    Close All Applications
+Suite Teardown    Close Application
 Force Tags        Windows
 
 *** Variables ***
