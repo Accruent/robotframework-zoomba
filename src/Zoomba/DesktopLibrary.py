@@ -288,6 +288,8 @@ class DesktopLibrary(AppiumLibrary):
         self._open_desktop_session(remote_url)
         if "platformName" not in desired_caps:
             desired_caps["platformName"] = "Windows"
+        if "forceMjsonwp" not in desired_caps:
+            desired_caps["forceMjsonwp"] = True
         application = webdriver.Remote(str(remote_url), desired_caps)
         self._debug('Opened application with session id %s' % application.session_id)
         return self._cache.register(application, alias)
@@ -344,6 +346,8 @@ class DesktopLibrary(AppiumLibrary):
             del desired_caps["app"]
         if "platformName" not in desired_caps:
             desired_caps["platformName"] = "Windows"
+        if "forceMjsonwp" not in desired_caps:
+            desired_caps["forceMjsonwp"] = True
         desired_caps["appTopLevelWindow"] = window
         # global application
         try:
@@ -937,7 +941,8 @@ class DesktopLibrary(AppiumLibrary):
         except RuntimeError:
             self._debug('Creating new desktop session')
             desktop_capabilities = dict({"app": "Root", "platformName": "Windows",
-                                         "deviceName": "Windows", "newCommandTimeout": 3600})
+                                         "deviceName": "Windows", "newCommandTimeout": 3600,
+                                         "forceMjsonwp": True})
             desktop_session = webdriver.Remote(str(remote_url), desktop_capabilities)
             self._cache.register(desktop_session, alias=alias)
             return desktop_session
