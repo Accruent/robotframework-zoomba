@@ -199,7 +199,7 @@ Contributing
 
 To make contributions please refer to the [CONTRIBUTING](https://github.com/Accruent/robotframework-zoomba/blob/master/CONTRIBUTING.rst) guidelines.
 
-See the [.githooks](https://github.com/Accruent/robotframework-zoomba/tree/master/.githooks) directory for helpful scripts for development. 
+See the [.githooks](https://github.com/Accruent/robotframework-zoomba/tree/master/.githooks) directory for scripts to help in development. 
 
 Support
 ---------------
