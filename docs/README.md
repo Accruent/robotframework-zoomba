@@ -205,4 +205,4 @@ Support
 ---------------
 General Robot Framework questions should be directed to the [community forum](https://forum.robotframework.org/).
 
-For questions and issues specific to Zoomba please create an issue here on Github.
+For questions and issues specific to Zoomba please create an [issue](https://github.com/Accruent/robotframework-zoomba/issues) here on Github.
