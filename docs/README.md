@@ -199,10 +199,7 @@ Contributing
 
 To make contributions please refer to the [CONTRIBUTING](https://github.com/Accruent/robotframework-zoomba/blob/master/CONTRIBUTING.rst) guidelines.
 
-Additionally if you run the following command new documentation will be generated on each commit :
-```python
-git config core.hooksPath .githooks
-```
+See the [.githooks](https://github.com/Accruent/robotframework-zoomba/tree/master/.githooks) directory for helpful scripts for development. 
 
 Support
 ---------------
