@@ -199,10 +199,10 @@ Contributing
 
 To make contributions please refer to the [CONTRIBUTING](https://github.com/Accruent/robotframework-zoomba/blob/master/CONTRIBUTING.rst) guidelines.
 
-See the [.githooks](https://github.com/Accruent/robotframework-zoomba/tree/master/.githooks) directory for helpful scripts for development. 
+See the [.githooks](https://github.com/Accruent/robotframework-zoomba/tree/master/.githooks) directory for scripts to help in development. 
 
 Support
 ---------------
 General Robot Framework questions should be directed to the [community forum](https://forum.robotframework.org/).
 
-For questions and issues specific to Zoomba please create an issue here on Github.
+For questions and issues specific to Zoomba please create an [issue](https://github.com/Accruent/robotframework-zoomba/issues) here on Github.
