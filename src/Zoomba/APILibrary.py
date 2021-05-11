@@ -12,7 +12,7 @@ zoomba = BuiltIn()
 requests_lib = RequestsLibrary()
 
 
-class APILibrary(object):
+class APILibrary:
     """Zoomba API Library
 
         This class is the base Library used to generate automated API Tests in the Robot Automation Framework.
@@ -262,37 +262,36 @@ class APILibrary(object):
         for key, value in expected_dictionary.items():
             if ignored_keys and key in ignored_keys:
                 continue
-            else:
-                if key not in actual_dictionary:
-                    zoomba.fail("Key not found in Actual : " + str(actual_dictionary) + " Key: " + str(key))
+            if key not in actual_dictionary:
+                zoomba.fail("Key not found in Actual : " + str(actual_dictionary) + " Key: " + str(key))
+                continue
+            if isinstance(value, list):
+                if full_list_validation and len(value) != len(actual_dictionary[key]):
+                    zoomba.fail("Arrays not the same length:" + \
+                                "\nExpected: " + str(value) + \
+                                "\nActual: " + str(actual_dictionary[key]))
                     continue
-                if isinstance(value, list):
-                    if full_list_validation and len(value) != len(actual_dictionary[key]):
-                        zoomba.fail("Arrays not the same length:" + \
-                                    "\nExpected: " + str(value) + \
-                                    "\nActual: " + str(actual_dictionary[key]))
+                self._key_by_key_list(key, value, actual_dictionary, unmatched_keys_list, ignored_keys, parent_key,
+                                      full_list_validation=full_list_validation, **kwargs)
+            elif isinstance(value, dict):
+                self._key_by_key_dict(key, value, actual_dictionary, expected_dictionary, unmatched_keys_list,
+                                      ignored_keys, full_list_validation=full_list_validation, **kwargs)
+            elif isinstance(expected_dictionary[key], str) and not expected_dictionary[key].isdigit():
+                try:
+                    parse(expected_dictionary[key])
+                    self.date_string_comparator(value, actual_dictionary[key], key, unmatched_keys_list, **kwargs)
+                except (ValueError, TypeError):
+                    if value == actual_dictionary[key]:
                         continue
-                    self._key_by_key_list(key, value, actual_dictionary, unmatched_keys_list, ignored_keys, parent_key,
-                                          full_list_validation=full_list_validation, **kwargs)
-                elif isinstance(value, dict):
-                    self._key_by_key_dict(key, value, actual_dictionary, expected_dictionary, unmatched_keys_list,
-                                          ignored_keys, full_list_validation=full_list_validation, **kwargs)
-                elif isinstance(expected_dictionary[key], str) and not expected_dictionary[key].isdigit():
-                    try:
-                        parse(expected_dictionary[key])
-                        self.date_string_comparator(value, actual_dictionary[key], key, unmatched_keys_list, **kwargs)
-                    except (ValueError, TypeError):
-                        if value == actual_dictionary[key]:
-                            continue
-                        else:
-                            unmatched_keys_list.append(("------------------\n" + "Key: " + str(key),
-                                                        "Expected: " + str(value),
-                                                        "Actual: " + str(actual_dictionary[key])))
-                elif value == actual_dictionary[key]:
-                    continue
-                else:
-                    unmatched_keys_list.append(("------------------\n" + "Key: " + str(key), "Expected: " + str(value),
-                                                "Actual: " + str(actual_dictionary[key])))
+                    else:
+                        unmatched_keys_list.append(("------------------\n" + "Key: " + str(key),
+                                                    "Expected: " + str(value),
+                                                    "Actual: " + str(actual_dictionary[key])))
+            elif value == actual_dictionary[key]:
+                continue
+            else:
+                unmatched_keys_list.append(("------------------\n" + "Key: " + str(key), "Expected: " + str(value),
+                                            "Actual: " + str(actual_dictionary[key])))
         return True
 
     def date_string_comparator(self, expected_date, actual_date, key, unmatched_keys_list, **kwargs):
@@ -495,4 +494,3 @@ def _convert_resp_to_dict(response):
         if item[0] != '_':
             new_response[item] = getattr(response, item)
     return DotDict(new_response)
-
