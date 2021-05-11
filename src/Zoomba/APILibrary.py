@@ -1,7 +1,7 @@
 import datetime
 import json
 
-from RequestsLibrary import RequestsLibrary
+from RequestsLibrary import RequestsLibrary, utils
 from dateutil.parser import parse
 from urllib3.exceptions import InsecureRequestWarning
 from requests.packages import urllib3
@@ -9,9 +9,10 @@ from robot.libraries.BuiltIn import BuiltIn
 from robot.utils.dotdict import DotDict
 
 zoomba = BuiltIn()
+requests_lib = RequestsLibrary()
 
 
-class APILibrary(object):
+class APILibrary:
     """Zoomba API Library
 
         This class is the base Library used to generate automated API Tests in the Robot Automation Framework.
@@ -44,9 +45,8 @@ class APILibrary(object):
         """
         if self.suppress_warnings:
             urllib3.disable_warnings(InsecureRequestWarning)
-        requests_lib = RequestsLibrary()
         requests_lib.create_session("getapi", endpoint, headers, cookies=cookies, timeout=timeout)
-        resp = requests_lib.get_request("getapi", fullstring, timeout=timeout)
+        resp = requests_lib.get_on_session("getapi", fullstring, timeout=timeout, expected_status='any')
         return _convert_resp_to_dict(resp)
 
     def call_post_request(self, headers=None, endpoint=None, fullstring=None, data=None, files=None, cookies=None, timeout=None):
@@ -62,26 +62,24 @@ class APILibrary(object):
         """
         if self.suppress_warnings:
             urllib3.disable_warnings(InsecureRequestWarning)
-        requests_lib = RequestsLibrary()
-        requests_lib.create_session("postapi", endpoint, headers, cookies=cookies, timeout=timeout)
-        resp = requests_lib.post_request("postapi", fullstring, data, files=files, timeout=timeout)
+        session = requests_lib.create_session("postapi", endpoint, headers, cookies=cookies, timeout=timeout)
+        data = utils.format_data_according_to_header(session, data, headers)
+        resp = requests_lib.post_on_session("postapi", fullstring, data, files=files, timeout=timeout, expected_status='any')
         return _convert_resp_to_dict(resp)
 
-    def call_delete_request(self, headers=None, endpoint=None, fullstring=None, data=None, cookies=None, timeout=None):
+    def call_delete_request(self, headers=None, endpoint=None, fullstring=None, cookies=None, timeout=None):
         """ Generate a DELETE Request. This Keyword is basically a wrapper for delete_request from the RequestsLibrary.\n
             headers: (dictionary) The headers to be sent as part of the request.\n
             endpoint: (string) The string that identifies the url endpoint of the App that receives API requests.\n
             fullstring: (string) A string that contains the rest of the url that identifies a specific API/Webservice
             along with any query parameters.\n
             timeout: (float) Time in seconds for the api to respond\n
-            data: (json) The JSON object to be sent on the body of the request to be used by the specific Web service.\n
             return: (response object) Returns the request response object, which includes headers, content, etc.
         """
         if self.suppress_warnings:
             urllib3.disable_warnings(InsecureRequestWarning)
-        requests_lib = RequestsLibrary()
         requests_lib.create_session("deleteapi", endpoint, headers, cookies=cookies, timeout=timeout)
-        resp = requests_lib.delete_request("deleteapi", fullstring, data, timeout=timeout)
+        resp = requests_lib.delete_on_session("deleteapi", fullstring, timeout=timeout, expected_status='any')
         return _convert_resp_to_dict(resp)
 
     def call_patch_request(self, headers=None, endpoint=None, fullstring=None, data=None, cookies=None, timeout=None):
@@ -96,9 +94,9 @@ class APILibrary(object):
         """
         if self.suppress_warnings:
             urllib3.disable_warnings(InsecureRequestWarning)
-        requests_lib = RequestsLibrary()
-        requests_lib.create_session("patchapi", endpoint, headers, cookies=cookies, timeout=timeout)
-        resp = requests_lib.patch_request("patchapi", fullstring, data, timeout=timeout)
+        session = requests_lib.create_session("patchapi", endpoint, headers, cookies=cookies, timeout=timeout)
+        data = utils.format_data_according_to_header(session, data, headers)
+        resp = requests_lib.patch_on_session("patchapi", fullstring, data, timeout=timeout, expected_status='any')
         return _convert_resp_to_dict(resp)
 
     def call_put_request(self, headers=None, endpoint=None, fullstring=None, data=None, cookies=None, timeout=None):
@@ -113,9 +111,9 @@ class APILibrary(object):
         """
         if self.suppress_warnings:
             urllib3.disable_warnings(InsecureRequestWarning)
-        requests_lib = RequestsLibrary()
-        requests_lib.create_session("putapi", endpoint, headers, cookies=cookies, timeout=timeout)
-        resp = requests_lib.put_request("putapi", fullstring, data, timeout=timeout)
+        session = requests_lib.create_session("putapi", endpoint, headers, cookies=cookies, timeout=timeout)
+        data = utils.format_data_according_to_header(session, data, headers)
+        resp = requests_lib.put_on_session("putapi", fullstring, data, timeout=timeout, expected_status='any')
         return _convert_resp_to_dict(resp)
 
     def create_connection(self, endpoint, method, data, headers=None, cookies=None, timeout=None):
@@ -132,9 +130,9 @@ class APILibrary(object):
         """
         if self.suppress_warnings:
             urllib3.disable_warnings(InsecureRequestWarning)
-        requests_lib = RequestsLibrary()
-        requests_lib.create_session("postapi", endpoint, headers, cookies=cookies, timeout=timeout)
-        resp = requests_lib.post_request("postapi", method, data, timeout=timeout)
+        session = requests_lib.create_session("postapi", endpoint, headers, cookies=cookies, timeout=timeout)
+        data = utils.format_data_according_to_header(session, data, headers)
+        resp = requests_lib.post_on_session("postapi", method, data, timeout=timeout, expected_status='any')
         return _convert_resp_to_dict(resp)
 
     def validate_response_contains_expected_response(self, json_actual_response, expected_response_dict,
@@ -264,37 +262,36 @@ class APILibrary(object):
         for key, value in expected_dictionary.items():
             if ignored_keys and key in ignored_keys:
                 continue
-            else:
-                if key not in actual_dictionary:
-                    zoomba.fail("Key not found in Actual : " + str(actual_dictionary) + " Key: " + str(key))
+            if key not in actual_dictionary:
+                zoomba.fail("Key not found in Actual : " + str(actual_dictionary) + " Key: " + str(key))
+                continue
+            if isinstance(value, list):
+                if full_list_validation and len(value) != len(actual_dictionary[key]):
+                    zoomba.fail("Arrays not the same length:" + \
+                                "\nExpected: " + str(value) + \
+                                "\nActual: " + str(actual_dictionary[key]))
                     continue
-                if isinstance(value, list):
-                    if full_list_validation and len(value) != len(actual_dictionary[key]):
-                        zoomba.fail("Arrays not the same length:" + \
-                                    "\nExpected: " + str(value) + \
-                                    "\nActual: " + str(actual_dictionary[key]))
+                self._key_by_key_list(key, value, actual_dictionary, unmatched_keys_list, ignored_keys, parent_key,
+                                      full_list_validation=full_list_validation, **kwargs)
+            elif isinstance(value, dict):
+                self._key_by_key_dict(key, value, actual_dictionary, expected_dictionary, unmatched_keys_list,
+                                      ignored_keys, full_list_validation=full_list_validation, **kwargs)
+            elif isinstance(expected_dictionary[key], str) and not expected_dictionary[key].isdigit():
+                try:
+                    parse(expected_dictionary[key])
+                    self.date_string_comparator(value, actual_dictionary[key], key, unmatched_keys_list, **kwargs)
+                except (ValueError, TypeError):
+                    if value == actual_dictionary[key]:
                         continue
-                    self._key_by_key_list(key, value, actual_dictionary, unmatched_keys_list, ignored_keys, parent_key,
-                                          full_list_validation=full_list_validation, **kwargs)
-                elif isinstance(value, dict):
-                    self._key_by_key_dict(key, value, actual_dictionary, expected_dictionary, unmatched_keys_list,
-                                          ignored_keys, full_list_validation=full_list_validation, **kwargs)
-                elif isinstance(expected_dictionary[key], str) and not expected_dictionary[key].isdigit():
-                    try:
-                        parse(expected_dictionary[key])
-                        self.date_string_comparator(value, actual_dictionary[key], key, unmatched_keys_list, **kwargs)
-                    except (ValueError, TypeError):
-                        if value == actual_dictionary[key]:
-                            continue
-                        else:
-                            unmatched_keys_list.append(("------------------\n" + "Key: " + str(key),
-                                                        "Expected: " + str(value),
-                                                        "Actual: " + str(actual_dictionary[key])))
-                elif value == actual_dictionary[key]:
-                    continue
-                else:
-                    unmatched_keys_list.append(("------------------\n" + "Key: " + str(key), "Expected: " + str(value),
-                                                "Actual: " + str(actual_dictionary[key])))
+                    else:
+                        unmatched_keys_list.append(("------------------\n" + "Key: " + str(key),
+                                                    "Expected: " + str(value),
+                                                    "Actual: " + str(actual_dictionary[key])))
+            elif value == actual_dictionary[key]:
+                continue
+            else:
+                unmatched_keys_list.append(("------------------\n" + "Key: " + str(key), "Expected: " + str(value),
+                                            "Actual: " + str(actual_dictionary[key])))
         return True
 
     def date_string_comparator(self, expected_date, actual_date, key, unmatched_keys_list, **kwargs):
