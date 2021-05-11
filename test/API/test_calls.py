@@ -34,44 +34,44 @@ class TestExternal(unittest.TestCase):
         library = APILibrary()
         self.assertRaises(TypeError, library.call_get_request)
 
-    @patch('RequestsLibrary.RequestsKeywords.create_session')
-    @patch('RequestsLibrary.RequestsKeywords.get_request')
-    def test_basic_get(self, create_session, get_request):
+    @patch('RequestsLibrary.SessionKeywords.SessionKeywords.create_session')
+    @patch('RequestsLibrary.RequestsOnSessionKeywords.get_on_session')
+    def test_basic_get(self, get_on_session, create_session):
         library = APILibrary()
         r = library.call_get_request({"a": "Text"}, "Endpoint", "fullstring")
         type(r).text = PropertyMock(return_value="success")
         type(r).status_code = PropertyMock(return_value=200)
         assert r.text == "success"
         assert r.status_code == 200
-        create_session.assert_called_with("getapi", "fullstring", timeout=None)
-        get_request.assert_called_with("getapi", "Endpoint", {"a": "Text"}, cookies=None, timeout=None)
-
-    @patch('RequestsLibrary.RequestsKeywords.create_session')
-    @patch('RequestsLibrary.RequestsKeywords.get_request')
-    def test_get_called_with(self, get_request, create_session):
-        library = APILibrary()
-        library.call_get_request({"a": "Text"}, "Endpoint", "fullstring")
-        get_request.assert_called_with("getapi", "fullstring", timeout=None)
+        get_on_session.assert_called_with("getapi", "fullstring", timeout=None, expected_status='any')
         create_session.assert_called_with("getapi", "Endpoint", {"a": "Text"}, cookies=None, timeout=None)
 
-    @patch('RequestsLibrary.RequestsKeywords.create_session')
-    @patch('RequestsLibrary.RequestsKeywords.get_request')
+    @patch('RequestsLibrary.SessionKeywords.SessionKeywords.create_session')
+    @patch('RequestsLibrary.RequestsOnSessionKeywords.get_on_session')
+    def test_get_called_with(self, get_on_session, create_session):
+        library = APILibrary()
+        library.call_get_request({"a": "Text"}, "Endpoint", "fullstring")
+        get_on_session.assert_called_with("getapi", "fullstring", timeout=None, expected_status='any')
+        create_session.assert_called_with("getapi", "Endpoint", {"a": "Text"}, cookies=None, timeout=None)
+
+    @patch('RequestsLibrary.SessionKeywords.SessionKeywords.create_session')
+    @patch('RequestsLibrary.RequestsOnSessionKeywords.get_on_session')
     @patch('requests.packages.urllib3.disable_warnings')
-    def test_get_insecure_request(self, disable_warnings, get_request, create_session):
+    def test_get_insecure_request(self, disable_warnings, get_on_session, create_session):
         library = APILibrary()
         library.suppress_insecure_request_warnings()
         library.call_get_request({"a": "Text"}, "Endpoint", "fullstring")
         disable_warnings.assert_called()
-        get_request.assert_called_with("getapi", "fullstring", timeout=None)
+        get_on_session.assert_called_with("getapi", "fullstring", timeout=None, expected_status='any')
         create_session.assert_called_with("getapi", "Endpoint", {"a": "Text"}, cookies=None, timeout=None)
 
-    @patch('RequestsLibrary.RequestsKeywords.create_session')
-    @patch('RequestsLibrary.RequestsKeywords.get_request')
-    def test_get_with_cookies(self, get_request, create_session):
+    @patch('RequestsLibrary.SessionKeywords.SessionKeywords.create_session')
+    @patch('RequestsLibrary.RequestsOnSessionKeywords.get_on_session')
+    def test_get_with_cookies(self, get_on_session, create_session):
         library = APILibrary()
         library.call_get_request({"a": "Text"}, "Endpoint", "fullstring", "chocolate_chip")
-        assert get_request.called_with("getapi", "fullstring")
-        assert create_session.called_with("getapi", "Endpoint", {"a": "Text"}, cookies="chocolate_chip")
+        get_on_session.assert_called_with("getapi", "fullstring", timeout=None, expected_status='any')
+        create_session.assert_called_with("getapi", "Endpoint", {"a": "Text"}, cookies="chocolate_chip", timeout=None)
 
     def test_post_default(self):
         library = APILibrary()

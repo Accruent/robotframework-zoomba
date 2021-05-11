@@ -64,17 +64,16 @@ class APILibrary(object):
             urllib3.disable_warnings(InsecureRequestWarning)
         session = requests_lib.create_session("postapi", endpoint, headers, cookies=cookies, timeout=timeout)
         data = utils.format_data_according_to_header(session, data, headers)
-        resp = requests_lib.post_on_session("postapi", fullstring, data=data, files=files, timeout=timeout, expected_status='any')
+        resp = requests_lib.post_on_session("postapi", fullstring, data, files=files, timeout=timeout, expected_status='any')
         return _convert_resp_to_dict(resp)
 
-    def call_delete_request(self, headers=None, endpoint=None, fullstring=None, data=None, cookies=None, timeout=None):
+    def call_delete_request(self, headers=None, endpoint=None, fullstring=None, cookies=None, timeout=None):
         """ Generate a DELETE Request. This Keyword is basically a wrapper for delete_request from the RequestsLibrary.\n
             headers: (dictionary) The headers to be sent as part of the request.\n
             endpoint: (string) The string that identifies the url endpoint of the App that receives API requests.\n
             fullstring: (string) A string that contains the rest of the url that identifies a specific API/Webservice
             along with any query parameters.\n
             timeout: (float) Time in seconds for the api to respond\n
-            data: (json) The JSON object to be sent on the body of the request to be used by the specific Web service.\n
             return: (response object) Returns the request response object, which includes headers, content, etc.
         """
         if self.suppress_warnings:
@@ -118,9 +117,23 @@ class APILibrary(object):
         return _convert_resp_to_dict(resp)
 
     def create_connection(self, endpoint, method, data, headers=None, cookies=None, timeout=None):
-        """ DEPRECATED, Use `call_post_request` instead."""
-        return self.call_post_request(headers=headers, endpoint=endpoint, fullstring=method, data=data, cookies=cookies,
-                                      timeout=timeout)
+        """ Opens a connection to an Application Endpoint. This Keyword is used commonly as part of a Login or Initial
+            Authentication request. Given it's similarities to a pure post request, this could be deprecated in the near
+            future.\n
+            headers: (dictionary) The headers to be sent as part of the request.\n
+            endpoint: (string) The string that identifies the url endpoint of the App that receives API requests.\n
+            fullstring: (string) A string that contains the rest of the url that identifies a specific API/Webservice
+            along with any query parameters.\n
+            timeout: (float) Time in seconds for the connection to respond\n
+            data: (json) The JSON object to be sent on the body of the request to be used by the specific Web service.\n
+            return: (response object) Returns the request response object, which includes headers, content, etc.\n
+        """
+        if self.suppress_warnings:
+            urllib3.disable_warnings(InsecureRequestWarning)
+        session = requests_lib.create_session("postapi", endpoint, headers, cookies=cookies, timeout=timeout)
+        data = utils.format_data_according_to_header(session, data, headers)
+        resp = requests_lib.post_on_session("postapi", method, data, timeout=timeout, expected_status='any')
+        return _convert_resp_to_dict(resp)
 
     def validate_response_contains_expected_response(self, json_actual_response, expected_response_dict,
                                                      ignored_keys=None, full_list_validation=False, identity_key="",
@@ -482,19 +495,4 @@ def _convert_resp_to_dict(response):
         if item[0] != '_':
             new_response[item] = getattr(response, item)
     return DotDict(new_response)
-
-
-def _format_url(endpoint, fullstring):
-    endpoint = endpoint.replace('\\', '/')
-    fullstring = fullstring.replace('\\', '/')
-    if endpoint.endswith('/'):
-        if fullstring.startswith('/'):
-            url = endpoint[:-1] + fullstring
-        else:
-            url = endpoint + fullstring
-    elif fullstring.startswith('/'):
-        url = endpoint + fullstring
-    else:
-        url = '/'.join([endpoint, fullstring])
-    return url
 
