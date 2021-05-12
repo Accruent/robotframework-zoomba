@@ -273,7 +273,7 @@ class TestExternal(unittest.TestCase):
         assert r.text == "success"
         assert r.status_code == 200
         create_session.assert_called_with('postapi', 'Endpoint', {'a': 'Text'}, cookies=None, timeout=None)
-        post_on_session.assert_called_with('postapi', 'fullstring', None, timeout=None, expected_status='any')
+        post_on_session.assert_called_with('postapi', 'fullstring', None, files=None, timeout=None, expected_status='any')
 
     @patch('RequestsLibrary.SessionKeywords.SessionKeywords.create_session')
     @patch('RequestsLibrary.RequestsOnSessionKeywords.post_on_session')
@@ -285,7 +285,7 @@ class TestExternal(unittest.TestCase):
         assert r.text == "success"
         assert r.status_code == 200
         create_session.assert_called_with('postapi', 'Endpoint', {'a': 'Text'}, cookies=None, timeout=None)
-        post_on_session.assert_called_with('postapi', 'fullstring', b'item', timeout=None, expected_status='any')
+        post_on_session.assert_called_with('postapi', 'fullstring', b'item', files=None, timeout=None, expected_status='any')
 
     @patch('RequestsLibrary.SessionKeywords.SessionKeywords.create_session')
     @patch('RequestsLibrary.RequestsOnSessionKeywords.post_on_session')
@@ -296,7 +296,7 @@ class TestExternal(unittest.TestCase):
         library.create_connection("Endpoint", "fullstring", None, headers={"a": "Text"})
         disable_warnings.assert_called()
         create_session.assert_called_with('postapi', 'Endpoint', {'a': 'Text'}, cookies=None, timeout=None)
-        post_on_session.assert_called_with('postapi', 'fullstring', None, timeout=None, expected_status='any')
+        post_on_session.assert_called_with('postapi', 'fullstring', None, files=None, timeout=None, expected_status='any')
 
     @patch('RequestsLibrary.SessionKeywords.SessionKeywords.create_session')
     @patch('RequestsLibrary.RequestsOnSessionKeywords.post_on_session')
@@ -310,4 +310,4 @@ class TestExternal(unittest.TestCase):
         assert r.status_code == 200
         assert r.cookies["chocolate_chip"] == "tasty"
         create_session.assert_called_with('postapi', 'Endpoint', {'a': 'Text'}, cookies='chocolate_chip', timeout=None)
-        post_on_session.assert_called_with('postapi', 'fullstring', None, timeout=None, expected_status='any')
+        post_on_session.assert_called_with('postapi', 'fullstring', None, files=None, timeout=None, expected_status='any')
