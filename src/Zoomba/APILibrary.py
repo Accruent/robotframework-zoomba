@@ -117,7 +117,7 @@ class APILibrary:
         return _convert_resp_to_dict(resp)
 
     def create_connection(self, endpoint, method, data, headers=None, cookies=None, timeout=None):
-        """ DEPRECATED Use 'Call Post Request' instead. """
+        """*DEPRECATED!!* Use 'Call Post Request' instead."""
         return self.call_post_request(headers=headers, endpoint=endpoint, fullstring=method, data=data, cookies=cookies, timeout=timeout)
 
     def validate_response_contains_expected_response(self, json_actual_response, expected_response_dict,
