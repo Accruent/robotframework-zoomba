@@ -117,23 +117,8 @@ class APILibrary:
         return _convert_resp_to_dict(resp)
 
     def create_connection(self, endpoint, method, data, headers=None, cookies=None, timeout=None):
-        """ Opens a connection to an Application Endpoint. This Keyword is used commonly as part of a Login or Initial
-            Authentication request. Given it's similarities to a pure post request, this could be deprecated in the near
-            future.\n
-            headers: (dictionary) The headers to be sent as part of the request.\n
-            endpoint: (string) The string that identifies the url endpoint of the App that receives API requests.\n
-            fullstring: (string) A string that contains the rest of the url that identifies a specific API/Webservice
-            along with any query parameters.\n
-            timeout: (float) Time in seconds for the connection to respond\n
-            data: (json) The JSON object to be sent on the body of the request to be used by the specific Web service.\n
-            return: (response object) Returns the request response object, which includes headers, content, etc.\n
-        """
-        if self.suppress_warnings:
-            urllib3.disable_warnings(InsecureRequestWarning)
-        session = requests_lib.create_session("postapi", endpoint, headers, cookies=cookies, timeout=timeout)
-        data = utils.format_data_according_to_header(session, data, headers)
-        resp = requests_lib.post_on_session("postapi", method, data, timeout=timeout, expected_status='any')
-        return _convert_resp_to_dict(resp)
+        """ DEPRECATED Use 'Call Post Request' instead. """
+        return self.call_post_request(headers=headers, endpoint=endpoint, fullstring=method, data=data, cookies=cookies, timeout=timeout)
 
     def validate_response_contains_expected_response(self, json_actual_response, expected_response_dict,
                                                      ignored_keys=None, full_list_validation=False, identity_key="",
