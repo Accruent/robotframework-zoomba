@@ -23,6 +23,14 @@ Wait for Keywords Test
     Wait For And Click Element               //a[@href='/robotframework/robotframework']
     Wait Until Page Contains Element         //div[@id='readme']
 
+Wait for Keywords Test With Password
+    [Setup]         Test Case Setup
+    [Teardown]      Close All Browsers
+    Wait For And Input Password      //input[@name='q']      robotframework
+    Press Keys                    //input[@name='q']      RETURN
+    Wait For And Click Element               //a[@href='/robotframework/robotframework']
+    Wait Until Page Contains Element         //div[@id='readme']
+
 Element Value Should Be Equal and not equal Test
     [Setup]         Test Case Setup        http://www.google.com
     [Teardown]      Close All Browsers
