@@ -16,8 +16,8 @@ except ModuleNotFoundError:
 
 zoomba = BuiltIn()
 zoomba_collections = Collections()
-
 SCREENSHOT_COUNTER = itertools.count()
+
 
 class GUILibrary(SeleniumLibrary):
     """Zoomba GUI Library
@@ -86,6 +86,18 @@ class GUILibrary(SeleniumLibrary):
         """
         self.wait_for_and_focus_on_element(locator, timeout)
         self.input_text(locator, text)
+
+    @keyword('Wait For And Input Password')
+    def wait_for_and_input_password(self, locator, password, timeout=None):
+        """This is a series of chained Selenium keywords, that tries to find a web element first, and then input text.
+        The password text is not printed displayed in logs.
+        If the element fails to typed into, it will scroll to the bottom of the page and try again.\n
+        locator: (string) A selenium locator(CSS, XPATH, ID, NAME, etc)\n
+        password: (string) Password text to be typed into the input field.
+        timeout: (float) Time in seconds to wait, will use global timeout if not set.
+        """
+        self.wait_for_and_focus_on_element(locator, timeout)
+        self.input_password(locator, password)
 
     @keyword("Wait For And Select Frame")
     def wait_for_and_select_frame(self, locator, timeout=None):

@@ -77,6 +77,18 @@ class TestInternal(unittest.TestCase):
         mock_gui.wait_for_and_focus_on_element.assert_called_with("some_locator", 5)
         mock_gui.input_text.assert_called_with("some_locator", "text")
 
+    def test_wait_for_and_input_password_simple(self):
+        mock_gui = Mock()
+        GUILibrary.wait_for_and_input_password(mock_gui, "some_locator", "text")
+        mock_gui.wait_for_and_focus_on_element.assert_called_with("some_locator", None)
+        mock_gui.input_password.assert_called_with("some_locator", "text")
+
+    def test_wait_for_and_input_password_with_timeout(self):
+        mock_gui = Mock()
+        GUILibrary.wait_for_and_input_password(mock_gui, "some_locator", "text", 5)
+        mock_gui.wait_for_and_focus_on_element.assert_called_with("some_locator", 5)
+        mock_gui.input_password.assert_called_with("some_locator", "text")
+
     def test_wait_for_and_select_frame_simple(self):
         mock_gui = Mock()
         GUILibrary.wait_for_and_select_frame(mock_gui, "some_locator")
