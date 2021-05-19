@@ -134,6 +134,59 @@ class TestInternal(unittest.TestCase):
         webdriver.Remote.find_element_by_xpath = MagicMock(side_effect=[WebDriverException, MagicMock(), MagicMock()])
         dl.switch_application_by_name('remote_url', window_name='test', exact_match=False)
 
+    def test_switch_application_by_locator_success(self):
+        dl = DesktopLibrary()
+        dl._run_on_failure = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        webdriver.Remote.find_element_by_class_name = MagicMock(side_effect=[MagicMock()])
+        dl.switch_application_by_locator('remote_url', locator='class=test')
+        self.assertTrue(dl._cache.current)
+
+    def test_switch_application_by_locator_success_2(self):
+        dl = DesktopLibrary()
+        dl._run_on_failure = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        webdriver.Remote.find_element_by_class_name = MagicMock(WebDriverException, MagicMock(), MagicMock())
+        dl.switch_application_by_locator('remote_url', locator='class=test')
+        self.assertTrue(dl._cache.current)
+
+    def test_switch_application_by_locator_success_3(self):
+        dl = DesktopLibrary()
+        dl._run_on_failure = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        webdriver.Remote.find_element_by_name = MagicMock(side_effect=[MagicMock()])
+        dl.switch_application_by_locator('remote_url', name='test', app='some_app')
+        self.assertTrue(dl._cache.current)
+
+    def test_switch_application_by_locator_failure(self):
+        dl = DesktopLibrary()
+        dl._run_on_failure = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        webdriver.Remote.find_element_by_class_name = MagicMock(side_effect=[WebDriverException, WebDriverException])
+        self.assertRaisesRegex(AssertionError, 'Error finding window "class=test" in the desktop session. Is it a top level '
+                                               'window handle?.', dl.switch_application_by_locator,
+                                               'remote_url', locator='class=test')
+
+    def test_switch_application_by_locator_failure_2(self):
+        dl = DesktopLibrary()
+        dl._run_on_failure = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        webdriver.Remote.find_element_by_name = MagicMock()
+        webdriver.Remote.find_element_by_name.side_effect = [WebDriverException, MagicMock(), WebDriverException]
+        self.assertRaisesRegex(AssertionError, 'Error finding window "name=test" in the desktop session. Is it a top level '
+                                               'window handle?.', dl.switch_application_by_locator,
+                                               'remote_url', locator='name=test')
+
+    def test_switch_application_by_locator_failure_3(self):
+        dl = DesktopLibrary()
+        dl._run_on_failure = MagicMock()
+        web_driver_mock = WebdriverRemoteMock
+        webdriver.Remote = MagicMock(side_effect=[web_driver_mock, Exception])
+        web_driver_mock.find_element_by_xpath = MagicMock()
+        web_driver_mock.quit = MagicMock(return_value=True)
+        self.assertRaisesRegex(AssertionError, 'Error connecting webdriver to window "xpath=//test".',
+                               dl.switch_application_by_locator, 'remote_url', locator='xpath=//test')
+
     def test_launch_application_successful(self):
         dl = DesktopLibrary()
         webdriver.Remote = WebdriverRemoteMock
