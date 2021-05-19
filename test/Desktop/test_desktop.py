@@ -150,6 +150,14 @@ class TestInternal(unittest.TestCase):
         dl.switch_application_by_locator('remote_url', locator='class=test')
         self.assertTrue(dl._cache.current)
 
+    def test_switch_application_by_locator_success_3(self):
+        dl = DesktopLibrary()
+        dl._run_on_failure = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        webdriver.Remote.find_element_by_class_name = MagicMock(side_effect=[MagicMock()])
+        dl.switch_application_by_locator('remote_url', 'class=test')
+        self.assertTrue(dl._cache.current)
+
     def test_switch_application_by_locator_failure(self):
         dl = DesktopLibrary()
         dl._run_on_failure = MagicMock()
@@ -159,7 +167,7 @@ class TestInternal(unittest.TestCase):
                                                'window handle?.', dl.switch_application_by_locator,
                                                'remote_url', locator='class=test')
 
-    def test_switch_application_by_locator__failure_2(self):
+    def test_switch_application_by_locator_failure_2(self):
         dl = DesktopLibrary()
         dl._run_on_failure = MagicMock()
         webdriver.Remote = WebdriverRemoteMock
@@ -169,7 +177,7 @@ class TestInternal(unittest.TestCase):
                                                'window handle?.', dl.switch_application_by_locator,
                                                'remote_url', locator='name=test')
 
-    def test_switch_application_failure_3(self):
+    def test_switch_application_by_locator_failure_3(self):
         dl = DesktopLibrary()
         dl._run_on_failure = MagicMock()
         web_driver_mock = WebdriverRemoteMock
