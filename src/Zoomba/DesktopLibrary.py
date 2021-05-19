@@ -370,7 +370,6 @@ class DesktopLibrary(AppiumLibrary):
         | locator             | Yes    | Locator for window name you wish to attach    |
         | alias               | No     | alias                                         |
         | timeout             | No     | timeout to connect                            |
-        | exact_match         | No     | Set to False if window_name does not need to match exactly       |
 
         Examples:
         | Switch Application By Locator | http://localhost:4723/wd/hub | alias=Myapp1         | platformName=Windows            | deviceName=Windows           | locator=class=MyApplication         |
