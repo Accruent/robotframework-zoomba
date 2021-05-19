@@ -154,8 +154,8 @@ class TestInternal(unittest.TestCase):
         dl = DesktopLibrary()
         dl._run_on_failure = MagicMock()
         webdriver.Remote = WebdriverRemoteMock
-        webdriver.Remote.find_element_by_class_name = MagicMock(side_effect=[MagicMock()])
-        dl.switch_application_by_locator('remote_url', 'class=test')
+        webdriver.Remote.find_element_by_name = MagicMock(side_effect=[MagicMock()])
+        dl.switch_application_by_locator('remote_url', name='test', app='some_app')
         self.assertTrue(dl._cache.current)
 
     def test_switch_application_by_locator_failure(self):
