@@ -156,6 +156,24 @@ Screen Recording Keyword Test - See video with logs or in log.html
     Wait Until Element Contains       accessibility_id=CalculatorResults      2,345
     Stop Screen Recording
 
+Switch Application By Name or Locator
+    # Select Window by Class Name
+    Switch Application By Locator    ${REMOTE_URL}     class=ApplicationFrameWindow
+    Wait For And Click Element       accessibility_id=num2Button
+    Wait Until Element Contains      accessibility_id=CalculatorResults      2
+    # Select Window by Xpath
+    Switch Application By Locator    ${REMOTE_URL}     //Window[contains(@Name, "Calculator")]
+    Wait For And Click Element       accessibility_id=num2Button
+    Wait Until Element Contains      accessibility_id=CalculatorResults      22
+    # Select Window by Name
+    Switch Application By Name       ${REMOTE_URL}     Calculator
+    Wait For And Click Element       accessibility_id=num2Button
+    Wait Until Element Contains      accessibility_id=CalculatorResults      222
+    # Select Window by Partial Name
+    Switch Application By Name       ${REMOTE_URL}     Calculator    exact_match=False
+    Wait For And Click Element       accessibility_id=num2Button
+    Wait Until Element Contains      accessibility_id=CalculatorResults      2,222
+
 Switch To Desktop Test
     Close Application
     Switch Application      Desktop

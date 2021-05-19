@@ -134,7 +134,7 @@ class DesktopLibrary(AppiumLibrary):
             'drag_and_drop_by_touch_offset', 'wait_for_and_tap', 'wait_for_and_double_tap',
             'double_tap', 'flick', 'flick_from_element', 'scroll', 'scroll_from_element',
             'wait_for_and_flick_from_element', 'wait_for_and_scroll_from_element',
-            'start_screen_recording', 'stop_screen_recording',
+            'start_screen_recording', 'stop_screen_recording', 'switch_application_by_locator',
             # External Libraries
             'clear_text', 'click_button', 'click_element', 'close_all_applications',
             'close_application', 'element_attribute_should_match', 'element_should_be_disabled',
@@ -257,7 +257,7 @@ class DesktopLibrary(AppiumLibrary):
         For the capabilities of appium server and Windows please check http://appium.io/docs/en/drivers/windows
 
         | *Option*            | *Man.* | *Description*                                                        |
-        | remote_url          | Yes    | Appium server url                                                    |
+        | remote_url          | Yes    | WinAppDriver or Appium server url                                    |
         | alias               | No     | Alias                                                                |
         | window_name         | No     | Window name you wish to attach, usually after a splash screen        |
         | splash_delay        | No     | Delay used when waiting for a splash screen to load, in seconds      |
@@ -301,7 +301,7 @@ class DesktopLibrary(AppiumLibrary):
         For the capabilities of appium server and Windows,
         Please check http://appium.io/docs/en/drivers/windows
         | *Option*            | *Man.* | *Description*                         |
-        | remote_url          | Yes    | Appium server url                     |
+        | remote_url          | Yes    | WinAppDriver or Appium server url     |
         | window_name         | Yes    | Window name you wish to attach        |
         | alias               | No     | alias                                 |
         | timeout             | No     | timeout to connect                    |
@@ -356,6 +356,64 @@ class DesktopLibrary(AppiumLibrary):
         except Exception as e:
             zoomba.fail(
                 'Error connecting webdriver to window "' + window_name + '". \n' + str(e))
+        self._debug('Opened application with session id %s' % application.session_id)
+        return self._cache.register(application, alias)
+
+    @keyword("Switch Application By Locator")
+    def switch_application_by_locator(self, remote_url, locator=None, alias=None, timeout=5, **kwargs):
+        """Switches to a currently opened window by ``locator``.
+
+         For the capabilities of appium server and Windows,
+        Please check http://appium.io/docs/en/drivers/windows
+        | *Option*            | *Man.* | *Description*                                 |
+        | remote_url          | Yes    | WinAppDriver or Appium server url             |
+        | locator             | Yes    | Locator for window name you wish to attach    |
+        | alias               | No     | alias                                         |
+        | timeout             | No     | timeout to connect                            |
+        | exact_match         | No     | Set to False if window_name does not need to match exactly       |
+
+        Examples:
+        | Switch Application By Locator | http://localhost:4723/wd/hub | alias=Myapp1         | platformName=Windows            | deviceName=Windows           | locator=class=MyApplication         |
+        | Switch Application By Locator | http://localhost:4723/wd/hub | accessibility_id=MyApp    |
+
+        A session for the root desktop will also be opened and can be switched to by running the following:
+        | Switch Application | Desktop         |"""
+        desired_caps = kwargs
+        # If we want to use kwargs still we need this to catch the locator, otherwise the user would have to type
+        # something like 'locator=class=some_class_name'
+        if not locator:
+            for locator_type in ["class", "name", "xapth", "accessibility_id", "image"]:
+                if locator_type in desired_caps:
+                    locator = locator_type + "=" + desired_caps[locator_type]
+                    del desired_caps[locator_type]
+        self._open_desktop_session(remote_url)
+        self.switch_application("Desktop")
+        try:
+            window = self._element_find(locator, True)
+        except Exception:
+            try:
+                error = "Window '%s' did not appear in <TIMEOUT>" % locator
+                self._wait_until(timeout, error, self._element_find, locator, True)
+                window = self._element_find(locator, True)
+            except Exception as e:
+                self._debug('Closing desktop session.')
+                zoomba.fail(
+                    'Error finding window "' + locator + '" in the desktop session. '
+                                                         'Is it a top level window handle?' + '. \n' + str(e))
+        self._debug('Window "%s" found.' % locator)
+        desired_caps["appTopLevelWindow"] = hex(int(window.get_attribute("NativeWindowHandle")))
+        if "app" in desired_caps:
+            del desired_caps["app"]
+        if "platformName" not in desired_caps:
+            desired_caps["platformName"] = "Windows"
+        if "forceMjsonwp" not in desired_caps:
+            desired_caps["forceMjsonwp"] = True
+        try:
+            self._info('Connecting to window "%s".' % locator)
+            application = webdriver.Remote(str(remote_url), desired_caps)
+        except Exception as e:
+            zoomba.fail(
+                'Error connecting webdriver to window "' + locator + '". \n' + str(e))
         self._debug('Opened application with session id %s' % application.session_id)
         return self._cache.register(application, alias)
 
