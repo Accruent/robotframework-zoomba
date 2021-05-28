@@ -111,6 +111,7 @@ class DesktopLibrary(AppiumLibrary):
         """
         self.winappdriver = WinAppDriver(driver_path)
         self.current_element = None
+        self.current_desktop = None
         super().__init__(timeout, run_on_failure)
 
     def get_keyword_names(self):
@@ -251,7 +252,7 @@ class DesktopLibrary(AppiumLibrary):
 
     @keyword("Open Application")
     def open_application(self, remote_url, alias=None, window_name=None, splash_delay=0,
-                         exact_match=True, **kwargs):
+                         exact_match=True, desktop_alias=None, **kwargs):
         """Opens a new application to given Appium server.
         If your application has a splash screen please supply the window name of the final window that will appear.
         For the capabilities of appium server and Windows please check http://appium.io/docs/en/drivers/windows
@@ -283,9 +284,9 @@ class DesktopLibrary(AppiumLibrary):
                 self._info('Waiting %s seconds for splash screen' % splash_delay)
                 sleep(splash_delay)
             return self.switch_application_by_name(remote_url, alias=alias, window_name=window_name,
-                                                   exact_match=exact_match, **kwargs)
+                                                   exact_match=exact_match, desktop_alias=desktop_alias, **kwargs)
         # global application
-        self._open_desktop_session(remote_url)
+        self._open_desktop_session(remote_url, desktop_alias)
         if "platformName" not in desired_caps:
             desired_caps["platformName"] = "Windows"
         if "forceMjsonwp" not in desired_caps:
@@ -296,7 +297,7 @@ class DesktopLibrary(AppiumLibrary):
 
     @keyword("Switch Application By Name")
     def switch_application_by_name(self, remote_url, window_name, alias=None, timeout=5,
-                                   exact_match=True, **kwargs):
+                                   exact_match=True, desktop_alias=None, **kwargs):
         """Switches to a currently opened window by ``window_name``.
         For the capabilities of appium server and Windows,
         Please check http://appium.io/docs/en/drivers/windows
@@ -315,26 +316,30 @@ class DesktopLibrary(AppiumLibrary):
         | Switch Application | Desktop         |
         """
         desired_caps = kwargs
-        desktop_session = self._open_desktop_session(remote_url)
+        self._open_desktop_session(remote_url, desktop_alias)
+        self.switch_application(self.current_desktop)
         window_xpath = '//Window[contains(@Name, "' + window_name + '")]'
+        window_locator = 'name=' + window_name
         try:
             if exact_match:
-                window = desktop_session.find_element_by_name(window_name)
+                window = self._element_find(window_locator, True)
+                # print(self._current_application())
+                # window = desktop_session.find_element_by_name(window_name)
             else:
-                window = desktop_session.find_element_by_xpath(window_xpath)
+                window = self._element_find(window_xpath, True)
             self._debug('Window_name "%s" found.' % window_name)
             window = hex(int(window.get_attribute("NativeWindowHandle")))
         except Exception:
             try:
                 error = "Window '%s' did not appear in <TIMEOUT>" % window_name
                 if exact_match:
-                    self._wait_until(timeout, error, desktop_session.find_element_by_name,
-                                     window_name)
-                    window = desktop_session.find_element_by_name(window_name)
+                    # self._wait_until(timeout, error, desktop_session.find_element_by_name,
+                    #                  window_name)
+                    self._wait_until(timeout, error, self._element_find, window_locator, True)
+                    window = self._element_find(window_name, True)
                 else:
-                    self._wait_until(timeout, error, desktop_session.find_element_by_xpath,
-                                     window_xpath)
-                    window = desktop_session.find_element_by_xpath(window_xpath)
+                    self._wait_until(timeout, error, self._element_find, window_xpath, True)
+                    window = self._element_find(window_xpath, True)
                 self._debug('Window_name "%s" found.' % window_name)
                 window = hex(int(window.get_attribute("NativeWindowHandle")))
             except Exception as e:
@@ -360,7 +365,8 @@ class DesktopLibrary(AppiumLibrary):
         return self._cache.register(application, alias)
 
     @keyword("Switch Application By Locator")
-    def switch_application_by_locator(self, remote_url, locator=None, alias=None, timeout=5, **kwargs):
+    def switch_application_by_locator(self, remote_url, locator=None, alias=None, timeout=5, desktop_alias=None,
+                                      **kwargs):
         """Switches to a currently opened window by ``locator``.
 
          For the capabilities of appium server and Windows,
@@ -385,8 +391,8 @@ class DesktopLibrary(AppiumLibrary):
                 if locator_type in desired_caps:
                     locator = locator_type + "=" + desired_caps[locator_type]
                     del desired_caps[locator_type]
-        self._open_desktop_session(remote_url)
-        self.switch_application("Desktop")
+        self._open_desktop_session(remote_url, desktop_alias)
+        self.switch_application(self.current_desktop)
         try:
             window = self._element_find(locator, True)
         except Exception:
@@ -438,7 +444,8 @@ class DesktopLibrary(AppiumLibrary):
 
         See `Quit Application` for quiting application but keeping Appium session running.
         """
-        self._open_desktop_session(self._current_application().command_executor)
+        # self._open_desktop_session(self._current_application().command_executor, self.current_desktop)
+        # self._open_desktop_session(self._current_application().command_executor)
         self._current_application().launch_app()
 
     @keyword("Wait For And Clear Text")
@@ -789,7 +796,7 @@ class DesktopLibrary(AppiumLibrary):
                 self.click_element(element_locator)
         except ValueError:
             original_index = self._cache.current_index
-            self.switch_application('Desktop')
+            self.switch_application(self.current_desktop)
             try:
                 self.click_element(element_locator)
             except NoSuchElementException:
@@ -811,7 +818,7 @@ class DesktopLibrary(AppiumLibrary):
                 count += 1
         except NoSuchElementException:
             original_index = self._cache.current_index
-            self.switch_application('Desktop')
+            self.switch_application(self.current_desktop)
             for each in args[count:]:
                 try:
                     self.click_element(each)
@@ -839,7 +846,7 @@ class DesktopLibrary(AppiumLibrary):
                 count += 1
         except NoSuchElementException:
             original_index = self._cache.current_index
-            self.switch_application('Desktop')
+            self.switch_application(self.current_desktop)
             for each in args[count:]:
                 try:
                     if count == 0:
@@ -992,16 +999,19 @@ class DesktopLibrary(AppiumLibrary):
             self._info('Moving to element "' + str(element) + '".')
             actions.move_to_element(element)
 
-    def _open_desktop_session(self, remote_url, alias="Desktop"):
+    def _open_desktop_session(self, remote_url, alias=None):
+        if not alias:
+            alias = "Desktop"
         try:
             return self._cache.get_connection(alias)
         except RuntimeError:
             self._debug('Creating new desktop session')
             desktop_capabilities = dict({"app": "Root", "platformName": "Windows",
-                                         "deviceName": "Windows", "newCommandTimeout": 3600,
+                                         "deviceName": "Windows", "alias": alias, "newCommandTimeout": 3600,
                                          "forceMjsonwp": True})
             desktop_session = webdriver.Remote(str(remote_url), desktop_capabilities)
             self._cache.register(desktop_session, alias=alias)
+            self.current_desktop = alias
             return desktop_session
 
     def _element_find(self, locator, first_only, *kwargs):
