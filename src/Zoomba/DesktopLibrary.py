@@ -363,8 +363,6 @@ class DesktopLibrary(AppiumLibrary):
         try:
             if exact_match:
                 window = self._element_find(window_locator, True)
-                # print(self._current_application())
-                # window = desktop_session.find_element_by_name(window_name)
             else:
                 window = self._element_find(window_xpath, True)
             self._debug('Window_name "%s" found.' % window_name)
@@ -373,8 +371,6 @@ class DesktopLibrary(AppiumLibrary):
             try:
                 error = "Window '%s' did not appear in <TIMEOUT>" % window_name
                 if exact_match:
-                    # self._wait_until(timeout, error, desktop_session.find_element_by_name,
-                    #                  window_name)
                     self._wait_until(timeout, error, self._element_find, window_locator, True)
                     window = self._element_find(window_name, True)
                 else:
@@ -484,8 +480,6 @@ class DesktopLibrary(AppiumLibrary):
 
         See `Quit Application` for quiting application but keeping Appium session running.
         """
-        # self._open_desktop_session(self._current_application().command_executor, self.current_desktop)
-        # self._open_desktop_session(self._current_application().command_executor)
         self._current_application().launch_app()
 
     @keyword("Wait For And Clear Text")

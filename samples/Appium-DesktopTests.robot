@@ -198,7 +198,7 @@ Switch Application Multiple Desktop
     Open Application    ${REMOTE_URL}     platformName=Windows    deviceName=Windows   app=${Notepad}     alias=Notepad   desktop_alias=Desktop2
     Switch Application    Desktop
     Switch Application    Desktop2
-    Switch Application    Notepad
+    Switch Application    Notepad     desktop_alias=Desktop
     Quit Application
     # Switch back to the main window to make sure it gets closed
     Switch Application    Main
