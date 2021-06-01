@@ -208,6 +208,14 @@ class TestInternal(unittest.TestCase):
         dl.switch_application('App1', 'Desktop')
         self.assertEqual(dl.current_desktop, 'Desktop')
 
+    def test_switch_application_no_alias_or_index_failure(self):
+        dl = DesktopLibrary()
+        webdriver.Remote = WebdriverRemoteMock
+        dl.open_application('remote_url', alias='App1')
+        dl.open_application('remote_url', alias='App2', desktop_alias='Desktop2')
+        dl.switch_application(None)
+        self.assertFalse(dl._cache.current)
+
     def test_launch_application_successful(self):
         dl = DesktopLibrary()
         webdriver.Remote = WebdriverRemoteMock
