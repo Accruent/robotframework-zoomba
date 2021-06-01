@@ -295,6 +295,46 @@ class DesktopLibrary(AppiumLibrary):
         self._debug('Opened application with session id %s' % application.session_id)
         return self._cache.register(application, alias)
 
+    def switch_application(self, index_or_alias, desktop_alias=None):
+        """Switches the active application by index or alias.
+
+        `index_or_alias` is either application index (an integer) or alias
+        (a string). Index is got as the return value of `Open Application`.
+
+        This keyword returns the index of the previous active application,
+        which can be used to switch back to that application later.
+
+        Example:
+        | ${appium1}=              | Open Application  | http://localhost:4723/wd/hub                   | alias=MyApp1 | platformName=iOS | platformVersion=7.0 | deviceName='iPhone Simulator' | app=your.app |
+        | ${appium2}=              | Open Application  | http://localhost:4755/wd/hub                   | alias=MyApp2 | platformName=iOS | platformVersion=7.0 | deviceName='iPhone Simulator' | app=your.app |
+        | Click Element            | sendHello         | # Executed on appium running at localhost:4755 |
+        | Switch Application       | ${appium1}        | # Switch using index                           |
+        | Click Element            | ackHello          | # Executed on appium running at localhost:4723 |
+        | Switch Application       | MyApp2            | # Switch using alias                           |
+        | Page Should Contain Text | ackHello Received | # Executed on appium running at localhost:4755 |
+
+        `desktop_alias` (string) is used to update the current desktop the application resides on. If only using one PC
+        in tests this can be ignore. Otherwise this can be used to maintain the association between your application
+        and desktop needed for some keywords.
+
+        Example:
+        | Open Application  | http://localhost:4723/wd/hub  | alias=MyApp1 | platformName=iOS | platformVersion=7.0 | deviceName='iPhone Simulator' | app=your.app |
+        | Open Application  | http://localhost:4755/wd/hub  | alias=MyApp2 | desktop_alias=Desktop2 | platformName=iOS | platformVersion=7.0 | deviceName='iPhone Simulator' | app=your.app |
+        | Select Element From ComboBox | list_element  | locator_element | # Executed on MyApp2 running at localhost:4755 with Desktop2 as the desktop session |
+        | Switch Application       | MyApp1   |   Desktop     | # Switch using alias and setting current desktop alias |
+        | Select Element From ComboBox | list_element  | locator_element | # Executed on MyApp1 running at localhost:4723 with Desktop as the desktop session |
+        | Switch Application       | MyApp2      Desktop2     | # Switch using alias and setting current desktop alias |
+        | Select Element From ComboBox | list_element  | locator_element | # Executed on MyApp2 running at localhost:4755 with Desktop2 as the desktop session |
+        """
+        old_index = self._cache.current_index
+        if index_or_alias is None:
+            self._cache.close()
+        else:
+            self._cache.switch(index_or_alias)
+        if desktop_alias is not None:
+            self.current_desktop = desktop_alias
+        return old_index
+
     @keyword("Switch Application By Name")
     def switch_application_by_name(self, remote_url, window_name, alias=None, timeout=5,
                                    exact_match=True, desktop_alias=None, **kwargs):

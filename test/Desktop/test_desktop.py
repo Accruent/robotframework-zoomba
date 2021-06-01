@@ -62,6 +62,16 @@ class TestInternal(unittest.TestCase):
         dl.open_application('remote_url')
         self.assertTrue(dl._cache.current)
 
+    def test_open_multiple_applications_successful(self):
+        dl = DesktopLibrary()
+        webdriver.Remote = WebdriverRemoteMock
+        dl.open_application('remote_url', alias='App1')
+        dl.open_application('remote_url', alias='App2', desktop_alias='Desktop2')
+        dl.switch_application('Desktop')
+        dl.switch_application('Desktop2')
+        self.assertRaisesRegex(RuntimeError, "Non-existing index or alias 'Desktop3'.", dl.switch_application,
+                               'Desktop3')
+
     def test_open_application_successful_double(self):
         dl = DesktopLibrary()
         webdriver.Remote = WebdriverRemoteMock
