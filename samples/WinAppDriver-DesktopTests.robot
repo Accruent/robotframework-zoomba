@@ -149,7 +149,6 @@ Flick Tests
 Switch Application By Name or Locator
     # Select Window by Class Name
     Open Application    ${REMOTE_URL}     platformName=Windows    deviceName=Windows   app=${Notepad}
-    Sleep   1s
     Switch Application    Main
     Switch Application By Locator    ${REMOTE_URL}     class=Notepad
     Wait For And Input Text          Name=Text Editor      test

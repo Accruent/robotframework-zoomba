@@ -10,11 +10,12 @@ Force Tags        Windows
 *** Variables ***
 ${REMOTE_URL}           http://127.0.0.1:4723/wd/hub
 ${APP}                  Microsoft.WindowsCalculator_8wekyb3d8bbwe!App
+${Notepad}              C:/Windows/System32/notepad.exe
 
 *** Keywords ***
 Start App
     [Documentation]     Sets up the application for quick launching through 'Launch Application'
-    Open Application    ${REMOTE_URL}     platformName=Windows    deviceName=Windows   app=${APP}
+    Open Application    ${REMOTE_URL}     platformName=Windows    deviceName=Windows   app=${APP}    alias=Main
     Maximize Window
     Quit Application
 
@@ -158,24 +159,52 @@ Screen Recording Keyword Test - See video with logs or in log.html
 
 Switch Application By Name or Locator
     # Select Window by Class Name
-    Switch Application By Locator    ${REMOTE_URL}     class=ApplicationFrameWindow
-    Wait For And Click Element       accessibility_id=num2Button
-    Wait Until Element Contains      accessibility_id=CalculatorResults      2
+    Open Application    ${REMOTE_URL}     platformName=Windows    deviceName=Windows   app=${Notepad}
+    Switch Application    Main
+    Switch Application By Locator    ${REMOTE_URL}     class=Notepad
+    Wait For And Input Text          Name=Text Editor      test
+    Wait Until Element Contains      Name=Text Editor      test
+    Quit Application
+    Wait For And Click Element       Name=Don't Save
     # Select Window by Xpath
-    Switch Application By Locator    ${REMOTE_URL}     //Window[contains(@Name, "Calculator")]
-    Wait For And Click Element       accessibility_id=num2Button
-    Wait Until Element Contains      accessibility_id=CalculatorResults      22
+    Open Application    ${REMOTE_URL}     platformName=Windows    deviceName=Windows   app=${Notepad}
+    Switch Application    Main
+    Switch Application By Locator    ${REMOTE_URL}     //Window[contains(@Name, "Notepad")]
+    Wait For And Input Text          Name=Text Editor      test
+    Wait Until Element Contains      Name=Text Editor      test
+    Quit Application
+    Wait For And Click Element       Name=Don't Save
     # Select Window by Name
-    Switch Application By Name       ${REMOTE_URL}     Calculator
-    Wait For And Click Element       accessibility_id=num2Button
-    Wait Until Element Contains      accessibility_id=CalculatorResults      222
+    Open Application    ${REMOTE_URL}     platformName=Windows    deviceName=Windows   app=${Notepad}
+    Switch Application    Main
+    Switch Application By Name       ${REMOTE_URL}     Untitled - Notepad
+    Wait For And Input Text          Name=Text Editor      test
+    Wait Until Element Contains      Name=Text Editor      test
+    Quit Application
+    Wait For And Click Element       Name=Don't Save
     # Select Window by Partial Name
-    Switch Application By Name       ${REMOTE_URL}     Calculator    exact_match=False
-    Wait For And Click Element       accessibility_id=num2Button
-    Wait Until Element Contains      accessibility_id=CalculatorResults      2,222
+    Open Application    ${REMOTE_URL}     platformName=Windows    deviceName=Windows   app=${Notepad}
+    Switch Application    Main
+    Switch Application By Name       ${REMOTE_URL}     Notepad    exact_match=False
+    Wait For And Input Text          Name=Text Editor      test
+    Wait Until Element Contains      Name=Text Editor      test
+    Quit Application
+    Wait For And Click Element       Name=Don't Save
+    # Switch back to the main window to make sure it gets closed
+    Switch Application    Main
+
+Switch Application Multiple Desktop
+    # Open Application creates a new desktop session for this isnatnce, useful when running tests on multiple computers
+    Open Application    ${REMOTE_URL}     platformName=Windows    deviceName=Windows   app=${Notepad}     alias=Notepad   desktop_alias=Desktop2
+    Switch Application    Desktop
+    Switch Application    Desktop2
+    Switch Application    Notepad
+    Quit Application
+    # Switch back to the main window to make sure it gets closed
+    Switch Application    Main
 
 Switch To Desktop Test
-    Close Application
+    [Setup]    NONE
     Switch Application      Desktop
     Wait For And Click Element           name=Start
     Wait For And Click Element           name=Start
