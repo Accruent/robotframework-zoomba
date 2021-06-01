@@ -257,19 +257,22 @@ class DesktopLibrary(AppiumLibrary):
         If your application has a splash screen please supply the window name of the final window that will appear.
         For the capabilities of appium server and Windows please check http://appium.io/docs/en/drivers/windows
 
-        | *Option*            | *Man.* | *Description*                                                        |
-        | remote_url          | Yes    | WinAppDriver or Appium server url                                    |
-        | alias               | No     | Alias                                                                |
-        | window_name         | No     | Window name you wish to attach, usually after a splash screen        |
-        | splash_delay        | No     | Delay used when waiting for a splash screen to load, in seconds      |
-        | exact_match         | No     | Set to False if window_name does not need to match exactly           |
+        | *Option*            | *Man.* | *Description*                                                               |
+        | remote_url          | Yes    | WinAppDriver or Appium server url                                           |
+        | alias               | No     | Alias                                                                       |
+        | window_name         | No     | Window name you wish to attach, usually after a splash screen               |
+        | splash_delay        | No     | Delay used when waiting for a splash screen to load, in seconds             |
+        | exact_match         | No     | Set to False if window_name does not need to match exactly                  |
+        | desktop_alias       | No     | Set an alias for the created desktop session, will default to 'Desktop'     |
 
         Examples:
         | Open Application | http://localhost:4723/wd/hub | alias=Myapp1         | platformName=Windows            | deviceName=Windows           | app=your.app          |
+        | Open Application | http://localhost:4723/wd/hub | alias=Myapp1         | platformName=Windows            | deviceName=Windows           | app=your.app          | desktop_alias=Desktop2             |
         | Open Application | http://localhost:4723/wd/hub | alias=Myapp1         | platformName=Windows            | deviceName=Windows           | app=your.app          | window_name=MyApplication          | splash_delay=5          |
         | Open Application | http://localhost:4723/wd/hub | alias=Myapp1         | platformName=Windows            | deviceName=Windows           | app=your.app          | window_name=MyApplication          | exact_match=False       |
 
-        A session for the root desktop will also be opened and can be switched to by running the following:
+        A session for the root desktop will also be opened and can be switched to by running the following (default
+        alias is 'Desktop'):
         | Switch Application | Desktop         |
         """
         desired_caps = kwargs
@@ -347,12 +350,15 @@ class DesktopLibrary(AppiumLibrary):
         | alias               | No     | alias                                 |
         | timeout             | No     | timeout to connect                    |
         | exact_match         | No     | Set to False if window_name does not need to match exactly       |
+        | desktop_alias       | No     | Set an alias for the created desktop session, will default to 'Desktop'      |
 
         Examples:
         | Switch Application By Name | http://localhost:4723/wd/hub | alias=Myapp1         | platformName=Windows            | deviceName=Windows           | window_name=MyApplication         |
         | Switch Application By Name | http://localhost:4723/wd/hub | window_name=MyApp    |  exact_match=False  |
+        | Switch Application By Name | http://localhost:4723/wd/hub | window_name=MyApp    |  desktop_alias=Desktop2  |
 
-        A session for the root desktop will also be opened and can be switched to by running the following:
+        A session for the root desktop will also be opened and can be switched to by running the following (default
+        alias is 'Desktop'):
         | Switch Application | Desktop         |
         """
         desired_caps = kwargs
@@ -412,12 +418,15 @@ class DesktopLibrary(AppiumLibrary):
         | locator             | Yes    | Locator for window name you wish to attach    |
         | alias               | No     | alias                                         |
         | timeout             | No     | timeout to connect                            |
+        | desktop_alias       | No     | Set an alias for the created desktop session, will default to 'Desktop'      |
 
         Examples:
         | Switch Application By Locator | http://localhost:4723/wd/hub | alias=Myapp1         | platformName=Windows            | deviceName=Windows           | locator=class=MyApplication         |
         | Switch Application By Locator | http://localhost:4723/wd/hub | accessibility_id=MyApp    |
+        | Switch Application By Locator | http://localhost:4723/wd/hub | accessibility_id=MyApp    | desktop_alias=Desktop2     |
 
-        A session for the root desktop will also be opened and can be switched to by running the following:
+        A session for the root desktop will also be opened and can be switched to by running the following (default
+        alias is 'Desktop'):
         | Switch Application | Desktop         |"""
         desired_caps = kwargs
         # If we want to use kwargs still we need this to catch the locator, otherwise the user would have to type
