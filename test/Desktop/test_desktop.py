@@ -197,6 +197,17 @@ class TestInternal(unittest.TestCase):
         self.assertRaisesRegex(AssertionError, 'Error connecting webdriver to window "xpath=//test".',
                                dl.switch_application_by_locator, 'remote_url', locator='xpath=//test')
 
+    def test_switch_application_multi_desktop_successful(self):
+        dl = DesktopLibrary()
+        webdriver.Remote = WebdriverRemoteMock
+        dl.open_application('remote_url', alias='App1')
+        dl.open_application('remote_url', alias='App2', desktop_alias='Desktop2')
+        self.assertEqual(dl.current_desktop, 'Desktop2')
+        dl.switch_application('App1')
+        self.assertEqual(dl.current_desktop, 'Desktop2')
+        dl.switch_application('App1', 'Desktop')
+        self.assertEqual(dl.current_desktop, 'Desktop')
+
     def test_launch_application_successful(self):
         dl = DesktopLibrary()
         webdriver.Remote = WebdriverRemoteMock
