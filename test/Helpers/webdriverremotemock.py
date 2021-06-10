@@ -40,10 +40,7 @@ class WebdriverRemoteMock(mock.Mock, unittest.TestCase):
         return file
 
     def push_file(self, data, encode=False):
-        if encode:
-            self._myData = base64.b64decode(data)
-        else:
-            self._myData = data
+        self._myData = base64.b64decode(data) if encode else data
 
     def find_element_by_name(self, *args):
         return Window

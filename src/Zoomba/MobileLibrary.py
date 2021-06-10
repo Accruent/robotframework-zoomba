@@ -258,7 +258,7 @@ class MobileLibrary(AppiumLibrary):
     def scroll_down_to_text(self, text, swipe_count=20):
         """Scrolls down to ``text`` using small swipes. The ``swipe_count`` defaults to 20."""
         found = False
-        for x in range(swipe_count):
+        for _ in range(swipe_count):
             if self._is_text_present(text):
                 found = True
                 break
@@ -271,7 +271,7 @@ class MobileLibrary(AppiumLibrary):
     def scroll_up_to_text(self, text, swipe_count=20):
         """Scrolls down to ``text`` using small swipes. The ``swipe_count`` defaults to 20."""
         found = False
-        for x in range(swipe_count):
+        for _ in range(swipe_count):
             if self._is_text_present(text):
                 found = True
                 break

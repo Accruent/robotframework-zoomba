@@ -29,10 +29,7 @@ class APILibrary:
         | Suppress Insecure Request Warnings | suppress=True |     #Suppresses Insecure Request Warnings
         | Suppress Insecure Request Warnings | False |    #Does Not Suppresses Insecure Request Warnings
         """
-        if "FALSE" in suppress.upper():
-            self.suppress_warnings = False
-        else:
-            self.suppress_warnings = True
+        self.suppress_warnings = "FALSE" not in suppress.upper()
 
     def call_get_request(self, headers=None, endpoint=None, fullstring=None, cookies=None, timeout=None):
         """ Generate a GET Request. This Keyword is basically a wrapper for get_request from the RequestsLibrary.\n
@@ -212,9 +209,7 @@ class APILibrary:
             number_of_items = number_of_items.upper()
             if number_of_items == "IGNORE":
                 return True
-        elif isinstance(number_of_items, int):
-            pass
-        else:
+        elif not isinstance(number_of_items, int):
             zoomba.fail("Did not pass number or string value, function expects a number or string 'IGNORE'.")
             return
 
@@ -474,8 +469,10 @@ def _date_format(date_string, key, unmatched_keys_list, date_type, date_format=N
 
 
 def _convert_resp_to_dict(response):
-    new_response = {}
-    for item in dir(response):
-        if item[0] != '_':
-            new_response[item] = getattr(response, item)
+    new_response = {
+        item: getattr(response, item)
+        for item in dir(response)
+        if item[0] != '_'
+    }
+
     return DotDict(new_response)

@@ -31,7 +31,7 @@ class _ObjectNamespacePlugin(DocumentPlugin):
             context.document = document_split[0]+b'xmlns:tns="'+self.defaultNamespace+b'" targetNamespace="' + self.defaultNamespace + b'" xmlns'+document_split[1]
             number_of_types = context.document.count(b'type="')
             start_location = context.document.find(b'type="')
-            for x in range(number_of_types):
+            for _ in range(number_of_types):
                 end_type = context.document.find(b'"', start_location+len(b'type="'))
                 if b':' not in context.document[start_location:end_type]:
                     change_type = context.document[start_location:end_type]
@@ -103,8 +103,7 @@ class SOAPLibrary(object):
             soap_object: (list) Soap Object in list format, list must be ordered wrt schema\n
         """
         suds_library = BuiltIn().get_library_instance("SudsLibrary")
-        response = suds_library.call_soap_method(action, *soap_object)
-        return response
+        return suds_library.call_soap_method(action, *soap_object)
 
     @staticmethod
     def call_soap_method_with_object(action=None, **soap_object):
@@ -158,7 +157,7 @@ def _build_dict_from_response(soap_response=None):
         return soap_response
     new_response = {}
 
-    for index in range(len(response_dictionary)):
+    for _ in range(len(response_dictionary)):
         key, value = response_dictionary.popitem()
         if isinstance(value, list):
             temp_list = []
