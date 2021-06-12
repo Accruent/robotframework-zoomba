@@ -31,9 +31,8 @@ class WinAppDriver:
         if path is None:
             path = self.driver_path
         try:
-            stdout = open(os.devnull, 'w')
-            self.process = subprocess.Popen([path], stdout=stdout)
-            stdout.close()
+            with open(os.devnull, 'w') as stdout:
+                self.process = subprocess.Popen([path], stdout=stdout)
         except Exception:
             self.process = None
             stdout.close()
@@ -897,11 +896,10 @@ class DesktopLibrary(AppiumLibrary):
                     else:
                         self.click_element(each)
                 except NoSuchElementException:
+                    self._wait_until_page_contains_element(each, self.get_appium_timeout())
                     if count == 0:
-                        self._wait_until_page_contains_element(each, self.get_appium_timeout())
                         self.mouse_over_and_context_click_element(each)
                     else:
-                        self._wait_until_page_contains_element(each, self.get_appium_timeout())
                         self.click_element(each)
                 count += 1
             self.switch_application(original_index)

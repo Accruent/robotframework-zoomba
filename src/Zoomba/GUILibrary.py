@@ -216,10 +216,7 @@ class GUILibrary(SeleniumLibrary):
         title: (string) The title of the window you are waiting for.\n
         timeout: (float) Time in seconds to wait, will use global timeout if not set.
         """
-        if timeout:
-            timeout = time() + float(timeout)
-        else:
-            timeout = time() + self.timeout
+        timeout = time() + float(timeout) if timeout else time() + self.timeout
         while time() < timeout:
             titles = self.get_window_titles()
             if title in titles:
@@ -266,7 +263,7 @@ class GUILibrary(SeleniumLibrary):
             jquery_started = self.execute_javascript("return jQuery.active==1")
             if jquery_started:
                 break
-        for each in range(1, 50):
+        for _ in range(1, 50):
             jquery_completed = self.execute_javascript("return window.jQuery!=undefined && jQuery.active==0")
             if jquery_completed:
                 break
@@ -340,8 +337,7 @@ class GUILibrary(SeleniumLibrary):
         if len(keys) != len(values):
             zoomba.log("The length of the keys and values lists is not the same: \nKeys Length: " +
                        str(len(keys)) + "\nValues Length: " + str(len(values)), "ERROR")
-        new_dict = dict(zip(keys, values))
-        return new_dict
+        return dict(zip(keys, values))
 
     @keyword("Truncate String")
     def truncate_string(self, string, number_of_characters):
@@ -350,8 +346,7 @@ class GUILibrary(SeleniumLibrary):
         number_of_characters: (integer) Truncation index
         return: (string) A truncated String
         """
-        truncated_string = string[0:number_of_characters]
-        return truncated_string
+        return string[0:number_of_characters]
 
     @keyword("Save Selenium Screenshot")
     def save_selenium_screenshot(self):
@@ -376,8 +371,7 @@ class GUILibrary(SeleniumLibrary):
         attribute: (string) The attribute you wish to get the value for.
         """
         css = self.get_webelement(locator)
-        attribute_value = zoomba.call_method(css, 'value_of_css_property', attribute)
-        return attribute_value
+        return zoomba.call_method(css, 'value_of_css_property', attribute)
 
     @keyword("Element CSS Attribute Value Should Be")
     def element_css_attribute_value_should_be(self, locator, attribute, expected_value):
