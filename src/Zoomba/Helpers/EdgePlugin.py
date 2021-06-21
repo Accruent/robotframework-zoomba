@@ -6,6 +6,7 @@ from SeleniumLibrary.keywords.webdrivertools import WebDriverCreator, SeleniumOp
 from msedge.selenium_tools import Edge as EdgePluginDriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from .chromeOptions import ChromiumOptions
+from robot.api.deco import keyword
 
 
 class EdgePlugin(BrowserManagementKeywords):
@@ -19,6 +20,10 @@ class EdgePlugin(BrowserManagementKeywords):
     def __init__(self, ctx):
         BrowserManagementKeywords.__init__(self, ctx)
         self._webdriver_creator = _EdgePluginWebDriverCreator(self.log_dir)
+
+    @keyword
+    def get_edge_options(self):
+        return Options()
 
 
 class _EdgePluginWebDriverCreator(WebDriverCreator):

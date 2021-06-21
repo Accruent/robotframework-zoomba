@@ -10,10 +10,8 @@ import importlib
 # Importing ReactSelect
 try:
     RS = importlib.import_module('Helpers.ReactSelect', package='Helpers')
-    EdgePlugin = importlib.import_module('Helpers.EdgePlugin', package='Helpers')
 except ModuleNotFoundError:
     RS = importlib.import_module('.Helpers.ReactSelect', package='Zoomba')
-    EdgePlugin = importlib.import_module('.Helpers.EdgePlugin', package='Zoomba')
 
 
 zoomba = BuiltIn()
@@ -401,13 +399,3 @@ class GUILibrary(SeleniumLibrary):
         react_select_container = self.find_element(locator)
         options = RS.ReactSelect(react_select_container).options()
         return [opt.text for opt in options]
-
-    @keyword("Open WebView Application")
-    def open_webview_application(self, binary_location, url=None):
-        """
-        """
-        options = EdgePlugin.Options()
-        options.use_chromium = True
-        options.use_webview = True
-        options.binary_location = binary_location
-        self.open_browser(url, "Edge", options=options)
