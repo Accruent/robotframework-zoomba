@@ -133,6 +133,12 @@ Selecting an element by an image file (Appium v1.18.0 and higher only):
 Wait For And Click Element     image=file.png
 ```
 
+For WebView2 applications we can now control both the application view and the Edge browser view:
+
+<a target="_blank" rel="noopener noreferrer" href="https://user-images.githubusercontent.com/3010366/122806407-e4759700-d28f-11eb-8b72-779660606d9f.gif"><img src="https://user-images.githubusercontent.com/3010366/122806407-e4759700-d28f-11eb-8b72-779660606d9f.gif" alt="rbmzmun3cR" style="max-width:60%;"></a>
+
+An example of this [can be found in the samples directory](https://github.com/Accruent/robotframework-zoomba/blob/master/samples/WebView-DesktopTest.robot).
+
 Getting Started
 ----------------
 
