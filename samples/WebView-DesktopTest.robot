@@ -1,5 +1,5 @@
 *** Settings ***
-Documentation     Zoomba GUI/Desktop Library Tests using a WebView ap[plication
+Documentation     Zoomba GUI/Desktop Library Tests using a WebView application
 Library           Zoomba.DesktopLibrary
 Library           Zoomba.GUILibrary   plugins=Zoomba.Helpers.EdgePlugin
 Suite Setup       Driver Setup
