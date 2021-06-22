@@ -77,13 +77,12 @@ class ChromiumOptions(ArgOptions):
         """
         encoded_extensions = []
         for ext in self._extension_files:
-            file_ = open(ext, 'rb')
-            # Should not use base64.encodestring() which inserts newlines every
-            # 76 characters (per RFC 1521).  Chromedriver has to remove those
-            # unnecessary newlines before decoding, causing performance hit.
-            encoded_extensions.append(base64.b64encode(file_.read()).decode('UTF-8'))
+            with open(ext, 'rb') as file_:
+                # Should not use base64.encodestring() which inserts newlines every
+                # 76 characters (per RFC 1521).  Chromedriver has to remove those
+                # unnecessary newlines before decoding, causing performance hit.
+                encoded_extensions.append(base64.b64encode(file_.read()).decode('UTF-8'))
 
-            file_.close()
         return encoded_extensions + self._extensions
 
     def add_extension(self, extension: str) -> NoReturn:
@@ -148,7 +147,7 @@ class ChromiumOptions(ArgOptions):
           value: boolean value indicating to set the headless option
         """
         args = {'--headless'}
-        if value is True:
+        if value:
             self._arguments.extend(args)
         else:
             self._arguments = list(set(self._arguments) - args)
@@ -159,7 +158,7 @@ class ChromiumOptions(ArgOptions):
 
     @page_load_strategy.setter
     def page_load_strategy(self, strategy: str):
-        if strategy in ["normal", "eager", "none"]:
+        if strategy in {"normal", "eager", "none"}:
             self.set_capability("pageLoadStrategy", strategy)
         else:
             raise ValueError("Strategy can only be one of the following: normal, eager, none")
