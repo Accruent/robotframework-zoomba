@@ -244,6 +244,13 @@ class TestInternal(unittest.TestCase):
         DesktopLibrary.click_element(mock_desk, "some_locator")
         mock_desk._element_find.assert_called_with("some_locator", True, True)
 
+    def test_click_element_by_WebElement(self):
+        mock_desk = MagicMock()
+        mock_element = MagicMock()
+        mock_element.isinstance = MagicMock(return_value=True)
+        DesktopLibrary.click_element(mock_desk, mock_element)
+        mock_desk._element_find.assert_called_with(mock_element, True, True)
+
     def test_wait_for_and_input_password(self):
         mock_desk = MagicMock()
         DesktopLibrary.wait_for_and_input_password(mock_desk, "some_locator", "some_text")
