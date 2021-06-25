@@ -60,6 +60,10 @@ Wait Until Element is Enabled / Disabled Keyword Test
     Wait Until Element Is Enabled       accessibility_id=MemPlus
     Wait Until Element Is Disabled       accessibility_id=MemRecall
 
+Click Webelement Test
+    ${element}    Get Webelement    name=One
+    Click Element    ${element}
+
 Mouse Over Element Keyword Test
     Mouse Over Element     name=Two
 

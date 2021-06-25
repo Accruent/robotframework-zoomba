@@ -13,6 +13,7 @@ from appium.webdriver.common.touch_action import TouchAction
 from time import sleep, time
 from robot import utils
 from base64 import b64decode
+from selenium.webdriver.remote.webelement import WebElement
 
 try:
     AppiumCommon = importlib.import_module('Helpers.AppiumCommon', package='Helpers')
@@ -1056,6 +1057,10 @@ class DesktopLibrary(AppiumLibrary):
             return desktop_session
 
     def _element_find(self, locator, first_only, *kwargs):
+        if isinstance(locator, WebElement):
+            if first_only:
+                return locator
+            return [locator]
         prefix, criteria = self._parse_locator(locator)
         driver = self._current_application()
         if prefix is None:
