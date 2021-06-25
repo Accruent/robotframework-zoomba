@@ -10,6 +10,7 @@ from appium import webdriver
 from unittest.mock import MagicMock, patch
 sys.path.append(os.path.join(os.path.dirname(sys.path[0]), 'Helpers'))
 from webdriverremotemock import WebdriverRemoteMock
+from selenium.webdriver.remote.webelement import WebElement
 
 
 def _long_running_function():
@@ -445,6 +446,18 @@ class TestInternal(unittest.TestCase):
         mock_desk._parse_locator = MagicMock(return_value=['accessibility_id', 'Capture'])
         DesktopLibrary._element_find(mock_desk, "accessibility_id='Capture'", False, True)
         mock_desk._current_application().find_elements_by_accessibility_id.assert_called_with('Capture')
+
+    def test_element_find_by_element(self):
+        mock_desk = MagicMock()
+        mock_element = WebElement(MagicMock(), MagicMock())
+        value = DesktopLibrary._element_find(mock_desk, mock_element, True, True)
+        self.assertEqual(mock_element, value)
+
+    def test_element_find_by_elements(self):
+        mock_desk = MagicMock()
+        mock_element = WebElement(MagicMock(), MagicMock())
+        value = DesktopLibrary._element_find(mock_desk, mock_element, False, True)
+        self.assertEqual([mock_element], value)
 
     def test_element_find_by_class_name(self):
         mock_desk = MagicMock()
