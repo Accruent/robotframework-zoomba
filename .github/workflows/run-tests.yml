@@ -7,6 +7,16 @@ on:
     branches:
       - master
 jobs:
+  upload-demo-apps:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Upload Android App to Sauce Labs
+        with:
+          SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
+          SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
+        run: |
+          curl -u $SAUCE_USERNAME:$SAUCE_ACCESS_KEY -X POST -H "Content-Type: application/octet-stream" \
+          "https://saucelabs.com/rest/v1/storage/$SAUCE_USERNAME/demo_app.apk?overwrite=true" --data-binary test/Helpers/demo_app.apk
   run-tests:
     runs-on: ubuntu-latest
     strategy:
