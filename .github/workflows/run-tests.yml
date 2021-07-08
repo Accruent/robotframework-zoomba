@@ -10,8 +10,8 @@ jobs:
   upload-demo-apps:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - name: Upload Android App to Sauce Labs
-        uses: actions/checkout@v2
         with:
           SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
