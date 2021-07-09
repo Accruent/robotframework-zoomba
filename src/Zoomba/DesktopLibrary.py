@@ -366,7 +366,7 @@ class DesktopLibrary(AppiumLibrary):
         self.switch_application(self.current_desktop)
         window_xpath = '//Window[contains(@Name, "' + window_name + '")]'
         window_locator = 'name=' + window_name + ''
-        zoomba.log(window_locator + '.')
+        self._debug(window_locator + '.')
         try:
             if exact_match:
                 window = self._element_find(window_locator, True)
