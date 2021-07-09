@@ -365,8 +365,7 @@ class DesktopLibrary(AppiumLibrary):
         self._open_desktop_session(remote_url, desktop_alias)
         self.switch_application(self.current_desktop)
         window_xpath = '//Window[contains(@Name, "' + window_name + '")]'
-        window_locator = 'name=' + window_name + ''
-        zoomba.log(window_locator + '.')
+        window_locator = 'name=' + window_name
         try:
             if exact_match:
                 window = self._element_find(window_locator, True)
@@ -1132,7 +1131,7 @@ class DesktopLibrary(AppiumLibrary):
             locator_parts = locator.partition('=')
             if len(locator_parts[1]) > 0:
                 prefix = locator_parts[0].strip().lower()
-                criteria = locator_parts[2].strip()
+                criteria = locator_parts[2]
         return prefix, criteria
 
     def _wait_until_page_contains(self, text, timeout=None, error=None):
