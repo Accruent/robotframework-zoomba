@@ -1131,7 +1131,7 @@ class DesktopLibrary(AppiumLibrary):
             locator_parts = locator.partition('=')
             if len(locator_parts[1]) > 0:
                 prefix = locator_parts[0].strip().lower()
-                criteria = locator_parts[2].strip()
+                criteria = locator_parts[2]
         return prefix, criteria
 
     def _wait_until_page_contains(self, text, timeout=None, error=None):
