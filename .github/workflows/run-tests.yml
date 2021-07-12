@@ -15,7 +15,7 @@ jobs:
           SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
         run: |
-          curl -u "$env:SAUCE_USERNAME":"$env:SAUCE_ACCESS_KEY" -X POST -H "Content-Type: application/octet-stream" "https://saucelabs.com/rest/v1/storage/"$env:SAUCE_USERNAME"/demo_app.apk?overwrite=true" --data-binary test/Helpers/demo_app.apk
+          curl -F "payload=@\test\Helpers\demo_app.apk" -F name=demo_app.apk -u "$env:SAUCE_USERNAME":"$env:SAUCE_ACCESS_KEY" "https://api.us-west-1.saucelabs.com/v1/storage/upload"
   run-tests:
     runs-on: ubuntu-latest
     strategy:
