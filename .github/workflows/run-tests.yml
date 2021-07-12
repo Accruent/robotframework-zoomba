@@ -15,7 +15,7 @@ jobs:
           SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
         run: |
-          curl -F "payload=@\test\Helpers\demo_app.apk" -F name=demo_app.apk -u "$env:SAUCE_USERNAME":"$env:SAUCE_ACCESS_KEY" "https://api.us-west-1.saucelabs.com/v1/storage/upload"
+          curl -F "payload=@test\Helpers\demo_app.apk" -F name=demo_app.apk -u "$env:SAUCE_USERNAME":"$env:SAUCE_ACCESS_KEY" "https://api.us-west-1.saucelabs.com/v1/storage/upload"
   run-tests:
     runs-on: ubuntu-latest
     strategy:
