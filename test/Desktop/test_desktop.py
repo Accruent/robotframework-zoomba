@@ -109,6 +109,14 @@ class TestInternal(unittest.TestCase):
         dl.open_application('remote_url', window_name='test', app='testApp', exact_match=False)
         self.assertTrue(dl._cache.current)
 
+    def test_switch_application_with_end_whitespace(self):
+        dl = DesktopLibrary()
+        dl._run_on_failure = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        webdriver.Remote.find_element_by_name = MagicMock()
+        dl.switch_application_by_name('remote_url', window_name='name with end whitespace  ')
+        webdriver.Remote.find_element_by_name.assert_called_with('name with end whitespace  ')
+
     def test_switch_application_failure(self):
         dl = DesktopLibrary()
         dl._run_on_failure = MagicMock()
