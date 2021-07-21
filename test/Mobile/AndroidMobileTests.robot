@@ -13,9 +13,9 @@ ${commandTimeout}=      120
 
 *** Keywords ***
 Start App
-    Open Application        ${REMOTE_URL}     platformName=Android        deviceName=Android Emulator
+    Open Application        ${REMOTE_URL}     platformName=Android        deviceName=Android GoogleAPI Emulator
     ...                     newCommandTimeout=${commandTimeout}       app=${APP}     username=${sauce_username}
-    ...                     access_key=${sauce_key}   platformVersion=6.0
+    ...                     access_key=${sauce_key}   platformVersion=7.0
 
 Reset App
     Reset Application
