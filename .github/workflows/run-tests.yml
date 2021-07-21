@@ -17,8 +17,8 @@ jobs:
         run: |
           echo "$SAUCE_USERNAME"
           pwd
-          chmod 777 /robotframework-zoomba/robotframework-zoomba/test/Helpers/demo_app.apk
-          curl -F "payload=@/robotframework-zoomba/robotframework-zoomba/test/Helpers/demo_app.apk" -F name=demo_app.apk -u "$SAUCE_USERNAME":"$SAUCE_ACCESS_KEY" "https://api.us-west-1.saucelabs.com/v1/storage/upload"
+          chmod 777 ./robotframework-zoomba/test/Helpers/demo_app.apk
+          curl -F "payload=@./robotframework-zoomba/test/Helpers/demo_app.apk" -F name=demo_app.apk -u "$SAUCE_USERNAME":"$SAUCE_ACCESS_KEY" "https://api.us-west-1.saucelabs.com/v1/storage/upload"
   run-tests:
     runs-on: ubuntu-latest
     strategy:
