@@ -15,11 +15,9 @@ jobs:
         env:
           SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
-          working-directory: .github/workflows
+          working-directory: tests/Helpers
         working-directory: ${{env.working-directory}}
         run: |
-          echo "$SAUCE_USERNAME"
-          pwd
           curl -F "payload=@./demo_app.apk" -F name=demo_app.apk -u "$SAUCE_USERNAME":"$SAUCE_ACCESS_KEY" "https://api.us-west-1.saucelabs.com/v1/storage/upload"
   run-tests:
     runs-on: ubuntu-latest
