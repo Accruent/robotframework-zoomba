@@ -49,7 +49,7 @@ jobs:
       - name: Run Robot Tests
         run: |
           ${{ matrix.set_display }}
-          robot -e BrokenORWindowsORMobile test
+          robot -e BrokenORWindows test
 
       - name: Coveralls
         env:

@@ -8,7 +8,7 @@ Force Tags       Mobile
 
 *** Variables ***
 ${REMOTE_URL}           http://ondemand.us-west-1.saucelabs.com/wd/hub
-${APP}                  ${CURDIR}${/}..\\test\\Helpers\\demo_app.apk
+${APP}                  storage:filename=demo_app.apk
 ${commandTimeout}=      120
 
 *** Keywords ***
