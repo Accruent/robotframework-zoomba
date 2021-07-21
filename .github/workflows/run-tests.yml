@@ -49,7 +49,7 @@ jobs:
       - name: Run Robot Tests
         run: |
           ${{ matrix.set_display }}
-          robot -e BrokenORWindows test
+          robot -e BrokenORWindows -v sauce_username:${{ secrets.SAUCE_USERNAME }} -v sauce_key:${{ secrets.SAUCE_ACCESS_KEY }} test
 
       - name: Coveralls
         env:

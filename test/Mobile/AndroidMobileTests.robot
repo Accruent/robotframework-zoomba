@@ -14,7 +14,8 @@ ${commandTimeout}=      120
 *** Keywords ***
 Start App
     Open Application        ${REMOTE_URL}     platformName=Android    automationName=UiAutomator2    deviceName=Android
-    ...                     newCommandTimeout=${commandTimeout}       app=${APP}
+    ...                     newCommandTimeout=${commandTimeout}       app=${APP}     username=${sauce_username}
+    ...                     access_key=${sauce_key}
 
 Reset App
     Reset Application
