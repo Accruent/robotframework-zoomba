@@ -10,6 +10,7 @@ jobs:
   upload-demo-apps:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - shell: bash
         env:
           SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
