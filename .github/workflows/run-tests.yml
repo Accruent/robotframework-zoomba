@@ -16,6 +16,7 @@ jobs:
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
         run: |
           echo "$SAUCE_USERNAME"
+          pwd
           curl -F "payload=@demo_app.apk" -F name=demo_app.apk -u "$SAUCE_USERNAME":"$SAUCE_ACCESS_KEY" "https://api.us-west-1.saucelabs.com/v1/storage/upload"
   run-tests:
     runs-on: ubuntu-latest
