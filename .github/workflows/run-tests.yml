@@ -15,7 +15,7 @@ jobs:
           SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
           working-directory: ./test/Helpers
-        working-directory: {{env.working-directory}}
+        working-directory: ${{env.working-directory}}
         run: |
           echo "$SAUCE_USERNAME"
           pwd
