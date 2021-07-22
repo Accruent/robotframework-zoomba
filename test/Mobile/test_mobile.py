@@ -2,7 +2,7 @@ from Zoomba.MobileLibrary import MobileLibrary
 import unittest
 from appium import webdriver
 from unittest.mock import MagicMock
-from selenium.webdriver.common.action_chains import ActionChains
+from appium.webdriver.common.touch_action import TouchAction
 import sys
 import os
 sys.path.append(os.path.join(os.path.dirname(sys.path[0]), 'Helpers'))
@@ -111,10 +111,14 @@ class TestInternal(unittest.TestCase):
     def test_drag_and_drop(self):
         mock_desk = MagicMock()
         webdriver.Remote = WebdriverRemoteMock
-        ActionChains.drag_and_drop = MagicMock()
+        TouchAction.press = MagicMock()
+        TouchAction.move_to = MagicMock()
+        TouchAction.release = MagicMock()
         MobileLibrary.open_application(mock_desk, 'remote_url')
         MobileLibrary.drag_and_drop(mock_desk, "some_locator", "some_other_locator")
-        ActionChains.drag_and_drop.assert_called()
+        TouchAction.press.assert_called()
+        TouchAction.move_to.assert_called_with(unittest.mock.ANY)
+        TouchAction.release.assert_called()
 
     def test_drag_and_drop_missing_source(self):
         mock_desk = MagicMock()
@@ -133,10 +137,14 @@ class TestInternal(unittest.TestCase):
     def test_drag_and_drop_with_offset(self):
         mock_desk = MagicMock()
         webdriver.Remote = WebdriverRemoteMock
-        ActionChains.drag_and_drop_by_offset = MagicMock()
+        TouchAction.press = MagicMock()
+        TouchAction.move_to = MagicMock()
+        TouchAction.release = MagicMock()
         MobileLibrary.open_application(mock_desk, 'remote_url')
         MobileLibrary.drag_and_drop_by_offset(mock_desk, "some_locator", x_offset=100, y_offset=100)
-        ActionChains.drag_and_drop_by_offset.assert_called()
+        TouchAction.press.assert_called()
+        TouchAction.move_to.assert_called_with(x=100, y=100)
+        TouchAction.release.assert_called()
 
     def test_drag_and_drop_with_offset_missing_locator(self):
         mock_desk = MagicMock()

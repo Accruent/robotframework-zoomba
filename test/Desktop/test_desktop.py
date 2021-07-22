@@ -11,6 +11,7 @@ from unittest.mock import MagicMock, patch
 sys.path.append(os.path.join(os.path.dirname(sys.path[0]), 'Helpers'))
 from webdriverremotemock import WebdriverRemoteMock
 from selenium.webdriver.remote.webelement import WebElement
+from appium.webdriver.common.touch_action import TouchAction
 
 
 def _long_running_function():
@@ -641,17 +642,25 @@ class TestInternal(unittest.TestCase):
         move.assert_called_with(-400, -400)
         click.assert_called_with()
 
-    @patch("selenium.webdriver.common.action_chains.ActionChains.drag_and_drop")
-    def test_drag_and_drop(self, drag):
+    def test_drag_and_drop(self):
         mock_desk = MagicMock()
+        TouchAction.press = MagicMock()
+        TouchAction.move_to = MagicMock()
+        TouchAction.release = MagicMock()
         DesktopLibrary.drag_and_drop(mock_desk, "some_locator", "some_other_locator")
-        drag.assert_called_with(unittest.mock.ANY, unittest.mock.ANY)
+        TouchAction.press.assert_called()
+        TouchAction.move_to.assert_called_with(unittest.mock.ANY)
+        TouchAction.release.assert_called()
 
-    @patch("selenium.webdriver.common.action_chains.ActionChains.drag_and_drop_by_offset")
-    def test_drag_and_drop_with_offset(self, drag):
+    def test_drag_and_drop_with_offset(self):
         mock_desk = MagicMock()
+        TouchAction.press = MagicMock()
+        TouchAction.move_to = MagicMock()
+        TouchAction.release = MagicMock()
         DesktopLibrary.drag_and_drop_by_offset(mock_desk, "some_locator", x_offset=100, y_offset=100)
-        drag.assert_called_with(unittest.mock.ANY, 100, 100)
+        TouchAction.press.assert_called()
+        TouchAction.move_to.assert_called_with(x=100, y=100)
+        TouchAction.release.assert_called()
 
     @patch("selenium.webdriver.common.action_chains.ActionChains")
     def test_move_to_element(self, move):
