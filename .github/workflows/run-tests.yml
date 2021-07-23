@@ -36,7 +36,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip pabot
+          python -m pip install --upgrade pip robotframework-pabot
           pip install .
           pip install coveralls mock pytest-cov
           sudo apt-get update
