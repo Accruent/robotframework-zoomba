@@ -41,7 +41,7 @@ jobs:
       - name: Run Edge Robot Tests
         run: |
           ${{ matrix.set_display }}
-          pabot --randomize suites -i Edge -v sauce_username:${{ secrets.SAUCE_USERNAME }} -v sauce_key:${{ secrets.SAUCE_ACCESS_KEY }} -v GITHUB_RUN_NUMBER:Github.Zoomba.$GITHUB_RUN_NUMBER test
+          robot --randomize suites -i Edge -v sauce_username:${{ secrets.SAUCE_USERNAME }} -v sauce_key:${{ secrets.SAUCE_ACCESS_KEY }} -v GITHUB_RUN_NUMBER:Github.Zoomba.$GITHUB_RUN_NUMBER test
 
   run-tests:
     runs-on: ubuntu-latest
