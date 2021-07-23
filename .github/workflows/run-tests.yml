@@ -20,6 +20,29 @@ jobs:
         working-directory: ${{env.working-directory}}
         run: |
           curl -F "payload=@./demo_app.apk" -F name=demo_app.apk -u "$SAUCE_USERNAME":"$SAUCE_ACCESS_KEY" "https://api.us-west-1.saucelabs.com/v1/storage/upload"
+  run-tests-edge:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        python-version: [ 3.6, 3.7, 3.8, 3.9 ]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip robotframework-pabot
+          pip install .
+
+      - uses: browser-actions/setup-edge@latest
+      - name: Run Edge Robot Tests
+        run: |
+          ${{ matrix.set_display }}
+          pabot --randomize suites -i Edge -v sauce_username:${{ secrets.SAUCE_USERNAME }} -v sauce_key:${{ secrets.SAUCE_ACCESS_KEY }} -v GITHUB_RUN_NUMBER:Github.Zoomba.$GITHUB_RUN_NUMBER test
+
   run-tests:
     runs-on: ubuntu-latest
     strategy:
