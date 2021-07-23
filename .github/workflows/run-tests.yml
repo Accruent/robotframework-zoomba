@@ -9,6 +9,7 @@ on:
 jobs:
   upload-demo-apps:
     runs-on: ubuntu-latest
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@v2
       - shell: bash
@@ -49,7 +50,7 @@ jobs:
       - name: Run Robot Tests
         run: |
           ${{ matrix.set_display }}
-          pabot -e BrokenORWindows -v sauce_username:${{ secrets.SAUCE_USERNAME }} -v sauce_key:${{ secrets.SAUCE_ACCESS_KEY }} -v GITHUB_RUN_NUMBER:$GITHUB_RUN_NUMBER test
+          pabot -e BrokenORWindows -v sauce_username:${{ secrets.SAUCE_USERNAME }} -v sauce_key:${{ secrets.SAUCE_ACCESS_KEY }} -v GITHUB_RUN_NUMBER:Github.Zoomba.$GITHUB_RUN_NUMBER test
 
       - name: Coveralls
         env:

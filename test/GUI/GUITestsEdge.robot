@@ -15,7 +15,6 @@ Test Case Setup
     Open Browser   ${url}    browser=Edge    remote_url=${remote_url}     options=use_chromium=True
     ...            desired_capabilities=${capabilities}
     Maximize Browser Window
-    Set Selenium Speed    0.2s
 
 *** Test Cases ***
 Wait for Keywords Test

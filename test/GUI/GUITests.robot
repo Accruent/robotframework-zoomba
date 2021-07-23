@@ -11,7 +11,7 @@ Test Case Setup
     [Arguments]    ${url}=https://github.com/      ${browser}=${browser}
     Open Browser   ${url}    browser=${browser}
     Maximize Browser Window
-    Set Selenium Speed    0.2s
+    Set Selenium Speed    0.05s
 
 *** Test Cases ***
 Wait for Keywords Test
