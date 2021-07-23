@@ -2,6 +2,7 @@
 Documentation   Zoomba GUI Library Tests
 Library         ../../src/Zoomba/GUILibrary.py     plugins=Zoomba.Helpers.EdgePlugin
 Library         Collections
+Force Tags      Edge
 
 *** Variables ***
 ${remote_url}       https://ondemand.saucelabs.com/wd/hub
@@ -9,11 +10,7 @@ ${remote_url}       https://ondemand.saucelabs.com/wd/hub
 *** Keywords ***
 Test Case Setup
     [Arguments]    ${url}=https://github.com/
-    ${capabilities}     Create Dictionary      browserName=MicrosoftEdge    platform=Windows 10     version=latest
-    ...                 username=${sauce_username}     accessKey=${sauce_key}   name=GitHub.${SUITE_NAME}
-    ...                 build=${GITHUB_RUN_NUMBER}
-    Open Browser   ${url}    browser=Edge    remote_url=${remote_url}     options=use_chromium=True
-    ...            desired_capabilities=${capabilities}
+    Open Browser   ${url}    browser=Edge    options=use_chromium=True
     Maximize Browser Window
 
 *** Test Cases ***
@@ -122,7 +119,7 @@ Scroll To Bottom of Page Test
     wait until element is visible                   //div[@id='res']
     scroll to bottom of page
     ${position} =                Execute Javascript        return window.pageYOffset
-    should be equal              "768"         "${position}"
+    should be equal              "728"         "${position}"
 
 Wait Until Window Tests
     [Teardown]                      Close All Browsers
