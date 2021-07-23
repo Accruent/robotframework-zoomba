@@ -49,7 +49,7 @@ jobs:
       - name: Run Robot Tests
         run: |
           ${{ matrix.set_display }}
-          pabot --randomize suites -e BrokenORWindows -v sauce_username:${{ secrets.SAUCE_USERNAME }} -v sauce_key:${{ secrets.SAUCE_ACCESS_KEY }} test
+          pabot -e BrokenORWindows -v sauce_username:${{ secrets.SAUCE_USERNAME }} -v sauce_key:${{ secrets.SAUCE_ACCESS_KEY }} -v GITHUB_RUN_NUMBER:$GITHUB_RUN_NUMBER test
 
       - name: Coveralls
         env:

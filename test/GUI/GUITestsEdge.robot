@@ -10,7 +10,8 @@ ${remote_url}       https://ondemand.saucelabs.com/wd/hub
 Test Case Setup
     [Arguments]    ${url}=https://github.com/
     ${capabilities}     Create Dictionary      browserName=MicrosoftEdge    platform=Windows 10     version=latest
-    ...                 username=${sauce_username}     accessKey=${sauce_key}   name=${SUITE_NAME}
+    ...                 username=${sauce_username}     accessKey=${sauce_key}   name=GitHub.${SUITE_NAME}
+    ...                 build=${GITHUB_RUN_NUMBER}
     Open Browser   ${url}    browser=Edge    remote_url=${remote_url}     options=use_chromium=True
     ...            desired_capabilities=${capabilities}
     Maximize Browser Window
