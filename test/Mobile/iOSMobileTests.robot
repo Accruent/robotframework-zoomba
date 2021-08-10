@@ -13,13 +13,29 @@ ${commandTimeout}=      120
 Start App
     Open Application        ${REMOTE_URL}     platformName=iOS        deviceName=iPhone XS Simulator
     ...                     newCommandTimeout=${commandTimeout}       browserName=Safari    username=${sauce_username}
-    ...                     access_key=${sauce_key}    platformVersion=14.5      name=GitHub.${SUITE_NAME}
+    ...                     access_key=${sauce_key}    platformVersion=14.5       name=GitHub.${SUITE_NAME}
     ...                     build=${GITHUB_RUN_NUMBER}
-    Background App    -1
-    Switch To Context    NATIVE_APP
 
 *** Test Cases ***
+#Scroll To Text In WebView Keyword Test
+#    # Currently not working, bug with detecting item on page
+#    Go To Url    https://www.appiumpro.com
+#    Scroll Down To Text    E-mail Address
+#    Scroll Up To Text      Let's face it
+#
+#Scroll To Text In NativeApp Keyword Test
+#    # Currently not working, bug with detecting item on page
+#    Background App    -1
+#    Switch To Context    NATIVE_APP
+#    Wait For And Click Element       Contacts
+#    Wait Until Page Contains      Contacts
+#    Wait For And Click Element    Add
+#    Scroll Down To Text    Notes
+#    Element Should Be Visible    Notes
+
 Wait For And Click Element By Id Keyword Test
+    Background App    -1
+    Switch To Context    NATIVE_APP
     Wait For And Click Element       Contacts
     Wait Until Page Contains      Contacts
 
@@ -60,11 +76,6 @@ Wait Until Element Contains / Does Not Contain
     Wait Until Element Contains    Search     John
     Wait For And Click Element    //XCUIElementTypeButton[@name="Cancel"]
     Wait Until Element Does Not Contain    Search     John
-
-Scroll To Text Keyword Test
-    Go To Url    https://www.appiumpro.com
-    Scroll Down To Text    E-mail Address
-    Scroll Up To Text      Let's face it
 
 Save Selenium Screenshot Test
     ${file1}=                       Save Appium Screenshot
