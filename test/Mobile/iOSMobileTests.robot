@@ -17,21 +17,23 @@ Start App
     ...                     build=${GITHUB_RUN_NUMBER}
 
 *** Test Cases ***
-#Scroll To Text In WebView Keyword Test
-#    # Currently not working, bug with detecting item on page
-#    Go To Url    https://www.appiumpro.com
-#    Scroll Down To Text    E-mail Address
-#    Scroll Up To Text      Let's face it
-#
-#Scroll To Text In NativeApp Keyword Test
-#    # Currently not working, bug with detecting item on page
-#    Background App    -1
-#    Switch To Context    NATIVE_APP
-#    Wait For And Click Element       Contacts
-#    Wait Until Page Contains      Contacts
-#    Wait For And Click Element    Add
-#    Scroll Down To Text    Notes
-#    Element Should Be Visible    Notes
+Scroll To Text In WebView Keyword Test
+    [Tags]    Broken
+    # Currently not working, bug with detecting item on page
+    Go To Url    https://www.appiumpro.com
+    Scroll Down To Text    E-mail Address
+    Scroll Up To Text      Let's face it
+
+Scroll To Text In NativeApp Keyword Test
+    [Tags]    Broken
+    # Currently not working, bug with detecting item on page
+    Background App    -1
+    Switch To Context    NATIVE_APP
+    Wait For And Click Element       Contacts
+    Wait Until Page Contains      Contacts
+    Wait For And Click Element    Add
+    Scroll Down To Text    Notes
+    Element Should Be Visible    Notes
 
 Wait For And Click Element By Id Keyword Test
     Background App    -1
