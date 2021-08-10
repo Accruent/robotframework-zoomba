@@ -60,16 +60,17 @@ Wait For And Long Press Keyword Test
 Wait Until Element is Enabled Keyword Test
     Wait Until Element Is Enabled       Add
 
-#Drag and Drop Keyword Test
-#     #Need to come back to this after some edits for drag and drop
-#    Background App    -1
-#    Wait For And Long Press     Files
-#    Wait For And Click Element       OK
-#    Drag and Drop                Files      Watch
-#    Drag and Drop By Offset                Shortcuts          200      200
-#    Run keyword And Expect Error         ValueError: Element locator 'Not_a_real_id' did not match any elements.
-#    ...            Drag and Drop         Not_a_real_id      Watch
-#    Wait For And Click Element    Done
+Drag and Drop Keyword Test
+    [Tags]    Broken
+    #Need to come back to this after some edits for drag and drop
+    Background App    -1
+    Wait For And Long Press     Files
+    Wait For And Click Element       OK
+    Drag and Drop                Files      Watch
+    Drag and Drop By Offset                Shortcuts          200      200
+    Run keyword And Expect Error         ValueError: Element locator 'Not_a_real_id' did not match any elements.
+    ...            Drag and Drop         Not_a_real_id      Watch
+    Wait For And Click Element    Done
 
 Wait Until Element Contains / Does Not Contain
 #    Wait For And Tap       Contacts   #Needed once we have the above test fixed
