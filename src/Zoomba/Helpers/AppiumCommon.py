@@ -1,6 +1,6 @@
 import itertools
 from time import time
-from selenium.webdriver.common.action_chains import ActionChains
+from appium.webdriver.common.touch_action import TouchAction
 from robot.libraries.BuiltIn import BuiltIn
 
 SCREENSHOT_COUNTER = itertools.count()
@@ -56,9 +56,11 @@ def drag_and_drop(self, source, target):
     locator ``target``."""
     source_element = self._element_find(source, True, True)
     target_element = self._element_find(target, True, True)
-    actions = ActionChains(self._current_application())
     zoomba.log('Dragging source element "%s" to target element "%s".' % (source, target))
-    actions.drag_and_drop(source_element, target_element).perform()
+    actions = TouchAction(self._current_application())
+    actions.press(source_element)
+    actions.move_to(target_element)
+    actions.release().perform()
 
 
 def drag_and_drop_by_offset(self, locator, x_offset=0, y_offset=0):
@@ -66,6 +68,8 @@ def drag_and_drop_by_offset(self, locator, x_offset=0, y_offset=0):
     coordinates.
     """
     element = self._element_find(locator, True, True)
-    actions = ActionChains(self._current_application())
     zoomba.log('Dragging element "%s" by offset (%s, %s).' % (locator, x_offset, y_offset))
-    actions.drag_and_drop_by_offset(element, x_offset, y_offset).perform()
+    actions = TouchAction(self._current_application())
+    actions.press(element)
+    actions.move_to(x=x_offset, y=y_offset)
+    actions.release().perform()

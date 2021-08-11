@@ -1,17 +1,17 @@
 *** Settings ***
 Documentation   Zoomba GUI Library Tests
-Library         ../../src/Zoomba/GUILibrary.py
+Library         ../../src/Zoomba/GUILibrary.py     plugins=Zoomba.Helpers.EdgePlugin
 Library         Collections
+Force Tags      Edge
 
 *** Variables ***
-${browser}     chrome
+${remote_url}       https://ondemand.saucelabs.com/wd/hub
 
 *** Keywords ***
 Test Case Setup
-    [Arguments]    ${url}=https://github.com/      ${browser}=${browser}
-    Open Browser   ${url}    browser=${browser}
+    [Arguments]    ${url}=https://github.com/
+    Open Browser   ${url}    browser=Edge    options=use_chromium=True
     Maximize Browser Window
-    Set Selenium Speed    0.05s
 
 *** Test Cases ***
 Wait for Keywords Test
@@ -119,7 +119,7 @@ Scroll To Bottom of Page Test
     wait until element is visible                   //div[@id='res']
     scroll to bottom of page
     ${position} =                Execute Javascript        return window.pageYOffset
-    should be equal              "767"         "${position}"
+    should be equal              "728"         "${position}"
 
 Wait Until Window Tests
     [Teardown]                      Close All Browsers
