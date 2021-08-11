@@ -69,7 +69,7 @@ Drag and Drop By Offset Keyword Test
     Drag and Drop By Offset                com.touchboarder.android.api.demos:id/card           100      100
     # Not sure why here but it moves 150 pixels rather than 100...may be limitation of testing app
     ${location}=       Get Element Location    com.touchboarder.android.api.demos:id/card
-    Should Be Equal     '${location}'       {'x': 150, 'y': 310}
+    Should Be Equal     "${location}"       "{'x': 150, 'y': 310}"
 
 Wait Until Element Contains
     Wait For And Click Element       accessibility_id=Search
