@@ -143,7 +143,7 @@ class TestInternal(unittest.TestCase):
         MobileLibrary.open_application(mock_desk, 'remote_url')
         MobileLibrary.drag_and_drop_by_offset(mock_desk, "some_locator", x_offset=100, y_offset=100)
         TouchAction.press.assert_called()
-        TouchAction.move_to.assert_called_with(x=100, y=100)
+        TouchAction.move_to.assert_called_with(x=unittest.mock.ANY, y=unittest.mock.ANY)
         TouchAction.release.assert_called()
 
     def test_drag_and_drop_with_offset_missing_locator(self):
