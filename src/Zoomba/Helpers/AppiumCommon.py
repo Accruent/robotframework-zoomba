@@ -69,7 +69,9 @@ def drag_and_drop_by_offset(self, locator, x_offset=0, y_offset=0):
     """
     element = self._element_find(locator, True, True)
     zoomba.log('Dragging element "%s" by offset (%s, %s).' % (locator, x_offset, y_offset))
+    x_center = element.location['x'] + element.size['width'] / 2
+    y_center = element.location['y'] + element.size['height'] / 2
     actions = TouchAction(self._current_application())
     actions.press(element)
-    actions.move_to(x=x_offset, y=y_offset)
+    actions.move_to(x=x_center + x_offset, y=y_center + y_offset)
     actions.release().perform()
