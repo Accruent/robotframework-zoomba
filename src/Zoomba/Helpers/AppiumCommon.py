@@ -73,7 +73,8 @@ def drag_and_drop(self, source, target, delay=1500):
 def drag_and_drop_by_offset(self, locator, x_offset=0, y_offset=0, delay=1500):
     """Drags the element found with ``locator`` to the given ``x_offset`` and ``y_offset``
     coordinates.
-    """
+
+    ``Delay`` (iOS Only): Delay between initial button press and dragging, defaults to 1500ms."""
     element = self._element_find(locator, True, True)
     zoomba.log('Dragging element "%s" by offset (%s, %s).' % (locator, x_offset, y_offset))
     x_center = element.location['x'] + element.size['width'] / 2
