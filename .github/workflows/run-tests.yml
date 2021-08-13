@@ -25,6 +25,8 @@ jobs:
     strategy:
       matrix:
         python-version: [ 3.6, 3.7, 3.8, 3.9 ]
+        include:
+          - RUN_EDGE_ROBOT: robot --randomize suites -i Edge -v sauce_username:${{ secrets.SAUCE_USERNAME }} -v sauce_key:${{ secrets.SAUCE_ACCESS_KEY }} -v GITHUB_RUN_NUMBER:Github.Zoomba.$GITHUB_RUN_NUMBER test
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
@@ -43,7 +45,7 @@ jobs:
           EDGE_ROBOT_COMMAND: --randomize suites -i Edge -v sauce_username:${{ secrets.SAUCE_USERNAME }} -v sauce_key:${{ secrets.SAUCE_ACCESS_KEY }} -v GITHUB_RUN_NUMBER:Github.Zoomba.$GITHUB_RUN_NUMBER test
         run: |
           ${{ matrix.set_display }}
-          robot "${EDGE_ROBOT_COMMAND}" || robot "${EDGE_ROBOT_COMMAND}"
+          ${{ RUN_EDGE_ROBOT }} || ${{ RUN_EDGE_ROBOT }}
 
   run-tests:
     runs-on: ubuntu-latest
