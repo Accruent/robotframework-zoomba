@@ -40,10 +40,10 @@ jobs:
       - uses: browser-actions/setup-edge@latest
       - name: Run Edge Robot Tests
         env:
-          Edge_Robot_Command: robot --randomize suites -i Edge -v sauce_username:${{ secrets.SAUCE_USERNAME }} -v sauce_key:${{ secrets.SAUCE_ACCESS_KEY }} -v GITHUB_RUN_NUMBER:Github.Zoomba.$GITHUB_RUN_NUMBER test
+          EDGE_ROBOT_COMMAND: robot --randomize suites -i Edge -v sauce_username:${{ secrets.SAUCE_USERNAME }} -v sauce_key:${{ secrets.SAUCE_ACCESS_KEY }} -v GITHUB_RUN_NUMBER:Github.Zoomba.$GITHUB_RUN_NUMBER test
         run: |
           ${{ matrix.set_display }}
-          "$Edge_Robot_Command" || "$Edge_Robot_Command"
+          ${EDGE_ROBOT_COMMAND} || ${EDGE_ROBOT_COMMAND}
 
   run-tests:
     runs-on: ubuntu-latest
