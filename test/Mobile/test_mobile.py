@@ -120,6 +120,19 @@ class TestInternal(unittest.TestCase):
         TouchAction.move_to.assert_called_with(unittest.mock.ANY)
         TouchAction.release.assert_called()
 
+    def test_drag_and_drop_ios(self):
+        mock_desk = MagicMock()
+        mock_desk._get_platform = MagicMock(return_value='ios')
+        webdriver.Remote = WebdriverRemoteMock
+        TouchAction.long_press = MagicMock()
+        TouchAction.move_to = MagicMock()
+        TouchAction.release = MagicMock()
+        MobileLibrary.open_application(mock_desk, 'remote_url')
+        MobileLibrary.drag_and_drop(mock_desk, "some_locator", "some_other_locator")
+        TouchAction.long_press.assert_called()
+        TouchAction.move_to.assert_called_with(unittest.mock.ANY)
+        TouchAction.release.assert_called()
+
     def test_drag_and_drop_missing_source(self):
         mock_desk = MagicMock()
         webdriver.Remote = WebdriverRemoteMock
@@ -143,6 +156,19 @@ class TestInternal(unittest.TestCase):
         MobileLibrary.open_application(mock_desk, 'remote_url')
         MobileLibrary.drag_and_drop_by_offset(mock_desk, "some_locator", x_offset=100, y_offset=100)
         TouchAction.press.assert_called()
+        TouchAction.move_to.assert_called_with(x=unittest.mock.ANY, y=unittest.mock.ANY)
+        TouchAction.release.assert_called()
+
+    def test_drag_and_drop_with_offset_ios(self):
+        mock_desk = MagicMock()
+        mock_desk._get_platform = MagicMock(return_value='ios')
+        webdriver.Remote = WebdriverRemoteMock
+        TouchAction.long_press = MagicMock()
+        TouchAction.move_to = MagicMock()
+        TouchAction.release = MagicMock()
+        MobileLibrary.open_application(mock_desk, 'remote_url')
+        MobileLibrary.drag_and_drop_by_offset(mock_desk, "some_locator", x_offset=100, y_offset=100)
+        TouchAction.long_press.assert_called()
         TouchAction.move_to.assert_called_with(x=unittest.mock.ANY, y=unittest.mock.ANY)
         TouchAction.release.assert_called()
 
