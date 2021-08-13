@@ -51,19 +51,26 @@ def wait_until_page_contains(self, text, timeout=None, error=None):
     self._wait_until(timeout, error, self._is_text_present, text)
 
 
-def drag_and_drop(self, source, target):
+def drag_and_drop(self, source, target, delay=1500):
     """Drags the element found with the locator ``source`` to the element found with the
-    locator ``target``."""
+    locator ``target``.
+
+    ``Delay`` (iOS Only): Delay between initial button press and dragging, defaults to 1500ms."""
     source_element = self._element_find(source, True, True)
     target_element = self._element_find(target, True, True)
     zoomba.log('Dragging source element "%s" to target element "%s".' % (source, target))
     actions = TouchAction(self._current_application())
     actions.press(source_element)
+    if self._get_platform() == 'ios':
+        actions.long_press(source_element, duration=2000)
+        actions.wait(delay)
+    else:
+        actions.press(source_element)
     actions.move_to(target_element)
     actions.release().perform()
 
 
-def drag_and_drop_by_offset(self, locator, x_offset=0, y_offset=0):
+def drag_and_drop_by_offset(self, locator, x_offset=0, y_offset=0, delay=1500):
     """Drags the element found with ``locator`` to the given ``x_offset`` and ``y_offset``
     coordinates.
     """
@@ -72,6 +79,10 @@ def drag_and_drop_by_offset(self, locator, x_offset=0, y_offset=0):
     x_center = element.location['x'] + element.size['width'] / 2
     y_center = element.location['y'] + element.size['height'] / 2
     actions = TouchAction(self._current_application())
-    actions.press(element)
+    if self._get_platform() == 'ios':
+        actions.long_press(element, duration=2000)
+        actions.wait(delay)
+    else:
+        actions.press(element)
     actions.move_to(x=x_center + x_offset, y=y_center + y_offset)
     actions.release().perform()

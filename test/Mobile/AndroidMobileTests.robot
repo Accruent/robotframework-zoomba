@@ -15,8 +15,8 @@ ${commandTimeout}=      120
 Start App
     Open Application        ${REMOTE_URL}     platformName=Android        deviceName=Android GoogleAPI Emulator
     ...                     newCommandTimeout=${commandTimeout}       app=${APP}     username=${sauce_username}
-    ...                     access_key=${sauce_key}   platformVersion=6.0    name=GitHub.${SUITE_NAME}
-    ...                     build=${GITHUB_RUN_NUMBER}
+    ...                     access_key=${sauce_key}   platformVersion=6.0    #name=GitHub.${SUITE_NAME}
+    #...                     build=${GITHUB_RUN_NUMBER}
 
 Reset App
     Reset Application
