@@ -60,12 +60,7 @@ def drag_and_drop(self, source, target, delay=1500):
     target_element = self._element_find(target, True, True)
     zoomba.log('Dragging source element "%s" to target element "%s".' % (source, target))
     actions = TouchAction(self._current_application())
-    actions.press(source_element)
-    if self._get_platform().lower() == 'ios':
-        actions.long_press(source_element, duration=2000)
-        actions.wait(delay)
-    else:
-        actions.press(source_element)
+    self._platform_dependant_press(actions, source_element, delay)
     actions.move_to(target_element)
     actions.release().perform()
 
@@ -80,10 +75,14 @@ def drag_and_drop_by_offset(self, locator, x_offset=0, y_offset=0, delay=1500):
     x_center = element.location['x'] + element.size['width'] / 2
     y_center = element.location['y'] + element.size['height'] / 2
     actions = TouchAction(self._current_application())
+    self._platform_dependant_press(actions, element, delay)
+    actions.move_to(x=x_center + x_offset, y=y_center + y_offset)
+    actions.release().perform()
+
+
+def _platform_dependant_press(self, actions, element, delay):
     if self._get_platform().lower() == 'ios':
         actions.long_press(element, duration=2000)
         actions.wait(delay)
     else:
         actions.press(element)
-    actions.move_to(x=x_center + x_offset, y=y_center + y_offset)
-    actions.release().perform()
