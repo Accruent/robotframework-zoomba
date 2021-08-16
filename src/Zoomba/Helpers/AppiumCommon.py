@@ -51,27 +51,38 @@ def wait_until_page_contains(self, text, timeout=None, error=None):
     self._wait_until(timeout, error, self._is_text_present, text)
 
 
-def drag_and_drop(self, source, target):
+def drag_and_drop(self, source, target, delay=1500):
     """Drags the element found with the locator ``source`` to the element found with the
-    locator ``target``."""
+    locator ``target``.
+
+    ``Delay`` (iOS Only): Delay between initial button press and dragging, defaults to 1500ms."""
     source_element = self._element_find(source, True, True)
     target_element = self._element_find(target, True, True)
     zoomba.log('Dragging source element "%s" to target element "%s".' % (source, target))
     actions = TouchAction(self._current_application())
-    actions.press(source_element)
+    self._platform_dependant_press(actions, source_element, delay)
     actions.move_to(target_element)
     actions.release().perform()
 
 
-def drag_and_drop_by_offset(self, locator, x_offset=0, y_offset=0):
+def drag_and_drop_by_offset(self, locator, x_offset=0, y_offset=0, delay=1500):
     """Drags the element found with ``locator`` to the given ``x_offset`` and ``y_offset``
     coordinates.
-    """
+
+    ``Delay`` (iOS Only): Delay between initial button press and dragging, defaults to 1500ms."""
     element = self._element_find(locator, True, True)
     zoomba.log('Dragging element "%s" by offset (%s, %s).' % (locator, x_offset, y_offset))
     x_center = element.location['x'] + element.size['width'] / 2
     y_center = element.location['y'] + element.size['height'] / 2
     actions = TouchAction(self._current_application())
-    actions.press(element)
+    self._platform_dependant_press(actions, element, delay)
     actions.move_to(x=x_center + x_offset, y=y_center + y_offset)
     actions.release().perform()
+
+
+def _platform_dependant_press(self, actions, element, delay):
+    if self._get_platform().lower() == 'ios':
+        actions.long_press(element, duration=2000)
+        actions.wait(delay)
+    else:
+        actions.press(element)

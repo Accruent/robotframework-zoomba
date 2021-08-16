@@ -242,17 +242,20 @@ class MobileLibrary(AppiumLibrary):
         self.element_should_be_disabled(locator)
 
     @keyword("Drag And Drop")
-    def drag_and_drop(self, source, target):
+    def drag_and_drop(self, source, target, delay=1500):
         """Drags the element found with the locator ``source`` to the element found with the
-        locator ``target``."""
-        AppiumCommon.drag_and_drop(self, source, target)
+        locator ``target``.
+
+        ``Delay`` (iOS Only): Delay between initial button press and dragging, defaults to 1500ms."""
+        AppiumCommon.drag_and_drop(self, source, target, delay)
 
     @keyword("Drag And Drop By Offset")
-    def drag_and_drop_by_offset(self, locator, x_offset=0, y_offset=0):
+    def drag_and_drop_by_offset(self, locator, x_offset=0, y_offset=0, delay=1500):
         """Drags the element found with ``locator`` to the given ``x_offset`` and ``y_offset``
         coordinates.
-        """
-        AppiumCommon.drag_and_drop_by_offset(self, locator, x_offset, y_offset)
+
+        ``Delay`` (iOS Only): Delay between initial button press and dragging, defaults to 1500ms."""
+        AppiumCommon.drag_and_drop_by_offset(self, locator, x_offset, y_offset, delay)
 
     @keyword("Scroll Down To Text")
     def scroll_down_to_text(self, text, swipe_count=20):
@@ -328,3 +331,7 @@ class MobileLibrary(AppiumLibrary):
         if not error:
             error = "Element '%s' did not appear in <TIMEOUT>" % locator
         self._wait_until(timeout, error, self._is_element_present, locator)
+
+    def _platform_dependant_press(self, actions, element, delay=1500):
+        """Decide press action based on platform"""
+        AppiumCommon._platform_dependant_press(self, actions, element, delay)
