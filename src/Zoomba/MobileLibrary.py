@@ -331,3 +331,11 @@ class MobileLibrary(AppiumLibrary):
         if not error:
             error = "Element '%s' did not appear in <TIMEOUT>" % locator
         self._wait_until(timeout, error, self._is_element_present, locator)
+
+    def _platform_dependant_press(self, actions, element, delay):
+        """Decide press behavior based on platform"""
+        if self._get_platform().lower() == 'ios':
+            actions.long_press(element, duration=2000)
+            actions.wait(delay)
+        else:
+            actions.press(element)

@@ -78,11 +78,3 @@ def drag_and_drop_by_offset(self, locator, x_offset=0, y_offset=0, delay=1500):
     self._platform_dependant_press(actions, element, delay)
     actions.move_to(x=x_center + x_offset, y=y_center + y_offset)
     actions.release().perform()
-
-
-def _platform_dependant_press(self, actions, element, delay):
-    if self._get_platform().lower() == 'ios':
-        actions.long_press(element, duration=2000)
-        actions.wait(delay)
-    else:
-        actions.press(element)
