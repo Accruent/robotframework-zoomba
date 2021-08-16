@@ -111,7 +111,6 @@ class TestInternal(unittest.TestCase):
     def test_drag_and_drop(self):
         mock_desk = MagicMock()
         webdriver.Remote = WebdriverRemoteMock
-        mock_desk._platform_dependant_press = MagicMock()
         TouchAction.move_to = MagicMock()
         TouchAction.release = MagicMock()
         MobileLibrary.open_application(mock_desk, 'remote_url')
@@ -124,7 +123,6 @@ class TestInternal(unittest.TestCase):
         mock_desk = MagicMock()
         mock_desk._get_platform = MagicMock(return_value='ios')
         webdriver.Remote = WebdriverRemoteMock
-        mock_desk._platform_dependant_press = MagicMock()
         TouchAction.move_to = MagicMock()
         TouchAction.release = MagicMock()
         MobileLibrary.open_application(mock_desk, 'remote_url')
@@ -150,7 +148,6 @@ class TestInternal(unittest.TestCase):
     def test_drag_and_drop_with_offset(self):
         mock_desk = MagicMock()
         webdriver.Remote = WebdriverRemoteMock
-        mock_desk._platform_dependant_press = MagicMock()
         TouchAction.move_to = MagicMock()
         TouchAction.release = MagicMock()
         MobileLibrary.open_application(mock_desk, 'remote_url')
@@ -163,7 +160,6 @@ class TestInternal(unittest.TestCase):
         mock_desk = MagicMock()
         mock_desk._get_platform = MagicMock(return_value='ios')
         webdriver.Remote = WebdriverRemoteMock
-        mock_desk._platform_dependant_press = MagicMock()
         TouchAction.move_to = MagicMock()
         TouchAction.release = MagicMock()
         MobileLibrary.open_application(mock_desk, 'remote_url')
@@ -260,3 +256,8 @@ class TestInternal(unittest.TestCase):
         MobileLibrary._wait_until_page_contains_element(mock_desk, 'some_element', 5)
         mock_desk._wait_until.assert_called_with(5, "Element 'some_element' did not appear in "
                                                     "<TIMEOUT>", unittest.mock.ANY, 'some_element')
+
+    # def test_platform_dependant_press_private(self):
+    #     mock_desk = MagicMock()
+    #     MobileLibrary._platform_dependant_press(mock_desk, 'some_element', 5)
+

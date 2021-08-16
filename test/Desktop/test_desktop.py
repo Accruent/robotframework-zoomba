@@ -644,7 +644,6 @@ class TestInternal(unittest.TestCase):
 
     def test_drag_and_drop(self):
         mock_desk = MagicMock()
-        mock_desk._platform_dependant_press = MagicMock()
         TouchAction.move_to = MagicMock()
         TouchAction.release = MagicMock()
         DesktopLibrary.drag_and_drop(mock_desk, "some_locator", "some_other_locator")
@@ -654,7 +653,6 @@ class TestInternal(unittest.TestCase):
 
     def test_drag_and_drop_with_offset(self):
         mock_desk = MagicMock()
-        mock_desk._platform_dependant_press = MagicMock()
         TouchAction.move_to = MagicMock()
         TouchAction.release = MagicMock()
         DesktopLibrary.drag_and_drop_by_offset(mock_desk, "some_locator", x_offset=100, y_offset=100)
