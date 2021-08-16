@@ -333,9 +333,5 @@ class MobileLibrary(AppiumLibrary):
         self._wait_until(timeout, error, self._is_element_present, locator)
 
     def _platform_dependant_press(self, actions, element, delay):
-        """Decide press behavior based on platform"""
-        if self._get_platform().lower() == 'ios':
-            actions.long_press(element, duration=2000)
-            actions.wait(delay)
-        else:
-            actions.press(element)
+        """Decide press action based on platform"""
+        AppiumCommon._platform_dependant_press(self, actions, element, delay)
