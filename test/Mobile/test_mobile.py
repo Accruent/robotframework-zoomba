@@ -257,7 +257,15 @@ class TestInternal(unittest.TestCase):
         mock_desk._wait_until.assert_called_with(5, "Element 'some_element' did not appear in "
                                                     "<TIMEOUT>", unittest.mock.ANY, 'some_element')
 
-    # def test_platform_dependant_press_private(self):
-    #     mock_desk = MagicMock()
-    #     MobileLibrary._platform_dependant_press(mock_desk, 'some_element', 5)
+    def test_platform_dependant_press_private(self):
+        mock_desk = MagicMock()
+        MobileLibrary._platform_dependant_press(mock_desk, MagicMock(), 'some_element')
 
+    def test_platform_dependant_press_ios_private(self):
+        mock_desk = MagicMock()
+        mock_desk._get_platform = MagicMock(return_value='ios')
+        MobileLibrary._platform_dependant_press(mock_desk, MagicMock(), 'some_element')
+
+    def test_platform_dependant_press_delay_set_private(self):
+        mock_desk = MagicMock()
+        MobileLibrary._platform_dependant_press(mock_desk, MagicMock(), 'some_element', delay=500)

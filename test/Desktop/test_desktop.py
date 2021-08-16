@@ -938,3 +938,7 @@ class TestInternal(unittest.TestCase):
         mock_desk = MagicMock()
         DesktopLibrary._check_for_cached_element(mock_desk, "a locator")
         mock_desk._element_find.assert_called_with("a locator", True, True)
+
+    def test_platform_dependant_press_private(self):
+        mock_desk = MagicMock()
+        DesktopLibrary._platform_dependant_press(mock_desk, MagicMock(), 'some_element')

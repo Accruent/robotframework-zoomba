@@ -1167,6 +1167,6 @@ class DesktopLibrary(AppiumLibrary):
             return self.current_element
         return self._element_find(locator, True, True)
 
-    def _platform_dependant_press(self, actions, element, delay):
+    def _platform_dependant_press(self, actions, element, delay=1500):
         """Decide press action based on platform"""
         AppiumCommon._platform_dependant_press(self, actions, element, delay)
