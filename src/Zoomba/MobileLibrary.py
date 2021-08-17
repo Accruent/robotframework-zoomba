@@ -258,30 +258,14 @@ class MobileLibrary(AppiumLibrary):
         AppiumCommon.drag_and_drop_by_offset(self, locator, x_offset, y_offset, delay)
 
     @keyword("Scroll Down To Text")
-    def scroll_down_to_text(self, text, swipe_count=20):
-        """Scrolls down to ``text`` using small swipes. The ``swipe_count`` defaults to 20."""
-        found = False
-        for _ in range(swipe_count):
-            if self._is_text_present(text):
-                found = True
-                break
-            else:
-                self.swipe_by_percent(50, 75, 50, 50)  # use swipe by direction if its ever implemented
-        if not found:
-            zoomba.fail("Text: " + text + " was not found after " + str(swipe_count) + " swipes")
+    def scroll_down_to_text(self, text, swipe_count=10):
+        """Scrolls down to ``text`` using small swipes. The ``swipe_count`` defaults to 10."""
+        self._scroll_to_text(text, 'down', swipe_count)
 
     @keyword("Scroll Up To Text")
-    def scroll_up_to_text(self, text, swipe_count=20):
-        """Scrolls down to ``text`` using small swipes. The ``swipe_count`` defaults to 20."""
-        found = False
-        for _ in range(swipe_count):
-            if self._is_text_present(text):
-                found = True
-                break
-            else:
-                self.swipe_by_percent(50, 50, 50, 75)  # use swipe by direction if its ever implemented
-        if not found:
-            zoomba.fail("Text: " + text + " was not found after " + str(swipe_count) + " swipes")
+    def scroll_up_to_text(self, text, swipe_count=10):
+        """Scrolls down to ``text`` using small swipes. The ``swipe_count`` defaults to 10."""
+        self._scroll_to_text(text, 'up', swipe_count)
 
     @keyword("Wait For And Tap")
     def wait_for_and_tap(self, locator, x_offset=None, y_offset=None, count=1, timeout=None,
@@ -335,3 +319,23 @@ class MobileLibrary(AppiumLibrary):
     def _platform_dependant_press(self, actions, element, delay=1500):
         """Decide press action based on platform"""
         AppiumCommon._platform_dependant_press(self, actions, element, delay)
+
+    def _is_text_visible(self, text, exact_match=False):
+        element = self._element_find_by_text(text, exact_match)
+        if element is not None:
+            return element.is_displayed()
+        return None
+
+    def _scroll_to_text(self, text, swipe_direction, swipe_count=10):
+        for _ in range(swipe_count):
+            if self._get_platform().lower() == 'android' and self._is_text_present(text):
+                return True
+            if self._get_platform().lower() == 'ios' and self._is_text_visible(text):
+                return True
+            if swipe_direction.lower() == 'up':
+                self.swipe_by_percent(50, 25, 50, 75)  # use swipe by direction if its ever implemented
+            elif swipe_direction.lower() == 'down':
+                self.swipe_by_percent(50, 75, 50, 25)  # use swipe by direction if its ever implemented
+            else:
+                zoomba.fail("Swipe_direction: " + swipe_direction + "is not implemented.")
+        zoomba.fail("Text: " + text + " was not found after " + str(swipe_count) + " swipes")
