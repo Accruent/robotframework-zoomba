@@ -371,13 +371,12 @@ class MobileLibrary(AppiumLibrary):
                 _xpath = u'//*[@value="{}" or @label="{}"]'.format(text, text)
             else:
                 _xpath = u'//*[contains(@label,"{}") or contains(@value, "{}") or contains(text(), "{}")]'.format(text, text, text)
-            return self._element_find(_xpath, True, True)
         elif self._is_android():
             if exact_match:
                 _xpath = u'//*[@{}="{}"]'.format('text', text)
             else:
                 _xpath = u'//*[contains(@text,"{}")]'.format(text)
-            return self._element_find(_xpath, True, True)
+        return self._element_find(_xpath, True, True)
 
     def _is_text_visible(self, text, exact_match=False):
         element = self._element_find_by_text(text, exact_match)
