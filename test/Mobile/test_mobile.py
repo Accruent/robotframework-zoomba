@@ -179,32 +179,69 @@ class TestInternal(unittest.TestCase):
     def test_scroll_up_to_text(self):
         mock_desk = MagicMock()
         webdriver.Remote = WebdriverRemoteMock
-        mock_desk._is_text_present.side_effect = [False, True]
+        mock_desk.get_current_context = MagicMock(return_value="Web")
         MobileLibrary.open_application(mock_desk, 'remote_url')
         MobileLibrary.scroll_up_to_text(mock_desk, "some_locator")
-        mock_desk.swipe_by_percent.assert_called()
+        mock_desk._element_find_by_text()._execute.assert_called()
 
-    def test_scroll_up_to_text_failure(self):
+    def test_scroll_up_to_text_native_app(self):
         mock_desk = MagicMock()
         webdriver.Remote = WebdriverRemoteMock
-        mock_desk._is_text_present.side_effect = [False, False, False]
+        mock_desk._current_application().execute_script = MagicMock()
+        mock_desk.get_current_context = MagicMock(return_value="NATIVE")
         MobileLibrary.open_application(mock_desk, 'remote_url')
-        self.assertRaises(AssertionError, MobileLibrary.scroll_up_to_text, mock_desk, "some_locator", 2)
+        MobileLibrary.scroll_up_to_text(mock_desk, "some_locator")
+        mock_desk._current_application().execute_script.assert_called()
+
+    def test_scroll_up_to_text_last_option(self):
+        mock_desk = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        mock_desk._current_application().execute_script = MagicMock(side_effect=ValueError)
+        MobileLibrary.open_application(mock_desk, 'remote_url')
+        MobileLibrary.scroll_up_to_text(mock_desk, "some_locator")
+        mock_desk._scroll_to_text.assert_called()
+
+    # def test_scroll_up_to_text_failure(self):
+    #     mock_desk = MagicMock()
+    #     webdriver.Remote = WebdriverRemoteMock
+    #     mock_desk._is_text_present.side_effect = [False, False, False]
+    #     MobileLibrary.open_application(mock_desk, 'remote_url')
+    #     self.assertRaises(AssertionError, MobileLibrary.scroll_up_to_text, mock_desk, "some_locator", 2)
 
     def test_scroll_down_to_text(self):
         mock_desk = MagicMock()
         webdriver.Remote = WebdriverRemoteMock
+        mock_desk.get_current_context = MagicMock(return_value="Web")
+        MobileLibrary.open_application(mock_desk, 'remote_url')
+        MobileLibrary.scroll_down_to_text(mock_desk, "some_locator")
+        mock_desk._element_find_by_text()._execute.assert_called()
+
+    def test_scroll_down_to_text_native_app(self):
+        mock_desk = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        mock_desk._current_application().execute_script = MagicMock()
+        mock_desk.get_current_context = MagicMock(return_value="NATIVE")
+        MobileLibrary.open_application(mock_desk, 'remote_url')
+        MobileLibrary.scroll_down_to_text(mock_desk, "some_locator")
+        mock_desk._current_application().execute_script.assert_called()
+
+    def test_scroll_down_to_text_last_option(self):
+        mock_desk = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        mock_desk._current_application().execute_script = MagicMock(side_effect=ValueError)
         mock_desk._is_text_present.side_effect = [False, True]
         MobileLibrary.open_application(mock_desk, 'remote_url')
         MobileLibrary.scroll_down_to_text(mock_desk, "some_locator")
-        mock_desk.swipe_by_percent.assert_called()
+        mock_desk._scroll_to_text.assert_called()
 
-    def test_scroll_down_to_text_failure(self):
-        mock_desk = MagicMock()
-        webdriver.Remote = WebdriverRemoteMock
-        mock_desk._is_text_present.side_effect = [False, False, False]
-        MobileLibrary.open_application(mock_desk, 'remote_url')
-        self.assertRaises(AssertionError, MobileLibrary.scroll_down_to_text, mock_desk, "some_locator", 2)
+    # def test_scroll_down_to_text_failure(self):
+    #     mock_desk = MagicMock()
+    #     webdriver.Remote = WebdriverRemoteMock
+    #     mock_desk._is_android = MagicMock(return_value=True)
+    #     mock_desk._current_application().execute_script = MagicMock(side_effect=ValueError)
+    #     mock_desk._is_text_present.side_effect = False
+    #     MobileLibrary.open_application(mock_desk, 'remote_url')
+    #     self.assertRaises(AssertionError, MobileLibrary.scroll_down_to_text, mock_desk, "some_locator", 2)
 
     def test_wait_for_and_tap(self):
         mock_desk = MagicMock()
