@@ -176,35 +176,90 @@ class TestInternal(unittest.TestCase):
         self.assertRaises(ValueError, MobileLibrary.drag_and_drop_by_offset, mock_desk, "some_locator",
                           x_offset=100, y_offset=100)
 
+    def test_scroll_up(self):
+        mock_desk = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        mock_desk.get_current_context = MagicMock(return_value="Web")
+        MobileLibrary.open_application(mock_desk, 'remote_url')
+        MobileLibrary.scroll_up(mock_desk, "some_locator")
+        mock_desk._element_find()._execute.assert_called()
+
+    def test_scroll_up_native_app(self):
+        mock_desk = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        mock_desk._current_application().execute_script = MagicMock()
+        mock_desk.get_current_context = MagicMock(return_value="NATIVE")
+        MobileLibrary.open_application(mock_desk, 'remote_url')
+        MobileLibrary.scroll_up(mock_desk, "some_locator")
+        mock_desk._current_application().execute_script.assert_called()
+
     def test_scroll_up_to_text(self):
         mock_desk = MagicMock()
         webdriver.Remote = WebdriverRemoteMock
-        mock_desk._is_text_present.side_effect = [False, True]
+        mock_desk.get_current_context = MagicMock(return_value="Web")
         MobileLibrary.open_application(mock_desk, 'remote_url')
         MobileLibrary.scroll_up_to_text(mock_desk, "some_locator")
-        mock_desk.swipe_by_percent.assert_called()
+        mock_desk._element_find_by_text()._execute.assert_called()
 
-    def test_scroll_up_to_text_failure(self):
+    def test_scroll_up_to_text_native_app(self):
         mock_desk = MagicMock()
         webdriver.Remote = WebdriverRemoteMock
-        mock_desk._is_text_present.side_effect = [False, False, False]
+        mock_desk._current_application().execute_script = MagicMock()
+        mock_desk.get_current_context = MagicMock(return_value="NATIVE")
         MobileLibrary.open_application(mock_desk, 'remote_url')
-        self.assertRaises(AssertionError, MobileLibrary.scroll_up_to_text, mock_desk, "some_locator", 2)
+        MobileLibrary.scroll_up_to_text(mock_desk, "some_locator")
+        mock_desk._current_application().execute_script.assert_called()
+
+    def test_scroll_up_to_text_last_option(self):
+        mock_desk = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        mock_desk._current_application().execute_script = MagicMock(side_effect=ValueError)
+        MobileLibrary.open_application(mock_desk, 'remote_url')
+        MobileLibrary.scroll_up_to_text(mock_desk, "some_locator")
+        mock_desk._scroll_to_text.assert_called()
+
+    def test_scroll_down(self):
+        mock_desk = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        mock_desk.get_current_context = MagicMock(return_value="Web")
+        MobileLibrary.open_application(mock_desk, 'remote_url')
+        MobileLibrary.scroll_down(mock_desk, "some_locator")
+        mock_desk._element_find()._execute.assert_called()
+
+    def test_scroll_down_native_app(self):
+        mock_desk = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        mock_desk._current_application().execute_script = MagicMock()
+        mock_desk.get_current_context = MagicMock(return_value="NATIVE")
+        MobileLibrary.open_application(mock_desk, 'remote_url')
+        MobileLibrary.scroll_down(mock_desk, "some_locator")
+        mock_desk._current_application().execute_script.assert_called()
 
     def test_scroll_down_to_text(self):
         mock_desk = MagicMock()
         webdriver.Remote = WebdriverRemoteMock
+        mock_desk.get_current_context = MagicMock(return_value="Web")
+        MobileLibrary.open_application(mock_desk, 'remote_url')
+        MobileLibrary.scroll_down_to_text(mock_desk, "some_locator")
+        mock_desk._element_find_by_text()._execute.assert_called()
+
+    def test_scroll_down_to_text_native_app(self):
+        mock_desk = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        mock_desk._current_application().execute_script = MagicMock()
+        mock_desk.get_current_context = MagicMock(return_value="NATIVE")
+        MobileLibrary.open_application(mock_desk, 'remote_url')
+        MobileLibrary.scroll_down_to_text(mock_desk, "some_locator")
+        mock_desk._current_application().execute_script.assert_called()
+
+    def test_scroll_down_to_text_last_option(self):
+        mock_desk = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        mock_desk._current_application().execute_script = MagicMock(side_effect=ValueError)
         mock_desk._is_text_present.side_effect = [False, True]
         MobileLibrary.open_application(mock_desk, 'remote_url')
         MobileLibrary.scroll_down_to_text(mock_desk, "some_locator")
-        mock_desk.swipe_by_percent.assert_called()
-
-    def test_scroll_down_to_text_failure(self):
-        mock_desk = MagicMock()
-        webdriver.Remote = WebdriverRemoteMock
-        mock_desk._is_text_present.side_effect = [False, False, False]
-        MobileLibrary.open_application(mock_desk, 'remote_url')
-        self.assertRaises(AssertionError, MobileLibrary.scroll_down_to_text, mock_desk, "some_locator", 2)
+        mock_desk._scroll_to_text.assert_called()
 
     def test_wait_for_and_tap(self):
         mock_desk = MagicMock()
@@ -259,13 +314,124 @@ class TestInternal(unittest.TestCase):
 
     def test_platform_dependant_press_private(self):
         mock_desk = MagicMock()
+        mock_desk._is_ios = MagicMock(return_value=False)
         MobileLibrary._platform_dependant_press(mock_desk, MagicMock(), 'some_element')
 
     def test_platform_dependant_press_ios_private(self):
         mock_desk = MagicMock()
-        mock_desk._get_platform = MagicMock(return_value='ios')
+        mock_desk._is_ios = MagicMock(return_value=True)
         MobileLibrary._platform_dependant_press(mock_desk, MagicMock(), 'some_element')
 
     def test_platform_dependant_press_delay_set_private(self):
         mock_desk = MagicMock()
+        mock_desk._is_ios = MagicMock(return_value=True)
         MobileLibrary._platform_dependant_press(mock_desk, MagicMock(), 'some_element', delay=500)
+
+    def test_element_find_by_text_ios(self):
+        mock_desk = MagicMock()
+        mock_desk._is_ios = MagicMock(return_value=True)
+        webdriver.Remote = WebdriverRemoteMock
+        mock_desk._element_find = MagicMock()
+        MobileLibrary._element_find_by_text(mock_desk, "some_text")
+        mock_desk._element_find.assert_called_with('some_text', True, False)
+
+    def test_element_find_by_text_ios_exact(self):
+        mock_desk = MagicMock()
+        mock_desk._is_ios = MagicMock(return_value=True)
+        webdriver.Remote = WebdriverRemoteMock
+        mock_desk._element_find = MagicMock(return_value=False)
+        MobileLibrary._element_find_by_text(mock_desk, "some_text", True)
+        mock_desk._element_find.assert_called_with('//*[@value="some_text" or @label="some_text"]', True, True)
+
+    def test_element_find_by_text_ios_not_exact(self):
+        mock_desk = MagicMock()
+        mock_desk._is_ios = MagicMock(return_value=True)
+        webdriver.Remote = WebdriverRemoteMock
+        mock_desk._element_find = MagicMock(return_value=False)
+        MobileLibrary._element_find_by_text(mock_desk, "some_text", False)
+        mock_desk._element_find.assert_called_with('//*[contains(@label,"some_text") or contains(@value, "some_text") '
+                                                   'or contains(text(), "some_text")]', True, True)
+
+    def test_element_find_by_text_android_exact(self):
+        mock_desk = MagicMock()
+        mock_desk._is_ios = MagicMock(return_value=False)
+        mock_desk._is_android = MagicMock(return_value=True)
+        webdriver.Remote = WebdriverRemoteMock
+        mock_desk._element_find = MagicMock(return_value=False)
+        MobileLibrary._element_find_by_text(mock_desk, "some_text", True)
+        mock_desk._element_find.assert_called_with('//*[@text="some_text"]', True, True)
+
+    def test_element_find_by_text_android_not_exact(self):
+        mock_desk = MagicMock()
+        mock_desk._is_ios = MagicMock(return_value=False)
+        mock_desk._is_android = MagicMock(return_value=True)
+        webdriver.Remote = WebdriverRemoteMock
+        mock_desk._element_find = MagicMock(return_value=False)
+        MobileLibrary._element_find_by_text(mock_desk, "some_text", False)
+        mock_desk._element_find.assert_called_with('//*[contains(@text,"some_text")]', True, True)
+
+    def test_is_text_visible(self):
+        mock_desk = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        mock_desk._element_find_by_text().is_displayed = MagicMock(return_value=True)
+        result = MobileLibrary._is_text_visible(mock_desk, "some_text")
+        self.assertTrue(result)
+
+    def test_is_text_visible_not_found(self):
+        mock_desk = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        mock_desk._element_find_by_text = MagicMock(return_value=None)
+        result = MobileLibrary._is_text_visible(mock_desk, "some_text")
+        self.assertIsNone(result)
+
+    def test_scroll_to_text_ios_visible_no_scroll(self):
+        mock_desk = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        mock_desk._is_android = MagicMock(return_value=False)
+        mock_desk._is_ios = MagicMock(return_value=True)
+        mock_desk._is_text_visible = MagicMock(return_value=True)
+        result = MobileLibrary._scroll_to_text(mock_desk, "some_text", "up")
+        self.assertTrue(result)
+
+    def test_scroll_to_text_android_visible_no_scroll(self):
+        mock_desk = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        mock_desk._is_ios = MagicMock(return_value=False)
+        mock_desk._is_android = MagicMock(return_value=True)
+        mock_desk._is_text_present = MagicMock(return_value=True)
+        result = MobileLibrary._scroll_to_text(mock_desk, "some_text", "up")
+        self.assertTrue(result)
+
+    def test_scroll_to_text_ios_scroll(self):
+        mock_desk = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        mock_desk._is_android = MagicMock(return_value=False)
+        mock_desk._is_ios = MagicMock(return_value=True)
+        mock_desk._is_text_visible = MagicMock(side_effect=[False, True])
+        result = MobileLibrary._scroll_to_text(mock_desk, "some_text", "up")
+        self.assertTrue(result)
+
+    def test_scroll_to_text_android_scroll(self):
+        mock_desk = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        mock_desk._is_android = MagicMock(return_value=True)
+        mock_desk._is_ios = MagicMock(return_value=False)
+        mock_desk._is_text_present = MagicMock(side_effect=[False, True])
+        result = MobileLibrary._scroll_to_text(mock_desk, "some_text", "down")
+        self.assertTrue(result)
+
+    def test_scroll_to_text_bad_direction(self):
+        mock_desk = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        mock_desk._is_android = MagicMock(return_value=True)
+        mock_desk._is_ios = MagicMock(return_value=False)
+        mock_desk._is_text_present = MagicMock(return_value=False)
+        self.assertRaises(AssertionError, MobileLibrary._scroll_to_text, mock_desk, "some_text", "sideways")
+
+    def test_scroll_to_text_not_found(self):
+        mock_desk = MagicMock()
+        webdriver.Remote = WebdriverRemoteMock
+        mock_desk._is_android = MagicMock(return_value=True)
+        mock_desk._is_ios = MagicMock(return_value=False)
+        mock_desk._is_text_present = MagicMock(return_value=False)
+        self.assertRaises(AssertionError, MobileLibrary._scroll_to_text, mock_desk, "some_text", "up")

@@ -86,6 +86,7 @@ Wait Until Element Does Not Contain
 Scroll To Text Keyword Test
     Wait For And Click Text     API Demos
     Wait For And Click Text     Graphics
+    Wait Until Page Contains    Graphics
     Scroll Down To Text    SensorTest
     Scroll Up To Text      Arcs
 
@@ -98,3 +99,14 @@ Save Selenium Screenshot Test
     ${file2}=                       Save Appium Screenshot
     Should Not Be Equal             ${file1}  ${file2}
     Should Match Regexp             ${file1}                    appium-screenshot-\\d{8,10}.\\d{6,8}-\\d.png
+
+Scroll To Text In WebView Keyword Test
+    [Setup]     Close Application
+    Open Application        ${REMOTE_URL}     platformName=Android        deviceName=Android GoogleAPI Emulator
+    ...                     newCommandTimeout=${commandTimeout}       browserName=Chrome     username=${sauce_username}
+    ...                     access_key=${sauce_key}   platformVersion=6.0
+    Go To Url    https://www.win-rar.com/products-winrar.html
+    Scroll Down    //h3[contains(text(),'FEATURES')]
+    Scroll Up    //h3[contains(text(),'OVERVIEW')]
+    Scroll Down To Text    SYSTEM REQUIREMENTS
+    Scroll Up To Text      RAR Products

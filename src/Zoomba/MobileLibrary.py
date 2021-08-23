@@ -258,30 +258,56 @@ class MobileLibrary(AppiumLibrary):
         AppiumCommon.drag_and_drop_by_offset(self, locator, x_offset, y_offset, delay)
 
     @keyword("Scroll Down To Text")
-    def scroll_down_to_text(self, text, swipe_count=20):
-        """Scrolls down to ``text`` using small swipes. The ``swipe_count`` defaults to 20."""
-        found = False
-        for _ in range(swipe_count):
-            if self._is_text_present(text):
-                found = True
-                break
+    def scroll_down_to_text(self, text, exact_match=False, swipe_count=10):
+        """Scrolls down to ``text``.
+
+         In some instances the default scroll behavior does not work. In this case the keyword will use small swipes
+         to find the element. The ``swipe_count`` limits the number of these swipes before the keyword gives up,
+         defaults to 10."""
+        try:
+            driver = self._current_application()
+            element = self._element_find_by_text(text, exact_match)
+            if not self.get_current_context().startswith("NATIVE"):
+                element._execute("getElementLocationOnceScrolledIntoView")
             else:
-                self.swipe_by_percent(50, 75, 50, 50)  # use swipe by direction if its ever implemented
-        if not found:
-            zoomba.fail("Text: " + text + " was not found after " + str(swipe_count) + " swipes")
+                driver.execute_script("mobile: scroll", {"direction": 'down', 'elementid': element})
+        except ValueError:
+            self._scroll_to_text(text, 'down', swipe_count)
 
     @keyword("Scroll Up To Text")
-    def scroll_up_to_text(self, text, swipe_count=20):
-        """Scrolls down to ``text`` using small swipes. The ``swipe_count`` defaults to 20."""
-        found = False
-        for _ in range(swipe_count):
-            if self._is_text_present(text):
-                found = True
-                break
+    def scroll_up_to_text(self, text, exact_match=False, swipe_count=10):
+        """Scrolls down to ``text``.
+
+         In some instances the default scroll behavior does not work. In this case the keyword will use small swipes
+         to find the element. The ``swipe_count`` limits the number of these swipes before the keyword gives up,
+         defaults to 10."""
+        try:
+            driver = self._current_application()
+            element = self._element_find_by_text(text, exact_match)
+            if not self.get_current_context().startswith("NATIVE"):
+                element._execute("getElementLocationOnceScrolledIntoView")
             else:
-                self.swipe_by_percent(50, 50, 50, 75)  # use swipe by direction if its ever implemented
-        if not found:
-            zoomba.fail("Text: " + text + " was not found after " + str(swipe_count) + " swipes")
+                driver.execute_script("mobile: scroll", {"direction": 'up', 'elementid': element})
+        except ValueError:
+            self._scroll_to_text(text, 'up', swipe_count)
+
+    def scroll_down(self, locator):
+        """Scrolls down to an element identified by ``locator``."""
+        driver = self._current_application()
+        element = self._element_find(locator, True, True)
+        if not self.get_current_context().startswith("NATIVE"):
+            element._execute("getElementLocationOnceScrolledIntoView")
+        else:
+            driver.execute_script("mobile: scroll", {"toVisible": 'down', 'elementid': element})
+
+    def scroll_up(self, locator):
+        """Scrolls up to an element identified by ``locator``."""
+        driver = self._current_application()
+        element = self._element_find(locator, True, True)
+        if not self.get_current_context().startswith("NATIVE"):
+            element._execute("getElementLocationOnceScrolledIntoView")
+        else:
+            driver.execute_script("mobile: scroll", {"direction": 'up', 'elementid': element})
 
     @keyword("Wait For And Tap")
     def wait_for_and_tap(self, locator, x_offset=None, y_offset=None, count=1, timeout=None,
@@ -335,3 +361,40 @@ class MobileLibrary(AppiumLibrary):
     def _platform_dependant_press(self, actions, element, delay=1500):
         """Decide press action based on platform"""
         AppiumCommon._platform_dependant_press(self, actions, element, delay)
+
+    def _element_find_by_text(self, text, exact_match=False):
+        if self._is_ios():
+            element = self._element_find(text, True, False)
+            if element:
+                return element
+            if exact_match:
+                _xpath = u'//*[@value="{}" or @label="{}"]'.format(text, text)
+            else:
+                _xpath = u'//*[contains(@label,"{}") or contains(@value, "{}") or contains(text(), "{}")]'.format(text, text, text)
+        elif self._is_android():
+            if exact_match:
+                _xpath = u'//*[@{}="{}"]'.format('text', text)
+            else:
+                _xpath = u'//*[contains(@text,"{}")]'.format(text)
+        return self._element_find(_xpath, True, True)
+
+    def _is_text_visible(self, text, exact_match=False):
+        element = self._element_find_by_text(text, exact_match)
+        if element is not None:
+            return element.is_displayed()
+        return None
+
+    def _scroll_to_text(self, text, swipe_direction, swipe_count=10):
+        """This is a more manual attempt in case the first scroll does not work."""
+        for _ in range(swipe_count):
+            if self._is_android() and self._is_text_present(text):
+                return True
+            if self._is_ios() and self._is_text_visible(text):
+                return True
+            if swipe_direction.lower() == 'up':
+                self.swipe_by_percent(50, 25, 50, 75)  # use swipe by direction if its ever implemented
+            elif swipe_direction.lower() == 'down':
+                self.swipe_by_percent(50, 75, 50, 25)  # use swipe by direction if its ever implemented
+            else:
+                zoomba.fail("Swipe_direction: " + swipe_direction + "is not implemented.")
+        zoomba.fail("Text: " + text + " was not found after " + str(swipe_count) + " swipes")

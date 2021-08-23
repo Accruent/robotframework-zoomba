@@ -18,22 +18,11 @@ Start App
 
 *** Test Cases ***
 Scroll To Text In WebView Keyword Test
-    [Tags]    Broken
-    # Currently not working, bug with detecting item on page
-    Go To Url    https://www.appiumpro.com
-    Scroll Down To Text    E-mail Address
-    Scroll Up To Text      Let's face it
-
-Scroll To Text In NativeApp Keyword Test
-    [Tags]    Broken
-    # Currently not working, bug with detecting item on page
-    Background App    -1
-    Switch To Context    NATIVE_APP
-    Wait For And Click Element       Contacts
-    Wait Until Page Contains      Contacts
-    Wait For And Click Element    Add
-    Scroll Down To Text    Notes
-    Element Should Be Visible    Notes
+    Go To Url    https://www.win-rar.com/products-winrar.html
+    Scroll Down    //h3[contains(text(),'FEATURES')]
+    Scroll Up    //h3[contains(text(),'OVERVIEW')]
+    Scroll Down To Text    SYSTEM REQUIREMENTS
+    Scroll Up To Text      RAR Products
 
 Wait For And Click Element By Id Keyword Test
     Background App    -1
@@ -70,7 +59,6 @@ Wait Until Element Contains / Does Not Contain
 
 Drag and Drop Keyword Test
     Background App    -1
-    Switch To Context    NATIVE_APP
     Wait For And Long Press     Files
     Wait For And Click Element       OK
     Drag and Drop                Files      Watch
@@ -80,6 +68,20 @@ Drag and Drop Keyword Test
     Run keyword And Expect Error         ValueError: Element locator 'Not_a_real_id' did not match any elements.
     ...            Drag and Drop         Not_a_real_id      Watch
     Wait For And Click Element    Done
+
+Scroll To Text In NativeApp Keyword Test
+    Background App    -1
+    Swipe By Percent    10    50    90    50
+    Wait For And Click Element       Settings
+    Wait Until Page Contains      Settings
+    Scroll Down To Text    Developer
+    Element Should Be Visible    Developer
+    Scroll Up To Text     General
+    Element Should Be Visible    General
+    Scroll Down To Text    Developer
+    Element Should Be Visible    Developer
+    Scroll Up    General
+    Element Should Be Visible    General
 
 Save Selenium Screenshot Test
     ${file1}=                       Save Appium Screenshot
