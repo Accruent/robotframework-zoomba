@@ -78,7 +78,7 @@ Scroll To Text In NativeApp Keyword Test
     Element Should Be Visible    Developer
     Scroll Up To Text     General
     Element Should Be Visible    General
-    Scroll Down To Text    Developer
+    Scroll Down    Developer
     Element Should Be Visible    Developer
     Scroll Up    General
     Element Should Be Visible    General

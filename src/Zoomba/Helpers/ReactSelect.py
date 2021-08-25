@@ -38,13 +38,13 @@ class ReactSelect:
     def options(self):
         """Returns a list of all options belonging to the React-Select container"""
         self.expand_select_list()
-        return self._el.find_elements_by_xpath('./div[2]/div[1]/div')
+        return self._el.find_elements('xpath', './div[2]/div[1]/div')
 
     def is_expanded(self):
         """Checks if the React-Select container is expanded by checking if the Menu <div>
         exists as a child of the container
         """
-        menu_elements = self._el.find_elements_by_xpath('./div[2]')
+        menu_elements = self._el.find_elements('xpath', './div[2]')
         if len(menu_elements) == 0:
             return False
         if len(menu_elements) == 1:

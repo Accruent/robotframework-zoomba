@@ -1,6 +1,6 @@
 *** Settings ***
 Documentation   Zoomba GUI Library Tests
-Library         Zoomba.GUILibrary    #plugins=Zoomba.Helpers.EdgePlugin    #Enable if using Edge
+Library         Zoomba.GUILibrary
 
 *** Variables ***
 ${browser}     chrome
