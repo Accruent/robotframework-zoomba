@@ -35,7 +35,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install -i https://pypi.org/simple selenium==4.0.0.b4
+          python -m pip install --upgrade pip
+          pip install --no-cache-dir selenium==4.0.0.b4
           pip install .
 
       - uses: browser-actions/setup-edge@latest
