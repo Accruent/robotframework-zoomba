@@ -2,14 +2,11 @@
 import unittest
 import os
 import sys
-import msedge.selenium_tools
-import selenium.webdriver.remote.remote_connection
-import selenium.webdriver.remote.webdriver
 from unittest.mock import patch, MagicMock
 from unittest.mock import Mock
 from unittest.mock import PropertyMock
 from Zoomba.GUILibrary import GUILibrary
-from Zoomba.Helpers import ReactSelect, EdgePlugin
+from Zoomba.Helpers import ReactSelect
 from selenium.common.exceptions import UnexpectedTagNameException
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../src/')))
@@ -382,26 +379,26 @@ class TestInternal(unittest.TestCase):
     def test_react_select_options(self):
         mock_webelement = Mock()
         mock_webelement.tag_name = 'div'
-        mock_webelement.find_elements_by_xpath = MagicMock(return_value=["some child element", "another child element"])
+        mock_webelement.find_elements = MagicMock(return_value=["some child element", "another child element"])
         with patch('Zoomba.Helpers.ReactSelect.ReactSelect.expand_select_list', return_value=True):
             assert ReactSelect.ReactSelect(mock_webelement).options() == ["some child element", "another child element"]
 
     def test_react_select_is_expanded(self):
         mock_webelement = Mock()
         mock_webelement.tag_name = 'div'
-        mock_webelement.find_elements_by_xpath = Mock(return_value=["some child element"])
+        mock_webelement.find_elements = Mock(return_value=["some child element"])
         assert ReactSelect.ReactSelect(mock_webelement).is_expanded()
 
     def test_react_select_is_expanded_no_elements(self):
         mock_webelement = Mock()
         mock_webelement.tag_name = 'div'
-        mock_webelement.find_elements_by_xpath = Mock(return_value=[])
+        mock_webelement.find_elements = Mock(return_value=[])
         assert not ReactSelect.ReactSelect(mock_webelement).is_expanded()
 
     def test_react_select_is_expanded_error(self):
         mock_webelement = Mock()
         mock_webelement.tag_name = 'div'
-        mock_webelement.find_elements_by_xpath = Mock(return_value=["some child element", "another child element"])
+        mock_webelement.find_elements = Mock(return_value=["some child element", "another child element"])
         with self.assertRaises(LookupError, msg="ReactSelect.is_expanded: Multiple selection menus found"):
             ReactSelect.ReactSelect(mock_webelement).is_expanded()
 
@@ -419,30 +416,3 @@ class TestInternal(unittest.TestCase):
         with patch('Zoomba.Helpers.ReactSelect.ReactSelect.is_expanded', return_value=True):
             ReactSelect.ReactSelect(mock_webelement).expand_select_list()
             mock_webelement.click.assert_not_called()
-
-
-class TestEdgePlugin(unittest.TestCase):
-    def test_edge_plugin(self):
-        msedge.selenium_tools.Edge = MagicMock()
-        msedge.selenium_tools.service.Service.start = MagicMock()
-        selenium.webdriver.remote.webdriver.WebDriver.start_session = MagicMock()
-        EdgePlugin.EdgePlugin(GUILibrary)
-        driver = EdgePlugin._EdgePluginWebDriverCreator(MagicMock())
-        driver.create_edge(desired_capabilities={}, remote_url="http://127.0.0.1",
-                           executable_path='Sure')
-        selenium.webdriver.remote.webdriver.WebDriver.start_session.assert_called()
-
-    def test_edge_plugin_2(self):
-        msedge.selenium_tools.Edge = MagicMock()
-        msedge.selenium_tools.service.Service.start = MagicMock()
-        selenium.webdriver.remote.webdriver.WebDriver.start_session = MagicMock()
-        driver = EdgePlugin._EdgePluginWebDriverCreator(MagicMock())
-        driver.create_edge(desired_capabilities={}, remote_url="No",
-                           executable_path='')
-        selenium.webdriver.remote.webdriver.WebDriver.start_session.assert_called()
-
-    @patch("SeleniumLibrary.keywords.webdrivertools.SeleniumOptions")
-    def test_edge_plugin_3(self, options):
-        EdgePlugin._EdgePluginSeleniumOptions._import_options(options, 'edge')
-        self.assertRaises(TypeError, EdgePlugin._EdgePluginSeleniumOptions._import_options, options,
-                          'other_browser')
