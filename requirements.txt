@@ -3,6 +3,6 @@ robotframework-requests==0.9.1
 robotframework-seleniumlibrary==5.1.3
 robotframework-sudslibrary-aljcalandra==1.1
 requests==2.26.0
-selenium==4.0.0a7
+selenium==4.0.0.b4
 robotframework-appiumlibrary @ git+git://github.com/Wolfe1/robotframework-appiumlibrary.git@Selenium4
 psutil==5.8.0
