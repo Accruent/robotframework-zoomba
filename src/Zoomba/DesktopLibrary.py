@@ -432,7 +432,7 @@ class DesktopLibrary(AppiumLibrary):
         # If we want to use kwargs still we need this to catch the locator, otherwise the user would have to type
         # something like 'locator=class=some_class_name'
         if not locator:
-            for locator_type in ["class", "name", "xapth", "accessibility_id", "image"]:
+            for locator_type in ["class", "name", "xpath", "accessibility_id", "image"]:
                 if locator_type in desired_caps:
                     locator = locator_type + "=" + desired_caps[locator_type]
                     del desired_caps[locator_type]
