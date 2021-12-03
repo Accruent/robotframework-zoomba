@@ -621,8 +621,11 @@ class DesktopLibrary(AppiumLibrary):
         ``error`` can be used to override the default error message.
 
         See also `Wait Until Element Is Disabled`"""
-        self._wait_until_page_contains_element(locator, timeout, error)
-        self.element_should_be_enabled(self.current_element)
+        if not error:
+            error = "Element '%s' did not appear in <TIMEOUT>" % locator
+        element = self._check_for_cached_element(locator)
+        self._wait_until(timeout, error, element.is_enabled)
+        self.element_should_be_enabled(element)
 
     @keyword("Element Should Be Disabled")
     def element_should_be_disabled(self, locator, loglevel='INFO'):
@@ -642,8 +645,11 @@ class DesktopLibrary(AppiumLibrary):
         ``error`` can be used to override the default error message.
 
         See also `Wait Until Element Is Enabled`"""
-        self._wait_until_page_contains_element(locator, timeout, error)
-        self.element_should_be_disabled(self.current_element)
+        if not error:
+            error = "Element '%s' did not appear in <TIMEOUT>" % locator
+        element = self._check_for_cached_element(locator)
+        self._wait_until(timeout, error, self.is_disabled, element)
+        self.element_should_be_disabled(element)
 
     @keyword("Mouse Over Element")
     def mouse_over_element(self, locator, x_offset=0, y_offset=0):
@@ -1143,6 +1149,9 @@ class DesktopLibrary(AppiumLibrary):
         if not error:
             error = "Element '%s' did not appear in <TIMEOUT>" % locator
         self._wait_until(timeout, error, self._is_element_present, locator)
+
+    def is_disabled(self, element):
+        return not element.is_enabled()
 
     # Overrides to prevent expensive log_source call
     def _wait_until_no_error(self, timeout, wait_func, *args):
