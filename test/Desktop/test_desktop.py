@@ -331,6 +331,12 @@ class TestInternal(unittest.TestCase):
         DesktopLibrary.wait_until_element_is_disabled(mock_desk, "some_locator")
         mock_desk.element_should_be_disabled.assert_called_with(unittest.mock.ANY)
 
+    def test_is_disabled(self):
+        mock_desk = MagicMock()
+        mock_element = MagicMock()
+        mock_element.is_enabled = MagicMock(return_value=False)
+        self.assertTrue(DesktopLibrary.is_disabled(mock_desk, mock_element))
+
     def test_mouse_over_element(self):
         mock_desk = MagicMock()
         DesktopLibrary.mouse_over_element(mock_desk, "some_locator")
