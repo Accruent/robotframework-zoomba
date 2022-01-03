@@ -6,7 +6,7 @@ from appium import webdriver
 from psutil import Process, NoSuchProcess
 from robot.api.deco import keyword
 from robot.libraries.BuiltIn import BuiltIn
-from selenium.common.exceptions import NoSuchElementException, InvalidSelectorException
+from selenium.common.exceptions import NoSuchElementException, InvalidSelectorException, WebDriverException
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.touch_actions import TouchActions
 from appium.webdriver.common.touch_action import TouchAction
@@ -283,8 +283,12 @@ class DesktopLibrary(AppiumLibrary):
             desired_caps["platformName"] = "Windows"
         if "forceMjsonwp" not in desired_caps:
             desired_caps["forceMjsonwp"] = True
-        application = webdriver.Remote(str(remote_url), desired_caps)
-        self._debug('Opened application with session id %s' % application.session_id)
+        try:
+            application = webdriver.Remote(str(remote_url), desired_caps)
+            self._debug('Opened application with session id %s' % application.session_id)
+        except WebDriverException as e:
+            if not window_name:
+                zoomba.fail(str(e))
         # If the app has a splash screen we need to supply the window_name of the final window.
         # This code path will start the application and then attach to the correct window via
         # the window_name.
