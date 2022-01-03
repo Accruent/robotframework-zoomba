@@ -6,7 +6,7 @@ from appium import webdriver
 from psutil import Process, NoSuchProcess
 from robot.api.deco import keyword
 from robot.libraries.BuiltIn import BuiltIn
-from selenium.common.exceptions import NoSuchElementException, InvalidSelectorException
+from selenium.common.exceptions import NoSuchElementException, InvalidSelectorException, WebDriverException
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.touch_actions import TouchActions
 from appium.webdriver.common.touch_action import TouchAction
@@ -277,25 +277,28 @@ class DesktopLibrary(AppiumLibrary):
         """
         desired_caps = kwargs
 
-        if window_name:
-            # If the app has a splash screen we need to supply the window_name of the final window.
-            # This code path will start the application and then attach to the correct window via
-            # the window_name.
-            self._info('Opening application "%s"' % desired_caps['app'])
-            subprocess.Popen(desired_caps['app'])
-            if splash_delay > 0:
-                self._info('Waiting %s seconds for splash screen' % splash_delay)
-                sleep(splash_delay)
-            return self.switch_application_by_name(remote_url, alias=alias, window_name=window_name,
-                                                   exact_match=exact_match, desktop_alias=desktop_alias, **kwargs)
         # global application
         self._open_desktop_session(remote_url, desktop_alias)
         if "platformName" not in desired_caps:
             desired_caps["platformName"] = "Windows"
         if "forceMjsonwp" not in desired_caps:
             desired_caps["forceMjsonwp"] = True
-        application = webdriver.Remote(str(remote_url), desired_caps)
-        self._debug('Opened application with session id %s' % application.session_id)
+        try:
+            application = webdriver.Remote(str(remote_url), desired_caps)
+            self._debug('Opened application with session id %s' % application.session_id)
+        except WebDriverException as e:
+            if not window_name:
+                zoomba.fail(str(e))
+        # If the app has a splash screen we need to supply the window_name of the final window.
+        # This code path will start the application and then attach to the correct window via
+        # the window_name.
+        if window_name:
+            if splash_delay > 0:
+                self._info('Waiting %s seconds for splash screen' % splash_delay)
+                sleep(splash_delay)
+            return self.switch_application_by_name(remote_url, alias=alias, window_name=window_name,
+                                                   exact_match=exact_match, desktop_alias=desktop_alias, **kwargs)
+        
         return self._cache.register(application, alias)
 
     def switch_application(self, index_or_alias, desktop_alias=None):
