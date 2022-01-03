@@ -64,6 +64,13 @@ class TestInternal(unittest.TestCase):
         dl.open_application('remote_url')
         self.assertTrue(dl._cache.current)
 
+    def test_open_application_failure(self):
+        dl = DesktopLibrary()
+        webdriver.Remote = MagicMock(side_effect=WebDriverException('error'))
+        self.assertFalse(dl._cache.current)
+        webdriver.Remote.find_element_by_name = MagicMock(side_effect=[WebDriverException, WebDriverException])
+        self.assertRaisesRegex(WebDriverException, 'error', dl.open_application, 'remote_url')
+
     def test_open_multiple_applications_successful(self):
         dl = DesktopLibrary()
         webdriver.Remote = WebdriverRemoteMock
