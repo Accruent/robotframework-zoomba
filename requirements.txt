@@ -7,4 +7,4 @@ selenium==3.141.0
 python-dateutil==2.8.2
 robotframework-appiumlibrary==1.6.3
 psutil==5.9.0
-msedge-selenium-tools==3.141.3
+msedge-selenium-tools==3.141.4
