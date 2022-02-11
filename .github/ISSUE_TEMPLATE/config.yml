@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 General Robot Framework Support and Questions
+    url: https://forum.robotframework.org/
+    about: The Robot Framework Forum is a great place to ask general questions or get support on an issue.
+  - name: 📖 Zoomba Documentation
+    url: https://accruent.github.io/robotframework-zoomba/
+    about: Links to keyword documentation as well as various feature examples.
+  - name: 📖 Zoomba Sample Code
+    url: https://github.com/Accruent/robotframework-zoomba/tree/master/samples
+    about: Sample code directory with examples of each library in action.
