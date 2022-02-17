@@ -185,6 +185,12 @@ class TestInternal(unittest.TestCase):
         library.key_by_key_validator({"a": ["1", "2"]}, {"a": ["1", "3"]})
         fail.assert_called_with("Arrays do not match:\nExpected: ['1', '3']\nActual: ['1', '2']\nIf this is simply out of order try 'sort_list=True'")
 
+    @patch('robot.libraries.BuiltIn.BuiltIn.fail')
+    def test_key_by_key_validator_list_do_not_match_with_sort(self, fail):
+        library = APILibrary()
+        library.key_by_key_validator({"a": ["1", "2"]}, {"a": ["1", "3"]}, sort_lists=True)
+        fail.assert_called_with("Arrays do not match:\nExpected: ['1', '3']\nActual: ['1', '2']")
+
     def test_key_by_key_validator_list_sort(self):
         library = APILibrary()
         library.key_by_key_validator({"a": ["1", "2"]}, {"a": ["2", "1"]}, sort_lists=True)
