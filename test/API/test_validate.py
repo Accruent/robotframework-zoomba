@@ -185,6 +185,10 @@ class TestInternal(unittest.TestCase):
         library.key_by_key_validator({"a": ["1", "2"]}, {"a": ["1", "3"]})
         fail.assert_called_with("Arrays do not match:\nExpected: ['1', '3']\nActual: ['1', '2']")
 
+    def test_key_by_key_validator_list_sort(self):
+        library = APILibrary()
+        library.key_by_key_validator({"a": ["1", "2"]}, {"a": ["2", "1"]}, sort_lists=True)
+
     def test_key_by_key_validator_simple_dict(self):
         library = APILibrary()
         library.key_by_key_validator({"a": {"b": 1}}, {"a": {"b": 1}})
