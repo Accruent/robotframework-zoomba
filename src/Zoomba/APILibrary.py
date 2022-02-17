@@ -231,6 +231,8 @@ class APILibrary:
             actual_item: (array of dictionaries) The list of dictionary items extracted from a json Response.\n
             ExpectedItem: (dictionary) The expected item with the key to be validated.\n
             ignored_keys: (strings list) A list of strings of the keys to be ignored on the validation.\n
+            full_list_validation: (bool) Check that the entire list matches the expected response, defaults to False.\n
+            sort_lists: (bool) Sort lists before doing key by key validation, defaults to False.\n
             **kwargs: (dict) Currently supported kwargs are margin_type and margin_amt\n
             margin_type: (string) The type of unit of time to be used to generate a delta for the date comparisons.\n
             margin_amt: (string/#) The amount of units specified in margin_type to allot for difference between dates.\n
