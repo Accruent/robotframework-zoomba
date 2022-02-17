@@ -282,9 +282,10 @@ class APILibrary:
                             (
                                 "------------------\n" + "Key: " + str(key),
                                 f'Expected: {str(value)}',
-                                "Actual: " + str(actual_dictionary[key]),
+                                f'Actual: {str(actual_dictionary[key])}',
                             )
                         )
+
 
             elif value == actual_dictionary[key]:
                 continue
@@ -415,10 +416,11 @@ class APILibrary:
             unmatched_keys_list.append(
                 (
                     "------------------\n" + "Full List Breakdown:",
-                    "Expected: " + str(expected_response_dict),
+                    f'Expected: {str(expected_response_dict)}',
                     f'Actual: {str(actual_response_dict)}',
                 )
             )
+
 
             self.generate_unmatched_keys_error_message(unmatched_keys_list)
         return
@@ -512,11 +514,12 @@ def _date_format(date_string, key, unmatched_keys_list, date_type, date_format=N
             unmatched_keys_list.append(
                 (
                     "------------------\nKey: " + str(key),
-                    date_type + " Date Not Correct Format:",
+                    f'{date_type} Date Not Correct Format:',
                     f'Expected Format: {date_format}',
                     f'Date: {str(date_string)}',
                 )
             )
+
 
     return formatted_date
 
