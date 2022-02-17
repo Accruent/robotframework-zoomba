@@ -406,7 +406,8 @@ empty_resp_err = "The Actual Response is Empty."
 
 bad_array_err_1 = "Arrays do not match:" \
                 "\nExpected: ['str', 'aw', 'ber', 'ry']" \
-                "\nActual: ['dog', 'cat', 'bird', 'elephant']"
+                "\nActual: ['dog', 'cat', 'bird', 'elephant']" \
+                "\nIf this is simply out of order try 'sort_list=True'"
 # -------------- Date Methods Test Data --------------------------------------------------------------------------------
 json_wo_date_none = """
     {
