@@ -218,8 +218,17 @@ class APILibrary:
 
         if isinstance(actual_response_dict, list):
             if len(actual_response_dict) != number_of_items:
-                zoomba.fail('API is returning ' + str(
-                    len(actual_response_dict)) + ' instead of the expected ' + str(number_of_items) + ' result(s).')
+                zoomba.fail(
+                    (
+                        (
+                            f'API is returning {len(actual_response_dict)}'
+                            + ' instead of the expected '
+                        )
+                        + str(number_of_items)
+                        + ' result(s).'
+                    )
+                )
+
         else:
             zoomba.fail("The response is not a list:\nActual Response:\n" + str(actual_response_dict))
 
@@ -269,9 +278,14 @@ class APILibrary:
                     if value == actual_dictionary[key]:
                         continue
                     else:
-                        unmatched_keys_list.append(("------------------\n" + "Key: " + str(key),
-                                                    "Expected: " + str(value),
-                                                    "Actual: " + str(actual_dictionary[key])))
+                        unmatched_keys_list.append(
+                            (
+                                "------------------\n" + "Key: " + str(key),
+                                f'Expected: {str(value)}',
+                                "Actual: " + str(actual_dictionary[key]),
+                            )
+                        )
+
             elif value == actual_dictionary[key]:
                 continue
             else:
@@ -317,9 +331,15 @@ class APILibrary:
         margin = datetime.timedelta(**arg_dict)
         if expected_date - margin <= actual_date <= expected_date + margin:
             return
-        unmatched_keys_list.append(("------------------\n" + "Dates Not Close Enough\nKey: " + str(key),
-                                    "Expected: " + str(expected_date),
-                                    "Actual: " + str(actual_date)))
+        unmatched_keys_list.append(
+            (
+                "------------------\n"
+                + "Dates Not Close Enough\nKey: "
+                + str(key),
+                f'Expected: {str(expected_date)}',
+                f'Actual: {str(actual_date)}',
+            )
+        )
 
     def generate_unmatched_keys_error_message(self, unmatched_keys):
         """ This method is only used as an internal call from other validating methods to generate an error string
@@ -392,44 +412,67 @@ class APILibrary:
             self.key_by_key_validator(actual_item, expected_item, ignored_keys, unmatched_keys_list,
                                       full_list_validation=True, **kwargs)
         if unmatched_keys_list:
-            unmatched_keys_list.append(("------------------\n" + "Full List Breakdown:",
-                                        "Expected: " + str(expected_response_dict),
-                                        "Actual: " + str(actual_response_dict)))
+            unmatched_keys_list.append(
+                (
+                    "------------------\n" + "Full List Breakdown:",
+                    "Expected: " + str(expected_response_dict),
+                    f'Actual: {str(actual_response_dict)}',
+                )
+            )
+
             self.generate_unmatched_keys_error_message(unmatched_keys_list)
         return
 
 
 def _unmatched_list_check(unmatched_keys_list, current_unmatched_length, key, index=None, parent_key=None,
                           is_list=False):
-    if len(unmatched_keys_list) > current_unmatched_length and parent_key == key:
+    if len(unmatched_keys_list) <= current_unmatched_length:
+        return
+    if parent_key == key:
         for new_index in range(len(unmatched_keys_list) - current_unmatched_length):
             reverse_index = -1 * (new_index + 1)
             unmatched_tuple = unmatched_keys_list[reverse_index]
-            split_key_string = unmatched_tuple[0].split("Key: " + parent_key)
-            new_key_string = split_key_string[0] + "Key: " + parent_key + "[" + str(index) + "]" + split_key_string[1]
+            split_key_string = unmatched_tuple[0].split(f'Key: {parent_key}')
+            new_key_string = (
+                f'{split_key_string[0]}Key: {parent_key}'
+                + "["
+                + str(index)
+                + "]"
+                + split_key_string[1]
+            )
+
             unmatched_keys_list[reverse_index] = (new_key_string, *unmatched_tuple[1:])
-    elif len(unmatched_keys_list) > current_unmatched_length and parent_key is not None:
+    elif parent_key is not None:
         for new_index in range(len(unmatched_keys_list) - current_unmatched_length):
             reverse_index = -1 * (new_index + 1)
             unmatched_tuple = unmatched_keys_list[reverse_index]
-            if "Key: " + str(key) not in unmatched_tuple[0]:
+            if f'Key: {str(key)}' not in unmatched_tuple[0]:
                 split_key_string = unmatched_tuple[0].split("Key: ")
                 if is_list:
-                    new_key_string = split_key_string[0] + "Key: " + key + "[" + str(index) + "]." + split_key_string[1]
+                    new_key_string = (
+                        f'{split_key_string[0]}Key: {key}[{str(index)}].'
+                        + split_key_string[1]
+                    )
+
                 else:
-                    new_key_string = split_key_string[0] + "Key: " + key + "." + split_key_string[1]
+                    new_key_string = f'{split_key_string[0]}Key: {key}.{split_key_string[1]}'
                 unmatched_keys_list[reverse_index] = (new_key_string, *unmatched_tuple[1:])
-    elif len(unmatched_keys_list) > current_unmatched_length and is_list:
+    elif is_list:
         for new_index in range(len(unmatched_keys_list) - current_unmatched_length):
             reverse_index = -1 * (new_index + 1)
             unmatched_tuple = unmatched_keys_list[reverse_index]
-            if str(key) + "[" + str(index) + "]" not in unmatched_tuple[0]:
+            if f'{str(key)}[{str(index)}]' not in unmatched_tuple[0]:
                 split_key_string = unmatched_tuple[0].split("Key: ")
                 if key == split_key_string[1]:
                     new_key_string = split_key_string[0] + "Key: " + key + "[" + str(index) + "]"
                 else:
-                    new_key_string = split_key_string[0] + "Key: " + key + "[" + str(index) + "]" + \
-                                     "." + split_key_string[1]
+                    new_key_string = (
+                        f'{split_key_string[0]}Key: {key}['
+                        + str(index)
+                        + "]"
+                        + "."
+                    ) + split_key_string[1]
+
                 unmatched_keys_list[reverse_index] = (new_key_string, *unmatched_tuple[1:])
 
 
@@ -466,10 +509,15 @@ def _date_format(date_string, key, unmatched_keys_list, date_type, date_format=N
         try:
             formatted_date = datetime.datetime.strptime(date_string, date_format)
         except ValueError:
-            unmatched_keys_list.append(("------------------\nKey: " + str(key),
-                                        date_type + " Date Not Correct Format:",
-                                        "Expected Format: " + date_format,
-                                        "Date: " + str(date_string)))
+            unmatched_keys_list.append(
+                (
+                    "------------------\nKey: " + str(key),
+                    date_type + " Date Not Correct Format:",
+                    f'Expected Format: {date_format}',
+                    f'Date: {str(date_string)}',
+                )
+            )
+
     return formatted_date
 
 
