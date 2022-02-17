@@ -337,11 +337,19 @@ class APILibrary:
                          parent_key=None, full_list_validation=False, sort_lists=False, **kwargs):
         for index, item in enumerate(value):
             if isinstance(item, str):
-                if value != actual_dictionary[key] and not sort_lists:
-                    zoomba.fail("Arrays do not match:" + \
-                                "\nExpected: " + str(value) + \
-                                "\nActual: " + str(actual_dictionary[key]))
-                    continue
+                if value != actual_dictionary[key]:
+                    if sort_lists:
+                        if sorted(value) != sorted(actual_dictionary[key]):
+                            zoomba.fail("Arrays do not match:" + \
+                                        "\nExpected: " + str(sorted(value)) + \
+                                        "\nActual: " + str(sorted(actual_dictionary[key])))
+                            continue
+                    else:
+                        zoomba.fail("Arrays do not match:" + \
+                                    "\nExpected: " + str(value) + \
+                                    "\nActual: " + str(actual_dictionary[key]) + \
+                                    "\nIf this is simply out of order try 'sort_list=True'")
+                        continue
             else:
                 if len(actual_dictionary[key]) == 0:
                     actual_item = ''
