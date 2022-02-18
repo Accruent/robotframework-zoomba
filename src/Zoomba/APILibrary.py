@@ -151,7 +151,7 @@ class APILibrary:
         if isinstance(actual_response_dict, list) and actual_response_dict:
             if full_list_validation:
                 return self.full_list_validation(actual_response_dict, expected_response_dict, unmatched_keys_list,
-                                                 ignored_keys, **kwargs)
+                                                 ignored_keys, sort_lists=sort_lists, **kwargs)
             for exp_item in expected_response_dict:
                 for actual_item in actual_response_dict:
                     try:
@@ -260,7 +260,8 @@ class APILibrary:
                                       full_list_validation=full_list_validation, sort_lists=sort_lists, **kwargs)
             elif isinstance(value, dict):
                 self._key_by_key_dict(key, value, actual_dictionary, expected_dictionary, unmatched_keys_list,
-                                      ignored_keys, full_list_validation=full_list_validation, **kwargs)
+                                      ignored_keys, full_list_validation=full_list_validation, sort_lists=sort_lists,
+                                      **kwargs)
             elif isinstance(expected_dictionary[key], str) and not expected_dictionary[key].isdigit():
                 try:
                     parse(expected_dictionary[key])
@@ -363,7 +364,7 @@ class APILibrary:
                     current_unmatched_length = 0
                 self.key_by_key_validator(temp_actual_dict, temp_expected_dict,
                                           ignored_keys, unmatched_keys_list, parent_key=key,
-                                          full_list_validation=full_list_validation, **kwargs)
+                                          full_list_validation=full_list_validation, sort_lists=sort_lists, **kwargs)
                 if unmatched_keys_list is None:
                     continue
                 else:
@@ -371,7 +372,7 @@ class APILibrary:
                                           key, index, parent_key, is_list=True)
 
     def _key_by_key_dict(self, key, value, actual_dictionary, expected_dictionary, unmatched_keys_list=None,
-                         ignored_keys=None, full_list_validation=False, **kwargs):
+                         ignored_keys=None, full_list_validation=False, sort_lists=False, **kwargs):
         try:
             if len(value) != len(actual_dictionary[key]):
                 zoomba.fail("Dicts do not match:" + \
@@ -387,18 +388,18 @@ class APILibrary:
             current_unmatched_length = len(unmatched_keys_list)
         self.key_by_key_validator(actual_dictionary[key], expected_dictionary[key],
                                   ignored_keys, unmatched_keys_list, parent_key=key,
-                                  full_list_validation=full_list_validation, **kwargs)
+                                  full_list_validation=full_list_validation, sort_lists=sort_lists, **kwargs)
         if unmatched_keys_list is None:
             return
         _unmatched_list_check(unmatched_keys_list, current_unmatched_length, key)
 
     def full_list_validation(self, actual_response_dict, expected_response_dict, unmatched_keys_list, ignored_keys=None,
-                             **kwargs):
+                             sort_lists=False, **kwargs):
         if actual_response_dict == expected_response_dict:
             return
         for actual_item, expected_item in zip(actual_response_dict, expected_response_dict):
             self.key_by_key_validator(actual_item, expected_item, ignored_keys, unmatched_keys_list,
-                                      full_list_validation=True, **kwargs)
+                                      full_list_validation=True, sort_lists=sort_lists, **kwargs)
         if unmatched_keys_list:
             unmatched_keys_list.append(("------------------\n" + "Full List Breakdown:",
                                         "Expected: " + str(expected_response_dict),
