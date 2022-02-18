@@ -195,6 +195,10 @@ class TestInternal(unittest.TestCase):
         library = APILibrary()
         library.key_by_key_validator({"a": ["1", "2"]}, {"a": ["2", "1"]}, sort_lists=True)
 
+    def test_key_by_key_validator_list_sort_nested_dict(self):
+        library = APILibrary()
+        library.key_by_key_validator({"value":[{"a": ["1", "2"]}]}, {"value":[{"a": ["2", "1"]}]}, sort_lists=True)
+
     def test_key_by_key_validator_simple_dict(self):
         library = APILibrary()
         library.key_by_key_validator({"a": {"b": 1}}, {"a": {"b": 1}})
