@@ -267,10 +267,7 @@ class APILibrary:
                     parse(expected_dictionary[key])
                     self.date_string_comparator(value, actual_dictionary[key], key, unmatched_keys_list, **kwargs)
                 except (ValueError, TypeError):
-                    # if value == actual_dictionary[key]:
-                    # zoomba.log("dictionary: ")
-                    # zoomba.log(actual_dictionary[key])
-                    if value in actual_dictionary[key]:
+                    if value == actual_dictionary[key]:
                         continue
                     else:
                         unmatched_keys_list.append(("------------------\n" + "Key: " + str(key),
@@ -365,7 +362,7 @@ class APILibrary:
                     actual_item = ''
                 else:
                     if sort_lists:
-                        try:
+                        # try:
                             zoomba.log(actual_dictionary[key])
                             zoomba.log("SORTED IF IT WORKED: ")
                             zoomba.log(list(map(dict, sorted(list(i.items()) for i in actual_dictionary[key]))))
@@ -376,9 +373,9 @@ class APILibrary:
                             zoomba.log(actual_dictionary[key])
                             zoomba.log("actual_item: ")
                             zoomba.log(actual_item)
-                        except Exception as e:
-                            actual_item = actual_dictionary[key][index]
-                            zoomba.log(e)
+                        # except Exception as e:
+                        #     actual_item = actual_dictionary[key][index]
+                        #     zoomba.log(e)
                     else:
                         actual_item = actual_dictionary[key][index]
                 temp_actual_dict = {key: actual_item}
