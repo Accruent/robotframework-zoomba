@@ -362,9 +362,7 @@ class APILibrary:
                 else:
                     if sort_lists:
                         actual_dictionary[key] = list(map(dict, sorted(list(i.items()) for i in actual_dictionary[key])))
-                        actual_item = actual_dictionary[key][index]
-                    else:
-                        actual_item = actual_dictionary[key][index]
+                    actual_item = actual_dictionary[key][index]
                 temp_actual_dict = {key: actual_item}
                 temp_expected_dict = {key: item}
                 if unmatched_keys_list:
