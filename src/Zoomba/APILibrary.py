@@ -339,7 +339,7 @@ class APILibrary:
         if sort_lists and isinstance(value, list):
             try:
                 value = list(map(dict, sorted(list(i.items()) for i in value)))
-            except:
+            except AttributeError:
                 pass
         for index, item in enumerate(value):
             if isinstance(item, str):
