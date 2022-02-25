@@ -339,9 +339,8 @@ class APILibrary:
         if sort_lists and isinstance(value, list):
             try:
                 value = list(map(dict, sorted(list(i.items()) for i in value)))
-                zoomba.log(value)
             except:
-                zoomba.log("error")
+                pass
         for index, item in enumerate(value):
             if isinstance(item, str):
                 if value != actual_dictionary[key]:
@@ -362,20 +361,8 @@ class APILibrary:
                     actual_item = ''
                 else:
                     if sort_lists:
-                        # try:
-                            zoomba.log(actual_dictionary[key])
-                            zoomba.log("SORTED IF IT WORKED: ")
-                            zoomba.log(list(map(dict, sorted(list(i.items()) for i in actual_dictionary[key]))))
-                            actual_dictionary[key] = list(map(dict, sorted(list(i.items()) for i in actual_dictionary[key])))
-                            actual_item = actual_dictionary[key][index]
-                            zoomba.log("success: ")
-                            zoomba.log("actual_dictionary[key]: ")
-                            zoomba.log(actual_dictionary[key])
-                            zoomba.log("actual_item: ")
-                            zoomba.log(actual_item)
-                        # except Exception as e:
-                        #     actual_item = actual_dictionary[key][index]
-                        #     zoomba.log(e)
+                        actual_dictionary[key] = list(map(dict, sorted(list(i.items()) for i in actual_dictionary[key])))
+                        actual_item = actual_dictionary[key][index]
                     else:
                         actual_item = actual_dictionary[key][index]
                 temp_actual_dict = {key: actual_item}
