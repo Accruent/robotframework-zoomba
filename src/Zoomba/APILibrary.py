@@ -267,7 +267,10 @@ class APILibrary:
                     parse(expected_dictionary[key])
                     self.date_string_comparator(value, actual_dictionary[key], key, unmatched_keys_list, **kwargs)
                 except (ValueError, TypeError):
-                    if value == actual_dictionary[key]:
+                    # if value == actual_dictionary[key]:
+                    # zoomba.log("dictionary: ")
+                    # zoomba.log(actual_dictionary[key])
+                    if value in actual_dictionary[key]:
                         continue
                     else:
                         unmatched_keys_list.append(("------------------\n" + "Key: " + str(key),
@@ -336,6 +339,12 @@ class APILibrary:
 
     def _key_by_key_list(self, key, value, actual_dictionary, unmatched_keys_list=None, ignored_keys=None,
                          parent_key=None, full_list_validation=False, sort_lists=False, **kwargs):
+        if sort_lists and isinstance(value, list):
+            try:
+                value = list(map(dict, sorted(list(i.items()) for i in value)))
+                zoomba.log(value)
+            except:
+                zoomba.log("error")
         for index, item in enumerate(value):
             if isinstance(item, str):
                 if value != actual_dictionary[key]:
@@ -355,7 +364,23 @@ class APILibrary:
                 if len(actual_dictionary[key]) == 0:
                     actual_item = ''
                 else:
-                    actual_item = actual_dictionary[key][index]
+                    if sort_lists:
+                        try:
+                            zoomba.log(actual_dictionary[key])
+                            zoomba.log("SORTED IF IT WORKED: ")
+                            zoomba.log(list(map(dict, sorted(list(i.items()) for i in actual_dictionary[key]))))
+                            actual_dictionary[key] = list(map(dict, sorted(list(i.items()) for i in actual_dictionary[key])))
+                            actual_item = actual_dictionary[key][index]
+                            zoomba.log("success: ")
+                            zoomba.log("actual_dictionary[key]: ")
+                            zoomba.log(actual_dictionary[key])
+                            zoomba.log("actual_item: ")
+                            zoomba.log(actual_item)
+                        except Exception as e:
+                            actual_item = actual_dictionary[key][index]
+                            zoomba.log(e)
+                    else:
+                        actual_item = actual_dictionary[key][index]
                 temp_actual_dict = {key: actual_item}
                 temp_expected_dict = {key: item}
                 if unmatched_keys_list:
