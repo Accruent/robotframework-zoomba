@@ -231,6 +231,17 @@ class TestInternal(unittest.TestCase):
         library = APILibrary()
         library.validate_response_contains_expected_response('{"a":{"b":1}}', {"a": {"b": 1}})
 
+    def test_validate_response_contains_expected_response_sort_nested_dict(self):
+        library = APILibrary()
+        library.validate_response_contains_expected_response('{"value": [{"a": ["1", "2"]}]}', {"value": [{"a": ["2", "1"]}]},
+                                                             sort_lists=True)
+
+    def test_validate_response_contains_expected_response_sort_nested_dict_in_list(self):
+        library = APILibrary()
+        library.validate_response_contains_expected_response('{"value": [{"a": [{"a":"1", "b":"2"}, {"c":"3", "d":"4"}]}]}',
+                                                             {"value": [{"a": [{"c":"3", "d":"4"}, {"a":"1", "b":"2"}]}]},
+                                                             sort_lists=True)
+
     @patch('robot.libraries.BuiltIn.BuiltIn.fail')
     def test_validate_response_contains_expected_response_simple_fail(self, fail):
         library = APILibrary()
