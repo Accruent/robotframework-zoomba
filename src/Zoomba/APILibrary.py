@@ -336,6 +336,11 @@ class APILibrary:
 
     def _key_by_key_list(self, key, value, actual_dictionary, unmatched_keys_list=None, ignored_keys=None,
                          parent_key=None, full_list_validation=False, sort_lists=False, **kwargs):
+        if sort_lists and isinstance(value, list):
+            try:
+                value = list(map(dict, sorted(list(i.items()) for i in value)))
+            except AttributeError:
+                pass
         for index, item in enumerate(value):
             if isinstance(item, str):
                 if value != actual_dictionary[key]:
@@ -355,6 +360,8 @@ class APILibrary:
                 if len(actual_dictionary[key]) == 0:
                     actual_item = ''
                 else:
+                    if sort_lists:
+                        actual_dictionary[key] = list(map(dict, sorted(list(i.items()) for i in actual_dictionary[key])))
                     actual_item = actual_dictionary[key][index]
                 temp_actual_dict = {key: actual_item}
                 temp_expected_dict = {key: item}
