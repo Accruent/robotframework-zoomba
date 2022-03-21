@@ -183,7 +183,21 @@ class TestInternal(unittest.TestCase):
     def test_key_by_key_validator_list_do_not_match(self, fail):
         library = APILibrary()
         library.key_by_key_validator({"a": ["1", "2"]}, {"a": ["1", "3"]})
+        fail.assert_called_with("Arrays do not match:\nExpected: ['1', '3']\nActual: ['1', '2']\nIf this is simply out of order try 'sort_list=True'")
+
+    @patch('robot.libraries.BuiltIn.BuiltIn.fail')
+    def test_key_by_key_validator_list_do_not_match_with_sort(self, fail):
+        library = APILibrary()
+        library.key_by_key_validator({"a": ["1", "2"]}, {"a": ["1", "3"]}, sort_lists=True)
         fail.assert_called_with("Arrays do not match:\nExpected: ['1', '3']\nActual: ['1', '2']")
+
+    def test_key_by_key_validator_list_sort(self):
+        library = APILibrary()
+        library.key_by_key_validator({"a": ["1", "2"]}, {"a": ["2", "1"]}, sort_lists=True)
+
+    def test_key_by_key_validator_list_sort_nested_dict(self):
+        library = APILibrary()
+        library.key_by_key_validator({"value":[{"a": ["1", "2"]}]}, {"value":[{"a": ["2", "1"]}]}, sort_lists=True)
 
     def test_key_by_key_validator_simple_dict(self):
         library = APILibrary()
@@ -216,6 +230,17 @@ class TestInternal(unittest.TestCase):
     def test_validate_response_contains_expected_response_simple(self):
         library = APILibrary()
         library.validate_response_contains_expected_response('{"a":{"b":1}}', {"a": {"b": 1}})
+
+    def test_validate_response_contains_expected_response_sort_nested_dict(self):
+        library = APILibrary()
+        library.validate_response_contains_expected_response('{"value": [{"a": ["1", "2"]}]}', {"value": [{"a": ["2", "1"]}]},
+                                                             sort_lists=True)
+
+    def test_validate_response_contains_expected_response_sort_nested_dict_in_list(self):
+        library = APILibrary()
+        library.validate_response_contains_expected_response('{"value": [{"a": [{"a":"1", "b":"2"}, {"c":"3", "d":"4"}]}]}',
+                                                             {"value": [{"a": [{"c":"3", "d":"4"}, {"a":"1", "b":"2"}]}]},
+                                                             sort_lists=True)
 
     @patch('robot.libraries.BuiltIn.BuiltIn.fail')
     def test_validate_response_contains_expected_response_simple_fail(self, fail):

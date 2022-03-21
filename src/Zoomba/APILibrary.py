@@ -119,7 +119,7 @@ class APILibrary:
 
     def validate_response_contains_expected_response(self, json_actual_response, expected_response_dict,
                                                      ignored_keys=None, full_list_validation=False, identity_key="",
-                                                     **kwargs):
+                                                     sort_lists=False, **kwargs):
         """ This is the most used method for validating Request responses from an API against a supplied
             expected response. It performs an object to object comparison between two json objects, and if that fails,
             a more in depth method is called to find the exact discrepancies between the values of the provided objects.
@@ -128,6 +128,9 @@ class APILibrary:
             json_actual_response: (request response object) The response from an API.\n
             expected_response_dict: (json) The expected response, in json format.\n
             ignored_keys: (strings list) A list of strings of the keys to be ignored on the validation.\n
+            full_list_validation: (bool) Check that the entire list matches the expected response, defaults to False.\n
+            identity_key: (string) Key to match items to, defaults to 'id'.\n
+            sort_lists: (bool) Sort lists before doing key by key validation, defaults to False.\n
             **kwargs: (dict) Currently supported kwargs are margin_type and margin_amt\n
             margin_type: (string) The type of unit of time to be used to generate a delta for the date comparisons.\n
             margin_amt: (string/#) The amount of units specified in margin_type to allot for difference between dates.\n
@@ -142,19 +145,19 @@ class APILibrary:
             if actual_response_dict == expected_response_dict:
                 return
             self.key_by_key_validator(actual_response_dict, expected_response_dict, ignored_keys,
-                                      unmatched_keys_list, full_list_validation=full_list_validation, **kwargs)
+                                      unmatched_keys_list, full_list_validation=full_list_validation, sort_lists=sort_lists, **kwargs)
             self.generate_unmatched_keys_error_message(unmatched_keys_list)
             return
         if isinstance(actual_response_dict, list) and actual_response_dict:
             if full_list_validation:
                 return self.full_list_validation(actual_response_dict, expected_response_dict, unmatched_keys_list,
-                                                 ignored_keys, **kwargs)
+                                                 ignored_keys, sort_lists=sort_lists, **kwargs)
             for exp_item in expected_response_dict:
                 for actual_item in actual_response_dict:
                     try:
                         if exp_item[identity_key] == actual_item[identity_key]:
                             self.key_by_key_validator(actual_item, exp_item, ignored_keys, unmatched_keys_list,
-                                                      full_list_validation=full_list_validation, **kwargs)
+                                                      full_list_validation=full_list_validation, sort_lists=sort_lists, **kwargs)
                             self.generate_unmatched_keys_error_message(unmatched_keys_list)
                             break
                         elif actual_response_dict[-1] == actual_item:
@@ -221,13 +224,15 @@ class APILibrary:
             zoomba.fail("The response is not a list:\nActual Response:\n" + str(actual_response_dict))
 
     def key_by_key_validator(self, actual_dictionary, expected_dictionary, ignored_keys=None, unmatched_keys_list=None,
-                             parent_key=None, full_list_validation=False, **kwargs):
+                             parent_key=None, full_list_validation=False, sort_lists=False, **kwargs):
         """ This method is used to find and verify the value of every key in the expectedItem dictionary when compared
             against a single dictionary actual_item, unless any keys are included on the ignored_keys array./n
 
             actual_item: (array of dictionaries) The list of dictionary items extracted from a json Response.\n
             ExpectedItem: (dictionary) The expected item with the key to be validated.\n
             ignored_keys: (strings list) A list of strings of the keys to be ignored on the validation.\n
+            full_list_validation: (bool) Check that the entire list matches the expected response, defaults to False.\n
+            sort_lists: (bool) Sort lists before doing key by key validation, defaults to False.\n
             **kwargs: (dict) Currently supported kwargs are margin_type and margin_amt\n
             margin_type: (string) The type of unit of time to be used to generate a delta for the date comparisons.\n
             margin_amt: (string/#) The amount of units specified in margin_type to allot for difference between dates.\n
@@ -252,10 +257,11 @@ class APILibrary:
                                 "\nActual: " + str(actual_dictionary[key]))
                     continue
                 self._key_by_key_list(key, value, actual_dictionary, unmatched_keys_list, ignored_keys, parent_key,
-                                      full_list_validation=full_list_validation, **kwargs)
+                                      full_list_validation=full_list_validation, sort_lists=sort_lists, **kwargs)
             elif isinstance(value, dict):
                 self._key_by_key_dict(key, value, actual_dictionary, expected_dictionary, unmatched_keys_list,
-                                      ignored_keys, full_list_validation=full_list_validation, **kwargs)
+                                      ignored_keys, full_list_validation=full_list_validation, sort_lists=sort_lists,
+                                      **kwargs)
             elif isinstance(expected_dictionary[key], str) and not expected_dictionary[key].isdigit():
                 try:
                     parse(expected_dictionary[key])
@@ -329,18 +335,33 @@ class APILibrary:
             zoomba.fail(keys_error_msg + "\nPlease see differing value(s)")
 
     def _key_by_key_list(self, key, value, actual_dictionary, unmatched_keys_list=None, ignored_keys=None,
-                         parent_key=None, full_list_validation=False, **kwargs):
+                         parent_key=None, full_list_validation=False, sort_lists=False, **kwargs):
+        if sort_lists and isinstance(value, list):
+            try:
+                value = list(map(dict, sorted(list(i.items()) for i in value)))
+            except AttributeError:
+                pass
         for index, item in enumerate(value):
             if isinstance(item, str):
                 if value != actual_dictionary[key]:
-                    zoomba.fail("Arrays do not match:" + \
-                                "\nExpected: " + str(value) + \
-                                "\nActual: " + str(actual_dictionary[key]))
-                    continue
+                    if sort_lists:
+                        if sorted(value) != sorted(actual_dictionary[key]):
+                            zoomba.fail("Arrays do not match:" + \
+                                        "\nExpected: " + str(sorted(value)) + \
+                                        "\nActual: " + str(sorted(actual_dictionary[key])))
+                            continue
+                    else:
+                        zoomba.fail("Arrays do not match:" + \
+                                    "\nExpected: " + str(value) + \
+                                    "\nActual: " + str(actual_dictionary[key]) + \
+                                    "\nIf this is simply out of order try 'sort_list=True'")
+                        continue
             else:
                 if len(actual_dictionary[key]) == 0:
                     actual_item = ''
                 else:
+                    if sort_lists:
+                        actual_dictionary[key] = list(map(dict, sorted(list(i.items()) for i in actual_dictionary[key])))
                     actual_item = actual_dictionary[key][index]
                 temp_actual_dict = {key: actual_item}
                 temp_expected_dict = {key: item}
@@ -350,7 +371,7 @@ class APILibrary:
                     current_unmatched_length = 0
                 self.key_by_key_validator(temp_actual_dict, temp_expected_dict,
                                           ignored_keys, unmatched_keys_list, parent_key=key,
-                                          full_list_validation=full_list_validation, **kwargs)
+                                          full_list_validation=full_list_validation, sort_lists=sort_lists, **kwargs)
                 if unmatched_keys_list is None:
                     continue
                 else:
@@ -358,7 +379,7 @@ class APILibrary:
                                           key, index, parent_key, is_list=True)
 
     def _key_by_key_dict(self, key, value, actual_dictionary, expected_dictionary, unmatched_keys_list=None,
-                         ignored_keys=None, full_list_validation=False, **kwargs):
+                         ignored_keys=None, full_list_validation=False, sort_lists=False, **kwargs):
         try:
             if len(value) != len(actual_dictionary[key]):
                 zoomba.fail("Dicts do not match:" + \
@@ -374,18 +395,18 @@ class APILibrary:
             current_unmatched_length = len(unmatched_keys_list)
         self.key_by_key_validator(actual_dictionary[key], expected_dictionary[key],
                                   ignored_keys, unmatched_keys_list, parent_key=key,
-                                  full_list_validation=full_list_validation, **kwargs)
+                                  full_list_validation=full_list_validation, sort_lists=sort_lists, **kwargs)
         if unmatched_keys_list is None:
             return
         _unmatched_list_check(unmatched_keys_list, current_unmatched_length, key)
 
     def full_list_validation(self, actual_response_dict, expected_response_dict, unmatched_keys_list, ignored_keys=None,
-                             **kwargs):
+                             sort_lists=False, **kwargs):
         if actual_response_dict == expected_response_dict:
             return
         for actual_item, expected_item in zip(actual_response_dict, expected_response_dict):
             self.key_by_key_validator(actual_item, expected_item, ignored_keys, unmatched_keys_list,
-                                      full_list_validation=True, **kwargs)
+                                      full_list_validation=True, sort_lists=sort_lists, **kwargs)
         if unmatched_keys_list:
             unmatched_keys_list.append(("------------------\n" + "Full List Breakdown:",
                                         "Expected: " + str(expected_response_dict),
