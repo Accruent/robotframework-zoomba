@@ -118,7 +118,7 @@ class APILibrary:
         return self.call_post_request(headers=headers, endpoint=endpoint, fullstring=method, data=data, cookies=cookies, timeout=timeout)
 
     def validate_response_contains_expected_response(self, json_actual_response, expected_response_dict,
-                                                     ignored_keys=None, full_list_validation=False, identity_key="",
+                                                     ignored_keys=None, full_list_validation=False, identity_key="id",
                                                      sort_lists=False, **kwargs):
         """ This is the most used method for validating Request responses from an API against a supplied
             expected response. It performs an object to object comparison between two json objects, and if that fails,
