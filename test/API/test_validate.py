@@ -242,14 +242,6 @@ class TestInternal(unittest.TestCase):
                                                              {"value": [{"a": [{"c":"3", "d":"4"}, {"a":"1", "b":"2"}]}]},
                                                              sort_lists=True)
 
-    def test_validate_response_contains_expected_response_simple_list(self):
-        library = APILibrary()
-        library.validate_response_contains_expected_response('[{"id":1}, {"id":2}]', [{"id": 1}, {"id": 2}])
-
-    def test_validate_response_contains_expected_response_list_with_identity_key(self):
-        library = APILibrary()
-        library.validate_response_contains_expected_response('[{"a":1}, {"a":2}]', [{"a": 1}, {"a": 2}], identity_key="a")
-
     @patch('robot.libraries.BuiltIn.BuiltIn.fail')
     def test_validate_response_contains_expected_response_simple_fail(self, fail):
         library = APILibrary()
