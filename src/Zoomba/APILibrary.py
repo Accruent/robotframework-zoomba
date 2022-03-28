@@ -129,7 +129,7 @@ class APILibrary:
             expected_response_dict: (json) The expected response, in json format.\n
             ignored_keys: (strings list) A list of strings of the keys to be ignored on the validation.\n
             full_list_validation: (bool) Check that the entire list matches the expected response, defaults to False.\n
-            identity_key: (string) Key to match items to, defaults to ''.\n
+            identity_key: (string) Key to match items to, defaults to 'id'.\n
             sort_lists: (bool) Sort lists before doing key by key validation, defaults to False.\n
             **kwargs: (dict) Currently supported kwargs are margin_type and margin_amt\n
             margin_type: (string) The type of unit of time to be used to generate a delta for the date comparisons.\n
