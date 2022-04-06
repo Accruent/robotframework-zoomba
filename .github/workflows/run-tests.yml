@@ -40,8 +40,12 @@ jobs:
 
       - uses: browser-actions/setup-edge@latest
       - name: Run Edge Robot Tests
-        run: |
-          robot -i Edge test || robot -i Edge test
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 30
+          max_attempts: 3
+          command: robot -i Edge test
+          new_command_on_retry: robot --rerunfailedsuites "output.xml" -i Edge test
 
   run-tests-chrome:
     runs-on: ubuntu-latest
@@ -67,9 +71,14 @@ jobs:
           sudo apt-get -y -q install xvfb scrot zip curl libxml2-dev libxslt1-dev
 
       - name: Run Chrome Robot Tests
-        run: |
-          ${{ matrix.set_display }}
-          robot --randomize suites -e BrokenORWindowsOREdgeORMobile test || robot --randomize suites -e BrokenORWindowsOREdgeORMobile test
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 30
+          max_attempts: 3
+          command: |
+            ${{ matrix.set_display }}
+            robot --randomize suites -e BrokenORWindowsOREdgeORMobile test
+          new_command_on_retry: robot --rerunfailedsuites "output.xml" -e BrokenORWindowsOREdgeORMobile test
 
   run-tests-mobile:
     runs-on: ubuntu-latest
@@ -91,8 +100,12 @@ jobs:
           sudo apt-get update
 
       - name: Run Mobile Robot Tests
-        run: |
-          robot --randomize suites -i Mobile -e BrokenORWindowsOREdge -v sauce_username:${{ secrets.SAUCE_USERNAME }} -v sauce_key:${{ secrets.SAUCE_ACCESS_KEY }} -v GITHUB_RUN_NUMBER:Github.Zoomba.$GITHUB_RUN_NUMBER test || robot --randomize suites -i Mobile -e BrokenORWindowsOREdge -v sauce_username:${{ secrets.SAUCE_USERNAME }} -v sauce_key:${{ secrets.SAUCE_ACCESS_KEY }} -v GITHUB_RUN_NUMBER:Github.Zoomba.$GITHUB_RUN_NUMBER test
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 30
+          max_attempts: 3
+          command: robot --randomize suites -i Mobile -e BrokenORWindowsOREdge -v sauce_username:${{ secrets.SAUCE_USERNAME }} -v sauce_key:${{ secrets.SAUCE_ACCESS_KEY }} -v GITHUB_RUN_NUMBER:Github.Zoomba.$GITHUB_RUN_NUMBER test
+          new_command_on_retry: robot --rerunfailedsuites "output.xml" -i Mobile -e BrokenORWindowsOREdge -v sauce_username:${{ secrets.SAUCE_USERNAME }} -v sauce_key:${{ secrets.SAUCE_ACCESS_KEY }} -v GITHUB_RUN_NUMBER:Github.Zoomba.$GITHUB_RUN_NUMBER test
 
   run-tests-unit:
     runs-on: ubuntu-latest
