@@ -91,8 +91,11 @@ jobs:
           sudo apt-get update
 
       - name: Run Mobile Robot Tests
-        run: |
-          robot --randomize suites -i Mobile -e BrokenORWindowsOREdge -v sauce_username:${{ secrets.SAUCE_USERNAME }} -v sauce_key:${{ secrets.SAUCE_ACCESS_KEY }} -v GITHUB_RUN_NUMBER:Github.Zoomba.$GITHUB_RUN_NUMBER test || robot --randomize suites -i Mobile -e BrokenORWindowsOREdge -v sauce_username:${{ secrets.SAUCE_USERNAME }} -v sauce_key:${{ secrets.SAUCE_ACCESS_KEY }} -v GITHUB_RUN_NUMBER:Github.Zoomba.$GITHUB_RUN_NUMBER test
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 45
+          max_attempts: 2
+          command: robot --randomize suites -i Mobile -e BrokenORWindowsOREdge -v sauce_username:${{ secrets.SAUCE_USERNAME }} -v sauce_key:${{ secrets.SAUCE_ACCESS_KEY }} -v GITHUB_RUN_NUMBER:Github.Zoomba.$GITHUB_RUN_NUMBER test
 
   run-tests-unit:
     runs-on: ubuntu-latest
