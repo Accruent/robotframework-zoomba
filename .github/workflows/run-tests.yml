@@ -40,8 +40,12 @@ jobs:
 
       - uses: browser-actions/setup-edge@latest
       - name: Run Edge Robot Tests
-        run: |
-          robot -i Edge test || robot -i Edge test
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 30
+          max_attempts: 3
+          command: robot -i Edge test
+          new_command_on_retry: robot --rerunfailed "output.xml" -i Edge test
 
   run-tests-chrome:
     runs-on: ubuntu-latest
@@ -67,9 +71,14 @@ jobs:
           sudo apt-get -y -q install xvfb scrot zip curl libxml2-dev libxslt1-dev
 
       - name: Run Chrome Robot Tests
-        run: |
-          ${{ matrix.set_display }}
-          robot --randomize suites -e BrokenORWindowsOREdgeORMobile test || robot --randomize suites -e BrokenORWindowsOREdgeORMobile test
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 30
+          max_attempts: 3
+          command: |
+            ${{ matrix.set_display }}
+            robot --randomize suites -e BrokenORWindowsOREdgeORMobile test
+          new_command_on_retry: robot --rerunfailed "output.xml" -e BrokenORWindowsOREdgeORMobile test
 
   run-tests-mobile:
     runs-on: ubuntu-latest
