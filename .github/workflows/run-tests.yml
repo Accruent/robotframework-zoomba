@@ -45,7 +45,7 @@ jobs:
           timeout_minutes: 30
           max_attempts: 3
           command: robot -i Edge test
-          new_command_on_retry: robot --rerunfailed "output.xml" -i Edge test
+          new_command_on_retry: robot --rerunfailedsuites "output.xml" -i Edge test
 
   run-tests-chrome:
     runs-on: ubuntu-latest
@@ -78,7 +78,7 @@ jobs:
           command: |
             ${{ matrix.set_display }}
             robot --randomize suites -e BrokenORWindowsOREdgeORMobile test
-          new_command_on_retry: robot --rerunfailed "output.xml" -e BrokenORWindowsOREdgeORMobile test
+          new_command_on_retry: robot --rerunfailedsuites "output.xml" -e BrokenORWindowsOREdgeORMobile test
 
   run-tests-mobile:
     runs-on: ubuntu-latest
@@ -105,7 +105,7 @@ jobs:
           timeout_minutes: 30
           max_attempts: 3
           command: robot --randomize suites -i Mobile -e BrokenORWindowsOREdge -v sauce_username:${{ secrets.SAUCE_USERNAME }} -v sauce_key:${{ secrets.SAUCE_ACCESS_KEY }} -v GITHUB_RUN_NUMBER:Github.Zoomba.$GITHUB_RUN_NUMBER test
-          new_command_on_retry: robot --rerunfailed "output.xml" -i Mobile -e BrokenORWindowsOREdge -v sauce_username:${{ secrets.SAUCE_USERNAME }} -v sauce_key:${{ secrets.SAUCE_ACCESS_KEY }} -v GITHUB_RUN_NUMBER:Github.Zoomba.$GITHUB_RUN_NUMBER test
+          new_command_on_retry: robot --rerunfailedsuites "output.xml" -i Mobile -e BrokenORWindowsOREdge -v sauce_username:${{ secrets.SAUCE_USERNAME }} -v sauce_key:${{ secrets.SAUCE_ACCESS_KEY }} -v GITHUB_RUN_NUMBER:Github.Zoomba.$GITHUB_RUN_NUMBER test
 
   run-tests-unit:
     runs-on: ubuntu-latest
