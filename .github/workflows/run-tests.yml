@@ -78,7 +78,9 @@ jobs:
           command: |
             ${{ matrix.set_display }}
             robot --randomize suites -e BrokenORWindowsOREdgeORMobile test
-          new_command_on_retry: robot --rerunfailedsuites "output.xml" -e BrokenORWindowsOREdgeORMobile test
+          new_command_on_retry: |
+            ${{ matrix.set_display }}
+            robot --rerunfailedsuites "output.xml" -e BrokenORWindowsOREdgeORMobile test
 
   run-tests-mobile:
     runs-on: ubuntu-latest
