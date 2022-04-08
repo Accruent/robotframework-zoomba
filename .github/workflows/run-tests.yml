@@ -45,7 +45,7 @@ jobs:
           timeout_minutes: 30
           max_attempts: 3
           command: robot -i Edge test
-          new_command_on_retry: robot --rerunfailedsuites "output.xml" -i Edge test
+          new_command_on_retry: robot --rerunfailed "output.xml" -i Edge test
 
   run-tests-chrome:
     runs-on: ubuntu-latest
@@ -80,7 +80,7 @@ jobs:
             robot --randomize suites -e BrokenORWindowsOREdgeORMobile test
           new_command_on_retry: |
             ${{ matrix.set_display }}
-            robot --rerunfailedsuites "output.xml" -e BrokenORWindowsOREdgeORMobile test
+            robot --rerunfailed "output.xml" -e BrokenORWindowsOREdgeORMobile test
 
   run-tests-mobile:
     runs-on: ubuntu-latest
