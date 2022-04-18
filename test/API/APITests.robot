@@ -108,6 +108,7 @@ Validate Response Number of Items Positive Tests
 #   JSON Actual             No of Items
     ${json_actual_6}        ${3}
     ${json_actual_2}        ${1}
+    ${json_actual_5}        1
 
 Validate Response Number of Items Negative Tests
     [Template]      Validate Response Contains Correct Number of Items Errors template

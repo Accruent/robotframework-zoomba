@@ -46,6 +46,10 @@ class TestInternal(unittest.TestCase):
         library.validate_response_contains_correct_number_of_items('{"a":1}', 1)
         fail.assert_called_with("The response is not a list:\nActual Response:\n{'a': 1}")
 
+    def test_validate_response_contains_correct_number_of_items_string(self):
+        library = APILibrary()
+        library.validate_response_contains_correct_number_of_items('[{"a":1}]', "1")
+
     def test_validate_response_contains_expected_response_only_keys_listed_simple(self):
         library = APILibrary()
         library.validate_response_contains_expected_response_only_keys_listed('{"a":1}', {"a": 1}, ["a"])
