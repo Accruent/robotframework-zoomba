@@ -217,7 +217,7 @@ class APILibrary:
             return
 
         if isinstance(actual_response_dict, list):
-            if len(actual_response_dict) != number_of_items:
+            if len(actual_response_dict) != int(number_of_items):
                 zoomba.fail('API is returning ' + str(
                     len(actual_response_dict)) + ' instead of the expected ' + str(number_of_items) + ' result(s).')
         else:
