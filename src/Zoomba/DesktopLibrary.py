@@ -271,6 +271,12 @@ class DesktopLibrary(AppiumLibrary):
         | Open Application | http://localhost:4723/wd/hub | alias=Myapp1         | platformName=Windows            | deviceName=Windows           | app=your.app          | window_name=MyApplication          | splash_delay=5          |
         | Open Application | http://localhost:4723/wd/hub | alias=Myapp1         | platformName=Windows            | deviceName=Windows           | app=your.app          | window_name=MyApplication          | exact_match=False       |
 
+        NOTE: WinAppDriver can also run as a standalone app listening to requests on the IP address and port
+
+        Examples:
+        | Open Application | http://localhost:4723 | alias=Myapp1         | platformName=Windows            | deviceName=Windows           | app=your.app          |
+        | Open Application | http://localhost:4723 | alias=Myapp1         | platformName=Windows            | deviceName=Windows           | app=your.app          | desktop_alias=Desktop2             |
+
         A session for the root desktop will also be opened and can be switched to by running the following (default
         alias is 'Desktop'):
         | Switch Application | Desktop         |
@@ -311,8 +317,8 @@ class DesktopLibrary(AppiumLibrary):
         which can be used to switch back to that application later.
 
         Example:
-        | ${appium1}=              | Open Application  | http://localhost:4723/wd/hub                   | alias=MyApp1 | platformName=iOS | platformVersion=7.0 | deviceName='iPhone Simulator' | app=your.app |
-        | ${appium2}=              | Open Application  | http://localhost:4755/wd/hub                   | alias=MyApp2 | platformName=iOS | platformVersion=7.0 | deviceName='iPhone Simulator' | app=your.app |
+        | ${appium1}=              | Open Application  | http://localhost:4723/wd/hub or http://localhost:4723                  | alias=MyApp1 | platformName=iOS | platformVersion=7.0 | deviceName='iPhone Simulator' | app=your.app |
+        | ${appium2}=              | Open Application  | http://localhost:4755/wd/hub or http://localhost:4755                  | alias=MyApp2 | platformName=iOS | platformVersion=7.0 | deviceName='iPhone Simulator' | app=your.app |
         | Click Element            | sendHello         | # Executed on appium running at localhost:4755 |
         | Switch Application       | ${appium1}        | # Switch using index                           |
         | Click Element            | ackHello          | # Executed on appium running at localhost:4723 |
@@ -324,8 +330,8 @@ class DesktopLibrary(AppiumLibrary):
         and desktop needed for some keywords.
 
         Example:
-        | Open Application  | http://localhost:4723/wd/hub  | alias=MyApp1 | platformName=iOS | platformVersion=7.0 | deviceName='iPhone Simulator' | app=your.app |
-        | Open Application  | http://localhost:4755/wd/hub  | alias=MyApp2 | desktop_alias=Desktop2 | platformName=iOS | platformVersion=7.0 | deviceName='iPhone Simulator' | app=your.app |
+        | Open Application  | http://localhost:4723/wd/hub or http://localhost:4723  | alias=MyApp1 | platformName=iOS | platformVersion=7.0 | deviceName='iPhone Simulator' | app=your.app |
+        | Open Application  | http://localhost:4755/wd/hub or http://localhost:4755  | alias=MyApp2 | desktop_alias=Desktop2 | platformName=iOS | platformVersion=7.0 | deviceName='iPhone Simulator' | app=your.app |
         | Select Element From ComboBox | list_element  | locator_element | # Executed on MyApp2 running at localhost:4755 with Desktop2 as the desktop session |
         | Switch Application       | MyApp1   |   Desktop     | # Switch using alias and setting current desktop alias |
         | Select Element From ComboBox | list_element  | locator_element | # Executed on MyApp1 running at localhost:4723 with Desktop as the desktop session |
@@ -356,9 +362,9 @@ class DesktopLibrary(AppiumLibrary):
         | desktop_alias       | No     | Set an alias for the created desktop session, will default to 'Desktop'      |
 
         Examples:
-        | Switch Application By Name | http://localhost:4723/wd/hub | alias=Myapp1         | platformName=Windows            | deviceName=Windows           | window_name=MyApplication         |
-        | Switch Application By Name | http://localhost:4723/wd/hub | window_name=MyApp    |  exact_match=False  |
-        | Switch Application By Name | http://localhost:4723/wd/hub | window_name=MyApp    |  desktop_alias=Desktop2  |
+        | Switch Application By Name | http://localhost:4723/wd/hub or http://localhost:4723 | alias=Myapp1         | platformName=Windows            | deviceName=Windows           | window_name=MyApplication         |
+        | Switch Application By Name | http://localhost:4723/wd/hub or http://localhost:4723 | window_name=MyApp    |  exact_match=False  |
+        | Switch Application By Name | http://localhost:4723/wd/hub or http://localhost:4723 | window_name=MyApp    |  desktop_alias=Desktop2  |
 
         A session for the root desktop will also be opened and can be switched to by running the following (default
         alias is 'Desktop'):
@@ -424,9 +430,9 @@ class DesktopLibrary(AppiumLibrary):
         | desktop_alias       | No     | Set an alias for the created desktop session, will default to 'Desktop'      |
 
         Examples:
-        | Switch Application By Locator | http://localhost:4723/wd/hub | alias=Myapp1         | platformName=Windows            | deviceName=Windows           | locator=class=MyApplication         |
-        | Switch Application By Locator | http://localhost:4723/wd/hub | accessibility_id=MyApp    |
-        | Switch Application By Locator | http://localhost:4723/wd/hub | accessibility_id=MyApp    | desktop_alias=Desktop2     |
+        | Switch Application By Locator | http://localhost:4723/wd/hub or http://localhost:4723 | alias=Myapp1         | platformName=Windows            | deviceName=Windows           | locator=class=MyApplication         |
+        | Switch Application By Locator | http://localhost:4723/wd/hub or http://localhost:4723 | accessibility_id=MyApp    |
+        | Switch Application By Locator | http://localhost:4723/wd/hub or http://localhost:4723 | accessibility_id=MyApp    | desktop_alias=Desktop2     |
 
         A session for the root desktop will also be opened and can be switched to by running the following (default
         alias is 'Desktop'):
