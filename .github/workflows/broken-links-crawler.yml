@@ -23,7 +23,7 @@ jobs:
         with:
           # Which website to check
           url: https://github.com/Accruent/robotframework-zoomba/blob/master/docs/README.md
-          ignorePatterns: 'docs.github,github,google,githubusercontent'
+          ignorePatterns: 'docs.github.com,github,google,githubusercontent'
       - name: Get the result
         run: echo "${{steps.link-report.outputs.result}}"
       - name: Get the result 2
