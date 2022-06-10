@@ -7,14 +7,24 @@ on:
     branches:
       - master
 jobs:
-  linkChecker:
+  check_broken_links:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-
-      - name: Link Checker
-        uses: lycheeverse/lychee-action@v1.5.0
+      - name: Check for broken links
+        id: link-report
+        uses: celinekurpershoek/github-actions-link-checker@v1.2.2
         with:
-          fail: true
-        env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          # Which website to check
+          url: https://accruent.github.io/robotframework-zoomba/
+          ignorePatterns: 'docs.github,github,google,githubusercontent'
+      - name: Check for broken links
+        id: link-report_2
+        uses: celinekurpershoek/github-actions-link-checker@v1.2.2
+        with:
+          # Which website to check
+          url: https://github.com/Accruent/robotframework-zoomba/blob/master/docs/README.md
+          ignorePatterns: 'docs.github,github,google,githubusercontent'
+      - name: Get the result
+        run: echo "${{steps.link-report.outputs.result}}"
+      - name: Get the result 2
+        run: echo "${{steps.link-report_2.outputs.result}}"
