@@ -7,9 +7,12 @@ on:
     branches:
       - master
 jobs:
-  check_broken_links:
+  linkChecker:
     runs-on: ubuntu-latest
     steps:
-      - name: Check for broken links
-        id: link-report
-        uses: peter-evans/link-checker@v1.2.2
+    - uses: actions/checkout@v2
+    - name: Link Checker
+      id: lc
+      uses: peter-evans/link-checker@v1
+    - name: Fail if there were link errors
+      run: exit ${{ steps.lc.outputs.exit_code }}
