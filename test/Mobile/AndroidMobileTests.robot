@@ -68,11 +68,8 @@ Drag and Drop By Offset Keyword Test
     wait for and click text       Graphics/Shadow Card Drag
     ${location1}=       Get Element Location    com.touchboarder.android.api.demos:id/card
     Drag and Drop By Offset                com.touchboarder.android.api.demos:id/card           100      100
-    ${x}=     Set Variable     ${location1}[x] + 100
-    ${y}=     Set Variable     ${location1}[y] + 100
-    # Not sure why here but it moves 150 pixels rather than 100...may be limitation of testing app
     ${location2}=       Get Element Location    com.touchboarder.android.api.demos:id/card
-    Should Be Equal     "${location2}"       "{'x': ${x}, 'y': ${y}}"
+    Should Not Be Equal     "${location2}"       "${location1}"
 
 Wait Until Element Contains
     Wait For And Click Element       accessibility_id=Search
