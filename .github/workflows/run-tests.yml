@@ -22,7 +22,7 @@ jobs:
           curl -F "payload=@./demo_app.apk" -F name=demo_app.apk -u "$SAUCE_USERNAME":"$SAUCE_ACCESS_KEY" "https://api.us-west-1.saucelabs.com/v1/storage/upload"
 
   run-tests-edge:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         python-version: [ 3.7, 3.8, 3.9, '3.10' ]
