@@ -13,16 +13,3 @@ jobs:
       - name: Check for broken links
         id: link-report
         uses: peter-evans/link-checker@v1.2.2
-        with:
-          # Which website to check
-          entrypoint: https://accruent.github.io/robotframework-zoomba/
-      - name: Check for broken links
-        id: link-report_2
-        uses: peter-evans/link-checker@v1.2.2
-        with:
-          # Which website to check
-          entrypoint: https://github.com/Accruent/robotframework-zoomba/blob/master/docs/README.md
-      - name: Get the result
-        run: echo "${{steps.link-report.outputs.result}}"
-      - name: Get the result 2
-        run: echo "${{steps.link-report_2.outputs.result}}"
