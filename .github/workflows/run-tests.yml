@@ -42,7 +42,7 @@ jobs:
       - name: Run Edge Robot Tests
         uses: nick-fields/retry@v2
         with:
-          timeout_minutes: 30
+          timeout_minutes: 45
           max_attempts: 3
           command: robot -i Edge test
           new_command_on_retry: robot --rerunfailed "output.xml" -i Edge test
@@ -73,7 +73,7 @@ jobs:
       - name: Run Chrome Robot Tests
         uses: nick-fields/retry@v2
         with:
-          timeout_minutes: 30
+          timeout_minutes: 45
           max_attempts: 3
           command: |
             ${{ matrix.set_display }}
@@ -104,7 +104,7 @@ jobs:
       - name: Run Mobile Robot Tests
         uses: nick-fields/retry@v2
         with:
-          timeout_minutes: 30
+          timeout_minutes: 45
           max_attempts: 3
           command: robot --randomize suites -i Mobile -e BrokenORWindowsOREdge -v sauce_username:${{ secrets.SAUCE_USERNAME }} -v sauce_key:${{ secrets.SAUCE_ACCESS_KEY }} -v GITHUB_RUN_NUMBER:Github.Zoomba.$GITHUB_RUN_NUMBER test
           new_command_on_retry: robot --rerunfailedsuites "output.xml" -i Mobile -e BrokenORWindowsOREdge -v sauce_username:${{ secrets.SAUCE_USERNAME }} -v sauce_key:${{ secrets.SAUCE_ACCESS_KEY }} -v GITHUB_RUN_NUMBER:Github.Zoomba.$GITHUB_RUN_NUMBER test
