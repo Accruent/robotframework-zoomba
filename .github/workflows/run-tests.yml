@@ -44,7 +44,7 @@ jobs:
           timeout_minutes: 45
           max_attempts: 3
           command: robot -i Edge test
-          new_command_on_retry: sleep 30s; robot --rerunfailed "output.xml" -i Edge test
+          new_command_on_retry: sleep 30; robot --rerunfailed "output.xml" -i Edge test
 
   run-tests-chrome:
     runs-on: ubuntu-latest
