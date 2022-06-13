@@ -42,7 +42,7 @@ jobs:
         uses: nick-fields/retry@v2.7.0
         with:
           timeout_minutes: 45
-          max_attempts: 3
+          max_attempts: 10
           command: robot -i Edge test
           new_command_on_retry: sleep 30; robot --rerunfailed "output.xml" -i Edge test
 
