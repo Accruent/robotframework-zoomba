@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 120
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.4.2
       - shell: bash
         env:
           SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
@@ -27,9 +27,9 @@ jobs:
       matrix:
         python-version: [ 3.7, 3.8, 3.9, '3.10' ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.4.2
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4.0.0
         with:
           python-version: ${{ matrix.python-version }}
 
@@ -40,7 +40,7 @@ jobs:
 
       - uses: browser-actions/setup-edge@latest
       - name: Run Edge Robot Tests
-        uses: nick-fields/retry@v2
+        uses: nick-fields/retry@v2.7.0
         with:
           timeout_minutes: 45
           max_attempts: 3
@@ -56,9 +56,9 @@ jobs:
           - os: ubuntu-latest
             set_display: export DISPLAY=:99; Xvfb :99 -screen 0 1024x768x24 -ac -noreset & sleep 3
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.4.2
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4.0.0
         with:
           python-version: ${{ matrix.python-version }}
 
@@ -71,7 +71,7 @@ jobs:
           sudo apt-get -y -q install xvfb scrot zip curl libxml2-dev libxslt1-dev
 
       - name: Run Chrome Robot Tests
-        uses: nick-fields/retry@v2
+        uses: nick-fields/retry@v2.7.0
         with:
           timeout_minutes: 45
           max_attempts: 3
@@ -88,9 +88,9 @@ jobs:
         matrix:
           python-version: [ 3.7, 3.8, 3.9, '3.10' ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.4.2
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4.0.0
         with:
           python-version: ${{ matrix.python-version }}
 
@@ -102,7 +102,7 @@ jobs:
           sudo apt-get update
 
       - name: Run Mobile Robot Tests
-        uses: nick-fields/retry@v2
+        uses: nick-fields/retry@v2.7.0
         with:
           timeout_minutes: 45
           max_attempts: 3
@@ -115,9 +115,9 @@ jobs:
       matrix:
         python-version: [ 3.7, 3.8, 3.9, '3.10' ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.4.2
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4.0.0
         with:
           python-version: ${{ matrix.python-version }}
 
