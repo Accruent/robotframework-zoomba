@@ -12,6 +12,7 @@ Test Case Setup
     [Arguments]    ${url}=https://github.com/
     Open Browser   ${url}    browser=Edge    options=use_chromium=True
     Maximize Browser Window
+    Set Selenium Speed    0.05s
 
 *** Test Cases ***
 Wait for Keywords Test
