@@ -40,12 +40,11 @@ Save Selenium Screenshot Test
     Should Match Regexp             ${file1}                    .selenium-screenshot-\\d{10}.\\d{0,8}-\\d.png
 
 Iframe keywords Test
-    Go To    https://www.w3schools.com/html/html_iframe.asp
-    Page should not contain element     //a[@href='default.asp'][@class='active']
-    wait for and select frame   //iframe[@src='default.asp']
-    wait until page contains element    //a[@href='default.asp'][@class='active']
+    Go To    https://seleniumbase.io/w3schools/iframes
+    Page should not contain      This page is displayed in an iframe
+    wait for and select frame   //iframe[@id='iframeResult']
     Unselect frame
-    Page should not contain element     //a[@href='default.asp'][@class='active']
+    Page should not contain      This page is displayed in an iframe
 
 Nested Iframe keyword Test
     Go To    https://www.quackit.com/html/tags/html_iframe_tag.cfm
