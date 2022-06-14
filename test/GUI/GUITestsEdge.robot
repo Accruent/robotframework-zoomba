@@ -15,7 +15,6 @@ Test Case Setup
 *** Test Cases ***
 Wait for Keywords Test
     Go To      https://github.com/
-    Test Case Setup
     wait for and input text      //input[@name='q']      robotframework
     press keys                    //input[@name='q']      RETURN
     wait for and click element               //a[@href='/robotframework/robotframework']
@@ -23,7 +22,6 @@ Wait for Keywords Test
 
 Wait for Keywords Test With Password
     Go To      https://github.com/
-    Test Case Setup
     wait for and input password      //input[@name='q']      robotframework
     press keys                    //input[@name='q']      RETURN
     wait for and click element               //a[@href='/robotframework/robotframework']
