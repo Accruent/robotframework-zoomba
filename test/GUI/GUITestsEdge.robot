@@ -2,8 +2,8 @@
 Documentation   Zoomba GUI Library Tests
 Library         ../../src/Zoomba/GUILibrary.py     plugins=Zoomba.Helpers.EdgePlugin
 Library         Collections
-Test Suite Setup    Test Case Setup
-Test Suite Teardown   Close All Browsers
+Test Setup    Test Case Setup
+Test Teardown   Close All Browsers
 Force Tags      Edge
 
 *** Keywords ***
