@@ -2,10 +2,9 @@
 Documentation   Zoomba GUI Library Tests
 Library         ../../src/Zoomba/GUILibrary.py     plugins=Zoomba.Helpers.EdgePlugin
 Library         Collections
+Test Suite Setup    Test Case Setup
+Test Suite Teardown   Close All Browsers
 Force Tags      Edge
-
-*** Variables ***
-${remote_url}       https://ondemand.saucelabs.com/wd/hub
 
 *** Keywords ***
 Test Case Setup
@@ -16,7 +15,7 @@ Test Case Setup
 
 *** Test Cases ***
 Wait for Keywords Test
-    [Teardown]      Close Browser
+    Go To      https://github.com/
     Test Case Setup
     wait for and input text      //input[@name='q']      robotframework
     press keys                    //input[@name='q']      RETURN
@@ -24,7 +23,7 @@ Wait for Keywords Test
     wait until page contains element         //div[@id='readme']
 
 Wait for Keywords Test With Password
-    [Teardown]      Close Browser
+    Go To      https://github.com/
     Test Case Setup
     wait for and input password      //input[@name='q']      robotframework
     press keys                    //input[@name='q']      RETURN
@@ -32,22 +31,19 @@ Wait for Keywords Test With Password
     wait until page contains element         //div[@id='readme']
 
 Element value should be equal and not equal Test
-    [Teardown]      Close Browser
-    Test Case Setup    http://www.google.com
+    Go To    http://www.google.com
     element value should be equal       btnK    Google Search
     element value should not be equal   btnK    Not Google Search
 
 Save Selenium Screenshot Test
-    [Teardown]                      Close Browser
-    Test Case Setup    http://www.google.com
+    Go To    http://www.google.com
     ${file1}=                       Save Selenium Screenshot
     ${file2}=                       Save Selenium Screenshot
     Should Not Be Equal             ${file1}  ${file2}
     Should Match Regexp             ${file1}                    .selenium-screenshot-\\d{10}.\\d{0,8}-\\d.png
 
 Iframe keywords Test
-    [Teardown]      Close Browser
-    Test Case Setup    https://www.w3schools.com/html/html_iframe.asp
+    Go To    https://www.w3schools.com/html/html_iframe.asp
     Page should not contain element     //a[@href='default.asp'][@class='active']
     wait for and select frame   //iframe[@src='default.asp']
     wait until page contains element    //a[@href='default.asp'][@class='active']
@@ -55,27 +51,23 @@ Iframe keywords Test
     Page should not contain element     //a[@href='default.asp'][@class='active']
 
 Nested Iframe keyword Test
-    [Teardown]      Close Browser
-    Test Case Setup    https://www.quackit.com/html/tags/html_iframe_tag.cfm
+    Go To    https://www.quackit.com/html/tags/html_iframe_tag.cfm
     Select Nested Frame    //iframe[@name='result4']     //iframe[@src='/html/tags/html_iframe_tag_example.cfm']
 
 Mouse over Keywords Test
-    [Teardown]      Close Browser
-    Test Case Setup    https://jquery.com/
+    Go To    https://jquery.com/
     wait for and mouse over                 //a[contains(text(),'Download')]
     wait for and mouse over and click       //a[contains(text(),'Browser Support')]
     wait until page contains                Current Active Support
 
 Wait Until Javascript Completes Test
-    [Teardown]      Close Browser
-    Test Case Setup    https://jquery.com/
+    Go To    https://jquery.com/
     wait until page contains element       //a[@title='jQuery']
     wait until javascript is complete
     title should be                        jQuery
 
 Web Elements Text Test
-    [Teardown]      Close Browser
-    Test Case Setup    http://www.google.com
+    Go To    http://www.google.com
     wait for and input text      //input[@name='q']      robot framework
     press keys                    //input[@name='q']      RETURN
     wait until element is visible                   //div[@id='res']
@@ -84,8 +76,7 @@ Web Elements Text Test
     should contain     ${linksTextList}[0]     Robot Framework
 
 Web Elements Vertical Position Test
-    [Teardown]      Close Browser
-    Test Case Setup    http://www.google.com
+    Go To    http://www.google.com
     wait for and input text      //input[@name='q']      robot framework
     press keys                    //input[@name='q']      RETURN
     wait until element is visible                       //div[@id='res']
@@ -113,8 +104,7 @@ Truncate String Test
     should be equal             ${reallyLongTestString}      ${actualTruncatedString2}
 
 Scroll To Bottom of Page Test
-    [Teardown]      Close Browser
-    Test Case Setup    http://www.google.com
+    Go To    http://www.google.com
     wait for and input text      //input[@name='q']      robot framework
     press keys                    //input[@name='q']      RETURN
     wait until element is visible                   //div[@id='res']
@@ -123,33 +113,28 @@ Scroll To Bottom of Page Test
     Should Be True               ${position} > 700
 
 Wait Until Window Tests
-    [Teardown]                      Close Browser
-    Test Case Setup    https://www.quackit.com/html/codes/html_popup_window_code.cfm
+    Go To    https://www.quackit.com/html/codes/html_popup_window_code.cfm
     Wait For And Select Frame       //iframe[@name='result1']
     Click Element                   //a[contains(text(),'Open a popup window')]
     Wait Until Window Opens         Popup Example     10
     Wait For and Select Window      Popup Example     10
 
 Wait Until Element Contains Value
-    [Teardown]                      Close Browser
-    Test Case Setup    http://www.google.com
+    Go To    http://www.google.com
     Input Text                      //input[@name='q']                                                  abc123
     Wait Until Element Contains Value  //input[@name='q']                                               abc123
 
 Get Element CSS Attribute Value
-    [Teardown]                      Close Browser
-    Test Case Setup    https://www.w3schools.com/html/html_examples.asp
+    Go To    https://www.w3schools.com/html/html_examples.asp
     ${value}=     Get Element CSS Attribute Value      //div[@id='googleSearch']       position
     Should Be Equal     ${value}     absolute
 
 Element CSS Attribute Value Should Be
-    [Teardown]                      Close Browser
-    Test Case Setup    https://www.w3schools.com/html/html_examples.asp
+    Go To    https://www.w3schools.com/html/html_examples.asp
     Element CSS Attribute Value Should Be      //div[@id='googleSearch']       position       absolute
 
 Get React List Items Test
-    [Setup]     Test Case Setup         https://react-select.com/home
-    [Teardown]  Close Browser
+    Go To         https://react-select.com/home
     ${selectXpath}=             Set Variable        //*[@id="root"]/div/div[2]/div[2]/div/div/div[1]/div[2]
     ${expectedLabels}=          Create List         Ocean    Blue    Purple    Red    Orange    Yellow    Green    Forest    Slate    Silver
     Wait Until Page Contains Element                ${selectXpath}
