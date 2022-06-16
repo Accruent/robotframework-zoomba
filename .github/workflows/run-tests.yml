@@ -65,10 +65,10 @@ jobs:
           max_attempts: 3
           command: |
             ${{ matrix.set_display }}
-            robot --randomize suites -e BrokenORWindowsOREdgeORMobile test
+            robot --randomize suites -e BrokenORWindowsOREdge test
           new_command_on_retry: |
             ${{ matrix.set_display }}
-            robot --rerunfailed "output.xml" -e BrokenORWindowsOREdgeORMobile test
+            robot --rerunfailed "output.xml" -e BrokenORWindowsOREdge test
 
   run-tests-unit:
     runs-on: ubuntu-latest

@@ -10,7 +10,7 @@ RobotFramework-Zoomba
 What is RobotFramework-Zoomba?
 --------------
 
-Robotframework-Zoomba is a collection of libraries spanning GUI, REST API, SOAP API, Mobile, and Windows Desktop (WinAppDriver) automation using [Robot Framework](https://github.com/robotframework/robotframework).
+Robotframework-Zoomba is a collection of libraries spanning GUI, REST API, and SOAP API automation using [Robot Framework](https://github.com/robotframework/robotframework).
 These libraries are extensions of existing libraries [SeleniumLibrary](https://github.com/robotframework/SeleniumLibrary), [Requests](https://github.com/bulkan/robotframework-requests), 
 and [SudsLibrary](https://github.com/aljcalandra/robotframework-sudslibrary).
 
