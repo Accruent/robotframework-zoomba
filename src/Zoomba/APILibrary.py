@@ -187,8 +187,8 @@ class APILibrary:
                     zoomba.fail("The response does not contain the key '" + expected_key + "'")
                     continue
                 if actual_response_dict[expected_key] != expected_response[expected_key]:
-                    zoomba.fail("The value for the key '" + expected_key + "' doesn't match the response:" + \
-                                "\nExpected: " + expected_response[expected_key] +\
+                    zoomba.fail("The value for the key '" + expected_key + "' doesn't match the response:" +
+                                "\nExpected: " + expected_response[expected_key] +
                                 "\nActual: " + actual_response_dict[expected_key])
             return
         for expected_key in key_list:
@@ -196,8 +196,8 @@ class APILibrary:
                 zoomba.fail("The response does not contain the key '" + expected_key + "'")
                 continue
             if actual_response_dict[0][expected_key] != expected_response[0][expected_key]:
-                zoomba.fail("The value for the key '" + expected_key + "' doesn't match the response:" + \
-                            "\nExpected: " + expected_response[0][expected_key] + \
+                zoomba.fail("The value for the key '" + expected_key + "' doesn't match the response:" +
+                            "\nExpected: " + expected_response[0][expected_key] +
                             "\nActual: " + actual_response_dict[0][expected_key])
         return
 
@@ -240,8 +240,8 @@ class APILibrary:
             returned otherwise.\n
         """
         if len(actual_dictionary) != len(expected_dictionary):
-            zoomba.fail("Collections not the same length:"\
-                        "\nActual length: " + str(len(actual_dictionary)) +\
+            zoomba.fail("Collections not the same length:"
+                        "\nActual length: " + str(len(actual_dictionary)) +
                         "\nExpected length " + str(len(expected_dictionary)))
             return
         for key, value in expected_dictionary.items():
@@ -252,8 +252,8 @@ class APILibrary:
                 continue
             if isinstance(value, list):
                 if full_list_validation and len(value) != len(actual_dictionary[key]):
-                    zoomba.fail("Arrays not the same length:" + \
-                                "\nExpected: " + str(value) + \
+                    zoomba.fail("Arrays not the same length:" +
+                                "\nExpected: " + str(value) +
                                 "\nActual: " + str(actual_dictionary[key]))
                     continue
                 self._key_by_key_list(key, value, actual_dictionary, unmatched_keys_list, ignored_keys, parent_key,
@@ -346,8 +346,8 @@ class APILibrary:
                 if value != actual_dictionary[key]:
                     if sort_lists:
                         if sorted(value) != sorted(actual_dictionary[key]):
-                            zoomba.fail("Arrays do not match:" + \
-                                        "\nExpected: " + str(sorted(value)) + \
+                            zoomba.fail("Arrays do not match:" +
+                                        "\nExpected: " + str(sorted(value)) +
                                         "\nActual: " + str(sorted(actual_dictionary[key])))
                             continue
                     else:
@@ -382,13 +382,13 @@ class APILibrary:
                          ignored_keys=None, full_list_validation=False, sort_lists=False, **kwargs):
         try:
             if len(value) != len(actual_dictionary[key]):
-                zoomba.fail("Dicts do not match:" + \
-                            "\nExpected: " + str(value) + \
+                zoomba.fail("Dicts do not match:" +
+                            "\nExpected: " + str(value) +
                             "\nActual: " + str(actual_dictionary[key]))
                 return
         except TypeError:
-            zoomba.fail("Dicts do not match:" + \
-                        "\nExpected: " + str(value) + \
+            zoomba.fail("Dicts do not match:" +
+                        "\nExpected: " + str(value) +
                         "\nActual is not a valid dictionary.")
             return
         if unmatched_keys_list is not None:
