@@ -62,7 +62,7 @@ jobs:
         uses: nick-fields/retry@v2.7.0
         with:
           timeout_minutes: 45
-          max_attempts: 3
+          max_attempts: 10
           command: |
             ${{ matrix.set_display }}
             robot --randomize suites -e BrokenORWindowsOREdge test
