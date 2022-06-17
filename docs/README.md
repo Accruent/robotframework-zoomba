@@ -7,20 +7,21 @@ RobotFramework-Zoomba
 [![CodeFactor](https://www.codefactor.io/repository/github/accruent/robotframework-zoomba/badge)](https://www.codefactor.io/repository/github/accruent/robotframework-zoomba)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/Accruent/robotframework-zoomba.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Accruent/robotframework-zoomba/alerts/)
 
-Introduction
+What is RobotFramework-Zoomba?
 --------------
 
-Robotframework-Zoomba is a collection of libraries spanning GUI, REST API, SOAP API, Mobile, and Windows Desktop (WinAppDriver) automation using [Robot Framework](https://github.com/robotframework/robotframework).
+Robotframework-Zoomba is a collection of libraries spanning GUI, REST API, and SOAP API automation using [Robot Framework](https://github.com/robotframework/robotframework).
 These libraries are extensions of existing libraries [SeleniumLibrary](https://github.com/robotframework/SeleniumLibrary), [Requests](https://github.com/bulkan/robotframework-requests), 
-[SudsLibrary](https://github.com/aljcalandra/robotframework-sudslibrary), and [AppiumLibrary](https://github.com/serhatbolsu/robotframework-appiumlibrary).
+and [SudsLibrary](https://github.com/aljcalandra/robotframework-sudslibrary).
 
-Zoomba adds a significant amount of data validation support for REST and SOAP APIs, extends functionality for typical Web GUI automation, and
-extends AppiumLibrary functionality to support Windows desktop automation.
+###Looking for our extension of [AppiumLibrary](https://github.com/serhatbolsu/robotframework-appiumlibrary) (DesktopLibrary and MobileLibrary)? Check out our new repo [RobotFramework-ApplicationLibrary](https://github.com/Accruent/robotframework-applicationlibrary)!
+
+Zoomba adds a significant amount of data validation support for REST and SOAP API and extends functionality for typical Web GUI automation.
 
 As a team beginning the journey of automation with Robot Framework - we found that there was some time spent ramping up our libraries and Robotframework-Zoomba aims to make that process easier for new projects.
 
 See the **Keyword Documentation** for the [API](https://accruent.github.io/robotframework-zoomba/APILibraryDocumentation.html), [SOAP](https://accruent.github.io/robotframework-zoomba/SOAPLibraryDocumentation.html),
-[GUI](https://accruent.github.io/robotframework-zoomba/GUILibraryDocumentation.html), [Mobile](https://accruent.github.io/robotframework-zoomba/MobileLibraryDocumentation.html), or [Desktop](https://accruent.github.io/robotframework-zoomba/DesktopLibraryDocumentation.html) library for more specific information about the functionality.
+or [GUI](https://accruent.github.io/robotframework-zoomba/GUILibraryDocumentation.html) library for more specific information about the functionality.
 
 Example tests can be found in the [samples directory](https://github.com/Accruent/robotframework-zoomba/tree/master/samples).
 
@@ -76,69 +77,6 @@ Validate Response Contains Expected Response    ${json_actual_response}      ${j
 Validate Response Contains Expected Response    ${json_actual_response}      ${json_expected_response}      ignored_keys=${list_of_keys}
 ```
 
-#### [Mobile Library](https://accruent.github.io/robotframework-zoomba/MobileLibraryDocumentation.html):
-Extending the [AppiumLibrary](https://github.com/serhatbolsu/robotframework-appiumlibrary) we again add some quality of life 'Wait For And' type keywords:
-```robotframework
-Wait For And Click Element      locator
-Wait For And Click Text         text
-Wait Until Element Contains     locator     text
-```
-There are of course additional features that have yet to be implemented in AppiumLibrary:
-```robotframework
-Drag and Drop      source_locator     target_locator
-Drag And Drop By Offset     locator    x_offset     y_offset
-Scroll Down To Text       text
-Scroll Up To Text         text
-```
-
-#### [Desktop Library](https://accruent.github.io/robotframework-zoomba/DesktopLibraryDocumentation.html):
-Also extends [AppiumLibrary](https://github.com/serhatbolsu/robotframework-appiumlibrary) to tailor it Windows desktop automation. This includes enhancements to base keywords such as [Open Application](https://accruent.github.io/robotframework-zoomba/DesktopLibraryDocumentation.html#Open%20Application) or [Click Element](https://accruent.github.io/robotframework-zoomba/DesktopLibraryDocumentation.html#Click%20Element) to perform better for windows. Other notable additions include:
-
-Start and Stop the WinAppDriver as needed (best used for suite setup/teardown):
-```robotframework
-Driver Setup
-Driver Teardown
-```
-Easily switching to new windows or the desktop session:
-```robotframework
-Switch Application      Desktop
-Switch Application By Name     remote_url    new_window_name
-```
-A variety of keywords for controlling the mouse:
-```robotframework
-Mouse Over Element     locator
-Mouse Over and Click Element    locator
-Mouse over and Context Click Element    locator
-Mouse Over By Offset     x_offset    y_offset
-```
-Keywords for dragging and dropping:
-```robotframework
-Drag and Drop      source_locator     target_locator
-Drag And Drop By Offset     locator    x_offset     y_offset
-```
-The ability to send key commands to the application:
-```robotframework
-Send Keys     \\ue00      p     \\ue00
-Send Keys To Element    locator     a     b     c
-```
-Selecting an element from a combobox or a menu:
-```robotframework
-Select Element From ComboBox     combobox_locator      element_locator
-Select Elements From Menu     locator_1    locator_2   locator_n
-Select Elements From Context Menu     locator_1    locator_2   locator_n
-```
-
-Selecting an element by an image file (Appium v1.18.0 and higher only):
-```robotframework
-Wait For And Click Element     image=file.png
-```
-
-For WebView2 applications we can now control both the application view and the Edge browser view:
-
-<a target="_blank" rel="noopener noreferrer" href="https://user-images.githubusercontent.com/3010366/122806407-e4759700-d28f-11eb-8b72-779660606d9f.gif"><img src="https://user-images.githubusercontent.com/3010366/122806407-e4759700-d28f-11eb-8b72-779660606d9f.gif" alt="rbmzmun3cR" style="max-width:60%;"></a>
-
-An example of this [can be found in the samples directory](https://github.com/Accruent/robotframework-zoomba/blob/master/samples/WebView-DesktopTest.robot).
-
 Getting Started
 ----------------
 
@@ -155,43 +93,18 @@ you can install Zoomba by running the following from the *root directory*:
 pip install .
 ```
 
+or if you intend to run unit tests:
+```python
+pip install .[testing]
+```
+
 To access the keywords in the library simply add the following to your robot file settings (depending on what you need):
 ```python
 *** Settings ***
 Library    Zoomba.APILibrary
 Library    Zoomba.GUILibrary
 Library    Zoomba.SOAPLibrary
-Library    Zoomba.MobileLibrary
-Library    Zoomba.DesktopLibrary
 ```
-
-If you are using Microsoft Edge (Chromium version) you will need the following plugin and option set:
-```python
-Library    Zoomba.GUILibrary     plugins=Zoomba.Helpers.EdgePlugin
-
-Open Browser   https://www.google.com    browser=Edge     options=use_chromium=True
-```
-
-Additional Setup Information
----------------------------------
-
-If you plan to run Mobile automation you will need to have a running appium server. To do so first have [Node](https://nodejs.org/en/download/)
-installed and then run the following:
-```python
-npm install -g appium
-appium
-```
-
-To use the `image` locator strategy you will need to install [opencv4nodejs](https://github.com/justadudewhohacks/opencv4nodejs) via the following command:
-```python
-npm install -g opencv4nodejs
-```
-
-Alternatively [Appium Desktop](https://github.com/appium/appium-desktop/releases) can be used.
-
-For Windows automation we suggest [installing and using the WinAppDriver](https://github.com/Microsoft/WinAppDriver/releases) without Appium as it seems to be a bit faster and more stable.
-
-Make sure to [enable developer mode on your system](https://www.howtogeek.com/292914/what-is-developer-mode-in-windows-10/#:~:text=How%20to%20Enable%20Developer%20Mode,be%20put%20into%20Developer%20Mode.) to allow the WinAppDriver to work.
 
 Examples
 ------------
