@@ -8,7 +8,7 @@ Force Tags      Edge
 
 *** Keywords ***
 Test Case Setup
-    Open Browser   browser=Edge    options=use_chromium=True
+    Open Browser   browser=Edge
     Maximize Browser Window
     Set Selenium Speed    0.05s
 
