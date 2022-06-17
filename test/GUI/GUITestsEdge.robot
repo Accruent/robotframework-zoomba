@@ -1,6 +1,6 @@
 *** Settings ***
 Documentation   Zoomba GUI Library Tests
-Library         ../../src/Zoomba/GUILibrary.py     plugins=Zoomba.Helpers.EdgePlugin
+Library         ../../src/Zoomba/GUILibrary.py
 Library         Collections
 Suite Setup    Test Case Setup
 Suite Teardown   Close All Browsers
