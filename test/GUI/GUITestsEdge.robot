@@ -1,6 +1,6 @@
 *** Settings ***
 Documentation   Zoomba GUI Library Tests
-Library         ../../src/Zoomba/GUILibrary.py     plugins=Zoomba.Helpers.EdgePlugin
+Library         ../../src/Zoomba/GUILibrary.py
 Library         Collections
 Suite Setup    Test Case Setup
 Suite Teardown   Close All Browsers
@@ -8,7 +8,7 @@ Force Tags      Edge
 
 *** Keywords ***
 Test Case Setup
-    Open Browser   browser=Edge    options=use_chromium=True
+    Open Browser   browser=Edge
     Maximize Browser Window
     Set Selenium Speed    0.05s
 

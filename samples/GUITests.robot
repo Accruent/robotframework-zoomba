@@ -1,6 +1,6 @@
 *** Settings ***
 Documentation   Zoomba GUI Library Tests
-Library         Zoomba.GUILibrary    #plugins=Zoomba.Helpers.EdgePlugin    #Enable if using Edge
+Library         Zoomba.GUILibrary
 Suite Setup     Test Suite Setup
 Suite Teardown  Close All Browsers
 
@@ -11,8 +11,6 @@ ${browser}     chrome
 Test Suite Setup
     [Arguments]    ${url}=https://github.com/      ${browser}=${browser}
     Open Browser   ${url}    browser=${browser}
-    #Enable if using Edge:
-#    Open Browser   ${url}    browser=${browser}    desired_capabilities=platformName:linux  remote_url=https://selenium-grid-qe-tools.accruentsystems.com/wd/hub    options=use_chromium=True
     Sleep   5s
     Maximize Browser Window
     Set Selenium Speed    0.2s
