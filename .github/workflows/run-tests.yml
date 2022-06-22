@@ -16,7 +16,7 @@ jobs:
       matrix:
         python-version: [ 3.7, 3.8, 3.9, '3.10' ]
     steps:
-      - uses: actions/checkout@v2.4.2
+      - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4.0.0
         with:
@@ -44,7 +44,7 @@ jobs:
           - os: ubuntu-latest
             set_display: export DISPLAY=:99; Xvfb :99 -screen 0 1024x768x24 -ac -noreset & sleep 3
     steps:
-      - uses: actions/checkout@v2.4.2
+      - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4.0.0
         with:
@@ -76,7 +76,7 @@ jobs:
       matrix:
         python-version: [ 3.7, 3.8, 3.9, '3.10' ]
     steps:
-      - uses: actions/checkout@v2.4.2
+      - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4.0.0
         with:
