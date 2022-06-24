@@ -379,26 +379,26 @@ class TestInternal(unittest.TestCase):
     def test_react_select_options(self):
         mock_webelement = Mock()
         mock_webelement.tag_name = 'div'
-        mock_webelement.find_elements_by_xpath = MagicMock(return_value=["some child element", "another child element"])
+        mock_webelement.find_elements = MagicMock(return_value=["some child element", "another child element"])
         with patch('Zoomba.Helpers.ReactSelect.ReactSelect.expand_select_list', return_value=True):
             assert ReactSelect.ReactSelect(mock_webelement).options() == ["some child element", "another child element"]
 
     def test_react_select_is_expanded(self):
         mock_webelement = Mock()
         mock_webelement.tag_name = 'div'
-        mock_webelement.find_elements_by_xpath = Mock(return_value=["some child element"])
+        mock_webelement.find_elements = Mock(return_value=["some child element"])
         assert ReactSelect.ReactSelect(mock_webelement).is_expanded()
 
     def test_react_select_is_expanded_no_elements(self):
         mock_webelement = Mock()
         mock_webelement.tag_name = 'div'
-        mock_webelement.find_elements_by_xpath = Mock(return_value=[])
+        mock_webelement.find_elements = Mock(return_value=[])
         assert not ReactSelect.ReactSelect(mock_webelement).is_expanded()
 
     def test_react_select_is_expanded_error(self):
         mock_webelement = Mock()
         mock_webelement.tag_name = 'div'
-        mock_webelement.find_elements_by_xpath = Mock(return_value=["some child element", "another child element"])
+        mock_webelement.find_elements = Mock(return_value=["some child element", "another child element"])
         with self.assertRaises(LookupError, msg="ReactSelect.is_expanded: Multiple selection menus found"):
             ReactSelect.ReactSelect(mock_webelement).is_expanded()
 

@@ -7,6 +7,7 @@ See the Helpers/ReactHelpersREADME.md for more information on the structure of R
 """
 
 from selenium.common.exceptions import UnexpectedTagNameException
+from selenium.webdriver.common.by import By
 
 
 class ReactSelect:
@@ -30,9 +31,7 @@ class ReactSelect:
 
         """
         if webelement.tag_name.lower() != "div":
-            raise UnexpectedTagNameException(
-                "ReactSelect only works on <div> elements, not on <%s>" %
-                webelement.tag_name)
+            raise UnexpectedTagNameException(f"ReactSelect only works on <div> elements, not on <{webelement.tag_name}>")
         self._el = webelement
 
     def options(self):
@@ -44,7 +43,7 @@ class ReactSelect:
         """Checks if the React-Select container is expanded by checking if the Menu <div>
         exists as a child of the container
         """
-        menu_elements = self._el.find_elements_by_xpath('./div[2]')
+        menu_elements = self._el.find_elements(By.XPATH, './div[2]')
         if len(menu_elements) == 0:
             return False
         if len(menu_elements) == 1:
