@@ -7,6 +7,7 @@ from urllib3.exceptions import InsecureRequestWarning
 from requests.packages import urllib3
 from robot.libraries.BuiltIn import BuiltIn
 from robot.utils.dotdict import DotDict
+from pandas import to_datetime
 
 zoomba = BuiltIn()
 requests_lib = RequestsLibrary()
@@ -453,31 +454,15 @@ def _date_format(date_string, key, unmatched_keys_list, date_type, date_format=N
     formatted_date = None
     if date_format is None:
         try:
-            formatted_date = datetime.datetime.strptime(date_string, '%Y-%m-%dT%H:%M:%S')
+            formatted_date = to_datetime(date_string).tz_localize(None).to_pydatetime()
         except ValueError:
-            try:
-                formatted_date = datetime.datetime.strptime(date_string, '%Y-%m-%dT%H:%M:%SZ')
-            except ValueError:
-                try:
-                    formatted_date = datetime.datetime.strptime(date_string, '%Y-%m-%dT%H:%M:%S.%f')
-                except ValueError:
-                    try:
-                        formatted_date = datetime.datetime.strptime(date_string, '%Y-%m-%dT%H:%M:%S.%fZ')
-                    except ValueError:
-                        try:
-                            formatted_date = parse(date_string, fuzzy=True)
-                            formatted_date = str(formatted_date).replace('+00:00', 'Z')
-                            formatted_date = formatted_date.replace(' ', 'T')
-                            formatted_date = datetime.datetime.strptime(formatted_date, "%Y-%m-%dT%H:%M:%S.%fZ")
-                        except ValueError:
-                            unmatched_keys_list.append(("------------------\nKey: " + str(key),
-                                                        date_type + " Date Not Correct Format:",
-                                                        "Expected Formats: %Y-%m-%dT%H:%M:%S",
-                                                        "                  %Y-%m-%dT%H:%M:%SZ",
-                                                        "                  %Y-%m-%dT%H:%M:%S.%f",
-                                                        "                  %Y-%m-%dT%H:%M:%S.%fZ",
-                                                        "Date: " + str(date_string)))
-
+            unmatched_keys_list.append(("------------------\nKey: " + str(key),
+                                        date_type + " Date Not Correct Format:",
+                                        "Expected Formats: %Y-%m-%dT%H:%M:%S",
+                                        "                  %Y-%m-%dT%H:%M:%SZ",
+                                        "                  %Y-%m-%dT%H:%M:%S.%f",
+                                        "                  %Y-%m-%dT%H:%M:%S.%fZ",
+                                        "Date: " + str(date_string)))
     else:
         try:
             formatted_date = datetime.datetime.strptime(date_string, date_format)

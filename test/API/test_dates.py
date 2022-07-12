@@ -60,8 +60,12 @@ class TestDates(unittest.TestCase):
         date_with_ms = datetime.datetime(2018, 5, 5, 5, 5, 5, 50000)
         assert date == _date_format("2018-05-05T05:05:05", "key", [], "string")
         assert date == _date_format("2018-05-05T05:05:05Z", "key", [], "string")
+        assert date == _date_format("2018-05-05T05:05:05-08:00", "key", [], "string")
+        assert date == _date_format("2018-05-05T05:05:05Z-08:00", "key", [], "string")
         assert date_with_ms == _date_format("2018-05-05T05:05:05.05", "key", [], "string")
         assert date_with_ms == _date_format("2018-05-05T05:05:05.05Z", "key", [], "string")
+        assert date_with_ms == _date_format("2018-05-05T05:05:05.05-08:00", "key", [], "string")
+        assert date_with_ms == _date_format("2018-05-05T05:05:05.05Z-08:00", "key", [], "string")
 
     def test__date_format_unique_date_formats(self):
         date = datetime.datetime(2018, 5, 5, 5, 5, 5)
