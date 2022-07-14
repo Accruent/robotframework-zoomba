@@ -263,9 +263,10 @@ class APILibrary:
                 self._key_by_key_dict(key, value, actual_dictionary, expected_dictionary, unmatched_keys_list,
                                       ignored_keys, full_list_validation=full_list_validation, sort_lists=sort_lists,
                                       **kwargs)
-            elif isinstance(expected_dictionary[key], str) and not expected_dictionary[key].isdigit():
+            elif (isinstance(expected_dictionary[key], str) and not expected_dictionary[key].isdigit()) or isinstance(expected_dictionary[key], datetime.datetime):
                 try:
-                    parse(expected_dictionary[key])
+                    if not isinstance(expected_dictionary[key], datetime.datetime):
+                        parse(expected_dictionary[key])
                     self.date_string_comparator(value, actual_dictionary[key], key, unmatched_keys_list, **kwargs)
                 except (ValueError, TypeError):
                     if value == actual_dictionary[key]:
