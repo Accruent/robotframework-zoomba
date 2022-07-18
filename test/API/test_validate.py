@@ -1,10 +1,13 @@
 import os
 import sys
+from datetime import datetime
+
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../src/')))
 import unittest
 from Zoomba.APILibrary import APILibrary
 from unittest.mock import patch
 from Zoomba.APILibrary import _unmatched_list_check
+from dateutil import parser
 
 
 class TestInternal(unittest.TestCase):
@@ -221,6 +224,20 @@ class TestInternal(unittest.TestCase):
         library = APILibrary()
         library.key_by_key_validator({"a": "2017-08-08T05:05:05"}, {"a": "2017-08-08T05:05:05"})
 
+    def test_key_by_key_validator_complex_date(self):
+        library = APILibrary()
+        library.key_by_key_validator({"a": "2017-08-08T05:05:05"}, {"a": "2017-08-08T05:05:05.234543"})
+
+    def test_key_by_key_validator_complex_date2(self):
+        library = APILibrary()
+        actual_date = parser.parse("2005-03-23 08:20:09.383000")
+        library.key_by_key_validator({"a": actual_date}, {"a": "2005-03-23 08:20:09"})
+
+    def test_key_by_key_validator_tz_date(self):
+        library = APILibrary()
+        actual_date = parser.parse("2017-08-08T05:05:05-08:00")
+        library.key_by_key_validator({"a": actual_date}, {"a": "2017-08-08T05:05:05"})
+
     def test_key_by_key_validator_simple_date_parse_except(self):
         library = APILibrary()
         library.key_by_key_validator({"a": "a"}, {"a": "a"})
@@ -327,3 +344,33 @@ class TestInternal(unittest.TestCase):
                                                              identity_key="a")
         fail.assert_called_with('Key(s) Did Not Match:\n------------------\nKey: c\nExpected: '
                                 '3\nActual: 2\n\nPlease see differing value(s)')
+
+    def test_validate_response_contains_expected_response_simple_date_compare(self):
+        library = APILibrary()
+        library.validate_response_contains_expected_response('{"a":{"date":"2005-03-23"}}', {"a": {"date": "2005-03-23"}})
+
+    def test_validate_response_contains_expected_response_extended_date_compare(self):
+        library = APILibrary()
+        library.validate_response_contains_expected_response('{"a":{"date":"2008-06-16 06:19:26"}}', {"a": {"date":"2008-06-16 06:19:26"}})
+
+    def test_validate_response_contains_expected_response_extended_date_compare2(self):
+        library = APILibrary()
+        library.validate_response_contains_expected_response('{"a":{"date":"2005-03-23 08:20:09"}}', {"a": {"date":"2005-03-23 08:20:09.383000"}})
+
+    def test_validate_response_contains_expected_response_extended_date_compare_offset(self):
+        library = APILibrary()
+        library.validate_response_contains_expected_response('{"a":{"date":"2008-06-16 06:19:26"}}', {"a": {"date":"2008-06-16 06:20:26"}})
+
+    def test_validate_response_contains_expected_response_extended_date_compare_timezone_data(self):
+        library = APILibrary()
+        library.validate_response_contains_expected_response('{"a":{"date":"2008-06-16T06:19:26-07:00"}}', {"a": {"date":"2008-06-16 06:20:26"}})
+
+    def test_validate_response_contains_expected_response_date_already_datetime(self):
+        library = APILibrary()
+        expected = datetime(2005, 3, 23, 8, 20, 9, 383000)
+        library.validate_response_contains_expected_response('{"a":{"date":"2005-03-23 08:21:09"}}', {"a": {"date":expected}})
+
+    def test_validate_response_contains_expected_response_date_already_datetime_with_tzdata(self):
+        library = APILibrary()
+        expected = datetime(2005, 3, 23, 8, 20, 9, 383000)
+        library.validate_response_contains_expected_response('{"a":{"date":"2005-03-23 08:20:10-07:00"}}', {"a": {"date":expected}})
