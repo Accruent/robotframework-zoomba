@@ -168,24 +168,23 @@ class GUILibrary(SeleniumLibrary):
 
     @keyword("Mouse Scroll")
     def mouse_scroll(self, x=0, y=0):
-        """Scroll the mouse wheel.
-        x: (int) Distance along X axis to scroll using the wheel. A negative value scrolls left.
-        y: (int) Distance along Y axis to scroll using the wheel. A negative value scrolls up.
+        """Scroll the mouse wheel.\n
+        x: (int) Distance along X axis to scroll using the wheel. A negative value scrolls left.\n
+        y: (int) Distance along Y axis to scroll using the wheel. A negative value scrolls up.\n
         """
         actions = ActionChains(self.driver)
         actions.scroll_by_amount(x, y).perform()
 
     @keyword("Mouse Scroll Over Element")
     def mouse_scroll_over_element(self, locator, x=0, y=0):
-        """Scroll the mouse wheel over an element indicated by `locator`.
+        """Scroll the mouse wheel over an element indicated by `locator`.\n
         locator:  (string) A selenium locator(CSS, XPATH, ID, NAME, etc)\n
-        x: (int) Distance along X axis to scroll using the wheel. A negative value scrolls left.
-        y: (int) Distance along Y axis to scroll using the wheel. A negative value scrolls up.
+        x: (int) Distance along X axis to scroll using the wheel. A negative value scrolls left.\n
+        y: (int) Distance along Y axis to scroll using the wheel. A negative value scrolls up.\n
         """
         actions = ActionChains(self.driver)
         scroll_origin = ScrollOrigin.from_element(self.find_element(locator))
         actions.scroll_from_origin(scroll_origin, x, y).perform()
-
 
     @keyword("Wait For And Mouse Over")
     def wait_for_and_mouse_over(self, locator, timeout=None):
