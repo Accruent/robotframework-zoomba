@@ -153,13 +153,13 @@ class TestInternal(unittest.TestCase):
         mock_gui.wait_for_and_focus_on_element.assert_called_with("some_locator", 5)
         mock_gui.select_from_list_by_index.assert_called_with("some_locator", "target")
 
-    @patch("selenium.webdriver.common.touch_actions.TouchActions.scroll_by_amount")
+    @patch("selenium.webdriver.common.action_chains.scroll_by_amount")
     def test_mouse_scroll_simple(self, scroll_by_amount):
         mock_gui = Mock()
         GUILibrary.mouse_scroll(mock_gui, 500, -100)
         scroll_by_amount.assert_called_with(500, -100)
 
-    @patch("selenium.webdriver.common.touch_actions.TouchActions.scroll_from_origin")
+    @patch("selenium.webdriver.common.action_chains.scroll_from_origin")
     @patch("selenium.webdriver.common.action_chains.ScrollOrigin")
     def test_mouse_scroll_over_element_simple(self, ScrollOrigin, scroll_from_origin):
         mock_gui = Mock()
