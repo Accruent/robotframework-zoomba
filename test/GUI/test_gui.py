@@ -164,7 +164,7 @@ class TestInternal(unittest.TestCase):
     def test_mouse_scroll_over_element_simple(self, ScrollOrigin, scroll_from_origin):
         mock_gui = Mock()
         GUILibrary.mouse_scroll_over_element(mock_gui, "some_locator", 500, -100)
-        scroll_from_origin.assert_called_with("Some_locator", 500, -100)
+        scroll_from_origin.assert_called_with(unittest.mock.ANY, 500, -100)
 
     def test_wait_for_mouse_over_simple(self):
         mock_gui = Mock()
