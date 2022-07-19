@@ -137,3 +137,10 @@ Get React List Items Test
     Scroll Element Into View                        ${selectXpath}
     ${actualLabels}=    Get React List Labels       ${selectXpath}
     Lists Should Be Equal       ${expectedLabels}   ${actualLabels}     ignore_order=True
+
+Test Mouse Scroll
+    Set Selenium Speed    1s
+    Go To    https://www.bgc.bard.edu/research-forum/articles/292/test-zoom-function-on-object
+    Scroll Element Into View    //body/div[6]/div[1]/div[1]/div[1]/div[2]/div[1]/div[5]/div[1]/div[1]
+    Mouse Scroll Over Element  //body/div[6]/div[1]/div[1]/div[1]/div[2]/div[1]/div[5]/div[1]/div[1]  y=-100
+    Mouse Scroll     y=200
