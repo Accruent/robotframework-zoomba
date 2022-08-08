@@ -28,7 +28,7 @@ jobs:
           pip install .
 
       - name: Run Edge Robot Tests
-        uses: nick-fields/retry@v2.8.0
+        uses: nick-fields/retry@v2.8.1
         with:
           timeout_minutes: 45
           max_attempts: 10
@@ -59,7 +59,7 @@ jobs:
           sudo apt-get -y -q install xvfb scrot zip curl libxml2-dev libxslt1-dev
 
       - name: Run Chrome Robot Tests
-        uses: nick-fields/retry@v2.8.0
+        uses: nick-fields/retry@v2.8.1
         with:
           timeout_minutes: 45
           max_attempts: 10
