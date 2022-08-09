@@ -16,11 +16,11 @@ pull_request_rules:
         - check-success-or-neutral=run-tests-unit (3.8)
         - check-success-or-neutral=run-tests-unit (3.9)
         - check-success-or-neutral=run-tests-unit (3.10)
-        - check-success-or-neutral=LGTM analysis: JavaScript
-        - check-success-or-neutral=LGTM analysis: Python
+        - "check-success-or-neutral=LGTM analysis: JavaScript"
+        - "check-success-or-neutral=LGTM analysis: Python"
         - check-success-or-neutral=CodeQL
         - check-success-or-neutral=CodeFactor
-        - check-success-or-neutral=DeepSource: Python
+        - "check-success-or-neutral=DeepSource: Python"
         - check-success-or-neutral=Hound
         - check-success-or-neutral=coverage/coveralls
     actions:
