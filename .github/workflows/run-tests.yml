@@ -133,23 +133,12 @@ jobs:
         run: |
           coveralls --service=github
 
-  generate_report:
+  generate_report_chrome:
         if: always()
-        needs: [run-tests-chrome, run-tests-edge]
+        needs: [run-tests-chrome]
         runs-on: ubuntu-latest
         steps:
-#        - name: Install dependencies
-#          run: |
-#            python -m pip install --upgrade pip
-#            pip install robotframework
-#
-#        - name: Combine reports
-#          run:  rebot -o reports/output.xml reports/*.xml
         - uses: actions/checkout@v2
-        - name: Download reportsEdge
-          uses: actions/download-artifact@v1
-          with:
-            name: reportsEdge
         - name: Download reportsChrome
           uses: actions/download-artifact@v1
           with:
@@ -158,3 +147,18 @@ jobs:
           uses: joonvena/robotframework-reporter-action@v2.1
           with:
             gh_access_token: ${{ secrets.GITHUB_TOKEN }}
+
+  generate_report_edge:
+    if: always()
+    needs: [run-tests-edge]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Download reportsEdge
+        uses: actions/download-artifact@v1
+        with:
+          name: reportsEdge
+      - name: Send report to commit
+        uses: joonvena/robotframework-reporter-action@v2.1
+        with:
+          gh_access_token: ${{ secrets.GITHUB_TOKEN }}
