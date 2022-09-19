@@ -32,8 +32,8 @@ jobs:
         with:
           timeout_minutes: 45
           max_attempts: 10
-          command: robot -i Edge test --outputdir "reports" -o outputEdge.xml
-          new_command_on_retry: sleep 30; robot --rerunfailed "reports\outputEdge.xml" -i Edge test --outputdir "reports" -o outputEdge.xml
+          command: robot -i Edge test -o outputEdge.xml
+          new_command_on_retry: sleep 30; robot --rerunfailed "outputEdge.xml" -i Edge test -o outputEdge.xml
 
 #      - name: Upload test results
 #        uses: actions/upload-artifact@v1
@@ -72,10 +72,10 @@ jobs:
           max_attempts: 10
           command: |
             ${{ matrix.set_display }}
-            robot --randomize suites -e BrokenORWindowsOREdge test --outputdir "reports" -o outputChrome.xml
+            robot --randomize suites -e BrokenORWindowsOREdge test -o outputChrome.xml
           new_command_on_retry: |
             ${{ matrix.set_display }}
-            robot --rerunfailed "reports\outputChrome.xml" -e BrokenORWindowsOREdge test --outputdir "reports" -o outputChrome.xml
+            robot --rerunfailed "outputChrome.xml" -e BrokenORWindowsOREdge test -o outputChrome.xml
 
 #      - name: Upload test results
 #        uses: actions/upload-artifact@v1
@@ -124,7 +124,7 @@ jobs:
         - name: Download reports
           uses: actions/download-artifact@v1
           with:
-            name: reports
+            name: outputChrome.xml
         - name: Send report to commit
           uses: joonvena/robotframework-reporter-action@v2.1
           with:
