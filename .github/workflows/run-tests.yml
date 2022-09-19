@@ -39,7 +39,7 @@ jobs:
         uses: actions/upload-artifact@v1
         if: always()
         with:
-          name: reports
+          name: reportsEdge
           path: reports
 
 #      - name: Download reports
@@ -90,7 +90,7 @@ jobs:
         uses: actions/upload-artifact@v1
         if: always()
         with:
-          name: reports
+          name: reportsChrome
           path: reports
 
 #      - name: Download reports
