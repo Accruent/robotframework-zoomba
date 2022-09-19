@@ -32,8 +32,8 @@ jobs:
         with:
           timeout_minutes: 45
           max_attempts: 10
-          command: robot -i Edge test -o outputEdge.xml
-          new_command_on_retry: sleep 30; robot --rerunfailed "outputEdge.xml" -i Edge test -o outputEdge.xml
+          command: robot -i Edge --output outputEdge.xml test
+          new_command_on_retry: sleep 30; robot --rerunfailed "outputEdge.xml" -i Edge --output outputEdge.xml test
 
 #      - name: Upload test results
 #        uses: actions/upload-artifact@v1
@@ -72,10 +72,10 @@ jobs:
           max_attempts: 10
           command: |
             ${{ matrix.set_display }}
-            robot --randomize suites -e BrokenORWindowsOREdge test -o outputChrome.xml
+            robot --randomize suites -e BrokenORWindowsOREdge --output outputChrome.xml test
           new_command_on_retry: |
             ${{ matrix.set_display }}
-            robot --rerunfailed "outputChrome.xml" -e BrokenORWindowsOREdge test -o outputChrome.xml
+            robot --rerunfailed "outputChrome.xml" -e BrokenORWindowsOREdge --output outputChrome.xml test
 
 #      - name: Upload test results
 #        uses: actions/upload-artifact@v1
