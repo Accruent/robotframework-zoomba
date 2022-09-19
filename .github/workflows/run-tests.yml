@@ -42,14 +42,14 @@ jobs:
           name: reports
           path: reports
 
-      - name: Download reports
-        uses: actions/download-artifact@v1
-        with:
-          name: reports
-      - name: Send report to commit
-        uses: joonvena/robotframework-reporter-action@v2.1
-        with:
-          gh_access_token: ${{ secrets.GITHUB_TOKEN }}
+#      - name: Download reports
+#        uses: actions/download-artifact@v1
+#        with:
+#          name: reports
+#      - name: Send report to commit
+#        uses: joonvena/robotframework-reporter-action@v2.1
+#        with:
+#          gh_access_token: ${{ secrets.GITHUB_TOKEN }}
 
   run-tests-chrome:
     runs-on: ubuntu-latest
@@ -93,14 +93,14 @@ jobs:
           name: reports
           path: reports
 
-      - name: Download reports
-        uses: actions/download-artifact@v1
-        with:
-          name: reports
-      - name: Send report to commit
-        uses: joonvena/robotframework-reporter-action@v2.1
-        with:
-          gh_access_token: ${{ secrets.GITHUB_TOKEN }}
+#      - name: Download reports
+#        uses: actions/download-artifact@v1
+#        with:
+#          name: reports
+#      - name: Send report to commit
+#        uses: joonvena/robotframework-reporter-action@v2.1
+#        with:
+#          gh_access_token: ${{ secrets.GITHUB_TOKEN }}
 
   run-tests-unit:
     runs-on: ubuntu-latest
@@ -133,11 +133,11 @@ jobs:
         run: |
           coveralls --service=github
 
-#  generate_report:
-#        if: always()
-#        needs: [run-tests-chrome, run-tests-edge]
-#        runs-on: ubuntu-latest
-#        steps:
+  generate_report:
+        if: always()
+        needs: [run-tests-chrome, run-tests-edge]
+        runs-on: ubuntu-latest
+        steps:
 #        - name: Install dependencies
 #          run: |
 #            python -m pip install --upgrade pip
@@ -145,12 +145,12 @@ jobs:
 #
 #        - name: Combine reports
 #          run:  rebot -o reports/output.xml reports/*.xml
-#        - uses: actions/checkout@v2
-#        - name: Download reports
-#          uses: actions/download-artifact@v1
-#          with:
-#            name: reportsChrome
-#        - name: Send report to commit
-#          uses: joonvena/robotframework-reporter-action@v2.1
-#          with:
-#            gh_access_token: ${{ secrets.GITHUB_TOKEN }}
+        - uses: actions/checkout@v2
+        - name: Download reports
+          uses: actions/download-artifact@v1
+          with:
+            name: reports
+        - name: Send report to commit
+          uses: joonvena/robotframework-reporter-action@v2.1
+          with:
+            gh_access_token: ${{ secrets.GITHUB_TOKEN }}
