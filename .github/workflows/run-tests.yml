@@ -143,6 +143,7 @@ jobs:
           uses: actions/download-artifact@v1
           with:
             name: reportsChrome
+            path: reports
         - name: Send report to commit
           uses: joonvena/robotframework-reporter-action@v2.1
           with:
@@ -158,6 +159,7 @@ jobs:
         uses: actions/download-artifact@v1
         with:
           name: reportsEdge
+          path: reports
       - name: Send report to commit
         uses: joonvena/robotframework-reporter-action@v2.1
         with:
