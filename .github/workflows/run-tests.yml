@@ -32,8 +32,8 @@ jobs:
         with:
           timeout_minutes: 45
           max_attempts: 10
-          command: robot -i Edge --output reports/outputEdge.xml test
-          new_command_on_retry: sleep 30; robot --rerunfailed "reports/outputEdge.xml" -i Edge --output reports/outputEdge.xml test
+          command: robot -i Edge --output reports/output.xml test
+          new_command_on_retry: sleep 30; robot --rerunfailed "reports/output.xml" -i Edge --output reports/output.xml test
 
       - name: Upload test results
         uses: actions/upload-artifact@v1
@@ -41,6 +41,15 @@ jobs:
         with:
           name: reportsEdge
           path: reports
+
+      - name: Download reports
+        uses: actions/download-artifact@v1
+        with:
+          name: reports
+      - name: Send report to commit
+        uses: joonvena/robotframework-reporter-action@v2.1
+        with:
+          gh_access_token: ${{ secrets.GITHUB_TOKEN }}
 
   run-tests-chrome:
     runs-on: ubuntu-latest
@@ -72,10 +81,10 @@ jobs:
           max_attempts: 10
           command: |
             ${{ matrix.set_display }}
-            robot --randomize suites -e BrokenORWindowsOREdge --output reports/outputChrome.xml test
+            robot --randomize suites -e BrokenORWindowsOREdge --output reports/output.xml test
           new_command_on_retry: |
             ${{ matrix.set_display }}
-            robot --rerunfailed "reports/outputChrome.xml" -e BrokenORWindowsOREdge --output reports/outputChrome.xml test
+            robot --rerunfailed "reports/output.xml" -e BrokenORWindowsOREdge --output reports/output.xml test
 
       - name: Upload test results
         uses: actions/upload-artifact@v1
@@ -83,6 +92,15 @@ jobs:
         with:
           name: reportsChrome
           path: reports
+
+      - name: Download reports
+        uses: actions/download-artifact@v1
+        with:
+          name: reports
+      - name: Send report to commit
+        uses: joonvena/robotframework-reporter-action@v2.1
+        with:
+          gh_access_token: ${{ secrets.GITHUB_TOKEN }}
 
   run-tests-unit:
     runs-on: ubuntu-latest
@@ -115,24 +133,24 @@ jobs:
         run: |
           coveralls --service=github
 
-  generate_report:
-        if: always()
-        needs: [run-tests-chrome, run-tests-edge]
-        runs-on: ubuntu-latest
-        steps:
-        - name: Install dependencies
-          run: |
-            python -m pip install --upgrade pip
-            pip install robotframework
-
-        - name: Combine reports
-          run:  rebot -o reports/output.xml reports/*.xml
-        - uses: actions/checkout@v2
-        - name: Download reports
-          uses: actions/download-artifact@v1
-          with:
-            name: reportsChrome
-        - name: Send report to commit
-          uses: joonvena/robotframework-reporter-action@v2.1
-          with:
-            gh_access_token: ${{ secrets.GITHUB_TOKEN }}
+#  generate_report:
+#        if: always()
+#        needs: [run-tests-chrome, run-tests-edge]
+#        runs-on: ubuntu-latest
+#        steps:
+#        - name: Install dependencies
+#          run: |
+#            python -m pip install --upgrade pip
+#            pip install robotframework
+#
+#        - name: Combine reports
+#          run:  rebot -o reports/output.xml reports/*.xml
+#        - uses: actions/checkout@v2
+#        - name: Download reports
+#          uses: actions/download-artifact@v1
+#          with:
+#            name: reportsChrome
+#        - name: Send report to commit
+#          uses: joonvena/robotframework-reporter-action@v2.1
+#          with:
+#            gh_access_token: ${{ secrets.GITHUB_TOKEN }}
