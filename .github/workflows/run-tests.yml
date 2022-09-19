@@ -42,15 +42,6 @@ jobs:
           name: reportsEdge
           path: reports
 
-#      - name: Download reports
-#        uses: actions/download-artifact@v1
-#        with:
-#          name: reports
-#      - name: Send report to commit
-#        uses: joonvena/robotframework-reporter-action@v2.1
-#        with:
-#          gh_access_token: ${{ secrets.GITHUB_TOKEN }}
-
   run-tests-chrome:
     runs-on: ubuntu-latest
     strategy:
@@ -92,15 +83,6 @@ jobs:
         with:
           name: reportsChrome
           path: reports
-
-#      - name: Download reports
-#        uses: actions/download-artifact@v1
-#        with:
-#          name: reports
-#      - name: Send report to commit
-#        uses: joonvena/robotframework-reporter-action@v2.1
-#        with:
-#          gh_access_token: ${{ secrets.GITHUB_TOKEN }}
 
   run-tests-unit:
     runs-on: ubuntu-latest
@@ -158,36 +140,5 @@ jobs:
         - name: Send report to commit
           uses: joonvena/robotframework-reporter-action@v2.1
           with:
-            gh_access_token: ${{ secrets.GITHUB_TOKEN }}
-
-#  generate_report_chrome:
-#        if: always()
-#        needs: [run-tests-chrome]
-#        runs-on: ubuntu-latest
-#        steps:
-#        - uses: actions/checkout@v2
-#        - name: Download reportsChrome
-#          uses: actions/download-artifact@v1
-#          with:
-#            name: reportsChrome
-#            path: reports
-#        - name: Send report to commit
-#          uses: joonvena/robotframework-reporter-action@v2.1
-#          with:
-#            gh_access_token: ${{ secrets.GITHUB_TOKEN }}
-
-#  generate_report_edge:
-#    if: always()
-#    needs: [run-tests-edge]
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v2
-#      - name: Download reportsEdge
-#        uses: actions/download-artifact@v1
-#        with:
-#          name: reportsEdge
-#          path: reports
-#      - name: Send report to commit
-#        uses: joonvena/robotframework-reporter-action@v2.1
-#        with:
-#          gh_access_token: ${{ secrets.GITHUB_TOKEN }}
+            gh_access_token: ${{ secrets.GITHUB_TOKEN }}\
+            show_passed_tests: false
