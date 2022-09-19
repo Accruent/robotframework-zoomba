@@ -35,6 +35,13 @@ jobs:
           command: robot -i Edge test
           new_command_on_retry: sleep 30; robot --rerunfailed "output.xml" -i Edge test
 
+      - name: Upload test results
+        uses: actions/upload-artifact@v1
+        if: always()
+        with:
+          name: reportsEdge
+          path: reports
+
   run-tests-chrome:
     runs-on: ubuntu-latest
     strategy:
@@ -70,6 +77,13 @@ jobs:
             ${{ matrix.set_display }}
             robot --rerunfailed "output.xml" -e BrokenORWindowsOREdge test
 
+      - name: Upload test results
+        uses: actions/upload-artifact@v1
+        if: always()
+        with:
+          name: reportsChrome
+          path: reports
+
   run-tests-unit:
     runs-on: ubuntu-latest
     strategy:
@@ -100,3 +114,18 @@ jobs:
           parallel: true
         run: |
           coveralls --service=github
+
+  generate_report:
+        if: always()
+        needs: [run-tests-chrome, run-tests-edge]
+        runs-on: ubuntu-latest
+        steps:
+        - uses: actions/checkout@v2
+        - name: Download reports
+          uses: actions/download-artifact@v1
+          with:
+            name: reports
+        - name: Send report to commit
+          uses: joonvena/robotframework-reporter-action@v2.1
+          with:
+            gh_access_token: ${{ secrets.GITHUB_TOKEN }}
