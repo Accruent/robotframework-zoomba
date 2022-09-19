@@ -35,12 +35,12 @@ jobs:
           command: robot -i Edge --output outputEdge.xml test
           new_command_on_retry: sleep 30; robot --rerunfailed "outputEdge.xml" -i Edge --output outputEdge.xml test
 
-#      - name: Upload test results
-#        uses: actions/upload-artifact@v1
-#        if: always()
-#        with:
-#          name: reportsEdge
-#          path: /
+        - name: Upload test results
+          uses: actions/upload-artifact@v1
+          if: always()
+          with:
+            name: reportsEdge
+            path: reports
 
   run-tests-chrome:
     runs-on: ubuntu-latest
@@ -77,12 +77,12 @@ jobs:
             ${{ matrix.set_display }}
             robot --rerunfailed "outputChrome.xml" -e BrokenORWindowsOREdge --output outputChrome.xml test
 
-#      - name: Upload test results
-#        uses: actions/upload-artifact@v1
-#        if: always()
-#        with:
-#          name: reportsChrome
-#          path: /
+        - name: Upload test results
+          uses: actions/upload-artifact@v1
+          if: always()
+          with:
+            name: reportsChrome
+            path: reports
 
   run-tests-unit:
     runs-on: ubuntu-latest
@@ -124,7 +124,7 @@ jobs:
         - name: Download reports
           uses: actions/download-artifact@v1
           with:
-            name: outputChrome.xml
+            name: reports
         - name: Send report to commit
           uses: joonvena/robotframework-reporter-action@v2.1
           with:
