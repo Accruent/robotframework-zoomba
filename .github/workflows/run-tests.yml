@@ -32,15 +32,15 @@ jobs:
         with:
           timeout_minutes: 45
           max_attempts: 10
-          command: robot -i Edge test
-          new_command_on_retry: sleep 30; robot --rerunfailed "output.xml" -i Edge test
+          command: robot -i Edge test --outputdir "reports" -o outputEdge.xml
+          new_command_on_retry: sleep 30; robot --rerunfailed "reports\outputEdge.xml" -i Edge test --outputdir "reports" -o outputEdge.xml
 
-      - name: Upload test results
-        uses: actions/upload-artifact@v1
-        if: always()
-        with:
-          name: reportsEdge
-          path: /
+#      - name: Upload test results
+#        uses: actions/upload-artifact@v1
+#        if: always()
+#        with:
+#          name: reportsEdge
+#          path: /
 
   run-tests-chrome:
     runs-on: ubuntu-latest
@@ -72,17 +72,17 @@ jobs:
           max_attempts: 10
           command: |
             ${{ matrix.set_display }}
-            robot --randomize suites -e BrokenORWindowsOREdge test
+            robot --randomize suites -e BrokenORWindowsOREdge test --outputdir "reports" -o outputChrome.xml
           new_command_on_retry: |
             ${{ matrix.set_display }}
-            robot --rerunfailed "output.xml" -e BrokenORWindowsOREdge test
+            robot --rerunfailed "reports\outputChrome.xml" -e BrokenORWindowsOREdge test --outputdir "reports" -o outputChrome.xml
 
-      - name: Upload test results
-        uses: actions/upload-artifact@v1
-        if: always()
-        with:
-          name: reportsChrome
-          path: /
+#      - name: Upload test results
+#        uses: actions/upload-artifact@v1
+#        if: always()
+#        with:
+#          name: reportsChrome
+#          path: /
 
   run-tests-unit:
     runs-on: ubuntu-latest
