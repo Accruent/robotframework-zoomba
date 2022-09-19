@@ -146,10 +146,14 @@ jobs:
 #        - name: Combine reports
 #          run:  rebot -o reports/output.xml reports/*.xml
         - uses: actions/checkout@v2
-        - name: Download reports
+        - name: Download reportsEdge
           uses: actions/download-artifact@v1
           with:
-            name: reports
+            name: reportsEdge
+        - name: Download reportsChrome
+          uses: actions/download-artifact@v1
+          with:
+            name: reportsChrome
         - name: Send report to commit
           uses: joonvena/robotframework-reporter-action@v2.1
           with:
