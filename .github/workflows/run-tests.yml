@@ -135,7 +135,7 @@ jobs:
 
   generate_report:
         if: always()
-        needs: [run-tests-chrome]
+        needs: [run-tests-chrome, run-tests-edge]
         runs-on: ubuntu-latest
         steps:
         - uses: actions/checkout@v2
