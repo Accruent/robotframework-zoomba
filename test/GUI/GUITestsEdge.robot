@@ -144,3 +144,8 @@ Test Mouse Scroll
     Scroll Element Into View    //body/div[6]/div[1]/div[1]/div[1]/div[2]/div[1]/div[5]/div[1]/div[1]
     Mouse Scroll Over Element  //body/div[6]/div[1]/div[1]/div[1]/div[2]/div[1]/div[5]/div[1]/div[1]  y=-100
     Mouse Scroll     y=200
+
+Test Disabled Elements
+    Go To        https://demos.jquerymobile.com/1.4.5/forms-disabled
+    ${list_selection}=        Get Selected List Label   //select[@id='select-native-5']
+    List Selection Should Be  //select[@id='select-native-5']      ${list_selection}

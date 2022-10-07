@@ -2,9 +2,7 @@
 import unittest
 import os
 import sys
-from unittest.mock import patch, MagicMock
-from unittest.mock import Mock
-from unittest.mock import PropertyMock
+from unittest.mock import patch, MagicMock, Mock, PropertyMock
 from Zoomba.GUILibrary import GUILibrary
 from Zoomba.Helpers import ReactSelect
 from selenium.common.exceptions import UnexpectedTagNameException
