@@ -173,6 +173,18 @@ class TestExternal(unittest.TestCase):
         delete_on_session.assert_called_with("deleteapi", "fullstring", timeout='chocolate_chip', expected_status='any')
         create_session.assert_called_with("deleteapi", "Endpoint", {"a": "Text"}, cookies=None, timeout='chocolate_chip')
 
+    @patch('RequestsLibrary.SessionKeywords.SessionKeywords.create_session')
+    @patch('RequestsLibrary.RequestsOnSessionKeywords.delete_on_session')
+    def test_delete_with_data(self, create_session, delete_on_session):
+        library = APILibrary()
+        r = library.call_delete_request({"a": "Text"}, "Endpoint", "fullstring", data="{test}")
+        type(r).text = PropertyMock(return_value="success")
+        type(r).status_code = PropertyMock(return_value=200)
+        assert r.text == "success"
+        assert r.status_code == 200
+        delete_on_session.assert_called_with('deleteapi', 'Endpoint', {'a': 'Text'}, cookies=None, timeout=None, data="{test}")
+        create_session.assert_called_with('deleteapi', 'fullstring', timeout=None, expected_status='any')
+
     def test_patch_default(self):
         library = APILibrary()
         self.assertRaises(TypeError, library.call_patch_request)
