@@ -38,6 +38,7 @@ class APILibrary:
             endpoint: (string) The string that identifies the url endpoint of the App that receives API requests.\n
             fullstring: (string) A string that contains the rest of the url that identifies a specific API/Webservice\n
             timeout: (float) Time in seconds for the api to respond\n
+            **kwargs: See https://marketsquare.github.io/robotframework-requests/doc/RequestsLibrary.html#GET for options.\n
             return: (response object) Returns the request response object, which includes headers, content, etc.
             along with any query parameters.
         """
@@ -56,6 +57,7 @@ class APILibrary:
             timeout: (float) Time in seconds for the api to respond\n
             data: (json) The JSON object to be sent on the body of the request to be used by the specific Web service.\n
             files: (json) A JSON object that sends in the body of the request to be used by the specific Web service.\n
+            **kwargs: See https://marketsquare.github.io/robotframework-requests/doc/RequestsLibrary.html#GET for options.\n
             return: (response object) Returns the request response object, which includes headers, content, etc.
         """
         if self.suppress_warnings:
@@ -72,6 +74,7 @@ class APILibrary:
             fullstring: (string) A string that contains the rest of the url that identifies a specific API/Webservice
             along with any query parameters.\n
             timeout: (float) Time in seconds for the api to respond\n
+            **kwargs: See https://marketsquare.github.io/robotframework-requests/doc/RequestsLibrary.html#GET for options.\n
             return: (response object) Returns the request response object, which includes headers, content, etc.
         """
         if self.suppress_warnings:
@@ -88,6 +91,7 @@ class APILibrary:
             along with any query parameters.\n
             timeout: (float) Time in seconds for the api to respond\n
             data: (json) The JSON object to be sent on the body of the request to be used by the specific Web service.\n
+            **kwargs: See https://marketsquare.github.io/robotframework-requests/doc/RequestsLibrary.html#GET for options.\n
             return: (response object) Returns the request response object, which includes headers, content, etc.
         """
         if self.suppress_warnings:
@@ -105,6 +109,7 @@ class APILibrary:
             along with any query parameters.\n
             timeout: (float) Time in seconds for the api to respond\n
             data: (json) The JSON object to be sent on the body of the request to be used by the specific Web service.\n
+            **kwargs: See https://marketsquare.github.io/robotframework-requests/doc/RequestsLibrary.html#GET for options.\n
             return: (response object) Returns the request response object, which includes headers, content, etc.
         """
         if self.suppress_warnings:
