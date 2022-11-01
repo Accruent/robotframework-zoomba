@@ -65,7 +65,7 @@ class APILibrary:
         resp = requests_lib.post_on_session("postapi", fullstring, data, files=files, timeout=timeout, expected_status='any')
         return _convert_resp_to_dict(resp)
 
-    def call_delete_request(self, headers=None, endpoint=None, fullstring=None, cookies=None, timeout=None):
+    def call_delete_request(self, headers=None, endpoint=None, fullstring=None, cookies=None, timeout=None, data=None):
         """ Generate a DELETE Request. This Keyword is basically a wrapper for delete_request from the RequestsLibrary.\n
             headers: (dictionary) The headers to be sent as part of the request.\n
             endpoint: (string) The string that identifies the url endpoint of the App that receives API requests.\n
@@ -77,7 +77,7 @@ class APILibrary:
         if self.suppress_warnings:
             urllib3.disable_warnings(InsecureRequestWarning)
         requests_lib.create_session("deleteapi", endpoint, headers, cookies=cookies, timeout=timeout)
-        resp = requests_lib.delete_on_session("deleteapi", fullstring, timeout=timeout, expected_status='any')
+        resp = requests_lib.delete_on_session("deleteapi", fullstring, timeout=timeout, expected_status='any', data=data)
         return _convert_resp_to_dict(resp)
 
     def call_patch_request(self, headers=None, endpoint=None, fullstring=None, data=None, cookies=None, timeout=None):
