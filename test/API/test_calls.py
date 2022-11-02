@@ -136,15 +136,15 @@ class TestExternal(unittest.TestCase):
 
     @patch('RequestsLibrary.SessionKeywords.SessionKeywords.create_session')
     @patch('RequestsLibrary.RequestsOnSessionKeywords.delete_on_session')
-    def test_basic_delete(self, create_session, delete_on_session):
+    def test_basic_delete(self, delete_on_session, create_session):
         library = APILibrary()
         r = library.call_delete_request({"a": "Text"}, "Endpoint", "fullstring")
         type(r).text = PropertyMock(return_value="success")
         type(r).status_code = PropertyMock(return_value=200)
         assert r.text == "success"
         assert r.status_code == 200
-        delete_on_session.assert_called_with('deleteapi', 'Endpoint', {'a': 'Text'}, cookies=None, timeout=None)
-        create_session.assert_called_with('deleteapi', 'fullstring', timeout=None, expected_status='any')
+        create_session.assert_called_with('deleteapi', 'Endpoint', {'a': 'Text'}, cookies=None, timeout=None)
+        delete_on_session.assert_called_with('deleteapi', 'fullstring', timeout=None, expected_status='any')
 
     @patch('RequestsLibrary.SessionKeywords.SessionKeywords.create_session')
     @patch('RequestsLibrary.RequestsOnSessionKeywords.delete_on_session')
@@ -175,7 +175,7 @@ class TestExternal(unittest.TestCase):
 
     @patch('RequestsLibrary.SessionKeywords.SessionKeywords.create_session')
     @patch('RequestsLibrary.RequestsOnSessionKeywords.delete_on_session')
-    def test_delete_with_data(self, create_session, delete_on_session):
+    def test_delete_with_data(self, delete_on_session, create_session):
         library = APILibrary()
         r = library.call_delete_request({"a": "Text"}, "Endpoint", "fullstring", data="{test}")
         type(r).text = PropertyMock(return_value="success")
