@@ -182,8 +182,8 @@ class TestExternal(unittest.TestCase):
         type(r).status_code = PropertyMock(return_value=200)
         assert r.text == "success"
         assert r.status_code == 200
-        delete_on_session.assert_called_with('deleteapi', 'Endpoint', {'a': 'Text'}, cookies=None, timeout=None, data="{test}")
-        create_session.assert_called_with('deleteapi', 'fullstring', timeout=None, expected_status='any')
+        create_session.assert_called_with('deleteapi', 'Endpoint', {'a': 'Text'}, cookies=None, timeout=None)
+        delete_on_session.assert_called_with('deleteapi', 'fullstring', timeout=None, expected_status='any', data="{test}")
 
     def test_patch_default(self):
         library = APILibrary()
