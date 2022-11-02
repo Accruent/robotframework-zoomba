@@ -32,22 +32,23 @@ class APILibrary:
         """
         self.suppress_warnings = "FALSE" not in suppress.upper()
 
-    def call_get_request(self, headers=None, endpoint=None, fullstring=None, cookies=None, timeout=None):
+    def call_get_request(self, headers=None, endpoint=None, fullstring=None, cookies=None, timeout=None, **kwargs):
         """ Generate a GET Request. This Keyword is basically a wrapper for get_request from the RequestsLibrary.\n
             headers: (dictionary) The headers to be sent as part of the request.\n
             endpoint: (string) The string that identifies the url endpoint of the App that receives API requests.\n
             fullstring: (string) A string that contains the rest of the url that identifies a specific API/Webservice\n
             timeout: (float) Time in seconds for the api to respond\n
+            **kwargs: See https://marketsquare.github.io/robotframework-requests/doc/RequestsLibrary.html#GET for options.\n
             return: (response object) Returns the request response object, which includes headers, content, etc.
             along with any query parameters.
         """
         if self.suppress_warnings:
             urllib3.disable_warnings(InsecureRequestWarning)
         requests_lib.create_session("getapi", endpoint, headers, cookies=cookies, timeout=timeout)
-        resp = requests_lib.get_on_session("getapi", fullstring, timeout=timeout, expected_status='any')
+        resp = requests_lib.get_on_session("getapi", fullstring, timeout=timeout, expected_status='any', **kwargs)
         return _convert_resp_to_dict(resp)
 
-    def call_post_request(self, headers=None, endpoint=None, fullstring=None, data=None, files=None, cookies=None, timeout=None):
+    def call_post_request(self, headers=None, endpoint=None, fullstring=None, data=None, files=None, cookies=None, timeout=None, **kwargs):
         """ Generate a POST Request. This Keyword is basically a wrapper for post_request from the RequestsLibrary.\n
             headers: (dictionary) The headers to be sent as part of the request.\n
             endpoint: (string) The string that identifies the url endpoint of the App that receives API requests.\n
@@ -56,31 +57,33 @@ class APILibrary:
             timeout: (float) Time in seconds for the api to respond\n
             data: (json) The JSON object to be sent on the body of the request to be used by the specific Web service.\n
             files: (json) A JSON object that sends in the body of the request to be used by the specific Web service.\n
+            **kwargs: See https://marketsquare.github.io/robotframework-requests/doc/RequestsLibrary.html#GET for options.\n
             return: (response object) Returns the request response object, which includes headers, content, etc.
         """
         if self.suppress_warnings:
             urllib3.disable_warnings(InsecureRequestWarning)
         session = requests_lib.create_session("postapi", endpoint, headers, cookies=cookies, timeout=timeout)
         data = utils.format_data_according_to_header(session, data, headers)
-        resp = requests_lib.post_on_session("postapi", fullstring, data, files=files, timeout=timeout, expected_status='any')
+        resp = requests_lib.post_on_session("postapi", fullstring, data, files=files, timeout=timeout, expected_status='any', **kwargs)
         return _convert_resp_to_dict(resp)
 
-    def call_delete_request(self, headers=None, endpoint=None, fullstring=None, cookies=None, timeout=None):
+    def call_delete_request(self, headers=None, endpoint=None, fullstring=None, cookies=None, timeout=None, **kwargs):
         """ Generate a DELETE Request. This Keyword is basically a wrapper for delete_request from the RequestsLibrary.\n
             headers: (dictionary) The headers to be sent as part of the request.\n
             endpoint: (string) The string that identifies the url endpoint of the App that receives API requests.\n
             fullstring: (string) A string that contains the rest of the url that identifies a specific API/Webservice
             along with any query parameters.\n
             timeout: (float) Time in seconds for the api to respond\n
+            **kwargs: See https://marketsquare.github.io/robotframework-requests/doc/RequestsLibrary.html#GET for options.\n
             return: (response object) Returns the request response object, which includes headers, content, etc.
         """
         if self.suppress_warnings:
             urllib3.disable_warnings(InsecureRequestWarning)
         requests_lib.create_session("deleteapi", endpoint, headers, cookies=cookies, timeout=timeout)
-        resp = requests_lib.delete_on_session("deleteapi", fullstring, timeout=timeout, expected_status='any')
+        resp = requests_lib.delete_on_session("deleteapi", fullstring, timeout=timeout, expected_status='any', **kwargs)
         return _convert_resp_to_dict(resp)
 
-    def call_patch_request(self, headers=None, endpoint=None, fullstring=None, data=None, cookies=None, timeout=None):
+    def call_patch_request(self, headers=None, endpoint=None, fullstring=None, data=None, cookies=None, timeout=None, **kwargs):
         """ Generate a PATCH Request. This Keyword is basically a wrapper for patch_request from the RequestsLibrary.\n
             headers: (dictionary) The headers to be sent as part of the request.\n
             endpoint: (string) The string that identifies the url endpoint of the App that receives API requests.\n
@@ -88,16 +91,17 @@ class APILibrary:
             along with any query parameters.\n
             timeout: (float) Time in seconds for the api to respond\n
             data: (json) The JSON object to be sent on the body of the request to be used by the specific Web service.\n
+            **kwargs: See https://marketsquare.github.io/robotframework-requests/doc/RequestsLibrary.html#GET for options.\n
             return: (response object) Returns the request response object, which includes headers, content, etc.
         """
         if self.suppress_warnings:
             urllib3.disable_warnings(InsecureRequestWarning)
         session = requests_lib.create_session("patchapi", endpoint, headers, cookies=cookies, timeout=timeout)
         data = utils.format_data_according_to_header(session, data, headers)
-        resp = requests_lib.patch_on_session("patchapi", fullstring, data, timeout=timeout, expected_status='any')
+        resp = requests_lib.patch_on_session("patchapi", fullstring, data, timeout=timeout, expected_status='any', **kwargs)
         return _convert_resp_to_dict(resp)
 
-    def call_put_request(self, headers=None, endpoint=None, fullstring=None, data=None, cookies=None, timeout=None):
+    def call_put_request(self, headers=None, endpoint=None, fullstring=None, data=None, cookies=None, timeout=None, **kwargs):
         """ Generate a PUT Request. This Keyword is basically a wrapper for put_request from the RequestsLibrary.\n
             headers: (dictionary) The headers to be sent as part of the request.\n
             endpoint: (string) The string that identifies the url endpoint of the App that receives API requests.\n
@@ -105,13 +109,14 @@ class APILibrary:
             along with any query parameters.\n
             timeout: (float) Time in seconds for the api to respond\n
             data: (json) The JSON object to be sent on the body of the request to be used by the specific Web service.\n
+            **kwargs: See https://marketsquare.github.io/robotframework-requests/doc/RequestsLibrary.html#GET for options.\n
             return: (response object) Returns the request response object, which includes headers, content, etc.
         """
         if self.suppress_warnings:
             urllib3.disable_warnings(InsecureRequestWarning)
         session = requests_lib.create_session("putapi", endpoint, headers, cookies=cookies, timeout=timeout)
         data = utils.format_data_according_to_header(session, data, headers)
-        resp = requests_lib.put_on_session("putapi", fullstring, data, timeout=timeout, expected_status='any')
+        resp = requests_lib.put_on_session("putapi", fullstring, data, timeout=timeout, expected_status='any', **kwargs)
         return _convert_resp_to_dict(resp)
 
     def create_connection(self, endpoint, method, data, headers=None, cookies=None, timeout=None):
