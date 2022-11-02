@@ -1,13 +1,12 @@
 import os
 import sys
 sys.path.insert(0, os.path.abspath( os.path.join(os.path.dirname(__file__), '../../src/')))
-import unittest
 from Zoomba.APILibrary import APILibrary
-from unittest.mock import patch
-from unittest.mock import PropertyMock
+from unittest.mock import patch, PropertyMock
+from unittest import TestCase
 
 
-class TestInternal(unittest.TestCase):
+class TestInternal(TestCase):
     def test_suppress_default(self):
         library = APILibrary()
         assert not library.suppress_warnings
@@ -29,7 +28,7 @@ class TestInternal(unittest.TestCase):
         assert not library.suppress_warnings
 
 
-class TestExternal(unittest.TestCase):
+class TestExternal(TestCase):
     def test_get_default(self):
         library = APILibrary()
         self.assertRaises(TypeError, library.call_get_request)
@@ -72,6 +71,19 @@ class TestExternal(unittest.TestCase):
         library.call_get_request({"a": "Text"}, "Endpoint", "fullstring", "chocolate_chip")
         get_on_session.assert_called_with("getapi", "fullstring", timeout=None, expected_status='any')
         create_session.assert_called_with("getapi", "Endpoint", {"a": "Text"}, cookies="chocolate_chip", timeout=None)
+
+    @patch('RequestsLibrary.SessionKeywords.SessionKeywords.create_session')
+    @patch('RequestsLibrary.RequestsOnSessionKeywords.get_on_session')
+    def test_get_with_kwarg(self, get_on_session, create_session):
+        library = APILibrary()
+        r = library.call_get_request({"a": "Text"}, "Endpoint", "fullstring", allow_redirects=False)
+        type(r).text = PropertyMock(return_value="success")
+        type(r).status_code = PropertyMock(return_value=200)
+        assert r.text == "success"
+        assert r.status_code == 200
+        get_on_session.assert_called_with("getapi", "fullstring", timeout=None, expected_status='any',
+                                          allow_redirects=False)
+        create_session.assert_called_with("getapi", "Endpoint", {"a": "Text"}, cookies=None, timeout=None)
 
     def test_post_default(self):
         library = APILibrary()
@@ -130,6 +142,19 @@ class TestExternal(unittest.TestCase):
                                            expected_status='any')
         create_session.assert_called_with("postapi", "Endpoint", {"a": "Text"}, cookies=None, timeout=None)
 
+    @patch('RequestsLibrary.SessionKeywords.SessionKeywords.create_session')
+    @patch('RequestsLibrary.RequestsOnSessionKeywords.post_on_session')
+    def test_post_with_kwarg(self, post_on_session, create_session):
+        library = APILibrary()
+        r = library.call_post_request({"a": "Text"}, "Endpoint", "fullstring", allow_redirects=False)
+        type(r).text = PropertyMock(return_value="success")
+        type(r).status_code = PropertyMock(return_value=200)
+        assert r.text == "success"
+        assert r.status_code == 200
+        post_on_session.assert_called_with('postapi', 'fullstring', None, files=None, timeout=None,
+                                           expected_status='any', allow_redirects=False)
+        create_session.assert_called_with("postapi", "Endpoint", {"a": "Text"}, cookies=None, timeout=None)
+
     def test_delete_default(self):
         library = APILibrary()
         self.assertRaises(TypeError, library.call_delete_request)
@@ -170,12 +195,14 @@ class TestExternal(unittest.TestCase):
     def test_delete_with_cookies(self, delete_on_session, create_session):
         library = APILibrary()
         library.call_delete_request({"a": "Text"}, "Endpoint", "fullstring", None, "chocolate_chip")
-        delete_on_session.assert_called_with("deleteapi", "fullstring", timeout='chocolate_chip', expected_status='any')
-        create_session.assert_called_with("deleteapi", "Endpoint", {"a": "Text"}, cookies=None, timeout='chocolate_chip')
+        delete_on_session.assert_called_with("deleteapi", "fullstring", timeout='chocolate_chip',
+                                             expected_status='any')
+        create_session.assert_called_with("deleteapi", "Endpoint", {"a": "Text"}, cookies=None,
+                                          timeout='chocolate_chip')
 
     @patch('RequestsLibrary.SessionKeywords.SessionKeywords.create_session')
     @patch('RequestsLibrary.RequestsOnSessionKeywords.delete_on_session')
-    def test_delete_with_data(self, delete_on_session, create_session):
+    def test_delete_with_kwarg(self, delete_on_session, create_session):
         library = APILibrary()
         r = library.call_delete_request({"a": "Text"}, "Endpoint", "fullstring", data="{test}")
         type(r).text = PropertyMock(return_value="success")
@@ -183,7 +210,8 @@ class TestExternal(unittest.TestCase):
         assert r.text == "success"
         assert r.status_code == 200
         create_session.assert_called_with('deleteapi', 'Endpoint', {'a': 'Text'}, cookies=None, timeout=None)
-        delete_on_session.assert_called_with('deleteapi', 'fullstring', timeout=None, expected_status='any', data="{test}")
+        delete_on_session.assert_called_with('deleteapi', 'fullstring', timeout=None, expected_status='any',
+                                             data="{test}")
 
     def test_patch_default(self):
         library = APILibrary()
@@ -228,6 +256,19 @@ class TestExternal(unittest.TestCase):
         patch_on_session.assert_called_with("patchapi", "fullstring", None, timeout=None, expected_status='any')
         create_session.assert_called_with("patchapi", "Endpoint", {"a": "Text"}, cookies="chocolate_chip", timeout=None)
 
+    @patch('RequestsLibrary.SessionKeywords.SessionKeywords.create_session')
+    @patch('RequestsLibrary.RequestsOnSessionKeywords.patch_on_session')
+    def test_patch_with_kwarg(self, patch_on_session, create_session):
+        library = APILibrary()
+        r = library.call_patch_request({"a": "Text"}, "Endpoint", "fullstring", allow_redirects=False)
+        type(r).text = PropertyMock(return_value="success")
+        type(r).status_code = PropertyMock(return_value=200)
+        assert r.text == "success"
+        assert r.status_code == 200
+        create_session.assert_called_with('patchapi', 'Endpoint', {'a': 'Text'}, cookies=None, timeout=None)
+        patch_on_session.assert_called_with('patchapi', 'fullstring', None, timeout=None, expected_status='any',
+                                            allow_redirects=False)
+
     def test_put_default(self):
         library = APILibrary()
         self.assertRaises(TypeError, library.call_put_request)
@@ -271,6 +312,19 @@ class TestExternal(unittest.TestCase):
         put_on_session.assert_called_with("putapi", "fullstring", None, timeout=None, expected_status='any')
         create_session.assert_called_with("putapi", "Endpoint", {"a": "Text"}, cookies="chocolate_chip", timeout=None)
 
+    @patch('RequestsLibrary.SessionKeywords.SessionKeywords.create_session')
+    @patch('RequestsLibrary.RequestsOnSessionKeywords.put_on_session')
+    def test_put_with_kwarg(self, put_on_session, create_session):
+        library = APILibrary()
+        r = library.call_put_request({"a": "Text"}, "Endpoint", "fullstring", allow_redirects=False)
+        type(r).text = PropertyMock(return_value="success")
+        type(r).status_code = PropertyMock(return_value=200)
+        assert r.text == "success"
+        assert r.status_code == 200
+        create_session.assert_called_with('putapi', 'Endpoint', {'a': 'Text'}, cookies=None, timeout=None)
+        put_on_session.assert_called_with('putapi', 'fullstring', None, timeout=None, expected_status='any',
+                                          allow_redirects=False)
+
     def test_create_connection_default(self):
         library = APILibrary()
         self.assertRaises(TypeError, library.create_connection)
@@ -285,7 +339,8 @@ class TestExternal(unittest.TestCase):
         assert r.text == "success"
         assert r.status_code == 200
         create_session.assert_called_with('postapi', 'Endpoint', {'a': 'Text'}, cookies=None, timeout=None)
-        post_on_session.assert_called_with('postapi', 'fullstring', None, files=None, timeout=None, expected_status='any')
+        post_on_session.assert_called_with('postapi', 'fullstring', None, files=None, timeout=None,
+                                           expected_status='any')
 
     @patch('RequestsLibrary.SessionKeywords.SessionKeywords.create_session')
     @patch('RequestsLibrary.RequestsOnSessionKeywords.post_on_session')
@@ -297,7 +352,8 @@ class TestExternal(unittest.TestCase):
         assert r.text == "success"
         assert r.status_code == 200
         create_session.assert_called_with('postapi', 'Endpoint', {'a': 'Text'}, cookies=None, timeout=None)
-        post_on_session.assert_called_with('postapi', 'fullstring', b'item', files=None, timeout=None, expected_status='any')
+        post_on_session.assert_called_with('postapi', 'fullstring', b'item', files=None, timeout=None,
+                                           expected_status='any')
 
     @patch('RequestsLibrary.SessionKeywords.SessionKeywords.create_session')
     @patch('RequestsLibrary.RequestsOnSessionKeywords.post_on_session')
@@ -308,7 +364,8 @@ class TestExternal(unittest.TestCase):
         library.create_connection("Endpoint", "fullstring", None, headers={"a": "Text"})
         disable_warnings.assert_called()
         create_session.assert_called_with('postapi', 'Endpoint', {'a': 'Text'}, cookies=None, timeout=None)
-        post_on_session.assert_called_with('postapi', 'fullstring', None, files=None, timeout=None, expected_status='any')
+        post_on_session.assert_called_with('postapi', 'fullstring', None, files=None, timeout=None,
+                                           expected_status='any')
 
     @patch('RequestsLibrary.SessionKeywords.SessionKeywords.create_session')
     @patch('RequestsLibrary.RequestsOnSessionKeywords.post_on_session')
@@ -322,4 +379,5 @@ class TestExternal(unittest.TestCase):
         assert r.status_code == 200
         assert r.cookies["chocolate_chip"] == "tasty"
         create_session.assert_called_with('postapi', 'Endpoint', {'a': 'Text'}, cookies='chocolate_chip', timeout=None)
-        post_on_session.assert_called_with('postapi', 'fullstring', None, files=None, timeout=None, expected_status='any')
+        post_on_session.assert_called_with('postapi', 'fullstring', None, files=None, timeout=None,
+                                           expected_status='any')
