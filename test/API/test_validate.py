@@ -1,10 +1,13 @@
 import os
 import sys
+from datetime import datetime
+
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../src/')))
 import unittest
 from Zoomba.APILibrary import APILibrary
 from unittest.mock import patch
 from Zoomba.APILibrary import _unmatched_list_check
+from dateutil import parser
 
 
 class TestInternal(unittest.TestCase):
@@ -45,6 +48,10 @@ class TestInternal(unittest.TestCase):
         library = APILibrary()
         library.validate_response_contains_correct_number_of_items('{"a":1}', 1)
         fail.assert_called_with("The response is not a list:\nActual Response:\n{'a': 1}")
+
+    def test_validate_response_contains_correct_number_of_items_string(self):
+        library = APILibrary()
+        library.validate_response_contains_correct_number_of_items('[{"a":1}]', "1")
 
     def test_validate_response_contains_expected_response_only_keys_listed_simple(self):
         library = APILibrary()
@@ -183,7 +190,21 @@ class TestInternal(unittest.TestCase):
     def test_key_by_key_validator_list_do_not_match(self, fail):
         library = APILibrary()
         library.key_by_key_validator({"a": ["1", "2"]}, {"a": ["1", "3"]})
+        fail.assert_called_with("Arrays do not match:\nExpected: ['1', '3']\nActual: ['1', '2']\nIf this is simply out of order try 'sort_list=True'")
+
+    @patch('robot.libraries.BuiltIn.BuiltIn.fail')
+    def test_key_by_key_validator_list_do_not_match_with_sort(self, fail):
+        library = APILibrary()
+        library.key_by_key_validator({"a": ["1", "2"]}, {"a": ["1", "3"]}, sort_lists=True)
         fail.assert_called_with("Arrays do not match:\nExpected: ['1', '3']\nActual: ['1', '2']")
+
+    def test_key_by_key_validator_list_sort(self):
+        library = APILibrary()
+        library.key_by_key_validator({"a": ["1", "2"]}, {"a": ["2", "1"]}, sort_lists=True)
+
+    def test_key_by_key_validator_list_sort_nested_dict(self):
+        library = APILibrary()
+        library.key_by_key_validator({"value":[{"a": ["1", "2"]}]}, {"value":[{"a": ["2", "1"]}]}, sort_lists=True)
 
     def test_key_by_key_validator_simple_dict(self):
         library = APILibrary()
@@ -203,6 +224,20 @@ class TestInternal(unittest.TestCase):
         library = APILibrary()
         library.key_by_key_validator({"a": "2017-08-08T05:05:05"}, {"a": "2017-08-08T05:05:05"})
 
+    def test_key_by_key_validator_complex_date(self):
+        library = APILibrary()
+        library.key_by_key_validator({"a": "2017-08-08T05:05:05"}, {"a": "2017-08-08T05:05:05.234543"})
+
+    def test_key_by_key_validator_complex_date2(self):
+        library = APILibrary()
+        actual_date = parser.parse("2005-03-23 08:20:09.383000")
+        library.key_by_key_validator({"a": actual_date}, {"a": "2005-03-23 08:20:09"})
+
+    def test_key_by_key_validator_tz_date(self):
+        library = APILibrary()
+        actual_date = parser.parse("2017-08-08T05:05:05-08:00")
+        library.key_by_key_validator({"a": actual_date}, {"a": "2017-08-08T05:05:05"})
+
     def test_key_by_key_validator_simple_date_parse_except(self):
         library = APILibrary()
         library.key_by_key_validator({"a": "a"}, {"a": "a"})
@@ -216,6 +251,25 @@ class TestInternal(unittest.TestCase):
     def test_validate_response_contains_expected_response_simple(self):
         library = APILibrary()
         library.validate_response_contains_expected_response('{"a":{"b":1}}', {"a": {"b": 1}})
+
+    def test_validate_response_contains_expected_response_sort_nested_dict(self):
+        library = APILibrary()
+        library.validate_response_contains_expected_response('{"value": [{"a": ["1", "2"]}]}', {"value": [{"a": ["2", "1"]}]},
+                                                             sort_lists=True)
+
+    def test_validate_response_contains_expected_response_sort_nested_dict_in_list(self):
+        library = APILibrary()
+        library.validate_response_contains_expected_response('{"value": [{"a": [{"a":"1", "b":"2"}, {"c":"3", "d":"4"}]}]}',
+                                                             {"value": [{"a": [{"c":"3", "d":"4"}, {"a":"1", "b":"2"}]}]},
+                                                             sort_lists=True)
+
+    def test_validate_response_contains_expected_response_simple_list(self):
+        library = APILibrary()
+        library.validate_response_contains_expected_response('[{"id":1}, {"id":2}]', [{"id": 1}, {"id": 2}])
+
+    def test_validate_response_contains_expected_response_list_with_identity_key(self):
+        library = APILibrary()
+        library.validate_response_contains_expected_response('[{"a":1}, {"a":2}]', [{"a": 1}, {"a": 2}], identity_key="a")
 
     @patch('robot.libraries.BuiltIn.BuiltIn.fail')
     def test_validate_response_contains_expected_response_simple_fail(self, fail):
@@ -290,3 +344,33 @@ class TestInternal(unittest.TestCase):
                                                              identity_key="a")
         fail.assert_called_with('Key(s) Did Not Match:\n------------------\nKey: c\nExpected: '
                                 '3\nActual: 2\n\nPlease see differing value(s)')
+
+    def test_validate_response_contains_expected_response_simple_date_compare(self):
+        library = APILibrary()
+        library.validate_response_contains_expected_response('{"a":{"date":"2005-03-23"}}', {"a": {"date": "2005-03-23"}})
+
+    def test_validate_response_contains_expected_response_extended_date_compare(self):
+        library = APILibrary()
+        library.validate_response_contains_expected_response('{"a":{"date":"2008-06-16 06:19:26"}}', {"a": {"date":"2008-06-16 06:19:26"}})
+
+    def test_validate_response_contains_expected_response_extended_date_compare2(self):
+        library = APILibrary()
+        library.validate_response_contains_expected_response('{"a":{"date":"2005-03-23 08:20:09"}}', {"a": {"date":"2005-03-23 08:20:09.383000"}})
+
+    def test_validate_response_contains_expected_response_extended_date_compare_offset(self):
+        library = APILibrary()
+        library.validate_response_contains_expected_response('{"a":{"date":"2008-06-16 06:19:26"}}', {"a": {"date":"2008-06-16 06:20:26"}})
+
+    def test_validate_response_contains_expected_response_extended_date_compare_timezone_data(self):
+        library = APILibrary()
+        library.validate_response_contains_expected_response('{"a":{"date":"2008-06-16T06:19:26-07:00"}}', {"a": {"date":"2008-06-16 06:20:26"}})
+
+    def test_validate_response_contains_expected_response_date_already_datetime(self):
+        library = APILibrary()
+        expected = datetime(2005, 3, 23, 8, 20, 9, 383000)
+        library.validate_response_contains_expected_response('{"a":{"date":"2005-03-23 08:21:09"}}', {"a": {"date":expected}})
+
+    def test_validate_response_contains_expected_response_date_already_datetime_with_tzdata(self):
+        library = APILibrary()
+        expected = datetime(2005, 3, 23, 8, 20, 9, 383000)
+        library.validate_response_contains_expected_response('{"a":{"date":"2005-03-23 08:20:10-07:00"}}', {"a": {"date":expected}})

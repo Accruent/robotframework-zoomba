@@ -1,0 +1,28 @@
+pull_request_rules:
+  - name: Automatic merge for dependabot when everything passes
+    conditions:
+    - and:
+        - author~=^dependabot
+        - check-success-or-neutral=CodeQL-Build
+        - check-success-or-neutral=run-tests-edge (3.7)
+        - check-success-or-neutral=run-tests-edge (3.8)
+        - check-success-or-neutral=run-tests-edge (3.9)
+        - check-success-or-neutral=run-tests-edge (3.10)
+        - check-success-or-neutral=run-tests-chrome (3.7)
+        - check-success-or-neutral=run-tests-chrome (3.8)
+        - check-success-or-neutral=run-tests-chrome (3.9)
+        - check-success-or-neutral=run-tests-chrome (3.10)
+        - check-success-or-neutral=run-tests-unit (3.7)
+        - check-success-or-neutral=run-tests-unit (3.8)
+        - check-success-or-neutral=run-tests-unit (3.9)
+        - check-success-or-neutral=run-tests-unit (3.10)
+        - "check-success-or-neutral=LGTM analysis: JavaScript"
+        - "check-success-or-neutral=LGTM analysis: Python"
+        - check-success-or-neutral=CodeQL
+        - check-success-or-neutral=CodeFactor
+        - "check-success-or-neutral=DeepSource: Python"
+        - check-success-or-neutral=Hound
+        - check-success-or-neutral=coverage/coveralls
+    actions:
+      merge:
+        method: squash

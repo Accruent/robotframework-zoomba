@@ -11,13 +11,21 @@ Test Case Setup
     [Arguments]    ${url}=https://github.com/      ${browser}=${browser}
     Open Browser   ${url}    browser=${browser}
     Maximize Browser Window
-    Set Selenium Speed    0.2s
+    Set Selenium Speed    0.05s
 
 *** Test Cases ***
 Wait for Keywords Test
     [Teardown]      Close All Browsers
     Test Case Setup
     wait for and input text      //input[@name='q']      robotframework
+    press keys                    //input[@name='q']      RETURN
+    wait for and click element               //a[@href='/robotframework/robotframework']
+    wait until page contains element         //div[@id='readme']
+
+Wait for Keywords Test With Password
+    [Teardown]      Close All Browsers
+    Test Case Setup
+    wait for and input password      //input[@name='q']      robotframework
     press keys                    //input[@name='q']      RETURN
     wait for and click element               //a[@href='/robotframework/robotframework']
     wait until page contains element         //div[@id='readme']
@@ -111,7 +119,7 @@ Scroll To Bottom of Page Test
     wait until element is visible                   //div[@id='res']
     scroll to bottom of page
     ${position} =                Execute Javascript        return window.pageYOffset
-    should be equal              "767"         "${position}"
+    Should Be True               ${position} > 700
 
 Wait Until Window Tests
     [Teardown]                      Close All Browsers
@@ -147,3 +155,17 @@ Get React List Items Test
     Scroll Element Into View                        ${selectXpath}
     ${actualLabels}=    Get React List Labels       ${selectXpath}
     Lists Should Be Equal       ${expectedLabels}   ${actualLabels}     ignore_order=True
+
+Test Mouse Scroll
+    [Setup]     Test Case Setup         https://www.bgc.bard.edu/research-forum/articles/292/test-zoom-function-on-object
+    [Teardown]  Close All Browsers
+    Set Selenium Speed    1s
+    Scroll Element Into View    //body/div[6]/div[1]/div[1]/div[1]/div[2]/div[1]/div[5]/div[1]/div[1]
+    Mouse Scroll Over Element  //body/div[6]/div[1]/div[1]/div[1]/div[2]/div[1]/div[5]/div[1]/div[1]  y=-100
+    Mouse Scroll     y=200
+
+Test Disabled Elements
+    [Setup]    Test Case Setup        https://demos.jquerymobile.com/1.4.5/forms-disabled
+    [Teardown]  Close All Browsers
+    ${list_selection}=        Get Selected List Label   //select[@id='select-native-5']
+    List Selection Should Be  //select[@id='select-native-5']      ${list_selection}

@@ -7,6 +7,7 @@ from urllib3.exceptions import InsecureRequestWarning
 from requests.packages import urllib3
 from robot.libraries.BuiltIn import BuiltIn
 from robot.utils.dotdict import DotDict
+from pandas import to_datetime
 
 zoomba = BuiltIn()
 requests_lib = RequestsLibrary()
@@ -29,27 +30,25 @@ class APILibrary:
         | Suppress Insecure Request Warnings | suppress=True |     #Suppresses Insecure Request Warnings
         | Suppress Insecure Request Warnings | False |    #Does Not Suppresses Insecure Request Warnings
         """
-        if "FALSE" in suppress.upper():
-            self.suppress_warnings = False
-        else:
-            self.suppress_warnings = True
+        self.suppress_warnings = "FALSE" not in suppress.upper()
 
-    def call_get_request(self, headers=None, endpoint=None, fullstring=None, cookies=None, timeout=None):
+    def call_get_request(self, headers=None, endpoint=None, fullstring=None, cookies=None, timeout=None, **kwargs):
         """ Generate a GET Request. This Keyword is basically a wrapper for get_request from the RequestsLibrary.\n
             headers: (dictionary) The headers to be sent as part of the request.\n
             endpoint: (string) The string that identifies the url endpoint of the App that receives API requests.\n
             fullstring: (string) A string that contains the rest of the url that identifies a specific API/Webservice\n
             timeout: (float) Time in seconds for the api to respond\n
+            **kwargs: See https://marketsquare.github.io/robotframework-requests/doc/RequestsLibrary.html#GET for options.\n
             return: (response object) Returns the request response object, which includes headers, content, etc.
             along with any query parameters.
         """
         if self.suppress_warnings:
             urllib3.disable_warnings(InsecureRequestWarning)
         requests_lib.create_session("getapi", endpoint, headers, cookies=cookies, timeout=timeout)
-        resp = requests_lib.get_on_session("getapi", fullstring, timeout=timeout, expected_status='any')
+        resp = requests_lib.get_on_session("getapi", fullstring, timeout=timeout, expected_status='any', **kwargs)
         return _convert_resp_to_dict(resp)
 
-    def call_post_request(self, headers=None, endpoint=None, fullstring=None, data=None, files=None, cookies=None, timeout=None):
+    def call_post_request(self, headers=None, endpoint=None, fullstring=None, data=None, files=None, cookies=None, timeout=None, **kwargs):
         """ Generate a POST Request. This Keyword is basically a wrapper for post_request from the RequestsLibrary.\n
             headers: (dictionary) The headers to be sent as part of the request.\n
             endpoint: (string) The string that identifies the url endpoint of the App that receives API requests.\n
@@ -58,31 +57,33 @@ class APILibrary:
             timeout: (float) Time in seconds for the api to respond\n
             data: (json) The JSON object to be sent on the body of the request to be used by the specific Web service.\n
             files: (json) A JSON object that sends in the body of the request to be used by the specific Web service.\n
+            **kwargs: See https://marketsquare.github.io/robotframework-requests/doc/RequestsLibrary.html#GET for options.\n
             return: (response object) Returns the request response object, which includes headers, content, etc.
         """
         if self.suppress_warnings:
             urllib3.disable_warnings(InsecureRequestWarning)
         session = requests_lib.create_session("postapi", endpoint, headers, cookies=cookies, timeout=timeout)
         data = utils.format_data_according_to_header(session, data, headers)
-        resp = requests_lib.post_on_session("postapi", fullstring, data, files=files, timeout=timeout, expected_status='any')
+        resp = requests_lib.post_on_session("postapi", fullstring, data, files=files, timeout=timeout, expected_status='any', **kwargs)
         return _convert_resp_to_dict(resp)
 
-    def call_delete_request(self, headers=None, endpoint=None, fullstring=None, cookies=None, timeout=None):
+    def call_delete_request(self, headers=None, endpoint=None, fullstring=None, cookies=None, timeout=None, **kwargs):
         """ Generate a DELETE Request. This Keyword is basically a wrapper for delete_request from the RequestsLibrary.\n
             headers: (dictionary) The headers to be sent as part of the request.\n
             endpoint: (string) The string that identifies the url endpoint of the App that receives API requests.\n
             fullstring: (string) A string that contains the rest of the url that identifies a specific API/Webservice
             along with any query parameters.\n
             timeout: (float) Time in seconds for the api to respond\n
+            **kwargs: See https://marketsquare.github.io/robotframework-requests/doc/RequestsLibrary.html#GET for options.\n
             return: (response object) Returns the request response object, which includes headers, content, etc.
         """
         if self.suppress_warnings:
             urllib3.disable_warnings(InsecureRequestWarning)
         requests_lib.create_session("deleteapi", endpoint, headers, cookies=cookies, timeout=timeout)
-        resp = requests_lib.delete_on_session("deleteapi", fullstring, timeout=timeout, expected_status='any')
+        resp = requests_lib.delete_on_session("deleteapi", fullstring, timeout=timeout, expected_status='any', **kwargs)
         return _convert_resp_to_dict(resp)
 
-    def call_patch_request(self, headers=None, endpoint=None, fullstring=None, data=None, cookies=None, timeout=None):
+    def call_patch_request(self, headers=None, endpoint=None, fullstring=None, data=None, cookies=None, timeout=None, **kwargs):
         """ Generate a PATCH Request. This Keyword is basically a wrapper for patch_request from the RequestsLibrary.\n
             headers: (dictionary) The headers to be sent as part of the request.\n
             endpoint: (string) The string that identifies the url endpoint of the App that receives API requests.\n
@@ -90,16 +91,17 @@ class APILibrary:
             along with any query parameters.\n
             timeout: (float) Time in seconds for the api to respond\n
             data: (json) The JSON object to be sent on the body of the request to be used by the specific Web service.\n
+            **kwargs: See https://marketsquare.github.io/robotframework-requests/doc/RequestsLibrary.html#GET for options.\n
             return: (response object) Returns the request response object, which includes headers, content, etc.
         """
         if self.suppress_warnings:
             urllib3.disable_warnings(InsecureRequestWarning)
         session = requests_lib.create_session("patchapi", endpoint, headers, cookies=cookies, timeout=timeout)
         data = utils.format_data_according_to_header(session, data, headers)
-        resp = requests_lib.patch_on_session("patchapi", fullstring, data, timeout=timeout, expected_status='any')
+        resp = requests_lib.patch_on_session("patchapi", fullstring, data, timeout=timeout, expected_status='any', **kwargs)
         return _convert_resp_to_dict(resp)
 
-    def call_put_request(self, headers=None, endpoint=None, fullstring=None, data=None, cookies=None, timeout=None):
+    def call_put_request(self, headers=None, endpoint=None, fullstring=None, data=None, cookies=None, timeout=None, **kwargs):
         """ Generate a PUT Request. This Keyword is basically a wrapper for put_request from the RequestsLibrary.\n
             headers: (dictionary) The headers to be sent as part of the request.\n
             endpoint: (string) The string that identifies the url endpoint of the App that receives API requests.\n
@@ -107,13 +109,14 @@ class APILibrary:
             along with any query parameters.\n
             timeout: (float) Time in seconds for the api to respond\n
             data: (json) The JSON object to be sent on the body of the request to be used by the specific Web service.\n
+            **kwargs: See https://marketsquare.github.io/robotframework-requests/doc/RequestsLibrary.html#GET for options.\n
             return: (response object) Returns the request response object, which includes headers, content, etc.
         """
         if self.suppress_warnings:
             urllib3.disable_warnings(InsecureRequestWarning)
         session = requests_lib.create_session("putapi", endpoint, headers, cookies=cookies, timeout=timeout)
         data = utils.format_data_according_to_header(session, data, headers)
-        resp = requests_lib.put_on_session("putapi", fullstring, data, timeout=timeout, expected_status='any')
+        resp = requests_lib.put_on_session("putapi", fullstring, data, timeout=timeout, expected_status='any', **kwargs)
         return _convert_resp_to_dict(resp)
 
     def create_connection(self, endpoint, method, data, headers=None, cookies=None, timeout=None):
@@ -121,8 +124,8 @@ class APILibrary:
         return self.call_post_request(headers=headers, endpoint=endpoint, fullstring=method, data=data, cookies=cookies, timeout=timeout)
 
     def validate_response_contains_expected_response(self, json_actual_response, expected_response_dict,
-                                                     ignored_keys=None, full_list_validation=False, identity_key="",
-                                                     **kwargs):
+                                                     ignored_keys=None, full_list_validation=False, identity_key="id",
+                                                     sort_lists=False, **kwargs):
         """ This is the most used method for validating Request responses from an API against a supplied
             expected response. It performs an object to object comparison between two json objects, and if that fails,
             a more in depth method is called to find the exact discrepancies between the values of the provided objects.
@@ -131,6 +134,9 @@ class APILibrary:
             json_actual_response: (request response object) The response from an API.\n
             expected_response_dict: (json) The expected response, in json format.\n
             ignored_keys: (strings list) A list of strings of the keys to be ignored on the validation.\n
+            full_list_validation: (bool) Check that the entire list matches the expected response, defaults to False.\n
+            identity_key: (string) Key to match items to, defaults to 'id'.\n
+            sort_lists: (bool) Sort lists before doing key by key validation, defaults to False.\n
             **kwargs: (dict) Currently supported kwargs are margin_type and margin_amt\n
             margin_type: (string) The type of unit of time to be used to generate a delta for the date comparisons.\n
             margin_amt: (string/#) The amount of units specified in margin_type to allot for difference between dates.\n
@@ -145,19 +151,19 @@ class APILibrary:
             if actual_response_dict == expected_response_dict:
                 return
             self.key_by_key_validator(actual_response_dict, expected_response_dict, ignored_keys,
-                                      unmatched_keys_list, full_list_validation=full_list_validation, **kwargs)
+                                      unmatched_keys_list, full_list_validation=full_list_validation, sort_lists=sort_lists, **kwargs)
             self.generate_unmatched_keys_error_message(unmatched_keys_list)
             return
         if isinstance(actual_response_dict, list) and actual_response_dict:
             if full_list_validation:
                 return self.full_list_validation(actual_response_dict, expected_response_dict, unmatched_keys_list,
-                                                 ignored_keys, **kwargs)
+                                                 ignored_keys, sort_lists=sort_lists, **kwargs)
             for exp_item in expected_response_dict:
                 for actual_item in actual_response_dict:
                     try:
                         if exp_item[identity_key] == actual_item[identity_key]:
                             self.key_by_key_validator(actual_item, exp_item, ignored_keys, unmatched_keys_list,
-                                                      full_list_validation=full_list_validation, **kwargs)
+                                                      full_list_validation=full_list_validation, sort_lists=sort_lists, **kwargs)
                             self.generate_unmatched_keys_error_message(unmatched_keys_list)
                             break
                         elif actual_response_dict[-1] == actual_item:
@@ -187,8 +193,8 @@ class APILibrary:
                     zoomba.fail("The response does not contain the key '" + expected_key + "'")
                     continue
                 if actual_response_dict[expected_key] != expected_response[expected_key]:
-                    zoomba.fail("The value for the key '" + expected_key + "' doesn't match the response:" + \
-                                "\nExpected: " + expected_response[expected_key] +\
+                    zoomba.fail("The value for the key '" + expected_key + "' doesn't match the response:" +
+                                "\nExpected: " + expected_response[expected_key] +
                                 "\nActual: " + actual_response_dict[expected_key])
             return
         for expected_key in key_list:
@@ -196,8 +202,8 @@ class APILibrary:
                 zoomba.fail("The response does not contain the key '" + expected_key + "'")
                 continue
             if actual_response_dict[0][expected_key] != expected_response[0][expected_key]:
-                zoomba.fail("The value for the key '" + expected_key + "' doesn't match the response:" + \
-                            "\nExpected: " + expected_response[0][expected_key] + \
+                zoomba.fail("The value for the key '" + expected_key + "' doesn't match the response:" +
+                            "\nExpected: " + expected_response[0][expected_key] +
                             "\nActual: " + actual_response_dict[0][expected_key])
         return
 
@@ -212,27 +218,27 @@ class APILibrary:
             number_of_items = number_of_items.upper()
             if number_of_items == "IGNORE":
                 return True
-        elif isinstance(number_of_items, int):
-            pass
-        else:
+        elif not isinstance(number_of_items, int):
             zoomba.fail("Did not pass number or string value, function expects a number or string 'IGNORE'.")
             return
 
         if isinstance(actual_response_dict, list):
-            if len(actual_response_dict) != number_of_items:
+            if len(actual_response_dict) != int(number_of_items):
                 zoomba.fail('API is returning ' + str(
                     len(actual_response_dict)) + ' instead of the expected ' + str(number_of_items) + ' result(s).')
         else:
             zoomba.fail("The response is not a list:\nActual Response:\n" + str(actual_response_dict))
 
     def key_by_key_validator(self, actual_dictionary, expected_dictionary, ignored_keys=None, unmatched_keys_list=None,
-                             parent_key=None, full_list_validation=False, **kwargs):
+                             parent_key=None, full_list_validation=False, sort_lists=False, **kwargs):
         """ This method is used to find and verify the value of every key in the expectedItem dictionary when compared
             against a single dictionary actual_item, unless any keys are included on the ignored_keys array./n
 
             actual_item: (array of dictionaries) The list of dictionary items extracted from a json Response.\n
             ExpectedItem: (dictionary) The expected item with the key to be validated.\n
             ignored_keys: (strings list) A list of strings of the keys to be ignored on the validation.\n
+            full_list_validation: (bool) Check that the entire list matches the expected response, defaults to False.\n
+            sort_lists: (bool) Sort lists before doing key by key validation, defaults to False.\n
             **kwargs: (dict) Currently supported kwargs are margin_type and margin_amt\n
             margin_type: (string) The type of unit of time to be used to generate a delta for the date comparisons.\n
             margin_amt: (string/#) The amount of units specified in margin_type to allot for difference between dates.\n
@@ -240,8 +246,8 @@ class APILibrary:
             returned otherwise.\n
         """
         if len(actual_dictionary) != len(expected_dictionary):
-            zoomba.fail("Collections not the same length:"\
-                        "\nActual length: " + str(len(actual_dictionary)) +\
+            zoomba.fail("Collections not the same length:"
+                        "\nActual length: " + str(len(actual_dictionary)) +
                         "\nExpected length " + str(len(expected_dictionary)))
             return
         for key, value in expected_dictionary.items():
@@ -252,18 +258,20 @@ class APILibrary:
                 continue
             if isinstance(value, list):
                 if full_list_validation and len(value) != len(actual_dictionary[key]):
-                    zoomba.fail("Arrays not the same length:" + \
-                                "\nExpected: " + str(value) + \
+                    zoomba.fail("Arrays not the same length:" +
+                                "\nExpected: " + str(value) +
                                 "\nActual: " + str(actual_dictionary[key]))
                     continue
                 self._key_by_key_list(key, value, actual_dictionary, unmatched_keys_list, ignored_keys, parent_key,
-                                      full_list_validation=full_list_validation, **kwargs)
+                                      full_list_validation=full_list_validation, sort_lists=sort_lists, **kwargs)
             elif isinstance(value, dict):
                 self._key_by_key_dict(key, value, actual_dictionary, expected_dictionary, unmatched_keys_list,
-                                      ignored_keys, full_list_validation=full_list_validation, **kwargs)
-            elif isinstance(expected_dictionary[key], str) and not expected_dictionary[key].isdigit():
+                                      ignored_keys, full_list_validation=full_list_validation, sort_lists=sort_lists,
+                                      **kwargs)
+            elif (isinstance(expected_dictionary[key], str) and not expected_dictionary[key].isdigit()) or isinstance(expected_dictionary[key], datetime.datetime):
                 try:
-                    parse(expected_dictionary[key])
+                    if not isinstance(expected_dictionary[key], datetime.datetime):
+                        parse(expected_dictionary[key])
                     self.date_string_comparator(value, actual_dictionary[key], key, unmatched_keys_list, **kwargs)
                 except (ValueError, TypeError):
                     if value == actual_dictionary[key]:
@@ -334,18 +342,33 @@ class APILibrary:
             zoomba.fail(keys_error_msg + "\nPlease see differing value(s)")
 
     def _key_by_key_list(self, key, value, actual_dictionary, unmatched_keys_list=None, ignored_keys=None,
-                         parent_key=None, full_list_validation=False, **kwargs):
+                         parent_key=None, full_list_validation=False, sort_lists=False, **kwargs):
+        if sort_lists and isinstance(value, list):
+            try:
+                value = list(map(dict, sorted(list(i.items()) for i in value)))
+            except AttributeError:
+                pass
         for index, item in enumerate(value):
             if isinstance(item, str):
                 if value != actual_dictionary[key]:
-                    zoomba.fail("Arrays do not match:" + \
-                                "\nExpected: " + str(value) + \
-                                "\nActual: " + str(actual_dictionary[key]))
-                    continue
+                    if sort_lists:
+                        if sorted(value) != sorted(actual_dictionary[key]):
+                            zoomba.fail("Arrays do not match:" +
+                                        "\nExpected: " + str(sorted(value)) +
+                                        "\nActual: " + str(sorted(actual_dictionary[key])))
+                            continue
+                    else:
+                        zoomba.fail("Arrays do not match:" + \
+                                    "\nExpected: " + str(value) + \
+                                    "\nActual: " + str(actual_dictionary[key]) + \
+                                    "\nIf this is simply out of order try 'sort_list=True'")
+                        continue
             else:
                 if len(actual_dictionary[key]) == 0:
                     actual_item = ''
                 else:
+                    if sort_lists:
+                        actual_dictionary[key] = list(map(dict, sorted(list(i.items()) for i in actual_dictionary[key])))
                     actual_item = actual_dictionary[key][index]
                 temp_actual_dict = {key: actual_item}
                 temp_expected_dict = {key: item}
@@ -355,7 +378,7 @@ class APILibrary:
                     current_unmatched_length = 0
                 self.key_by_key_validator(temp_actual_dict, temp_expected_dict,
                                           ignored_keys, unmatched_keys_list, parent_key=key,
-                                          full_list_validation=full_list_validation, **kwargs)
+                                          full_list_validation=full_list_validation, sort_lists=sort_lists, **kwargs)
                 if unmatched_keys_list is None:
                     continue
                 else:
@@ -363,34 +386,34 @@ class APILibrary:
                                           key, index, parent_key, is_list=True)
 
     def _key_by_key_dict(self, key, value, actual_dictionary, expected_dictionary, unmatched_keys_list=None,
-                         ignored_keys=None, full_list_validation=False, **kwargs):
+                         ignored_keys=None, full_list_validation=False, sort_lists=False, **kwargs):
         try:
             if len(value) != len(actual_dictionary[key]):
-                zoomba.fail("Dicts do not match:" + \
-                            "\nExpected: " + str(value) + \
+                zoomba.fail("Dicts do not match:" +
+                            "\nExpected: " + str(value) +
                             "\nActual: " + str(actual_dictionary[key]))
                 return
         except TypeError:
-            zoomba.fail("Dicts do not match:" + \
-                        "\nExpected: " + str(value) + \
+            zoomba.fail("Dicts do not match:" +
+                        "\nExpected: " + str(value) +
                         "\nActual is not a valid dictionary.")
             return
         if unmatched_keys_list is not None:
             current_unmatched_length = len(unmatched_keys_list)
         self.key_by_key_validator(actual_dictionary[key], expected_dictionary[key],
                                   ignored_keys, unmatched_keys_list, parent_key=key,
-                                  full_list_validation=full_list_validation, **kwargs)
+                                  full_list_validation=full_list_validation, sort_lists=sort_lists, **kwargs)
         if unmatched_keys_list is None:
             return
         _unmatched_list_check(unmatched_keys_list, current_unmatched_length, key)
 
     def full_list_validation(self, actual_response_dict, expected_response_dict, unmatched_keys_list, ignored_keys=None,
-                             **kwargs):
+                             sort_lists=False, **kwargs):
         if actual_response_dict == expected_response_dict:
             return
         for actual_item, expected_item in zip(actual_response_dict, expected_response_dict):
             self.key_by_key_validator(actual_item, expected_item, ignored_keys, unmatched_keys_list,
-                                      full_list_validation=True, **kwargs)
+                                      full_list_validation=True, sort_lists=sort_lists, **kwargs)
         if unmatched_keys_list:
             unmatched_keys_list.append(("------------------\n" + "Full List Breakdown:",
                                         "Expected: " + str(expected_response_dict),
@@ -435,33 +458,17 @@ def _unmatched_list_check(unmatched_keys_list, current_unmatched_length, key, in
 
 def _date_format(date_string, key, unmatched_keys_list, date_type, date_format=None):
     formatted_date = None
-    if date_format is None:
+    if (date_format is None) and (date_string is not None):
         try:
-            formatted_date = datetime.datetime.strptime(date_string, '%Y-%m-%dT%H:%M:%S')
+            formatted_date = to_datetime(date_string).tz_localize(None).to_pydatetime()
         except ValueError:
-            try:
-                formatted_date = datetime.datetime.strptime(date_string, '%Y-%m-%dT%H:%M:%SZ')
-            except ValueError:
-                try:
-                    formatted_date = datetime.datetime.strptime(date_string, '%Y-%m-%dT%H:%M:%S.%f')
-                except ValueError:
-                    try:
-                        formatted_date = datetime.datetime.strptime(date_string, '%Y-%m-%dT%H:%M:%S.%fZ')
-                    except ValueError:
-                        try:
-                            formatted_date = parse(date_string, fuzzy=True)
-                            formatted_date = str(formatted_date).replace('+00:00', 'Z')
-                            formatted_date = formatted_date.replace(' ', 'T')
-                            formatted_date = datetime.datetime.strptime(formatted_date, "%Y-%m-%dT%H:%M:%S.%fZ")
-                        except ValueError:
-                            unmatched_keys_list.append(("------------------\nKey: " + str(key),
-                                                        date_type + " Date Not Correct Format:",
-                                                        "Expected Formats: %Y-%m-%dT%H:%M:%S",
-                                                        "                  %Y-%m-%dT%H:%M:%SZ",
-                                                        "                  %Y-%m-%dT%H:%M:%S.%f",
-                                                        "                  %Y-%m-%dT%H:%M:%S.%fZ",
-                                                        "Date: " + str(date_string)))
-
+            unmatched_keys_list.append(("------------------\nKey: " + str(key),
+                                        date_type + " Date Not Correct Format:",
+                                        "Expected Formats: %Y-%m-%dT%H:%M:%S",
+                                        "                  %Y-%m-%dT%H:%M:%SZ",
+                                        "                  %Y-%m-%dT%H:%M:%S.%f",
+                                        "                  %Y-%m-%dT%H:%M:%S.%fZ",
+                                        "Date: " + str(date_string)))
     else:
         try:
             formatted_date = datetime.datetime.strptime(date_string, date_format)
@@ -474,8 +481,10 @@ def _date_format(date_string, key, unmatched_keys_list, date_type, date_format=N
 
 
 def _convert_resp_to_dict(response):
-    new_response = {}
-    for item in dir(response):
-        if item[0] != '_':
-            new_response[item] = getattr(response, item)
+    new_response = {
+        item: getattr(response, item)
+        for item in dir(response)
+        if item[0] != '_'
+    }
+
     return DotDict(new_response)
