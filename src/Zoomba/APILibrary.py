@@ -11,7 +11,6 @@ from pandas import to_datetime
 
 zoomba = BuiltIn()
 requests_lib = RequestsLibrary()
-requests_lib = RequestsLibrary()
 
 
 class APILibrary:
