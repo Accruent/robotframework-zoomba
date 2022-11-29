@@ -11,6 +11,7 @@ from pandas import to_datetime
 
 zoomba = BuiltIn()
 requests_lib = RequestsLibrary()
+requests_lib = RequestsLibrary()
 
 
 class APILibrary:
@@ -118,10 +119,6 @@ class APILibrary:
         data = utils.format_data_according_to_header(session, data, headers)
         resp = requests_lib.put_on_session("putapi", fullstring, data, timeout=timeout, expected_status='any', **kwargs)
         return _convert_resp_to_dict(resp)
-
-    def create_connection(self, endpoint, method, data, headers=None, cookies=None, timeout=None):
-        """*DEPRECATED!!* Use 'Call Post Request' instead."""
-        return self.call_post_request(headers=headers, endpoint=endpoint, fullstring=method, data=data, cookies=cookies, timeout=timeout)
 
     def validate_response_contains_expected_response(self, json_actual_response, expected_response_dict,
                                                      ignored_keys=None, full_list_validation=False, identity_key="id",
