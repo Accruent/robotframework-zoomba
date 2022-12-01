@@ -1,5 +1,8 @@
 import os
 import sys
+
+import RequestsLibrary.SessionKeywords
+
 sys.path.insert(0, os.path.abspath( os.path.join(os.path.dirname(__file__), '../../src/')))
 from Zoomba.APILibrary import APILibrary
 from unittest.mock import patch, PropertyMock
@@ -73,7 +76,7 @@ class TestExternal(TestCase):
         create_session.assert_called_with("getapi", "Endpoint", {"a": "Text"}, cookies="chocolate_chip", timeout=None)
 
     @patch('RequestsLibrary.SessionKeywords.SessionKeywords.create_session')
-    @patch('RequestsLibrary.RequestsOnSessionKeywords.get_on_session')
+    @patch('RequestsLibrary.get_on_session')
     def test_get_with_kwarg(self, get_on_session, create_session):
         library = APILibrary()
         r = library.call_get_request({"a": "Text"}, "Endpoint", "fullstring", allow_redirects=False)
