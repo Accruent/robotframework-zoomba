@@ -9,7 +9,7 @@ from unittest.mock import patch, PropertyMock
 from unittest import TestCase
 
 # Python 3.11 seems to treat the patch statement here differently
-if sys.version_info[:4] > 3.10:
+if sys.version_info[:3] > (3, 10):
     requestsSessionKeywords = 'RequestsLibrary.RequestsOnSessionKeywords.RequestsOnSessionKeywords'
 else:
     requestsSessionKeywords = 'RequestsLibrary.RequestsOnSessionKeywords'
