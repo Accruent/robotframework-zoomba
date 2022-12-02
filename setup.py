@@ -30,7 +30,6 @@ setup(name='robotframework-zoomba',
       install_requires=requirements,
       extras_require={
         'testing': [
-          'Appium-Python-Client',
           'mock'
         ]
       },
