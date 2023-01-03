@@ -5,7 +5,6 @@ RobotFramework-Zoomba
 [![Build Status](https://github.com/Accruent/robotframework-zoomba/workflows/tests/badge.svg?branch=master)](https://github.com/Accruent/robotframework-zoomba/actions?query=workflow%3Atests)
 [![Coverage Status](https://coveralls.io/repos/github/Accruent/robotframework-zoomba/badge.svg?branch=master)](https://coveralls.io/github/Accruent/robotframework-zoomba?branch=master)
 [![CodeFactor](https://www.codefactor.io/repository/github/accruent/robotframework-zoomba/badge)](https://www.codefactor.io/repository/github/accruent/robotframework-zoomba)
-[![Total alerts](https://img.shields.io/lgtm/alerts/g/Accruent/robotframework-zoomba.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Accruent/robotframework-zoomba/alerts/)
 
 What is RobotFramework-Zoomba?
 --------------
