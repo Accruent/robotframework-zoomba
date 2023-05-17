@@ -64,8 +64,8 @@ Wait Until Javascript Completes Test
 
 Web Elements Text Test
     Go To    http://www.google.com
-    wait for and input text      //input[@name='q']      robot framework
-    press keys                    //input[@name='q']      RETURN
+    wait for and input text      //textarea[1]      robot framework
+    press keys                    //textarea[1]       RETURN
     wait until element is visible                   //div[@id='res']
     ${resultsLinksList}=        Get Webelements     //div[@id='res']
     ${linksTextList}=           Get Text From Web Elements List     ${resultsLinksList}
@@ -73,8 +73,8 @@ Web Elements Text Test
 
 Web Elements Vertical Position Test
     Go To    http://www.google.com
-    wait for and input text      //input[@name='q']      robot framework
-    press keys                    //input[@name='q']      RETURN
+    wait for and input text      //textarea[1]       robot framework
+    press keys                    //textarea[1]       RETURN
     wait until element is visible                       //div[@id='res']
     ${resultsLinksList}=            Get Webelements     //div[@id='res']
     ${linksPositionList}=           Get Vertical Position From Web Elements List        ${resultsLinksList}
@@ -101,8 +101,8 @@ Truncate String Test
 
 Scroll To Bottom of Page Test
     Go To    http://www.google.com
-    wait for and input text      //input[@name='q']      robot framework
-    press keys                    //input[@name='q']      RETURN
+    wait for and input text      //textarea[1]       robot framework
+    press keys                    //textarea[1]       RETURN
     wait until element is visible                   //div[@id='res']
     scroll to bottom of page
     ${position} =                Execute Javascript        return window.pageYOffset
@@ -117,8 +117,8 @@ Wait Until Window Tests
 
 Wait Until Element Contains Value
     Go To    http://www.google.com
-    Input Text                      //input[@name='q']                                                  abc123
-    Wait Until Element Contains Value  //input[@name='q']                                               abc123
+    Input Text                      //textarea[1]                                                  abc123
+    Wait Until Element Contains Value    //textarea[1]                                               abc123
 
 Get Element CSS Attribute Value
     Go To    https://www.w3schools.com/html/html_examples.asp
