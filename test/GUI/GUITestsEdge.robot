@@ -14,16 +14,20 @@ Test Case Setup
 
 *** Test Cases ***
 Wait for Keywords Test
-    Go To      https://github.com/
-    wait for and input text      //input[@name='q']      robotframework
-    press keys                    //input[@name='q']      RETURN
+    [Teardown]      Close All Browsers
+    Test Case Setup
+    Wait For And Click Element    //span[contains(text(),'Search or jump to...')]
+    wait for and input text      //input[@id='query-builder-test']      robotframework
+    press keys                    //input[@id='query-builder-test']      RETURN
     wait for and click element               //a[@href='/robotframework/robotframework']
     wait until page contains element         //div[@id='readme']
 
 Wait for Keywords Test With Password
-    Go To      https://github.com/
-    wait for and input password      //input[@name='q']      robotframework
-    press keys                    //input[@name='q']      RETURN
+    [Teardown]      Close All Browsers
+    Test Case Setup
+    Wait For And Click Element    //span[contains(text(),'Search or jump to...')]
+    wait for and input password      //input[@id='query-builder-test']      robotframework
+    press keys                    //input[@id='query-builder-test']      RETURN
     wait for and click element               //a[@href='/robotframework/robotframework']
     wait until page contains element         //div[@id='readme']
 
