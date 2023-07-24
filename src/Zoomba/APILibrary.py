@@ -2,6 +2,7 @@ import datetime
 import json
 
 from RequestsLibrary import RequestsLibrary, utils
+from Zoomba import ZoombaError
 from dateutil.parser import parse
 from urllib3.exceptions import InsecureRequestWarning
 from requests.packages import urllib3
@@ -189,9 +190,11 @@ class APILibrary:
                     zoomba.fail("The response does not contain the key '" + expected_key + "'")
                     continue
                 if actual_response_dict[expected_key] != expected_response[expected_key]:
-                    zoomba.fail("The value for the key '" + expected_key + "' doesn't match the response:" +
-                                "\nExpected: " + expected_response[expected_key] +
-                                "\nActual: " + actual_response_dict[expected_key])
+                    ZoombaError(
+                        error="The value for the key '" + expected_key + "' doesn't match the response:",
+                        expected=expected_response[expected_key],
+                        actual=actual_response_dict[expected_key]
+                    ).fail()
             return
         for expected_key in key_list:
             if expected_key not in actual_response_dict[0]:

@@ -67,7 +67,7 @@ class TestInternal(unittest.TestCase):
     def test_validate_response_contains_expected_response_only_keys_listed_response_value_diff(self, fail):
         library = APILibrary()
         library.validate_response_contains_expected_response_only_keys_listed('{"a":"2"}', {"a": "1"}, ["a"])
-        fail.assert_called_with("The value for the key 'a' doesn't match the response:\nExpected: 1\nActual: 2")
+        fail.assert_called_with("Error: The value for the key 'a' doesn't match the response:\nExpected: 1\nActual: 2")
 
     def test_validate_response_contains_expected_response_only_keys_listed_list_simple(self):
         library = APILibrary()
