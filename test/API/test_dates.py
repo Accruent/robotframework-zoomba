@@ -5,6 +5,7 @@ import datetime
 import unittest
 from Zoomba.APILibrary import APILibrary
 from Zoomba.APILibrary import _date_format
+from Zoomba import ZoombaError
 
 
 class TestDates(unittest.TestCase):
@@ -22,14 +23,23 @@ class TestDates(unittest.TestCase):
         library = APILibrary()
         unmatched = []
         library.date_string_comparator("a", "b", "key", unmatched)
-        assert unmatched == [('------------------\nKey: key', 'Expected Date Not Correct Format:',
-                              'Expected Formats: %Y-%m-%dT%H:%M:%S', '                  %Y-%m-%dT%H:%M:%SZ',
-                              '                  %Y-%m-%dT%H:%M:%S.%f', '                  %Y-%m-%dT%H:%M:%S.%fZ',
-                              'Date: a'),
-                             ('------------------\nKey: key', 'Actual Date Not Correct Format:',
-                              'Expected Formats: %Y-%m-%dT%H:%M:%S', '                  %Y-%m-%dT%H:%M:%SZ',
-                              '                  %Y-%m-%dT%H:%M:%S.%f', '                  %Y-%m-%dT%H:%M:%S.%fZ',
-                              'Date: b')]
+        unmatched_a = ZoombaError(
+                key="key",
+                note="Expected Date Not Correct Format",
+                expected_formats="%Y-%m-%dT%H:%M:%S\n" +
+                                 "                  %Y-%m-%dT%H:%M:%SZ\n" +
+                                 "                  %Y-%m-%dT%H:%M:%S.%f\n" +
+                                 "                  %Y-%m-%dT%H:%M:%S.%fZ",
+                date='a')
+        unmatched_b = ZoombaError(
+                key="key",
+                note="Actual Date Not Correct Format",
+                expected_formats="%Y-%m-%dT%H:%M:%S\n" +
+                                 "                  %Y-%m-%dT%H:%M:%SZ\n" +
+                                 "                  %Y-%m-%dT%H:%M:%S.%f\n" +
+                                 "                  %Y-%m-%dT%H:%M:%S.%fZ",
+                date='b')
+        assert unmatched == [unmatched_a,unmatched_b]
 
     def test_date_string_comparator_fail_outside_dates(self):
         library = APILibrary()
@@ -76,5 +86,9 @@ class TestDates(unittest.TestCase):
     def test__date_format_unique_date_formats_fail(self):
         unmatched = []
         _date_format("210568/05/05 05:05:05", "key", unmatched, "string", "%Y/%m/%d %H:%M:%S")
-        assert unmatched == [('------------------\nKey: key', 'string Date Not Correct Format:',
-                              'Expected Format: %Y/%m/%d %H:%M:%S', 'Date: 210568/05/05 05:05:05')]
+
+        assert unmatched == [ZoombaError(
+            key="key",
+            note="string Date Not Correct Format",
+            expected_format="%Y/%m/%d %H:%M:%S",
+            date='210568/05/05 05:05:05')]

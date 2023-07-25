@@ -20,6 +20,7 @@ class APILibrary:
         This class is the base Library used to generate automated API Tests in the Robot Automation Framework.
         It has been generated to accommodate the RESTful API design pattern.
     """
+
     def __init__(self):
         self.suppress_warnings = False
 
@@ -49,7 +50,8 @@ class APILibrary:
         resp = requests_lib.get_on_session("getapi", fullstring, timeout=timeout, expected_status='any', **kwargs)
         return _convert_resp_to_dict(resp)
 
-    def call_post_request(self, headers=None, endpoint=None, fullstring=None, data=None, files=None, cookies=None, timeout=None, **kwargs):
+    def call_post_request(self, headers=None, endpoint=None, fullstring=None, data=None, files=None, cookies=None,
+                          timeout=None, **kwargs):
         """ Generate a POST Request. This Keyword is basically a wrapper for post_request from the RequestsLibrary.\n
             headers: (dictionary) The headers to be sent as part of the request.\n
             endpoint: (string) The string that identifies the url endpoint of the App that receives API requests.\n
@@ -65,7 +67,8 @@ class APILibrary:
             urllib3.disable_warnings(InsecureRequestWarning)
         session = requests_lib.create_session("postapi", endpoint, headers, cookies=cookies, timeout=timeout)
         data = utils.format_data_according_to_header(session, data, headers)
-        resp = requests_lib.post_on_session("postapi", fullstring, data, files=files, timeout=timeout, expected_status='any', **kwargs)
+        resp = requests_lib.post_on_session("postapi", fullstring, data, files=files, timeout=timeout,
+                                            expected_status='any', **kwargs)
         return _convert_resp_to_dict(resp)
 
     def call_delete_request(self, headers=None, endpoint=None, fullstring=None, cookies=None, timeout=None, **kwargs):
@@ -84,7 +87,8 @@ class APILibrary:
         resp = requests_lib.delete_on_session("deleteapi", fullstring, timeout=timeout, expected_status='any', **kwargs)
         return _convert_resp_to_dict(resp)
 
-    def call_patch_request(self, headers=None, endpoint=None, fullstring=None, data=None, cookies=None, timeout=None, **kwargs):
+    def call_patch_request(self, headers=None, endpoint=None, fullstring=None, data=None, cookies=None, timeout=None,
+                           **kwargs):
         """ Generate a PATCH Request. This Keyword is basically a wrapper for patch_request from the RequestsLibrary.\n
             headers: (dictionary) The headers to be sent as part of the request.\n
             endpoint: (string) The string that identifies the url endpoint of the App that receives API requests.\n
@@ -99,10 +103,12 @@ class APILibrary:
             urllib3.disable_warnings(InsecureRequestWarning)
         session = requests_lib.create_session("patchapi", endpoint, headers, cookies=cookies, timeout=timeout)
         data = utils.format_data_according_to_header(session, data, headers)
-        resp = requests_lib.patch_on_session("patchapi", fullstring, data, timeout=timeout, expected_status='any', **kwargs)
+        resp = requests_lib.patch_on_session("patchapi", fullstring, data, timeout=timeout, expected_status='any',
+                                             **kwargs)
         return _convert_resp_to_dict(resp)
 
-    def call_put_request(self, headers=None, endpoint=None, fullstring=None, data=None, cookies=None, timeout=None, **kwargs):
+    def call_put_request(self, headers=None, endpoint=None, fullstring=None, data=None, cookies=None, timeout=None,
+                         **kwargs):
         """ Generate a PUT Request. This Keyword is basically a wrapper for put_request from the RequestsLibrary.\n
             headers: (dictionary) The headers to be sent as part of the request.\n
             endpoint: (string) The string that identifies the url endpoint of the App that receives API requests.\n
@@ -148,7 +154,8 @@ class APILibrary:
             if actual_response_dict == expected_response_dict:
                 return
             self.key_by_key_validator(actual_response_dict, expected_response_dict, ignored_keys,
-                                      unmatched_keys_list, full_list_validation=full_list_validation, sort_lists=sort_lists, **kwargs)
+                                      unmatched_keys_list, full_list_validation=full_list_validation,
+                                      sort_lists=sort_lists, **kwargs)
             self.generate_unmatched_keys_error_message(unmatched_keys_list)
             return
         if isinstance(actual_response_dict, list) and actual_response_dict:
@@ -160,16 +167,17 @@ class APILibrary:
                     try:
                         if exp_item[identity_key] == actual_item[identity_key]:
                             self.key_by_key_validator(actual_item, exp_item, ignored_keys, unmatched_keys_list,
-                                                      full_list_validation=full_list_validation, sort_lists=sort_lists, **kwargs)
+                                                      full_list_validation=full_list_validation, sort_lists=sort_lists,
+                                                      **kwargs)
                             self.generate_unmatched_keys_error_message(unmatched_keys_list)
                             break
                         elif actual_response_dict[-1] == actual_item:
-                            zoomba.fail('Item was not within the response:\n' + str(exp_item))
+                            ZoombaError(error='Item was not within the response:\n' + str(exp_item)).fail()
                             return
                         else:
                             continue
                     except KeyError:
-                        zoomba.fail('KeyError: "' + identity_key + '" Key was not in the response')
+                        ZoombaError(KeyError=f"\"{identity_key}\" Key was not in the response").fail()
                         break
         else:
             zoomba.fail("The Actual Response is Empty.")
@@ -187,7 +195,7 @@ class APILibrary:
         if not isinstance(actual_response_dict, list):
             for expected_key in key_list:
                 if expected_key not in actual_response_dict:
-                    zoomba.fail("The response does not contain the key '" + expected_key + "'")
+                    ZoombaError(error=f"The response does not contain the key '{expected_key}'").fail()
                     continue
                 if actual_response_dict[expected_key] != expected_response[expected_key]:
                     ZoombaError(
@@ -198,12 +206,14 @@ class APILibrary:
             return
         for expected_key in key_list:
             if expected_key not in actual_response_dict[0]:
-                zoomba.fail("The response does not contain the key '" + expected_key + "'")
+                ZoombaError(error=f"The response does not contain the key '{expected_key}'").fail()
                 continue
             if actual_response_dict[0][expected_key] != expected_response[0][expected_key]:
-                zoomba.fail("The value for the key '" + expected_key + "' doesn't match the response:" +
-                            "\nExpected: " + expected_response[0][expected_key] +
-                            "\nActual: " + actual_response_dict[0][expected_key])
+                ZoombaError(
+                    error="The value for the key '" + expected_key + "' doesn't match the response:",
+                    expected=expected_response[0][expected_key],
+                    actual=actual_response_dict[0][expected_key]
+                ).fail()
         return
 
     def validate_response_contains_correct_number_of_items(self, json_actual_response, number_of_items):
@@ -218,15 +228,17 @@ class APILibrary:
             if number_of_items == "IGNORE":
                 return True
         elif not isinstance(number_of_items, int):
-            zoomba.fail("Did not pass number or string value, function expects a number or string 'IGNORE'.")
+            ZoombaError(
+                error="Did not pass number or string value, function expects a number or string 'IGNORE'.").fail()
             return
 
         if isinstance(actual_response_dict, list):
             if len(actual_response_dict) != int(number_of_items):
-                zoomba.fail('API is returning ' + str(
-                    len(actual_response_dict)) + ' instead of the expected ' + str(number_of_items) + ' result(s).')
+                ZoombaError(
+                    error=f"API is returning {str(len(actual_response_dict))} instead of the expected "
+                          f"{str(number_of_items)} result(s).").fail()
         else:
-            zoomba.fail("The response is not a list:\nActual Response:\n" + str(actual_response_dict))
+            ZoombaError(error="The response is not a list:", actual_response=f"\n{actual_response_dict}").fail()
 
     def key_by_key_validator(self, actual_dictionary, expected_dictionary, ignored_keys=None, unmatched_keys_list=None,
                              parent_key=None, full_list_validation=False, sort_lists=False, **kwargs):
@@ -245,21 +257,28 @@ class APILibrary:
             returned otherwise.\n
         """
         if len(actual_dictionary) != len(expected_dictionary):
-            zoomba.fail("Collections not the same length:"
-                        "\nActual length: " + str(len(actual_dictionary)) +
-                        "\nExpected length " + str(len(expected_dictionary)))
+            ZoombaError(
+                error="Collections not the same length:",
+                actual_length=str(len(actual_dictionary)),
+                expected_length=str(len(expected_dictionary))).fail()
             return
         for key, value in expected_dictionary.items():
             if ignored_keys and key in ignored_keys:
                 continue
             if key not in actual_dictionary:
-                zoomba.fail("Key not found in Actual : " + str(actual_dictionary) + " Key: " + str(key))
+                ZoombaError(
+                    error="Key not found in Actual",
+                    actual=actual_dictionary,
+                    key=key
+                ).fail()
                 continue
             if isinstance(value, list):
                 if full_list_validation and len(value) != len(actual_dictionary[key]):
-                    zoomba.fail("Arrays not the same length:" +
-                                "\nExpected: " + str(value) +
-                                "\nActual: " + str(actual_dictionary[key]))
+                    ZoombaError(
+                        error="Arrays not the same length",
+                        expected=value,
+                        actual=actual_dictionary[key]
+                    ).fail()
                     continue
                 self._key_by_key_list(key, value, actual_dictionary, unmatched_keys_list, ignored_keys, parent_key,
                                       full_list_validation=full_list_validation, sort_lists=sort_lists, **kwargs)
@@ -267,7 +286,8 @@ class APILibrary:
                 self._key_by_key_dict(key, value, actual_dictionary, expected_dictionary, unmatched_keys_list,
                                       ignored_keys, full_list_validation=full_list_validation, sort_lists=sort_lists,
                                       **kwargs)
-            elif (isinstance(expected_dictionary[key], str) and not expected_dictionary[key].isdigit()) or isinstance(expected_dictionary[key], datetime.datetime):
+            elif (isinstance(expected_dictionary[key], str) and not expected_dictionary[key].isdigit()) or isinstance(
+                    expected_dictionary[key], datetime.datetime):
                 try:
                     if not isinstance(expected_dictionary[key], datetime.datetime):
                         parse(expected_dictionary[key])
@@ -276,14 +296,11 @@ class APILibrary:
                     if value == actual_dictionary[key]:
                         continue
                     else:
-                        unmatched_keys_list.append(("------------------\n" + "Key: " + str(key),
-                                                    "Expected: " + str(value),
-                                                    "Actual: " + str(actual_dictionary[key])))
+                        unmatched_keys_list.append(ZoombaError(key=key, expected=value, actual=actual_dictionary[key]))
             elif value == actual_dictionary[key]:
                 continue
             else:
-                unmatched_keys_list.append(("------------------\n" + "Key: " + str(key), "Expected: " + str(value),
-                                            "Actual: " + str(actual_dictionary[key])))
+                unmatched_keys_list.append(ZoombaError(key=key, expected=value, actual=actual_dictionary[key]))
         return True
 
     def date_string_comparator(self, expected_date, actual_date, key, unmatched_keys_list, **kwargs):
@@ -334,11 +351,11 @@ class APILibrary:
             unmatchedKeys: (array of key/value pairs) An array containing the unmatched keys during a validation.\n
         """
         if unmatched_keys:
-            keys_error_msg = "Key(s) Did Not Match:\n"
-            for key_error_tuple in unmatched_keys:
-                for key_error in key_error_tuple:
-                    keys_error_msg += str(key_error) + "\n"
-            zoomba.fail(keys_error_msg + "\nPlease see differing value(s)")
+            ZoombaError(
+                error="Key(s) Did Not Match",
+                unmatched_keys_list="\n" + "\n".join([str(key) for key in unmatched_keys]),
+                note="Please see differing value(s)"
+            ).fail()
 
     def _key_by_key_list(self, key, value, actual_dictionary, unmatched_keys_list=None, ignored_keys=None,
                          parent_key=None, full_list_validation=False, sort_lists=False, **kwargs):
@@ -351,23 +368,30 @@ class APILibrary:
             if isinstance(item, str):
                 if value != actual_dictionary[key]:
                     if sort_lists:
-                        if sorted(value) != sorted(actual_dictionary[key]):
-                            zoomba.fail("Arrays do not match:" +
-                                        "\nExpected: " + str(sorted(value)) +
-                                        "\nActual: " + str(sorted(actual_dictionary[key])))
+                        sorted_value = sorted(value)
+                        sorted_actual = sorted(actual_dictionary[key])
+                        if sorted_value != sorted_actual:
+                            ZoombaError(
+                                error="Arrays do not match",
+                                expected=sorted_value,
+                                actual=sorted_actual
+                            ).fail()
                             continue
                     else:
-                        zoomba.fail("Arrays do not match:" + \
-                                    "\nExpected: " + str(value) + \
-                                    "\nActual: " + str(actual_dictionary[key]) + \
-                                    "\nIf this is simply out of order try 'sort_list=True'")
+                        ZoombaError(
+                            error="Arrays do not match",
+                            expected=value,
+                            actual=actual_dictionary[key],
+                            tip="If this is simply out of order try 'sort_list=True'"
+                        ).fail()
                         continue
             else:
                 if len(actual_dictionary[key]) == 0:
                     actual_item = ''
                 else:
                     if sort_lists:
-                        actual_dictionary[key] = list(map(dict, sorted(list(i.items()) for i in actual_dictionary[key])))
+                        actual_dictionary[key] = list(
+                            map(dict, sorted(list(i.items()) for i in actual_dictionary[key])))
                     actual_item = actual_dictionary[key][index]
                 temp_actual_dict = {key: actual_item}
                 temp_expected_dict = {key: item}
@@ -388,14 +412,18 @@ class APILibrary:
                          ignored_keys=None, full_list_validation=False, sort_lists=False, **kwargs):
         try:
             if len(value) != len(actual_dictionary[key]):
-                zoomba.fail("Dicts do not match:" +
-                            "\nExpected: " + str(value) +
-                            "\nActual: " + str(actual_dictionary[key]))
+                ZoombaError(
+                    error="Dicts do not match",
+                    expected=value,
+                    actual=actual_dictionary[key]
+                ).fail()
                 return
         except TypeError:
-            zoomba.fail("Dicts do not match:" +
-                        "\nExpected: " + str(value) +
-                        "\nActual is not a valid dictionary.")
+            ZoombaError(
+                error="Dicts do not match",
+                expected=value,
+                actual="Actual is not a valid dictionary."
+            ).fail()
             return
         if unmatched_keys_list is not None:
             current_unmatched_length = len(unmatched_keys_list)
@@ -414,45 +442,44 @@ class APILibrary:
             self.key_by_key_validator(actual_item, expected_item, ignored_keys, unmatched_keys_list,
                                       full_list_validation=True, sort_lists=sort_lists, **kwargs)
         if unmatched_keys_list:
-            unmatched_keys_list.append(("------------------\n" + "Full List Breakdown:",
-                                        "Expected: " + str(expected_response_dict),
-                                        "Actual: " + str(actual_response_dict)))
+            unmatched_keys_list.append(ZoombaError(
+                full_list_breakdown=f"\n{ZoombaError(expected=expected_response_dict, actual=actual_response_dict)}",
+                important="full_list_breakdown"
+            ))
             self.generate_unmatched_keys_error_message(unmatched_keys_list)
         return
 
 
 def _unmatched_list_check(unmatched_keys_list, current_unmatched_length, key, index=None, parent_key=None,
                           is_list=False):
-    if len(unmatched_keys_list) > current_unmatched_length and parent_key == key:
-        for new_index in range(len(unmatched_keys_list) - current_unmatched_length):
-            reverse_index = -1 * (new_index + 1)
-            unmatched_tuple = unmatched_keys_list[reverse_index]
-            split_key_string = unmatched_tuple[0].split("Key: " + parent_key)
-            new_key_string = split_key_string[0] + "Key: " + parent_key + "[" + str(index) + "]" + split_key_string[1]
-            unmatched_keys_list[reverse_index] = (new_key_string, *unmatched_tuple[1:])
-    elif len(unmatched_keys_list) > current_unmatched_length and parent_key is not None:
-        for new_index in range(len(unmatched_keys_list) - current_unmatched_length):
-            reverse_index = -1 * (new_index + 1)
-            unmatched_tuple = unmatched_keys_list[reverse_index]
-            if "Key: " + str(key) not in unmatched_tuple[0]:
-                split_key_string = unmatched_tuple[0].split("Key: ")
+    if len(unmatched_keys_list) <= current_unmatched_length:
+        return
+    adjusted_list_items = []
+
+    for new_index in range(len(unmatched_keys_list) - current_unmatched_length):
+        unmatched_zoomba_error = unmatched_keys_list.pop()
+        if parent_key == key:
+            remnant = unmatched_zoomba_error.key.replace(parent_key, "", 1)
+            unmatched_zoomba_error.key = f"{parent_key}[{index}]{remnant}"
+
+        elif parent_key is not None:
+            if not unmatched_zoomba_error.key.startswith(key):
+                remnant = unmatched_zoomba_error.key
                 if is_list:
-                    new_key_string = split_key_string[0] + "Key: " + key + "[" + str(index) + "]." + split_key_string[1]
+                    unmatched_zoomba_error.key = f"{key}[{index}].{remnant}"
                 else:
-                    new_key_string = split_key_string[0] + "Key: " + key + "." + split_key_string[1]
-                unmatched_keys_list[reverse_index] = (new_key_string, *unmatched_tuple[1:])
-    elif len(unmatched_keys_list) > current_unmatched_length and is_list:
-        for new_index in range(len(unmatched_keys_list) - current_unmatched_length):
-            reverse_index = -1 * (new_index + 1)
-            unmatched_tuple = unmatched_keys_list[reverse_index]
-            if str(key) + "[" + str(index) + "]" not in unmatched_tuple[0]:
-                split_key_string = unmatched_tuple[0].split("Key: ")
-                if key == split_key_string[1]:
-                    new_key_string = split_key_string[0] + "Key: " + key + "[" + str(index) + "]"
+                    unmatched_zoomba_error.key = f"{key}.{remnant}"
+
+        elif is_list:
+            remnant = unmatched_zoomba_error.key.replace(f"{key}[{index}]", "", 1)
+            if f"{key}[{index}]" not in unmatched_zoomba_error.key:
+                if key == remnant:
+                    unmatched_zoomba_error.key = f"{key}[{index}]"
                 else:
-                    new_key_string = split_key_string[0] + "Key: " + key + "[" + str(index) + "]" + \
-                                     "." + split_key_string[1]
-                unmatched_keys_list[reverse_index] = (new_key_string, *unmatched_tuple[1:])
+                    unmatched_zoomba_error.key = f"{key}[{index}].{remnant}"
+        adjusted_list_items.append(unmatched_zoomba_error)
+
+    unmatched_keys_list.extend(adjusted_list_items)
 
 
 def _date_format(date_string, key, unmatched_keys_list, date_type, date_format=None):
@@ -461,21 +488,25 @@ def _date_format(date_string, key, unmatched_keys_list, date_type, date_format=N
         try:
             formatted_date = to_datetime(date_string).tz_localize(None).to_pydatetime()
         except ValueError:
-            unmatched_keys_list.append(("------------------\nKey: " + str(key),
-                                        date_type + " Date Not Correct Format:",
-                                        "Expected Formats: %Y-%m-%dT%H:%M:%S",
-                                        "                  %Y-%m-%dT%H:%M:%SZ",
-                                        "                  %Y-%m-%dT%H:%M:%S.%f",
-                                        "                  %Y-%m-%dT%H:%M:%S.%fZ",
-                                        "Date: " + str(date_string)))
+            unmatched_keys_list.append(
+                ZoombaError(
+                    key=key,
+                    note=f"{date_type} Date Not Correct Format",
+                    expected_formats="%Y-%m-%dT%H:%M:%S\n" +
+                                     "                  %Y-%m-%dT%H:%M:%SZ\n" +
+                                     "                  %Y-%m-%dT%H:%M:%S.%f\n" +
+                                     "                  %Y-%m-%dT%H:%M:%S.%fZ",
+                    date=date_string))
     else:
         try:
             formatted_date = datetime.datetime.strptime(date_string, date_format)
         except ValueError:
-            unmatched_keys_list.append(("------------------\nKey: " + str(key),
-                                        date_type + " Date Not Correct Format:",
-                                        "Expected Format: " + date_format,
-                                        "Date: " + str(date_string)))
+            unmatched_keys_list.append(
+                ZoombaError(
+                    key=key,
+                    note=f"{date_type} Date Not Correct Format",
+                    expected_format=date_format,
+                    date=date_string))
     return formatted_date
 
 
