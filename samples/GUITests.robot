@@ -17,17 +17,18 @@ Test Suite Setup
 
 *** Test Cases ***
 Wait for Keywords Test
-    Wait For And Input Text      //input[@name='q']      robotframework
-    Press Keys                    //input[@name='q']      RETURN
-    Wait For And Click Element               //a[@href='/robotframework/robotframework']
-    Wait Until Page Contains Element         //div[@id='readme']
+    Wait For And Click Element    //span[contains(text(),'Search or jump to...')]
+    wait for and input text      //input[@id='query-builder-test']      robotframework
+    press keys                    //input[@id='query-builder-test']      RETURN
+    wait for and click element               //a[@href='/robotframework/robotframework']
+    wait until page contains element         //div[@id='readme']
 
 Wait for Keywords Test With Password
-    Go to      https://github.com/
-    Wait For And Input Password      //input[@name='q']      robotframework
-    Press Keys                    //input[@name='q']      RETURN
-    Wait For And Click Element               //a[@href='/robotframework/robotframework']
-    Wait Until Page Contains Element         //div[@id='readme']
+    Wait For And Click Element    //span[contains(text(),'Search or jump to...')]
+    wait for and input password      //input[@id='query-builder-test']      robotframework
+    press keys                    //input[@id='query-builder-test']      RETURN
+    wait for and click element               //a[@href='/robotframework/robotframework']
+    wait until page contains element         //div[@id='readme']
 
 Element Value Should Be Equal and not equal Test
     Go to      http://www.google.com
