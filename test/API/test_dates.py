@@ -78,3 +78,7 @@ class TestDates(unittest.TestCase):
         _date_format("210568/05/05 05:05:05", "key", unmatched, "string", "%Y/%m/%d %H:%M:%S")
         assert unmatched == [('------------------\nKey: key', 'string Date Not Correct Format:',
                               'Expected Format: %Y/%m/%d %H:%M:%S', 'Date: 210568/05/05 05:05:05')]
+
+    def test_nonzero_nanoseconds_cutoff_no_warning(self):
+        date = datetime.datetime(2018, 5, 5, 5, 5, 5, 123456)
+        assert date == _date_format("2018-05-05T05:05:05.123456789", "key", [], "string")
