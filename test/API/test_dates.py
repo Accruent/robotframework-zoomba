@@ -81,4 +81,4 @@ class TestDates(unittest.TestCase):
 
     def test_nonzero_nanoseconds_cutoff_no_warning(self):
         date = datetime.datetime(2018, 5, 5, 5, 5, 5, 123456)
-        assert date == APILibrary._date_format("2018-05-05T05:05:05.123456789", "key", [], "string")
+        assert date == _date_format("2018-05-05T05:05:05.123456789", "key", [], "string")
