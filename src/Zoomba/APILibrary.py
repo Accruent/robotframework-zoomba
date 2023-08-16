@@ -8,7 +8,6 @@ from urllib3.exceptions import InsecureRequestWarning
 from requests.packages import urllib3
 from robot.libraries.BuiltIn import BuiltIn
 from robot.utils.dotdict import DotDict
-warnings.filterwarnings("ignore", message=".*Discarding nonzero nanoseconds in conversion.*")
 from pandas import to_datetime
 
 zoomba = BuiltIn()
@@ -456,8 +455,7 @@ def _unmatched_list_check(unmatched_keys_list, current_unmatched_length, key, in
 
 def _date_format(date_string, key, unmatched_keys_list, date_type, date_format=None):
     formatted_date = None
-    warnings.resetwarnings()
-    warnings.filterwarnings("ignore", message=".*Discarding nonzero nanoseconds in conversion.*")
+    warnings.filterwarnings("ignore")
     if (date_format is None) and (date_string is not None):
         try:
             formatted_date = to_datetime(date_string).tz_localize(None).to_pydatetime()
