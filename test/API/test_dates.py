@@ -3,6 +3,7 @@ import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../src/')))
 import datetime
 import unittest
+import warnings
 from Zoomba.APILibrary import APILibrary
 from Zoomba.APILibrary import _date_format
 
@@ -80,5 +81,7 @@ class TestDates(unittest.TestCase):
                               'Expected Format: %Y/%m/%d %H:%M:%S', 'Date: 210568/05/05 05:05:05')]
 
     def test_nonzero_nanoseconds_cutoff_no_warning(self):
-        date = datetime.datetime(2018, 5, 5, 5, 5, 5, 123456)
-        assert date == _date_format("2018-05-05T05:05:05.123456789", "key", [], "string")
+        with warnings.catch_warnings():
+            warnings.simplefilter("error")
+            date = datetime.datetime(2018, 5, 5, 5, 5, 5, 123456)
+            assert date == _date_format("2018-05-05T05:05:05.123456789", "key", [], "string")
