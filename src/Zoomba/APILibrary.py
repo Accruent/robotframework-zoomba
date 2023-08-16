@@ -1,5 +1,6 @@
 import datetime
 import json
+import warnings
 
 from RequestsLibrary import RequestsLibrary, utils
 from dateutil.parser import parse
@@ -454,6 +455,7 @@ def _unmatched_list_check(unmatched_keys_list, current_unmatched_length, key, in
 
 def _date_format(date_string, key, unmatched_keys_list, date_type, date_format=None):
     formatted_date = None
+    warnings.filterwarnings("ignore", category=UserWarning)
     if (date_format is None) and (date_string is not None):
         try:
             formatted_date = to_datetime(date_string).tz_localize(None).to_pydatetime()
