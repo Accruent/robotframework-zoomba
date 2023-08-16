@@ -8,6 +8,7 @@ from urllib3.exceptions import InsecureRequestWarning
 from requests.packages import urllib3
 from robot.libraries.BuiltIn import BuiltIn
 from robot.utils.dotdict import DotDict
+warnings.filterwarnings("ignore", message=".*Discarding nonzero nanoseconds in conversion.*")
 from pandas import to_datetime
 
 zoomba = BuiltIn()
