@@ -1,5 +1,6 @@
 import datetime
 import json
+import warnings
 
 from RequestsLibrary import RequestsLibrary, utils
 from dateutil.parser import parse
@@ -354,9 +355,9 @@ class APILibrary:
                                         "\nActual: " + str(sorted(actual_dictionary[key])))
                             continue
                     else:
-                        zoomba.fail("Arrays do not match:" + \
-                                    "\nExpected: " + str(value) + \
-                                    "\nActual: " + str(actual_dictionary[key]) + \
+                        zoomba.fail("Arrays do not match:" +
+                                    "\nExpected: " + str(value) +
+                                    "\nActual: " + str(actual_dictionary[key]) +
                                     "\nIf this is simply out of order try 'sort_list=True'")
                         continue
             else:
@@ -454,6 +455,7 @@ def _unmatched_list_check(unmatched_keys_list, current_unmatched_length, key, in
 
 def _date_format(date_string, key, unmatched_keys_list, date_type, date_format=None):
     formatted_date = None
+    warnings.filterwarnings("ignore", message=".*Discarding nonzero nanoseconds in conversion.*")
     if (date_format is None) and (date_string is not None):
         try:
             formatted_date = to_datetime(date_string).tz_localize(None).to_pydatetime()
