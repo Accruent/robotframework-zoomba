@@ -129,4 +129,4 @@ Get Element CSS Attribute Value
 
 Element CSS Attribute Value Should Be
     Go to      https://www.w3schools.com/html/html_examples.asp
-    Element CSS Attribute Value Should Be      //div[@id='googleSearch']       position       absolute
+    Element CSS Attribute Value Should Be      //div[@id='googleSearch']       position       fixed

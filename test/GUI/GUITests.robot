@@ -146,7 +146,7 @@ Get Element CSS Attribute Value
 Element CSS Attribute Value Should Be
     [Teardown]                      Close All Browsers
     Test Case Setup    https://www.w3schools.com/html/html_examples.asp
-    Element CSS Attribute Value Should Be      //div[@id='googleSearch']       position       absolute
+    Element CSS Attribute Value Should Be      //div[@id='googleSearch']       position       fixed
 
 Get React List Items Test
     [Setup]     Test Case Setup         https://react-select.com/home
