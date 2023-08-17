@@ -355,9 +355,9 @@ class APILibrary:
                                         "\nActual: " + str(sorted(actual_dictionary[key])))
                             continue
                     else:
-                        zoomba.fail("Arrays do not match:" + \
-                                    "\nExpected: " + str(value) + \
-                                    "\nActual: " + str(actual_dictionary[key]) + \
+                        zoomba.fail("Arrays do not match:" +
+                                    "\nExpected: " + str(value) +
+                                    "\nActual: " + str(actual_dictionary[key]) +
                                     "\nIf this is simply out of order try 'sort_list=True'")
                         continue
             else:
