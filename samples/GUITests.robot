@@ -125,8 +125,8 @@ Wait Until Element Contains Value
 Get Element CSS Attribute Value
     Go to      https://www.w3schools.com/html/html_examples.asp
     ${value}=     Get Element CSS Attribute Value      //div[@id='googleSearch']       position
-    Should Be Equal     ${value}     absolute
+    Should Be Equal     ${value}     fixed
 
 Element CSS Attribute Value Should Be
     Go to      https://www.w3schools.com/html/html_examples.asp
-    Element CSS Attribute Value Should Be      //div[@id='googleSearch']       position       absolute
+    Element CSS Attribute Value Should Be      //div[@id='googleSearch']       position       fixed
