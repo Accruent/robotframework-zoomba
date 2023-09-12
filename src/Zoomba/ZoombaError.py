@@ -29,7 +29,9 @@ class ZoombaError:
         return repr_obj
 
     def __eq__(self, other):
-        return self.__dict__ == other.__dict__
+        if hasattr(other, "__dict__"):
+            return self.__dict__ == other.__dict__
+        return self.__repr__() == other
 
     def fail(self):
         zoomba.fail(self.__repr__())

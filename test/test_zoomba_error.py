@@ -18,5 +18,10 @@ class TestInternal(unittest.TestCase):
 
     def test_create_zoomba_error_with_kwargs(self):
         err = ZoombaError("description", "key", "expected", "actual", test="test")
-        assert f"{err}" == "Error: description\n------------------\nKey: key\nExpected: expected\nActual: actual\nTest: test"
+        assert f"{err}" == "Error: description\n------------------\nKey: key\n" \
+                           "Expected: expected\nActual: actual\nTest: test"
+
+    def test_compare_zoomba_error_with_string(self):
+        err = ZoombaError("string")
+        assert err == "Error: string"
 
