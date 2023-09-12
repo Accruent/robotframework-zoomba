@@ -29,9 +29,7 @@ class ZoombaError:
         return repr_obj
 
     def __eq__(self, other):
-        if type(other) in [dict, ZoombaError]:
-            return self.__dict__ == other.__dict__
-        return self.__repr__() == other
+        return self.__dict__ == other.__dict__
 
     def fail(self):
         zoomba.fail(self.__repr__())
