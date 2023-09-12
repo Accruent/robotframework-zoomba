@@ -21,12 +21,13 @@ get_basic_error_expected = \
       "completed": true
     }
 
-get_basic_validation_error = "Key(s) Did Not Match:" \
+get_basic_validation_error = "Error: Key(s) Did Not Match" \
+            "\nUnmatched Keys List: " \
             "\n------------------" \
             "\nKey: completed" \
             "\nExpected: True" \
             "\nActual: False" \
-            "\n\nPlease see differing value(s)"
+            "\nNote: Please see differing value(s)"
 
 post_data = \
     {
@@ -85,14 +86,15 @@ key_by_key_expected_error = \
         "CreatedByPhone": "(444) 444-4444"
     }
 
-key_by_key_error = "Key(s) Did Not Match:" \
+key_by_key_error = "Error: Key(s) Did Not Match" \
+            "\nUnmatched Keys List: " \
             "\n------------------" \
-            "\nDates Not Close Enough" \
             "\nKey: CreateDate" \
             "\nExpected: 2015-12-16 15:22:59" \
             "\nActual: 2015-12-16 14:21:58" \
+            "\nNote: Dates Not Close Enough" \
             "\n------------------" \
             "\nKey: CreatedByLastName" \
             "\nExpected: Smith" \
             "\nActual: Ross" \
-            "\n\nPlease see differing value(s)"
+            "\nNote: Please see differing value(s)"

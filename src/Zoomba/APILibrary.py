@@ -342,9 +342,12 @@ class APILibrary:
         margin = datetime.timedelta(**arg_dict)
         if expected_date - margin <= actual_date <= expected_date + margin:
             return
-        unmatched_keys_list.append(("------------------\n" + "Dates Not Close Enough\nKey: " + str(key),
-                                    "Expected: " + str(expected_date),
-                                    "Actual: " + str(actual_date)))
+        unmatched_keys_list.append(
+            ZoombaError(
+                note="Dates Not Close Enough",
+                key=key,
+                expected=expected_date,
+                actual=actual_date))
 
     def generate_unmatched_keys_error_message(self, unmatched_keys):
         """ This method is only used as an internal call from other validating methods to generate an error string

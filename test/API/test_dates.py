@@ -45,9 +45,11 @@ class TestDates(unittest.TestCase):
     def test_date_string_comparator_fail_outside_dates(self):
         library = APILibrary()
         unmatched = []
+        date_one = datetime.datetime.strptime("2018-08-08T05:05:05", '%Y-%m-%dT%H:%M:%S')
+        date_two = datetime.datetime.strptime("2018-08-09T05:05:05", '%Y-%m-%dT%H:%M:%S')
         library.date_string_comparator("2018-08-08T05:05:05", "2018-08-09T05:05:05", "key", unmatched)
-        assert unmatched == [('------------------\nDates Not Close Enough\nKey: key',
-                              'Expected: 2018-08-08 05:05:05', 'Actual: 2018-08-09 05:05:05')]
+        assert unmatched == [ZoombaError(note="Dates Not Close Enough", key="key",
+                                         expected=date_one, actual=date_two)]
 
     def test_date_comparator_dates_close_enough_with_custom_margin(self):
         library = APILibrary()
@@ -63,8 +65,8 @@ class TestDates(unittest.TestCase):
         date_two = datetime.datetime(2018, 5, 5, 3, 5, 5)
         unmatched = []
         library.date_comparator(date_one, date_two, "key", unmatched, "hours", 10)
-        assert unmatched == [('------------------\nDates Not Close Enough\nKey: key',
-                              'Expected: 2018-05-06 05:05:05', 'Actual: 2018-05-05 03:05:05')]
+        assert unmatched == [ZoombaError(note="Dates Not Close Enough", key="key",
+                                        expected=date_one, actual=date_two)]
 
     def test__date_format_standard_date_formats(self):
         date = datetime.datetime(2018, 5, 5, 5, 5, 5)

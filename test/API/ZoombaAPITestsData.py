@@ -391,7 +391,7 @@ only_keys_err_1 = "Error: The value for the key 'apple' doesn't match the respon
 
 only_keys_err_2 = "Error: The response does not contain the key 'orange'"
 
-no_items_err_1 = "API is returning 1 instead of the expected 2 result(s)."
+no_items_err_1 = "Error: API is returning 1 instead of the expected 2 result(s)."
 
 not_list_err_1 = "Error: The response is not a list:" \
                  "\nActual Response: " \
@@ -410,7 +410,7 @@ empty_resp_err = "The Actual Response is Empty."
 bad_array_err_1 = "Error: Arrays do not match" \
                 "\nExpected: ['str', 'aw', 'ber', 'ry']" \
                 "\nActual: ['dog', 'cat', 'bird', 'elephant']" \
-                "\nIf this is simply out of order try 'sort_list=True'"
+                "\nTip: If this is simply out of order try 'sort_list=True'"
 # -------------- Date Methods Test Data --------------------------------------------------------------------------------
 json_wo_date_none = """
     {
