@@ -314,13 +314,15 @@ unmatched_keys_11 = [('------------------\nKey: SomeDate', 'Date Not Correct For
                      'Date: 1234-34-45')]
 # ---------------- Error Messages --------------------------------------------------------------------------------------
 
-not_match1 = "Key(s) Did Not Match:" \
+not_match1 = "Error: Key(s) Did Not Match:" \
+            "\nUnmatched Keys List:" \
             "\n------------------" \
             "\nKey: pear" \
             "\nExpected: bird" \
             "\nActual: fish" \
-            "\n\nPlease see differing value(s)"
-not_match2 = "Key(s) Did Not Match:" \
+            "\nNote: Please see differing value(s)"
+not_match2 = "Error: Key(s) Did Not Match:" \
+             "\nUnmatched Keys List:" \
              "\n------------------" \
              "\nKey: pear" \
              "\nExpected: fish" \
@@ -329,22 +331,23 @@ not_match2 = "Key(s) Did Not Match:" \
              "\nFull List Breakdown:" \
              "\nExpected: [{'apple': 'cat', 'banana': 'dog', 'pear': 'fish'}, {'apple': 'cat', 'banana': 'mice', 'pear': 'bird'}, {'apple': 'dog', 'banana': 'mice', 'pear': 'cat'}]" \
              "\nActual: [{'apple': 'cat', 'banana': 'dog', 'pear': 'bird'}]" \
-             "\n\nPlease see differing value(s)"
-not_match3 = "Key(s) Did Not Match:" \
+             "\nNote: Please see differing value(s)"
+not_match3 = "Error: Key(s) Did Not Match:" \
+            "\nUnmatched Keys List:" \
             "\n------------------" \
             "\nKey: pear" \
             "\nExpected: fish" \
             "\nActual: bird" \
-            "\n\nPlease see differing value(s)"
+            "\nNote: Please see differing value(s)"
 
-not_match_date_1 = "Key(s) Did Not Match:" \
+not_match_date_1 = "Error: Key(s) Did Not Match:" \
                    "\n------------------" \
                    "\nKey: AssignedDate" \
                    "\nExpected: 2015-12-16T14:21:58Z" \
                    "\nActual: None" \
                    "\n\nPlease see differing value(s)"
 
-not_match_date_2 = "Key(s) Did Not Match:" \
+not_match_date_2 = "Error: Key(s) Did Not Match:" \
                    "\n------------------" \
                    "\nKey: AssignedDate" \
                    "\nActual Date Not Correct Format:" \
@@ -355,7 +358,7 @@ not_match_date_2 = "Key(s) Did Not Match:" \
                    "\nDate: 1234-34-45" \
                    "\n\nPlease see differing value(s)"
 
-not_match_date_3 = "Key(s) Did Not Match:" \
+not_match_date_3 = "Error: Key(s) Did Not Match:" \
                    "\n------------------" \
                    "\nDates Not Close Enough" \
                    "\nKey: AssignedDate" \
@@ -365,9 +368,9 @@ not_match_date_3 = "Key(s) Did Not Match:" \
 
 id_key_err = 'KeyError: "what" Key was not in the response'
 
-id_key_err_2 = "Item was not within the response:" \
+id_key_err_2 = "Error: Item was not within the response:" \
                "\n{'pear': 'fish', 'apple': 'elephant', 'banana': 'dog'}"
-top_only_err = "Key(s) Did Not Match:" \
+top_only_err = "Error: Key(s) Did Not Match:" \
                "\n------------------" \
                "\nKey: size" \
                "\nExpected: large" \
@@ -378,23 +381,23 @@ top_only_err = "Key(s) Did Not Match:" \
                "\nActual: [{'apple': 'cat', 'banana': 'dog', 'pear': {'color': 'green', 'size': 'small'}}]" \
                "\n\nPlease see differing value(s)"
 
-list_dict_err = "Collections not the same length:" \
+list_dict_err = "Error: Collections not the same length:" \
                 "\nActual length: 3" \
                 "\nExpected length 5"
 
-only_keys_err_1 = "The value for the key 'apple' doesn't match the response:" \
+only_keys_err_1 = "Error: The value for the key 'apple' doesn't match the response:" \
                   "\nExpected: elephant" \
                   "\nActual: cat"
 
-only_keys_err_2 = "The response does not contain the key 'orange'"
+only_keys_err_2 = "Error: The response does not contain the key 'orange'"
 
 no_items_err_1 = "API is returning 1 instead of the expected 2 result(s)."
 
-not_list_err_1 = "The response is not a list:" \
-                 "\nActual Response:" \
+not_list_err_1 = "Error: The response is not a list:" \
+                 "\nActual Response: " \
                  "\n{'apple': 'cat', 'banana': 'dog', 'pear': 'fish'}"
 
-bad_value_err = "The value for the key you provided doesn't match the response:" \
+bad_value_err = "Error: The value for the key you provided doesn't match the response:" \
                 "\nExpected: dog" \
                 "\nActual: cat"
 
@@ -404,7 +407,7 @@ date_type_err = "TypeError: strptime() argument 1 must be str, not None"
 
 empty_resp_err = "The Actual Response is Empty."
 
-bad_array_err_1 = "Arrays do not match:" \
+bad_array_err_1 = "Error: Arrays do not match" \
                 "\nExpected: ['str', 'aw', 'ber', 'ry']" \
                 "\nActual: ['dog', 'cat', 'bird', 'elephant']" \
                 "\nIf this is simply out of order try 'sort_list=True'"
