@@ -178,13 +178,13 @@ Date String Comparator Negative Tests
 *** Keywords ***
 Validate Response Contains Expected Response Errors Template
     [Arguments]     ${error}    ${json_actual}      ${expected_dict}    ${ignored_keys}=${NONE}     ${id_key}=${EMPTY}    ${top_level}=${FALSE}    &{kwargs}
-    Run Keyword And Expect Error    ${error}
+    Run Keyword And Expect Error    EQUALS: ${error}
     ...     Validate Response Contains Expected Response
     ...     ${json_actual}      ${expected_dict}    ${ignored_keys}     ${id_key}    ${top_level}    &{kwargs}
 
 Validate Response Contains Expected List Response Errors Template
     [Arguments]     ${error}    ${json_actual}      ${expected_dict}    ${ignored_keys}=${NONE}   ${full_list_validation}=${True}
-    Run Keyword And Expect Error    ${error}
+    Run Keyword And Expect Error    EQUALS: ${error}
     ...     Validate Response Contains Expected Response
     ...     ${json_actual}      ${expected_dict}    ${ignored_keys}    ${full_list_validation}
 
@@ -228,6 +228,6 @@ Key By Key Validator Testing Template
 
 Key By Key Validator Errors Template
     [Arguments]     ${error}    ${actual_dictionary}  ${expected_dictionary}   ${ignored_keys}=${EMPTY}   ${unmatched_keys}=@{EMPTY}
-    Run Keyword And Expect Error    ${error}
+    Run Keyword And Expect Error    EQUALS: ${error}
     ...         Key By Key Validator
     ...         ${actual_dictionary}    ${expected_dictionary}    ${ignored_keys}   ${unmatched_keys}

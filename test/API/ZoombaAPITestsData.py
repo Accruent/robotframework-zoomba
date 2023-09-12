@@ -283,107 +283,111 @@ keys_list_3 = ["apple", "orange"]
 
 empty_list = []
 
-unmatched_keys_1 = [('------------------\nKey: AssignedDate', 'Expected: None', 'Actual: 2015-12-16T14:21:58Z')]
-unmatched_keys_2 = [('------------------\nKey: AssignedDate', 'Expected: 2015-12-16T14:21:58Z', 'Actual: None')]
-unmatched_keys_3 = [('The Expected and Actual values for this date are not of the same type, Key: SomeDate',
-                     'Expected: None', 'Actual: 2015-12-16T14:21:58Z')]
-unmatched_keys_4 = [('The Expected and Actual values for this date are not of the same type, Key: SomeDate',
-                     'Expected: 2015-12-16T14:21:58Z', 'Actual: None')]
-unmatched_keys_5 = [('Date time parsing failed for key: SomeDate',
-                     'Expected: 2015-12-16T14:21:58Z', 'Actual: 1234-34-45')]
-unmatched_keys_6 = [('------------------\nDates Not Close Enough\nKey: SomeDate',
-                     'Expected: 2015-12-16 14:21:58', 'Actual: 2015-12-16 18:21:58')]
-unmatched_keys_7 = [('------------------\nKey: AssignedDate', 'Actual Date Not Correct Format:',
-                     'Expected Formats: %Y-%m-%dT%H:%M:%S', '                  %Y-%m-%dT%H:%M:%SZ',
-                     '                  %Y-%m-%dT%H:%M:%S.%f', '                  %Y-%m-%dT%H:%M:%S.%fZ',
-                     'Date: 1234-34-45')]
-unmatched_keys_8 = [('------------------\nDates Not Close Enough\nKey: AssignedDate',
-                     'Expected: 2015-12-16 14:21:58', 'Actual: 2015-12-16 14:10:58')]
+unmatched_keys_1 = ["------------------\nKey: AssignedDate\nExpected: None\nActual: 2015-12-16T14:21:58Z"]
+unmatched_keys_2 = ["------------------\nKey: AssignedDate\nExpected: 2015-12-16T14:21:58Z\nActual: None"]
+unmatched_keys_3 = ["The Expected and Actual values for this date are not of the same type\nKey: SomeDate\n"
+                     "Actual: 2015-12-16T14:21:58Z"]
+unmatched_keys_4 = ["The Expected and Actual values for this date are not of the same type\nKey: SomeDate\n"
+                     "Expected: 2015-12-16T14:21:58Z"]
+unmatched_keys_5 = ["Date time parsing failed for key: SomeDate\n"
+                     "Expected: 2015-12-16T14:21:58Z\nActual: 1234-34-45"]
+unmatched_keys_6 = ["------------------\nKey: SomeDate\nExpected: 2015-12-16 14:21:58"
+                    "\nActual: 2015-12-16 18:21:58\nNote: Dates Not Close Enough"]
+unmatched_keys_7 = ["------------------\nKey: AssignedDate\nNote: Actual Date Not Correct Format\n"
+                     "Expected Formats: %Y-%m-%dT%H:%M:%S\n                  %Y-%m-%dT%H:%M:%SZ\n"
+                     "                  %Y-%m-%dT%H:%M:%S.%f\n                  %Y-%m-%dT%H:%M:%S.%fZ\n"
+                     "Date: 1234-34-45"]
+unmatched_keys_8 = ["------------------\nKey: AssignedDate\nExpected: 2015-12-16 14:21:58"
+                    "\nActual: 2015-12-16 14:10:58\nNote: Dates Not Close Enough"]
 unmatched_keys_9 = \
             [
-                ('------------------\nKey: strawberry[0].dog', 'Expected: 9854', 'Actual: wags'),
-                ('------------------\nKey: strawberry[0].cat', 'Expected: purr', 'Actual: meow')
+                "------------------\nKey: strawberry[0].dog\nExpected: 9854\nActual: wags",
+                "------------------\nKey: strawberry[0].cat\nExpected: purr\nActual: meow"
             ]
 unmatched_keys_10 = \
             [
-                ('------------------\nKey: strawberry[0].dog', 'Expected: 9854', 'Actual: wags')
+                "------------------\nKey: strawberry[0].dog\nExpected: 9854\nActual: wags"
             ]
-unmatched_keys_11 = [('------------------\nKey: SomeDate', 'Date Not Correct Format:',
-                     'Expected Formats: %Y-%m-%dT%H:%M:%S', '                  %Y-%m-%dT%H:%M:%SZ',
-                     '                  %Y-%m-%dT%H:%M:%S.%f', '                  %Y-%m-%dT%H:%M:%S.%fZ',
-                     'Date: 1234-34-45')]
+unmatched_keys_11 = ["------------------\nKey: SomeDate\nNote: Date Not Correct Format\n"
+                     "Expected Formats: %Y-%m-%dT%H:%M:%S'\n                  %Y-%m-%dT%H:%M:%SZ,"
+                     "                  %Y-%m-%dT%H:%M:%S.%f\n                  %Y-%m-%dT%H:%M:%S.%fZ\n"
+                     "Date: 1234-34-45'"]
 # ---------------- Error Messages --------------------------------------------------------------------------------------
 
-not_match1 = "Error: Key(s) Did Not Match:" \
-            "\nUnmatched Keys List:" \
+not_match1 = "Error: Key(s) Did Not Match" \
+            "\nUnmatched Keys List: " \
             "\n------------------" \
             "\nKey: pear" \
             "\nExpected: bird" \
             "\nActual: fish" \
             "\nNote: Please see differing value(s)"
-not_match2 = "Error: Key(s) Did Not Match:" \
-             "\nUnmatched Keys List:" \
+not_match2 = "Error: Key(s) Did Not Match" \
+             "\nUnmatched Keys List: " \
              "\n------------------" \
              "\nKey: pear" \
              "\nExpected: fish" \
              "\nActual: bird" \
              "\n------------------" \
-             "\nFull List Breakdown:" \
+             "\nFull List Breakdown: " \
              "\nExpected: [{'apple': 'cat', 'banana': 'dog', 'pear': 'fish'}, {'apple': 'cat', 'banana': 'mice', 'pear': 'bird'}, {'apple': 'dog', 'banana': 'mice', 'pear': 'cat'}]" \
              "\nActual: [{'apple': 'cat', 'banana': 'dog', 'pear': 'bird'}]" \
              "\nNote: Please see differing value(s)"
-not_match3 = "Error: Key(s) Did Not Match:" \
-            "\nUnmatched Keys List:" \
+not_match3 = "Error: Key(s) Did Not Match" \
+            "\nUnmatched Keys List: " \
             "\n------------------" \
             "\nKey: pear" \
             "\nExpected: fish" \
             "\nActual: bird" \
             "\nNote: Please see differing value(s)"
 
-not_match_date_1 = "Error: Key(s) Did Not Match:" \
+not_match_date_1 = "Error: Key(s) Did Not Match" \
+                   "\nUnmatched Keys List: " \
                    "\n------------------" \
                    "\nKey: AssignedDate" \
                    "\nExpected: 2015-12-16T14:21:58Z" \
                    "\nActual: None" \
-                   "\n\nPlease see differing value(s)"
+                   "\nNote: Please see differing value(s)"
 
-not_match_date_2 = "Error: Key(s) Did Not Match:" \
+not_match_date_2 = "Error: Key(s) Did Not Match" \
+                   "\nUnmatched Keys List: " \
                    "\n------------------" \
                    "\nKey: AssignedDate" \
-                   "\nActual Date Not Correct Format:" \
+                   "\nNote: Actual Date Not Correct Format" \
                    "\nExpected Formats: %Y-%m-%dT%H:%M:%S" \
                    "\n                  %Y-%m-%dT%H:%M:%SZ" \
                    "\n                  %Y-%m-%dT%H:%M:%S.%f" \
                    "\n                  %Y-%m-%dT%H:%M:%S.%fZ" \
                    "\nDate: 1234-34-45" \
-                   "\n\nPlease see differing value(s)"
+                   "\nNote: Please see differing value(s)"
 
-not_match_date_3 = "Error: Key(s) Did Not Match:" \
+not_match_date_3 = "Error: Key(s) Did Not Match" \
+                   "\nUnmatched Keys List: " \
                    "\n------------------" \
-                   "\nDates Not Close Enough" \
                    "\nKey: AssignedDate" \
                    "\nExpected: 2015-12-16 14:21:58" \
                    "\nActual: 2015-12-16 14:10:58" \
-                   "\n\nPlease see differing value(s)"
+                   "\nNote: Dates Not Close Enough" \
+                   "\nNote: Please see differing value(s)"
 
 id_key_err = 'KeyError: "what" Key was not in the response'
 
 id_key_err_2 = "Error: Item was not within the response:" \
                "\n{'pear': 'fish', 'apple': 'elephant', 'banana': 'dog'}"
-top_only_err = "Error: Key(s) Did Not Match:" \
+top_only_err = "Error: Key(s) Did Not Match" \
+               "\nUnmatched Keys List: " \
                "\n------------------" \
                "\nKey: size" \
                "\nExpected: large" \
                "\nActual: small" \
                "\n------------------" \
-               "\nFull List Breakdown:" \
+               "\nFull List Breakdown: " \
                "\nExpected: [{'apple': 'cat', 'banana': 'dog', 'pear': {'color': 'green', 'size': 'large'}}]" \
                "\nActual: [{'apple': 'cat', 'banana': 'dog', 'pear': {'color': 'green', 'size': 'small'}}]" \
-               "\n\nPlease see differing value(s)"
+               "\nNote: Please see differing value(s)"
 
 list_dict_err = "Error: Collections not the same length:" \
-                "\nActual length: 3" \
-                "\nExpected length 5"
+                "\nActual Length: 3" \
+                "\nExpected Length: 5"
 
 only_keys_err_1 = "Error: The value for the key 'apple' doesn't match the response:" \
                   "\nExpected: elephant" \

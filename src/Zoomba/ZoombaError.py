@@ -14,6 +14,9 @@ class ZoombaError:
 
     def __repr__(self):
         repr_obj = ""
+        if bool(self.expected) ^ bool(self.actual):
+            self.expected = str(self.expected)
+            self.actual = str(self.actual)
         for attribute, value in self.__dict__.items():
             if value is None:
                 continue
@@ -26,7 +29,9 @@ class ZoombaError:
         return repr_obj
 
     def __eq__(self, other):
-        return self.__dict__ == other.__dict__
+        if type(other) in [dict, ZoombaError]:
+            return self.__dict__ == other.__dict__
+        return self.__repr__() == other
 
     def fail(self):
         zoomba.fail(self.__repr__())

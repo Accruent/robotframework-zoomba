@@ -140,13 +140,13 @@ Wait Until Element Contains Value
 Get Element CSS Attribute Value
     [Teardown]                      Close All Browsers
     Test Case Setup    https://www.w3schools.com/html/html_examples.asp
-    ${value}=     Get Element CSS Attribute Value      //div[@id='googleSearch']       position
-    Should Be Equal     ${value}     fixed
+    ${value}=     Get Element CSS Attribute Value      //div[@id='googleSearch']       display
+    Should Be Equal     ${value}     block
 
 Element CSS Attribute Value Should Be
     [Teardown]                      Close All Browsers
     Test Case Setup    https://www.w3schools.com/html/html_examples.asp
-    Element CSS Attribute Value Should Be      //div[@id='googleSearch']       position       fixed
+    Element CSS Attribute Value Should Be      //div[@id='googleSearch']       display       block
 
 Get React List Items Test
     [Setup]     Test Case Setup         https://react-select.com/home

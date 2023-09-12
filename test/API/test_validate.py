@@ -182,7 +182,7 @@ class TestInternal(unittest.TestCase):
     def test_key_by_key_validator_key_not_in_actual_fail(self, fail):
         library = APILibrary()
         library.key_by_key_validator({"b": 2, "c": 3}, {"a": 1, "c": 3})
-        fail.assert_called_with("Error: Key not found in Actual\n------------------\nKey: a\nActual: {'b': 2, 'c': 3}")
+        fail.assert_called_with("Error: Key not found in Actual\n------------------\nKey: a\nExpected: None\nActual: {'b': 2, 'c': 3}")
 
     @patch('robot.libraries.BuiltIn.BuiltIn.fail')
     def test_key_by_key_validator_list_not_same_length_fail(self, fail):
