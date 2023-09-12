@@ -178,31 +178,31 @@ Date String Comparator Negative Tests
 *** Keywords ***
 Validate Response Contains Expected Response Errors Template
     [Arguments]     ${error}    ${json_actual}      ${expected_dict}    ${ignored_keys}=${NONE}     ${id_key}=${EMPTY}    ${top_level}=${FALSE}    &{kwargs}
-    Run Keyword And Expect Error    EQUALS: ${error}
+    Run Keyword And Expect Error    Error: ${error}
     ...     Validate Response Contains Expected Response
     ...     ${json_actual}      ${expected_dict}    ${ignored_keys}     ${id_key}    ${top_level}    &{kwargs}
 
 Validate Response Contains Expected List Response Errors Template
     [Arguments]     ${error}    ${json_actual}      ${expected_dict}    ${ignored_keys}=${NONE}   ${full_list_validation}=${True}
-    Run Keyword And Expect Error    EQUALS: ${error}
+    Run Keyword And Expect Error    Error: ${error}
     ...     Validate Response Contains Expected Response
     ...     ${json_actual}      ${expected_dict}    ${ignored_keys}    ${full_list_validation}
 
 Verify Items Exist Within Response Errors Template
     [Arguments]     ${error}    ${json_actual}      ${expected_dict}    ${ignored_keys}=${NONE}     ${full_list_validation}=${True}     ${id_key}=${EMPTY}
-    Run Keyword And Expect Error    ${error}
+    Run Keyword And Expect Error    Error: ${error}
     ...     Validate Response Contains Expected Response
     ...     ${json_actual}      ${expected_dict}    ${ignored_keys}     ${full_list_validation}    ${id_key}
 
 Validate Response Contains Correct Number of Items Errors template
     [Arguments]     ${error}    ${json_actual}      ${number_of_items}
-    Run Keyword And Expect Error    ${error}
+    Run Keyword And Expect Error    Error: ${error}
     ...     Validate Response Contains Correct Number of Items
     ...     ${json_actual}      ${number_of_items}
 
 Validate Response Contains Expected Response Only Keys Listed Errors Template
     [Arguments]     ${error}    ${json_actual}      ${expected_dict}    ${keys_list}
-    Run Keyword And Expect Error    ${error}
+    Run Keyword And Expect Error    Error: ${error}
     ...     Validate Response Contains Expected Response Only Keys Listed
     ...     ${json_actual}      ${expected_dict}    ${keys_list}
 
@@ -215,7 +215,7 @@ Date String Comparator Template
 Date String Comparator Errors Template
     [Arguments]     ${error}    ${expected_date}    ${actual_date}    ${expected_unmatched_keys}      ${unmatched_keys}=@{EMPTY}
     ${new_unmatched_keys}=      Copy List   ${unmatched_keys}
-    Run Keyword And Expect Error    ${error}
+    Run Keyword And Expect Error    Error: ${error}
     ...                       Date String Comparator
     ...                       ${expected_date}    ${actual_date}    SomeDate  ${new_unmatched_keys}
     Lists Should be Equal     ${expected_unmatched_keys}      ${new_unmatched_keys}
@@ -228,6 +228,6 @@ Key By Key Validator Testing Template
 
 Key By Key Validator Errors Template
     [Arguments]     ${error}    ${actual_dictionary}  ${expected_dictionary}   ${ignored_keys}=${EMPTY}   ${unmatched_keys}=@{EMPTY}
-    Run Keyword And Expect Error    EQUALS: ${error}
+    Run Keyword And Expect Error    Error: ${error}
     ...         Key By Key Validator
     ...         ${actual_dictionary}    ${expected_dictionary}    ${ignored_keys}   ${unmatched_keys}
