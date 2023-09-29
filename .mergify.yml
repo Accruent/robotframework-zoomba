@@ -4,15 +4,15 @@ pull_request_rules:
     - and:
         - author~=^dependabot
         - check-success-or-neutral=CodeQL-Build
-        - check-success-or-neutral=run-tests-edge (3.7)
+        - check-success-or-neutral=run-tests-edge (3.11)
         - check-success-or-neutral=run-tests-edge (3.8)
         - check-success-or-neutral=run-tests-edge (3.9)
         - check-success-or-neutral=run-tests-edge (3.10)
-        - check-success-or-neutral=run-tests-chrome (3.7)
+        - check-success-or-neutral=run-tests-chrome (3.11)
         - check-success-or-neutral=run-tests-chrome (3.8)
         - check-success-or-neutral=run-tests-chrome (3.9)
         - check-success-or-neutral=run-tests-chrome (3.10)
-        - check-success-or-neutral=run-tests-unit (3.7)
+        - check-success-or-neutral=run-tests-unit (3.11)
         - check-success-or-neutral=run-tests-unit (3.8)
         - check-success-or-neutral=run-tests-unit (3.9)
         - check-success-or-neutral=run-tests-unit (3.10)
