@@ -116,6 +116,11 @@ jobs:
           coveralls --service=github
 
   generate_report:
+        permissions:
+          actions: write
+          issues: write
+          discussions: write
+          pull-requests: write
         if: always()
         needs: [run-tests-chrome, run-tests-edge]
         runs-on: ubuntu-latest
