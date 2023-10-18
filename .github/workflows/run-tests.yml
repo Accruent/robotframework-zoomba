@@ -14,11 +14,11 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        python-version: [ 3.7, 3.8, 3.9, '3.10', '3.11', '3.12.0-rc.1' ]
+        python-version: [ 3.8, 3.9, '3.10', '3.11' , '3.12']
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4.7.0
+        uses: actions/setup-python@v4.7.1
         with:
           python-version: ${{ matrix.python-version }}
 
@@ -28,7 +28,7 @@ jobs:
           pip install .
 
       - name: Run Edge Robot Tests
-        uses: nick-fields/retry@v2.8.3
+        uses: nick-fields/retry@v2.9.0
         with:
           timeout_minutes: 45
           max_attempts: 10
@@ -46,14 +46,14 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [ 3.7, 3.8, 3.9, '3.10', '3.11', '3.12.0-rc.1' ]
+        python-version: [ 3.8, 3.9, '3.10', '3.11' , '3.12']
         include:
           - os: ubuntu-latest
             set_display: export DISPLAY=:99; Xvfb :99 -screen 0 1024x768x24 -ac -noreset & sleep 3
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4.7.0
+        uses: actions/setup-python@v4.7.1
         with:
           python-version: ${{ matrix.python-version }}
 
@@ -66,7 +66,7 @@ jobs:
           sudo apt-get -y -q install xvfb scrot zip curl libxml2-dev libxslt1-dev
 
       - name: Run Chrome Robot Tests
-        uses: nick-fields/retry@v2.8.3
+        uses: nick-fields/retry@v2.9.0
         with:
           timeout_minutes: 45
           max_attempts: 10
@@ -88,11 +88,11 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [ 3.7, 3.8, 3.9, '3.10', '3.11', '3.12.0-rc.1' ]
+        python-version: [ 3.8, 3.9, '3.10', '3.11' , '3.12']
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4.7.0
+        uses: actions/setup-python@v4.7.1
         with:
           python-version: ${{ matrix.python-version }}
 
@@ -116,11 +116,16 @@ jobs:
           coveralls --service=github
 
   generate_report:
+        permissions:
+          actions: write
+          issues: write
+          discussions: write
+          pull-requests: write
         if: always()
         needs: [run-tests-chrome, run-tests-edge]
         runs-on: ubuntu-latest
         steps:
-        - uses: actions/checkout@v3
+        - uses: actions/checkout@v4
         - name: Download reportsChrome
           uses: actions/download-artifact@v3
           with:
@@ -138,7 +143,7 @@ jobs:
         - name: combine reports
           run: rebot -o reports/output.xml reports/*.xml
         - name: Send report to commit
-          uses: joonvena/robotframework-reporter-action@v2.2
+          uses: joonvena/robotframework-reporter-action@v2.3
           with:
             gh_access_token: ${{ secrets.GITHUB_TOKEN }}
             show_passed_tests: false
