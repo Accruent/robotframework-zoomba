@@ -247,9 +247,8 @@ class TestInternal(unittest.TestCase):
     @patch('robot.libraries.BuiltIn.BuiltIn.sleep')
     def test_wait_until_javascript_is_complete_simple(self, robot_call):
         mock_gui = Mock()
-        mock_gui.execute_javascript = Mock(side_effect=[False, True, False, True, False, True, False, True])
+        mock_gui.execute_javascript = Mock(side_effect=["loading", "loading", "loading", "complete"])
         GUILibrary.wait_until_javascript_is_complete(mock_gui)
-        GUILibrary.wait_for_page_to_load(mock_gui)
         robot_call.assert_called()
 
     def test_get_text_from_web_elements_list_simple(self):
