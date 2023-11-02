@@ -12,7 +12,7 @@ Test Case Setup
     Open Browser   ${url}    browser=${browser}
     Maximize Browser Window
     Wait For Page to Load
-    Set Selenium Speed    0.05s
+    Set Selenium Speed    0.07s
 
 *** Test Cases ***
 Wait for Keywords Test
