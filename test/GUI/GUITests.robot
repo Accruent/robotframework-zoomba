@@ -11,13 +11,14 @@ Test Case Setup
     [Arguments]    ${url}=https://github.com/      ${browser}=${browser}
     Open Browser   ${url}    browser=${browser}
     Maximize Browser Window
+    Wait For Page to Load
     Set Selenium Speed    0.05s
 
 *** Test Cases ***
 Wait for Keywords Test
     [Teardown]      Close All Browsers
     Test Case Setup
-    Wait For And Click Element    //span[contains(text(),'Search or jump to...')]
+    Press Keys                    ${None}      /
     wait for and input text      //input[@id='query-builder-test']      robotframework
     press keys                    //input[@id='query-builder-test']      RETURN
     wait for and click element               //a[@href='/robotframework/robotframework']
@@ -26,7 +27,7 @@ Wait for Keywords Test
 Wait for Keywords Test With Password
     [Teardown]      Close All Browsers
     Test Case Setup
-    Wait For And Click Element    //span[contains(text(),'Search or jump to...')]
+    Press Keys                    ${None}      /
     wait for and input password      //input[@id='query-builder-test']      robotframework
     press keys                    //input[@id='query-builder-test']      RETURN
     wait for and click element               //a[@href='/robotframework/robotframework']
