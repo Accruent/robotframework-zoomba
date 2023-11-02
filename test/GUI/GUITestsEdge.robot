@@ -16,7 +16,7 @@ Test Case Setup
 Wait for Keywords Test
     Go To      https://github.com/
     Wait For Page to Load
-    Wait For And Click Element    //span[contains(text(),'Search or jump to...')]
+    Wait For And Click Element    //qbsearch-input
     wait for and input text      //input[@id='query-builder-test']      robotframework
     press keys                    //input[@id='query-builder-test']      RETURN
     wait for and click element               //a[@href='/robotframework/robotframework']
@@ -25,7 +25,7 @@ Wait for Keywords Test
 Wait for Keywords Test With Password
     Go To      https://github.com/
     Wait For Page to Load
-    Wait For And Click Element    //span[contains(text(),'Search or jump to...')]
+    Wait For And Click Element    //qbsearch-input
     wait for and input text      //input[@id='query-builder-test']      robotframework
     press keys                    //input[@id='query-builder-test']      RETURN
     wait for and click element               //a[@href='/robotframework/robotframework']
