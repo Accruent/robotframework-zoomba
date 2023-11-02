@@ -309,6 +309,8 @@ class GUILibrary(SeleniumLibrary):
 
     @keyword("Wait For Page To Load")
     def wait_for_page_to_load(self, timeout=30):
+        """This keyword waits for the page to load by checking document.readyState.\n
+        timeout (float): The maximum time to wait for the page to load, in seconds."""
         end_time = time() + timeout
         while time() < end_time:
             ready_state = self.execute_javascript("return document.readyState")
