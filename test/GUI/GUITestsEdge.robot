@@ -10,13 +10,13 @@ Force Tags      Edge
 Test Case Setup
     Open Browser   browser=Edge
     Maximize Browser Window
-    Set Selenium Speed    0.07s
+    Set Selenium Speed    0.05s
 
 *** Test Cases ***
 Wait for Keywords Test
     Go To      https://github.com/
     Wait For Page to Load
-    Wait For And Click Element    //qbsearch-input
+    Press Keys                    ${None}      /
     wait for and input text      //input[@id='query-builder-test']      robotframework
     press keys                    //input[@id='query-builder-test']      RETURN
     wait for and click element               //a[@href='/robotframework/robotframework']
@@ -25,7 +25,7 @@ Wait for Keywords Test
 Wait for Keywords Test With Password
     Go To      https://github.com/
     Wait For Page to Load
-    Wait For And Click Element    //qbsearch-input
+    Press Keys                    ${None}      /
     wait for and input text      //input[@id='query-builder-test']      robotframework
     press keys                    //input[@id='query-builder-test']      RETURN
     wait for and click element               //a[@href='/robotframework/robotframework']
