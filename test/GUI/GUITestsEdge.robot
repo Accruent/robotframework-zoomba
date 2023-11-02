@@ -10,7 +10,7 @@ Force Tags      Edge
 Test Case Setup
     Open Browser   browser=Edge
     Maximize Browser Window
-    Set Selenium Speed    0.05s
+    Set Selenium Speed    0.07s
 
 *** Test Cases ***
 Wait for Keywords Test
