@@ -11,6 +11,7 @@ Test Case Setup
     [Arguments]    ${url}=https://github.com/      ${browser}=${browser}
     Open Browser   ${url}    browser=${browser}
     Maximize Browser Window
+    Wait For Page to Load
     Set Selenium Speed    0.05s
 
 *** Test Cases ***

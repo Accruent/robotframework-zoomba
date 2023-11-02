@@ -11,7 +11,7 @@ ${browser}     chrome
 Test Suite Setup
     [Arguments]    ${url}=https://github.com/      ${browser}=${browser}
     Open Browser   ${url}    browser=${browser}
-    Sleep   5s
+    Wait For Page to Load
     Maximize Browser Window
     Set Selenium Speed    0.2s
 
@@ -32,6 +32,7 @@ Wait for Keywords Test With Password
 
 Element Value Should Be Equal and not equal Test
     Go to      http://www.google.com
+    Wait For Page to Load
     Element Value Should Be Equal       btnK    Google Search
     Element Value Should Not Be Equal   btnK    Not Google Search
 
@@ -44,6 +45,7 @@ Save Selenium Screenshot Test
 
 Iframe keywords Test
     Go to      https://www.w3schools.com/html/html_iframe.asp
+    Wait For Page to Load
     Page Should Not Contain Element     //a[@href='default.asp'][@class='active']
     Wait For And Select Frame   //iframe[@src='default.asp']
     Wait Until Page Contains Element    //a[@href='default.asp'][@class='active']
@@ -52,22 +54,26 @@ Iframe keywords Test
 
 Nested Iframe keyword Test
     Go to      https://www.quackit.com/html/tags/html_iframe_tag.cfm
+    Wait For Page to Load
     Select Nested Frame    //iframe[@name='result4']     //iframe[@src='/html/tags/html_iframe_tag_example.cfm']
 
 Mouse over Keywords Test
     Go to      https://jquery.com/
+    Wait For Page to Load
     Wait For And Mouse Over                 //a[contains(text(),'Download')]
     Wait For And Mouse Over And Click       //a[contains(text(),'Browser Support')]
     Wait Until Page Contains                Current Active Support
 
 Wait Until Javascript Completes Test
     Go to      https://jquery.com/
+    Wait For Page to Load
     Wait Until Page Contains Element       //a[@title='jQuery']
     Wait Until Javascript Is Complete
     Title Should Be                        jQuery
 
 Web Elements Text Test
     Go to      http://www.google.com
+    Wait For Page to Load
     Wait For And Input Text      //textarea[1]      robot framework
     Press Keys                    //textarea[1]      RETURN
     Wait Until Element Is Visible                   //div[@id='res']
@@ -77,6 +83,7 @@ Web Elements Text Test
 
 Web Elements Vertical Position Test
     Go to      http://www.google.com
+    Wait For Page to Load
     Wait For And Input Text      //textarea[1]      robot framework
     Press Keys                    //textarea[1]      RETURN
     Wait Until Element Is Visible                       //div[@id='res']
@@ -105,6 +112,7 @@ Truncate String Test
 
 Scroll To Bottom of Page Test
     Go to      http://www.google.com
+    Wait For Page to Load
     Wait For And Input Text      //textarea[1]      robot framework
     Press Keys                    //textarea[1]      RETURN
     Wait Until Element Is Visible                   //div[@id='res']
@@ -112,6 +120,7 @@ Scroll To Bottom of Page Test
 
 Wait Until Window Tests
     Go to      https://www.quackit.com/html/codes/html_popup_window_code.cfm
+    Wait For Page to Load
     Wait For And Select Frame       //iframe[@name='result1']
     Click Element                   //a[contains(text(),'Open a popup window')]
     Wait Until Window Opens         Popup Example     10
@@ -119,14 +128,17 @@ Wait Until Window Tests
 
 Wait Until Element Contains Value
     Go to       http://www.google.com
+    Wait For Page to Load
     Input Text                      //textarea[1]                                                  abc123
     Wait Until Element Contains Value  //textarea[1]                                               abc123
 
 Get Element CSS Attribute Value
     Go to      https://www.w3schools.com/html/html_examples.asp
+    Wait For Page to Load
     ${value}=     Get Element CSS Attribute Value      //div[@id='googleSearch']       display
     Should Be Equal     ${value}     block
 
 Element CSS Attribute Value Should Be
     Go to      https://www.w3schools.com/html/html_examples.asp
+    Wait For Page to Load
     Element CSS Attribute Value Should Be      //div[@id='googleSearch']       display       block

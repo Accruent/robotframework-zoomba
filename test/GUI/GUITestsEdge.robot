@@ -15,6 +15,7 @@ Test Case Setup
 *** Test Cases ***
 Wait for Keywords Test
     Go To      https://github.com/
+    Wait For Page to Load
     Wait For And Click Element    //span[contains(text(),'Search or jump to...')]
     wait for and input text      //input[@id='query-builder-test']      robotframework
     press keys                    //input[@id='query-builder-test']      RETURN
@@ -23,6 +24,7 @@ Wait for Keywords Test
 
 Wait for Keywords Test With Password
     Go To      https://github.com/
+    Wait For Page to Load
     Wait For And Click Element    //span[contains(text(),'Search or jump to...')]
     wait for and input text      //input[@id='query-builder-test']      robotframework
     press keys                    //input[@id='query-builder-test']      RETURN
@@ -31,6 +33,7 @@ Wait for Keywords Test With Password
 
 Element value should be equal and not equal Test
     Go To    http://www.google.com
+    Wait For Page to Load
     element value should be equal       btnK    Google Search
     element value should not be equal   btnK    Not Google Search
 
@@ -43,6 +46,7 @@ Save Selenium Screenshot Test
 
 Iframe keywords Test
     Go To    https://seleniumbase.io/w3schools/iframes
+    Wait For Page to Load
     Page should not contain      This page is displayed in an iframe
     wait for and select frame   //iframe[@id='iframeResult']
     Unselect frame
@@ -50,22 +54,26 @@ Iframe keywords Test
 
 Nested Iframe keyword Test
     Go To    https://www.quackit.com/html/tags/html_iframe_tag.cfm
+    Wait For Page to Load
     Select Nested Frame    //iframe[@name='result4']     //iframe[@src='/html/tags/html_iframe_tag_example.cfm']
 
 Mouse over Keywords Test
     Go To    https://jquery.com/
+    Wait For Page to Load
     wait for and mouse over                 //a[contains(text(),'Download')]
     wait for and mouse over and click       //a[contains(text(),'Browser Support')]
     wait until page contains                Current Active Support
 
 Wait Until Javascript Completes Test
     Go To    https://jquery.com/
+    Wait For Page to Load
     wait until page contains element       //a[@title='jQuery']
     wait until javascript is complete
     title should be                        jQuery
 
 Web Elements Text Test
     Go To    http://www.google.com
+    Wait For Page to Load
     wait for and input text      //textarea[1]      robot framework
     press keys                    //textarea[1]       RETURN
     wait until element is visible                   //div[@id='res']
@@ -75,6 +83,7 @@ Web Elements Text Test
 
 Web Elements Vertical Position Test
     Go To    http://www.google.com
+    Wait For Page to Load
     wait for and input text      //textarea[1]       robot framework
     press keys                    //textarea[1]       RETURN
     wait until element is visible                       //div[@id='res']
@@ -103,6 +112,7 @@ Truncate String Test
 
 Scroll To Bottom of Page Test
     Go To    http://www.google.com
+    Wait For Page to Load
     wait for and input text      //textarea[1]       robot framework
     press keys                    //textarea[1]       RETURN
     wait until element is visible                   //div[@id='res']
@@ -112,6 +122,7 @@ Scroll To Bottom of Page Test
 
 Wait Until Window Tests
     Go To    https://www.quackit.com/html/codes/html_popup_window_code.cfm
+    Wait For Page to Load
     Wait For And Select Frame       //iframe[@name='result1']
     Click Element                   //a[contains(text(),'Open a popup window')]
     Wait Until Window Opens         Popup Example     10
@@ -119,20 +130,24 @@ Wait Until Window Tests
 
 Wait Until Element Contains Value
     Go To    http://www.google.com
-    Input Text                      //textarea[1]                                                  abc123
+    Wait For Page to Load
+    Wait For And Input Text                      //textarea[1]                                                  abc123
     Wait Until Element Contains Value    //textarea[1]                                               abc123
 
 Get Element CSS Attribute Value
     Go To    https://www.w3schools.com/html/html_examples.asp
+    Wait For Page to Load
     ${value}=     Get Element CSS Attribute Value      //div[@id='googleSearch']       display
     Should Be Equal     ${value}     block
 
 Element CSS Attribute Value Should Be
     Go To    https://www.w3schools.com/html/html_examples.asp
+    Wait For Page to Load
     Element CSS Attribute Value Should Be      //div[@id='googleSearch']       display       block
 
 Get React List Items Test
     Go To         https://react-select.com/home
+    Wait For Page to Load
     ${selectXpath}=             Set Variable        //*[@id="root"]/div/div[2]/div[2]/div/div/div[1]/div[2]
     ${expectedLabels}=          Create List         Ocean    Blue    Purple    Red    Orange    Yellow    Green    Forest    Slate    Silver
     Wait Until Page Contains Element                ${selectXpath}
@@ -143,11 +158,13 @@ Get React List Items Test
 Test Mouse Scroll
     Set Selenium Speed    1s
     Go To    https://www.bgc.bard.edu/research-forum/articles/292/test-zoom-function-on-object
+    Wait For Page to Load
     Scroll Element Into View    //body/div[6]/div[1]/div[1]/div[1]/div[2]/div[1]/div[5]/div[1]/div[1]
     Mouse Scroll Over Element  //body/div[6]/div[1]/div[1]/div[1]/div[2]/div[1]/div[5]/div[1]/div[1]  y=-100
     Mouse Scroll     y=200
 
 Test Disabled Elements
     Go To        https://demos.jquerymobile.com/1.4.5/forms-disabled
+    Wait For Page to Load
     ${list_selection}=        Get Selected List Label   //select[@id='select-native-5']
     List Selection Should Be  //select[@id='select-native-5']      ${list_selection}
