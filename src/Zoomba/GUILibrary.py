@@ -276,27 +276,14 @@ class GUILibrary(SeleniumLibrary):
 
     @keyword("Wait Until Javascript Is Complete")
     def wait_until_javascript_is_complete(self, timeout=30):
-        """This keyword waits for JavaScript execution by checking document.readyState and pending AJAX requests.\n
+        """This keyword waits for JavaScript execution by checking document.readyState and pending jQuery requests.\n
         timeout (float): The maximum time to wait for the JavaScript to complete, in seconds.
-
-        Note: Currently, it seems that the JavaScript execution check is not working properly, so this keyword will
-        just run `Wait For Page To Load` for now.
         """
 
-        # self.wait_for_page_to_load(timeout)
         def is_javascript_complete():
             try:
-                # fetch_complete = self.execute_javascript(
-                #     "return window.fetch && fetch.polyfill ? window.fetch.polyfill.active === 0 : true")
                 jQuery_complete = self.execute_javascript(
                      "return window.jQuery ? jQuery.active === 0 : true")
-                print("jquery:")
-                print(self.execute_javascript("jQuery.active"))
-                # xhr_complete = self.execute_javascript(
-                #     "return window.XMLHttpRequest ? XMLHttpRequest.active === 0 : true")
-                print("xhr:")
-                print(self.execute_javascript("XMLHttpRequest.active"))
-                # return fetch_complete and jQuery_complete and xhr_complete
                 return jQuery_complete
             except Exception:
                 return False
