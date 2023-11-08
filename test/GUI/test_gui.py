@@ -255,7 +255,6 @@ class TestInternal(unittest.TestCase):
     def test_wait_until_javascript_is_complete_exception_raised(self):
         mock_gui = Mock()
         mock_gui.execute_javascript = Mock(side_effect=Exception("Oh No!"))
-        GUILibrary.wait_until_javascript_is_complete(mock_gui)
         with self.assertRaises(Exception, msg="Oh No!"):
             GUILibrary.wait_until_javascript_is_complete(mock_gui)
 
