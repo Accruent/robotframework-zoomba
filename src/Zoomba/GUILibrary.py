@@ -286,17 +286,18 @@ class GUILibrary(SeleniumLibrary):
         # self.wait_for_page_to_load(timeout)
         def is_javascript_complete():
             try:
-                fetch_complete = self.execute_javascript(
-                    "return window.fetch && fetch.polyfill ? window.fetch.polyfill.active === 0 : true")
+                # fetch_complete = self.execute_javascript(
+                #     "return window.fetch && fetch.polyfill ? window.fetch.polyfill.active === 0 : true")
                 jQuery_complete = self.execute_javascript(
                      "return window.jQuery ? jQuery.active === 0 : true")
                 print("jquery:")
                 print(self.execute_javascript("jQuery.active"))
-                xhr_complete = self.execute_javascript(
-                    "return window.XMLHttpRequest ? XMLHttpRequest.active === 0 : true")
+                # xhr_complete = self.execute_javascript(
+                #     "return window.XMLHttpRequest ? XMLHttpRequest.active === 0 : true")
                 print("xhr:")
                 print(self.execute_javascript("XMLHttpRequest.active"))
-                return fetch_complete and jQuery_complete and xhr_complete
+                # return fetch_complete and jQuery_complete and xhr_complete
+                return jQuery_complete
             except Exception:
                 return False
         end_time = time() + timeout
