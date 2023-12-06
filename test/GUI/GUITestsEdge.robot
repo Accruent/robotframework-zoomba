@@ -17,6 +17,7 @@ Wait for Keywords Test
     Go To      https://github.com/
     Wait Until Javascript Is Complete
     Press Keys                    ${None}      /
+    Wait Until Javascript Is Complete
     wait for and input text      //input[@id='query-builder-test']      robotframework
     press keys                    //input[@id='query-builder-test']      RETURN
     wait for and click element               //a[@href='/robotframework/robotframework']
@@ -26,6 +27,7 @@ Wait for Keywords Test With Password
     Go To      https://github.com/
     Wait Until Javascript Is Complete
     Press Keys                    ${None}      /
+    Wait Until Javascript Is Complete
     wait for and input text      //input[@id='query-builder-test']      robotframework
     press keys                    //input[@id='query-builder-test']      RETURN
     wait for and click element               //a[@href='/robotframework/robotframework']
