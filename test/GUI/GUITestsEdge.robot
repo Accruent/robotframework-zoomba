@@ -15,7 +15,7 @@ Test Case Setup
 *** Test Cases ***
 Wait for Keywords Test
     Go To      https://github.com/
-    Wait For Page to Load
+    Wait Until Javascript Is Complete
     Press Keys                    ${None}      /
     wait for and input text      //input[@id='query-builder-test']      robotframework
     press keys                    //input[@id='query-builder-test']      RETURN
@@ -24,7 +24,7 @@ Wait for Keywords Test
 
 Wait for Keywords Test With Password
     Go To      https://github.com/
-    Wait For Page to Load
+    Wait Until Javascript Is Complete
     Press Keys                    ${None}      /
     wait for and input text      //input[@id='query-builder-test']      robotframework
     press keys                    //input[@id='query-builder-test']      RETURN
