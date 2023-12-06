@@ -14,22 +14,18 @@ Test Case Setup
 
 *** Test Cases ***
 Wait for Keywords Test
-    Go To      https://github.com/
+    Go To      https://github.com/search
     Wait Until Javascript Is Complete
-    Press Keys                    ${None}      /
-    Wait Until Javascript Is Complete
-    wait for and input text      //input[@id='query-builder-test']      robotframework
-    press keys                    //input[@id='query-builder-test']      RETURN
+    wait for and input text      //input[@aria-label="Search GitHub"]      robotframework
+    press keys                    //input[@aria-label="Search GitHub"]      RETURN
     wait for and click element               //a[@href='/robotframework/robotframework']
     wait until page contains element         //div[@id='readme']
 
 Wait for Keywords Test With Password
-    Go To      https://github.com/
+    Go To      https://github.com/search
     Wait Until Javascript Is Complete
-    Press Keys                    ${None}      /
-    Wait Until Javascript Is Complete
-    wait for and input text      //input[@id='query-builder-test']      robotframework
-    press keys                    //input[@id='query-builder-test']      RETURN
+    wait for and input text      //input[@aria-label="Search GitHub"]      robotframework
+    press keys                    //input[@aria-label="Search GitHub"]      RETURN
     wait for and click element               //a[@href='/robotframework/robotframework']
     wait until page contains element         //div[@id='readme']
 
