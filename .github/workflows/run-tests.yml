@@ -127,12 +127,12 @@ jobs:
         steps:
         - uses: actions/checkout@v4
         - name: Download reportsChrome
-          uses: actions/download-artifact@v3
+          uses: actions/download-artifact@v4
           with:
             name: reportsChrome
             path: reports
         - name: Download reportsEdge
-          uses: actions/download-artifact@v3
+          uses: actions/download-artifact@v4
           with:
             name: reportsEdge
             path: reports
