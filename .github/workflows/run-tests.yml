@@ -36,10 +36,10 @@ jobs:
           new_command_on_retry: sleep 30; robot --rerunfailed "reports/outputEdge.xml" -i Edge --output reports/outputEdge.xml test
 
       - name: Upload test results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: reportsEdge
+          name: reportsEdge${{ matrix.python-version }}
           path: reports
 
   run-tests-chrome:
@@ -78,10 +78,10 @@ jobs:
             robot --rerunfailed "reports/outputChrome.xml" -e BrokenORWindowsOREdge --output reports/outputChrome.xml test
 
       - name: Upload test results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: reportsChrome
+          name: reportsChrome${{ matrix.python-version }}
           path: reports
 
   run-tests-unit:
