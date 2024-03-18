@@ -143,7 +143,7 @@ jobs:
         - name: combine reports
           run: rebot -o reports/output.xml reports/*.xml
         - name: Send report to commit
-          uses: joonvena/robotframework-reporter-action@v2.3
+          uses: joonvena/robotframework-reporter-action@v2.4
           with:
             gh_access_token: ${{ secrets.GITHUB_TOKEN }}
             show_passed_tests: false
