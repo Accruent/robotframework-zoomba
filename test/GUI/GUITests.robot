@@ -119,7 +119,7 @@ Scroll To Bottom Of Page Test
 Wait Until Window Tests
     Test Case Setup         https://www.quackit.com/html/codes/html_popup_window_code.cfm
     Wait For And Select Frame                           //iframe[@name='result1']
-    Click Element           //a[contains(text(),'Open a popup window')]
+    Wait For And Click Element           //a[contains(text(),'Open a popup window')]
     Wait Until Window Opens                             Popup Example               10
     Wait For And Select Window                          Popup Example               10
 
@@ -167,4 +167,4 @@ Test Case Setup
     Open Browser            ${url}                      browser=${browser}
     Maximize Browser Window
     Wait For Page To Load
-    Set Selenium Speed      0.05s
+    Set Selenium Speed      0.06s
