@@ -75,7 +75,7 @@ jobs:
             robot --randomize suites -e BrokenORWindowsOREdge --output reports/outputChrome.xml test
           new_command_on_retry: |
             ${{ matrix.set_display }}
-            robot --rerunfailed "reports/outputChrome.xml" -e BrokenORWindowsOREdge --output reports/outputChrome.xml test
+            robot --rerunfailed "reports/outputChrome.xml" -e BrokenORWindowsOREdgeORiframe --output reports/outputChrome.xml test
 
       - name: Upload test results
         uses: actions/upload-artifact@v4

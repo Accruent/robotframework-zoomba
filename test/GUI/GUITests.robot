@@ -45,6 +45,7 @@ Save Selenium Screenshot Test
     Should Match Regexp     ${file1}                    .selenium-screenshot-\\d{10}.\\d{0,8}-\\d.png
 
 Iframe Keywords Test
+    [Tags]                  iframe
     Set Test Variable       ${CHECK_ELEMENT}            //a[@href='default.asp'][@class='active']
     Test Case Setup         https://www.w3schools.com/html/html_iframe.asp
     Page Should Not Contain Element                     ${CHECK_ELEMENT}
