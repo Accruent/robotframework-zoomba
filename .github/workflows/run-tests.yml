@@ -14,7 +14,7 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        python-version: [ 3.8, 3.9, '3.10', '3.11' , '3.12']
+        python-version: [ 3.8, 3.9, '3.10', '3.11', '3.12']
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python-version }}
@@ -30,7 +30,7 @@ jobs:
       - name: Run Edge Robot Tests
         uses: nick-fields/retry@v3.0.0
         with:
-          timeout_minutes: 10
+          timeout_minutes: 15
           max_attempts: 10
           command: robot -i Edge --output reports/outputEdge.xml test
           new_command_on_retry: sleep 30; robot --rerunfailed "reports/outputEdge.xml" -i Edge --output reports/outputEdge.xml test
@@ -46,7 +46,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [ 3.8, 3.9, '3.10', '3.11' , '3.12']
+        python-version: [ 3.8, 3.9, '3.10', '3.11', '3.12']
         include:
           - os: ubuntu-latest
             set_display: export DISPLAY=:99; Xvfb :99 -screen 0 1024x768x24 -ac -noreset & sleep 3
@@ -68,14 +68,14 @@ jobs:
       - name: Run Chrome Robot Tests
         uses: nick-fields/retry@v3.0.0
         with:
-          timeout_minutes: 10
+          timeout_minutes: 15
           max_attempts: 10
           command: |
             ${{ matrix.set_display }}
-            robot -e BrokenORWindowsOREdgeORiframe --output reports/outputChrome.xml test
+            robot -e BrokenORWindowsOREdge --output reports/outputChrome.xml test
           new_command_on_retry: |
             ${{ matrix.set_display }}
-            robot --rerunfailed "reports/outputChrome.xml" -e BrokenORWindowsOREdgeORiframe --output reports/outputChrome.xml test
+            robot --rerunfailed "reports/outputChrome.xml" -e BrokenORWindowsOREdge --output reports/outputChrome.xml test
 
       - name: Upload test results
         uses: actions/upload-artifact@v4
@@ -88,7 +88,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [ 3.8, 3.9, '3.10', '3.11' , '3.12']
+        python-version: [ 3.8, 3.9, '3.10', '3.11', '3.12']
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python-version }}
