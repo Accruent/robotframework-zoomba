@@ -45,14 +45,15 @@ Save Selenium Screenshot Test
     Should Match Regexp     ${file1}                    .selenium-screenshot-\\d{10}.\\d{0,8}-\\d.png
 
 Iframe Keywords Test
-    [Tags]                  iframe
-    Set Test Variable       ${CHECK_ELEMENT}            //a[@href='default.asp'][@class='active']
-    Test Case Setup         https://www.w3schools.com/html/html_iframe.asp
-    Page Should Not Contain Element                     ${CHECK_ELEMENT}
-    Wait For And Select Frame                           //iframe[@src='default.asp']
-    Wait Until Page Contains Element                    ${CHECK_ELEMENT}
+#    [Tags]                  iframe
+#    [Documentation]         Not sure why but this test is locking up the Github Actions runner for Chrome
+    Test Case Setup         https://www.w3schools.com/html/tryit.asp?filename=tryhtml_iframe_height_width
+    Wait Until Page Does Not Contain       This page is displayed in an iframe
+    Wait For And Select Frame              //iframe[@id='iframeResult']
+    Wait For And Select Frame              //iframe[@title='Iframe Example']
+    Wait Until Page Contains               This page is displayed in an iframe
     Unselect Frame
-    Page Should Not Contain Element                     ${CHECK_ELEMENT}
+    Wait Until Page Does Not Contain       his page is displayed in an iframe
 
 Nested Iframe Keyword Test
     Test Case Setup         https://www.quackit.com/html/tags/html_iframe_tag.cfm
