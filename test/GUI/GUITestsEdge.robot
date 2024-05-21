@@ -179,4 +179,4 @@ Test Disabled Elements
 Test Case Setup
     Open Browser            browser=Edge
     Maximize Browser Window
-    Set Selenium Speed      0.1s
+    Set Selenium Speed      0.08s
