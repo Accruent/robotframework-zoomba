@@ -30,7 +30,7 @@ jobs:
       - name: Run Edge Robot Tests
         uses: nick-fields/retry@v3.0.0
         with:
-          timeout_minutes: 45
+          timeout_minutes: 10
           max_attempts: 10
           command: robot -i Edge --output reports/outputEdge.xml test
           new_command_on_retry: sleep 30; robot --rerunfailed "reports/outputEdge.xml" -i Edge --output reports/outputEdge.xml test
@@ -68,11 +68,11 @@ jobs:
       - name: Run Chrome Robot Tests
         uses: nick-fields/retry@v3.0.0
         with:
-          timeout_minutes: 45
+          timeout_minutes: 10
           max_attempts: 10
           command: |
             ${{ matrix.set_display }}
-            robot --randomize suites -e BrokenORWindowsOREdgeORiframe --output reports/outputChrome.xml test
+            robot -e BrokenORWindowsOREdgeORiframe --output reports/outputChrome.xml test
           new_command_on_retry: |
             ${{ matrix.set_display }}
             robot --rerunfailed "reports/outputChrome.xml" -e BrokenORWindowsOREdgeORiframe --output reports/outputChrome.xml test
