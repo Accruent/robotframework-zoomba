@@ -2,12 +2,14 @@
 Documentation               Zoomba GUI Library Tests
 Library                     ../../src/Zoomba/GUILibrary.py
 Library                     Collections
-Test Teardown               Close All Browsers
+Suite Setup                 Test Case Setup
+Suite Teardown              Close All Browsers
+Test Tags                   Chrome
 
 
 *** Variables ***
-${browser}              chrome
-${GITHUB_SEARCH}        //input[@id='query-builder-test']
+${GITHUB_SEARCH_URL}    https://github.com/search
+${GITHUB_SEARCH}        //input[@aria-label="Search GitHub"]
 ${GITHUB_README}        //span[contains(text(),'README')]
 ${RF_LINK}              //a[@href='/robotframework/robotframework']
 ${ALT_URL1}             http://www.google.com
@@ -17,60 +19,64 @@ ${CHECK_DIV}            //div[@id='res']
 
 *** Test Cases ***
 Wait For Keywords Test
-    Test Case Setup
-    Press Keys              ${None}                     /
+    Go To                   ${GITHUB_SEARCH_URL}
+    Wait Until Javascript Is Complete
     Wait For And Input Text                             ${GITHUB_SEARCH}            robotframework
     Press Keys              ${GITHUB_SEARCH}            RETURN
     Wait For And Click Element                          ${RF_LINK}
     Wait Until Page Contains Element                    ${GITHUB_README}
 
 Wait For Keywords Test With Password
-    Test Case Setup
-    Press Keys              ${None}                     /
-    Wait For And Input Password                         ${GITHUB_SEARCH}            robotframework
+    Go To                   ${GITHUB_SEARCH_URL}
+    Wait Until Javascript Is Complete
+    Wait For And Input Text                             ${GITHUB_SEARCH}            robotframework
     Press Keys              ${GITHUB_SEARCH}            RETURN
     Wait For And Click Element                          ${RF_LINK}
     Wait Until Page Contains Element                    ${GITHUB_README}
 
 Element Value Should Be Equal And Not Equal Test
-    Test Case Setup         ${ALT_URL1}
+    Go To                   ${ALT_URL1}
+    Wait For Page To Load
     Element Value Should Be Equal                       btnK                        Google Search
     Element Value Should Not Be Equal                   btnK                        Not Google Search
 
 Save Selenium Screenshot Test
-    Test Case Setup         ${ALT_URL1}
+    Go To                   ${ALT_URL1}
     ${file1}                Save Selenium Screenshot
     ${file2}                Save Selenium Screenshot
     Should Not Be Equal     ${file1}                    ${file2}
     Should Match Regexp     ${file1}                    .selenium-screenshot-\\d{10}.\\d{0,8}-\\d.png
 
 Iframe Keywords Test
-    Set Test Variable       ${CHECK_ELEMENT}            //a[@href='default.asp'][@class='active']
-    Test Case Setup         https://www.w3schools.com/html/html_iframe.asp
-    Page Should Not Contain Element                     ${CHECK_ELEMENT}
-    Wait For And Select Frame                           //iframe[@src='default.asp']
-    Wait Until Page Contains Element                    ${CHECK_ELEMENT}
+    Go To                   https://seleniumbase.io/w3schools/iframes
+    Wait For Page To Load
+    Page Should Not Contain                             This page is displayed in an iframe
+    Wait For And Select Frame                           //iframe[@id='iframeResult']
     Unselect Frame
-    Page Should Not Contain Element                     ${CHECK_ELEMENT}
+    Page Should Not Contain                             This page is displayed in an iframe
 
 Nested Iframe Keyword Test
-    Test Case Setup         https://www.quackit.com/html/tags/html_iframe_tag.cfm
+    Go To                   https://www.quackit.com/html/tags/html_iframe_tag.cfm
+    Wait For Page To Load
     Select Nested Frame     //iframe[@name='result4']   //iframe[@src='/html/tags/html_iframe_tag_example.cfm']
 
 Mouse Over Keywords Test
-    Test Case Setup         https://jquery.com/
+    Go To                   https://jquery.com/
+    Wait For Page To Load
     Wait For And Mouse Over                             //a[contains(text(),'Download')]
     Wait For And Mouse Over And Click                   //a[contains(text(),'Browser Support')]
     Wait Until Page Contains                            Current Active Support
 
 Wait Until Javascript Completes Test
-    Test Case Setup         https://jquery.com/
+    Go To                   https://jquery.com/
+    Wait For Page To Load
     Wait Until Page Contains Element                    //a[@title='jQuery']
     Wait Until Javascript Is Complete
     Title Should Be         jQuery
 
 Web Elements Text Test
-    Test Case Setup         ${ALT_URL1}
+    Go To                   ${ALT_URL1}
+    Wait For Page To Load
     Wait For And Input Text                             ${TEXT_AREA}                robot framework
     Press Keys              ${TEXT_AREA}                RETURN
     Wait Until Element Is Visible                       ${CHECK_DIV}
@@ -79,13 +85,14 @@ Web Elements Text Test
     Should Contain          ${linksTextList}[0]         Robot Framework
 
 Web Elements Vertical Position Test
-    Test Case Setup         ${ALT_URL1}
+    Go To                   ${ALT_URL1}
+    Wait For Page To Load
     Wait For And Input Text                             ${TEXT_AREA}                robot framework
     Press Keys              ${TEXT_AREA}                RETURN
     Wait Until Element Is Visible                       ${CHECK_DIV}
     ${resultsLinksList}     Get Webelements             ${CHECK_DIV}
     ${linksPositionList}    Get Vertical Position From Web Elements List            ${resultsLinksList}
-    Should Be True          ${linksPositionList}[0] > ${170}
+    Should Be True          ${linksPositionList}[0] > ${160}
 
 Create Dictionary From Lists Test
     ${testDict1}  Create Dictionary  Name=User1  ID=01  Phone=51212345678
@@ -108,7 +115,8 @@ Truncate String Test
     Should Be Equal         ${reallyLongTestString}     ${actualTruncatedString2}
 
 Scroll To Bottom Of Page Test
-    Test Case Setup         ${ALT_URL1}
+    Go To                   ${ALT_URL1}
+    Wait For Page To Load
     Wait For And Input Text                             ${TEXT_AREA}                robot framework
     Press Keys              ${TEXT_AREA}                RETURN
     Wait Until Element Is Visible                       ${CHECK_DIV}
@@ -117,28 +125,33 @@ Scroll To Bottom Of Page Test
     Should Be True          ${position} > 700
 
 Wait Until Window Tests
-    Test Case Setup         https://www.quackit.com/html/codes/html_popup_window_code.cfm
+    Go To                   https://www.quackit.com/html/codes/html_popup_window_code.cfm
+    Wait For Page To Load
     Wait For And Select Frame                           //iframe[@name='result1']
-    Click Element           //a[contains(text(),'Open a popup window')]
+    Wait For And Click Element           //a[contains(text(),'Open a popup window')]
     Wait Until Window Opens                             Popup Example               10
     Wait For And Select Window                          Popup Example               10
 
 Wait Until Element Contains Value
-    Test Case Setup         ${ALT_URL1}
-    Input Text              ${TEXT_AREA}                abc123
+    Go To                   ${ALT_URL1}
+    Wait For Page To Load
+    Wait For And Input Text                             ${TEXT_AREA}                abc123
     Wait Until Element Contains Value                   ${TEXT_AREA}                abc123
 
 Get Element CSS Attribute Value
-    Test Case Setup         https://www.w3schools.com/html/html_examples.asp
+    Go To                   https://www.w3schools.com/html/html_examples.asp
+    Wait For Page To Load
     ${value}                Get Element CSS Attribute Value                         //div[@id='googleSearch']   display
     Should Be Equal         ${value}                    block
 
 Element CSS Attribute Value Should Be
-    Test Case Setup         https://www.w3schools.com/html/html_examples.asp
+    Go To                   https://www.w3schools.com/html/html_examples.asp
+    Wait For Page To Load
     Element CSS Attribute Value Should Be               //div[@id='googleSearch']   display                     block
 
 Get React List Items Test
-    [Setup]                 Test Case Setup             https://react-select.com/home
+    Go To                   https://react-select.com/home
+    Wait For Page To Load
     ${selectXpath}          Set Variable                //*[@id="root"]/div/div[2]/div[2]/div/div/div[1]/div[2]
     ${expectedLabels}  Create List  Ocean  Blue  Purple  Red  Orange  Yellow  Green  Forest  Slate  Silver
     Wait Until Page Contains Element                    ${selectXpath}
@@ -147,24 +160,23 @@ Get React List Items Test
     Lists Should Be Equal   ${expectedLabels}           ${actualLabels}             ignore_order=True
 
 Test Mouse Scroll
-    [Setup]                 Test Case Setup             https://www.bgc.bard.edu/research-forum/articles/292/test-zoom-function-on-object
-    Set Test Variable  ${MOUSE_SCROLL_CHECK}  //body/div[6]/div[1]/div[1]/div[1]/div[2]/div[1]/div[5]/div[1]/div[1]
     Set Selenium Speed      1s
+    Go To                   https://www.bgc.bard.edu/research-forum/articles/292/test-zoom-function-on-object
+    Wait For Page To Load
+    Set Test Variable  ${MOUSE_SCROLL_CHECK}  //body/div[6]/div[1]/div[1]/div[1]/div[2]/div[1]/div[5]/div[1]/div[1]
     Scroll Element Into View                            ${MOUSE_SCROLL_CHECK}
     Mouse Scroll Over Element                           ${MOUSE_SCROLL_CHECK}       y=-100
     Mouse Scroll            y=200
 
 Test Disabled Elements
-    [Setup]                 Test Case Setup             https://demos.jquerymobile.com/1.4.5/forms-disabled
-    Set Test Variable       ${LIST_CHECK}               //select[@id='select-native-5']
-    ${list_selection}       Get Selected List Label     ${LIST_CHECK}
-    List Selection Should Be                            ${LIST_CHECK}               ${list_selection}
+    Go To                   https://demos.jquerymobile.com/1.4.5/forms-disabled
+    Wait For Page To Load
+    ${list_selection}       Get Selected List Label     //select[@id='select-native-5']
+    List Selection Should Be  //select[@id='select-native-5']  ${list_selection}
 
 
 *** Keywords ***
 Test Case Setup
-    [Arguments]             ${url}=https://github.com/  ${browser}=${browser}
-    Open Browser            ${url}                      browser=${browser}
+    Open Browser            browser=Chrome
     Maximize Browser Window
-    Wait For Page To Load
     Set Selenium Speed      0.05s

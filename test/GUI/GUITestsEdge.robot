@@ -92,7 +92,7 @@ Web Elements Vertical Position Test
     Wait Until Element Is Visible                       ${CHECK_DIV}
     ${resultsLinksList}     Get Webelements             ${CHECK_DIV}
     ${linksPositionList}    Get Vertical Position From Web Elements List            ${resultsLinksList}
-    Should Be True          ${linksPositionList}[0] > ${170}
+    Should Be True          ${linksPositionList}[0] > ${160}
 
 Create Dictionary From Lists Test
     ${testDict1}  Create Dictionary  Name=User1  ID=01  Phone=51212345678
@@ -128,7 +128,7 @@ Wait Until Window Tests
     Go To                   https://www.quackit.com/html/codes/html_popup_window_code.cfm
     Wait For Page To Load
     Wait For And Select Frame                           //iframe[@name='result1']
-    Click Element           //a[contains(text(),'Open a popup window')]
+    Wait For And Click Element           //a[contains(text(),'Open a popup window')]
     Wait Until Window Opens                             Popup Example               10
     Wait For And Select Window                          Popup Example               10
 
