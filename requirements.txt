@@ -2,7 +2,7 @@ robotframework==7.0
 robotframework-requests==0.9.7
 robotframework-seleniumlibrary==6.3.0
 robotframework-sudslibrary-aljcalandra==1.1.4
-requests==2.32.2
+requests==2.32.3
 selenium==4.21.0
 python-dateutil>=2.8.2
 pandas>=1.3.5
