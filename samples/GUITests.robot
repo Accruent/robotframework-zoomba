@@ -118,14 +118,6 @@ Scroll To Bottom of Page Test
     Wait Until Element Is Visible                   //div[@id='res']
     scroll to bottom of page
 
-Wait Until Window Tests
-    Go to      https://www.quackit.com/html/codes/html_popup_window_code.cfm
-    Wait For Page to Load
-    Wait For And Select Frame       //iframe[@name='result1']
-    Click Element                   //a[contains(text(),'Open a popup window')]
-    Wait Until Window Opens         Popup Example     10
-    Wait For and Select Window      Popup Example     10
-
 Wait Until Element Contains Value
     Go to       http://www.google.com
     Wait For Page to Load
@@ -142,3 +134,10 @@ Element CSS Attribute Value Should Be
     Go to      https://www.w3schools.com/html/html_examples.asp
     Wait For Page to Load
     Element CSS Attribute Value Should Be      //div[@id='googleSearch']       display       block
+
+Wait Until Window Tests
+    Go To                   https://www.quackit.com/html/html_editors/scratchpad/preview.cfm?example=/html/codes/html_popup_window_code
+    Wait For Page To Load
+    Wait For And Click Element           //a[contains(text(),'Open a popup window')]
+    Wait Until Window Opens                             Popup Example               10
+    Wait For And Select Window                          Popup Example               10

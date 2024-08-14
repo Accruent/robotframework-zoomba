@@ -124,14 +124,6 @@ Scroll To Bottom Of Page Test
     ${position}             Execute Javascript          return window.pageYOffset
     Should Be True          ${position} > 700
 
-Wait Until Window Tests
-    Go To                   https://www.quackit.com/html/codes/html_popup_window_code.cfm
-    Wait For Page To Load
-    Wait For And Select Frame                           //iframe[@name='result1']
-    Wait For And Click Element           //a[contains(text(),'Open a popup window')]
-    Wait Until Window Opens                             Popup Example               10
-    Wait For And Select Window                          Popup Example               10
-
 Wait Until Element Contains Value
     Go To                   ${ALT_URL1}
     Wait For Page To Load
@@ -174,6 +166,12 @@ Test Disabled Elements
     ${list_selection}       Get Selected List Label     //select[@id='select-native-5']
     List Selection Should Be  //select[@id='select-native-5']  ${list_selection}
 
+Wait Until Window Tests
+    Go To                   https://www.quackit.com/html/html_editors/scratchpad/preview.cfm?example=/html/codes/html_popup_window_code
+    Wait For Page To Load
+    Wait For And Click Element           //a[contains(text(),'Open a popup window')]
+    Wait Until Window Opens                             Popup Example               10
+    Wait For And Select Window                          Popup Example               10
 
 *** Keywords ***
 Test Case Setup
