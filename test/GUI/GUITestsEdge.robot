@@ -152,6 +152,7 @@ Get React List Items Test
     Lists Should Be Equal   ${expectedLabels}           ${actualLabels}             ignore_order=True
 
 Test Mouse Scroll
+    [Tags]                  robot:skip      # The site is no longer available
     Set Selenium Speed      1s
     Go To                   https://www.bgc.bard.edu/research-forum/articles/292/test-zoom-function-on-object
     Wait For Page To Load
