@@ -1,4 +1,4 @@
-robotframework==7.0.1
+robotframework==7.1
 robotframework-requests==0.9.7
 robotframework-seleniumlibrary==6.6.1
 robotframework-sudslibrary-aljcalandra==1.1.4
