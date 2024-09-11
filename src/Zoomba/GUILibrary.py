@@ -436,3 +436,22 @@ class GUILibrary(SeleniumLibrary):
         react_select_container = self.find_element(locator)
         options = RS.ReactSelect(react_select_container).options()
         return [opt.text for opt in options]
+
+    @keyword("Select From Search Field")
+    def select_from_search_field(self, locator, text, timeout=None):
+        """This is a Selenium keyword that first attempts to find a web element, clears it, and then inputs text.
+        Subsequently, it selects the first item in the search dropdown. 
+        If typing into the element fails, the keyword will scroll to the bottom of the page and try again.
+        
+        locator: (string) A selenium locator(CSS, XPATH, ID, NAME, etc)
+        
+        text: (string) Text to be typed into the input field.
+        
+        timeout: (float) Time in seconds to wait, will use global timeout if not set.
+        """
+        self.wait_for_and_focus_on_element(locator, timeout)
+        self.clear(locator)
+        self.input_text(locator, text)
+        self.wait_until_javascript_is_complete()
+        self.send_keys(Keys.ARROW_DOWN)
+        self.send_keys(Keys.ENTER)
