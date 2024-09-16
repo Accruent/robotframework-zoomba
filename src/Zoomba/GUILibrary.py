@@ -439,10 +439,10 @@ class GUILibrary(SeleniumLibrary):
 
     @keyword("Select From Search Field")
     def select_from_search_field(self, locator, text, timeout=None):
-        """This is a Selenium keyword that first attempts to find a web element, clears it, and then inputs text.
+        """This is a Selenium keyword that that first waits for an element to be on the DOM, executes
+        Focus on it, then it waits for it to be visible, clears it, and then inputs text.
         Subsequently, it selects the first item in the search dropdown. 
-        If typing into the element fails, the keyword will scroll to the bottom of the page and try again.
-        
+                
         locator: (string) A selenium locator(CSS, XPATH, ID, NAME, etc)
         
         text: (string) Text to be typed into the input field.
