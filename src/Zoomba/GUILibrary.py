@@ -8,6 +8,9 @@ from robot.utils import is_string
 from selenium.webdriver.common.action_chains import ActionChains, ScrollOrigin
 import importlib
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
 
 # Importing ReactSelect
 try:
@@ -451,8 +454,8 @@ class GUILibrary(SeleniumLibrary):
         timeout: (float) Time in seconds to wait, will use global timeout if not set.
         """
         self.wait_for_and_focus_on_element(locator, timeout)
-        self.clear(locator)
+        self.clear_element_text(locator)
         self.input_text(locator, text)
         self.wait_until_javascript_is_complete()
-        self.send_keys(Keys.ARROW_DOWN)
-        self.send_keys(Keys.ENTER)
+        self.press_keys(locator, "ARROW_DOWN")
+        self.press_keys(locator, "RETURN")

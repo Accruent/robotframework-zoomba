@@ -174,6 +174,13 @@ Wait Until Window Tests
     Wait Until Window Opens                             Popup Example               10
     Wait For And Select Window                          Popup Example               10
 
+Select From Search Field Test
+    Go To                                https://jquery.com/
+    Wait For Page To Load
+    Select From Search Field             //input[@type='search']     css()
+    Wait Until Javascript Is Complete
+    Page Should Contain                  css()
+
 *** Keywords ***
 Test Case Setup
     Open Browser            browser=Edge

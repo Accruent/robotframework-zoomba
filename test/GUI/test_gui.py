@@ -446,6 +446,6 @@ class TestInternal(unittest.TestCase):
     def test_select_from_search_field(self):
         mock_gui = Mock()
         GUILibrary.select_from_search_field(mock_gui, "some_locator", "some_text", 1)
-        mock_gui.clear.assert_called_with("some_locator")
+        mock_gui.clear_element_text.assert_called_with("some_locator")
         mock_gui.input_text.assert_called_with("some_locator", "some_text")
-        mock_gui.send_keys.assert_called_with(Keys.ENTER)
+        mock_gui.press_keys.assert_called_with("some_locator", "RETURN")
