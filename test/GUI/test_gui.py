@@ -441,3 +441,10 @@ class TestInternal(unittest.TestCase):
         with patch('Zoomba.Helpers.ReactSelect.ReactSelect.is_expanded', return_value=True):
             ReactSelect.ReactSelect(mock_webelement).expand_select_list()
             mock_webelement.click.assert_not_called()
+
+    def test_select_from_search_field(self):
+        mock_gui = Mock()
+        GUILibrary.select_from_search_field(mock_gui, "some_locator", "some_text", 1)
+        mock_gui.clear_element_text.assert_called_with("some_locator")
+        mock_gui.input_text.assert_called_with("some_locator", "some_text")
+        mock_gui.press_keys.assert_called_with("some_locator", "RETURN")
