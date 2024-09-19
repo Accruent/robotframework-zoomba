@@ -6,7 +6,6 @@ from unittest.mock import patch, MagicMock, Mock, PropertyMock
 from Zoomba.GUILibrary import GUILibrary
 from Zoomba.Helpers import ReactSelect
 from selenium.common.exceptions import UnexpectedTagNameException
-from selenium.webdriver.common.keys import Keys
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../src/')))
 
