@@ -8,9 +8,6 @@ from robot.utils import is_string
 from selenium.webdriver.common.action_chains import ActionChains, ScrollOrigin
 import importlib
 from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
 
 # Importing ReactSelect
 try:
