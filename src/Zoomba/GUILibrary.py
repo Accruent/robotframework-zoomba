@@ -7,6 +7,7 @@ from time import time
 from robot.utils import is_string
 from selenium.webdriver.common.action_chains import ActionChains, ScrollOrigin
 import importlib
+from selenium.webdriver.common.keys import Keys
 
 # Importing ReactSelect
 try:

@@ -6,6 +6,7 @@ from unittest.mock import patch, MagicMock, Mock, PropertyMock
 from Zoomba.GUILibrary import GUILibrary
 from Zoomba.Helpers import ReactSelect
 from selenium.common.exceptions import UnexpectedTagNameException
+from selenium.webdriver.common.keys import Keys
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../src/')))
 
@@ -441,3 +442,10 @@ class TestInternal(unittest.TestCase):
         with patch('Zoomba.Helpers.ReactSelect.ReactSelect.is_expanded', return_value=True):
             ReactSelect.ReactSelect(mock_webelement).expand_select_list()
             mock_webelement.click.assert_not_called()
+
+    def test_select_from_search_field(self):
+        mock_gui = Mock()
+        GUILibrary.select_from_search_field(mock_gui, "some_locator", "some_text", 1)
+        mock_gui.clear.assert_called_with("some_locator")
+        mock_gui.input_text.assert_called_with("some_locator", "some_text")
+        mock_gui.send_keys.assert_called_with(Keys.ENTER)
