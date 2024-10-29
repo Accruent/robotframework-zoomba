@@ -8,10 +8,10 @@ Test Tags                   Chrome
 
 
 *** Variables ***
-${GITHUB_SEARCH_URL}    https://github.com/search
-${GITHUB_SEARCH}        //input[@aria-label="Search GitHub"]
-${GITHUB_README}        //span[contains(text(),'README')]
-${RF_LINK}              //a[@href='/robotframework/robotframework']
+${DUCKDUCK_SEARCH_URL}    https://duckduckgo.com
+${DUCKDUCK_SEARCH}        //input[@id='searchbox_input']
+${RF_PAGE_TEXT}        Robot Framework is an open source automation framework for test automation
+${RF_LINK}              //a[@href='https://robotframework.org/']
 ${ALT_URL1}             http://www.google.com
 ${TEXT_AREA}            //textarea[1]
 ${CHECK_DIV}            //div[@id='res']
@@ -19,20 +19,20 @@ ${CHECK_DIV}            //div[@id='res']
 
 *** Test Cases ***
 Wait For Keywords Test
-    Go To                   ${GITHUB_SEARCH_URL}
+    Go To                   ${DUCKDUCK_SEARCH_URL}
     Wait Until Javascript Is Complete
-    Wait For And Input Text                             ${GITHUB_SEARCH}            robotframework
-    Press Keys              ${GITHUB_SEARCH}            RETURN
+    Wait For And Input Text                             ${DUCKDUCK_SEARCH}            robotframework
+    Press Keys              ${DUCKDUCK_SEARCH}           RETURN
     Wait For And Click Element                          ${RF_LINK}
-    Wait Until Page Contains Element                    ${GITHUB_README}
+    Wait Until Page Contains                            ${RF_PAGE_TEXT}
 
 Wait For Keywords Test With Password
-    Go To                   ${GITHUB_SEARCH_URL}
+    Go To                   ${DUCKDUCK_SEARCH_URL}
     Wait Until Javascript Is Complete
-    Wait For And Input Text                             ${GITHUB_SEARCH}            robotframework
-    Press Keys              ${GITHUB_SEARCH}            RETURN
+    Wait For And Input Text                             ${DUCKDUCK_SEARCH}            robotframework
+    Press Keys              ${DUCKDUCK_SEARCH}           RETURN
     Wait For And Click Element                          ${RF_LINK}
-    Wait Until Page Contains Element                    ${GITHUB_README}
+    Wait Until Page Contains                            ${RF_PAGE_TEXT}
 
 Element Value Should Be Equal And Not Equal Test
     Go To                   ${ALT_URL1}
@@ -56,6 +56,7 @@ Iframe Keywords Test
     Page Should Not Contain                             This page is displayed in an iframe
 
 Nested Iframe Keyword Test
+    [Tags]                  robot:skip      # The nested iframe here is no loner working
     Go To                   https://www.quackit.com/html/tags/html_iframe_tag.cfm
     Wait For Page To Load
     Select Nested Frame     //iframe[@name='result4']   //iframe[@src='/html/tags/html_iframe_tag_example.cfm']
@@ -168,6 +169,7 @@ Test Disabled Elements
     List Selection Should Be  //select[@id='select-native-5']  ${list_selection}
 
 Wait Until Window Tests
+    [Tags]                  robot:skip      # The site is no longer available
     Go To                   https://www.quackit.com/html/html_editors/scratchpad/preview.cfm?example=/html/codes/html_popup_window_code
     Wait For Page To Load
     Wait For And Click Element           //a[contains(text(),'Open a popup window')]
