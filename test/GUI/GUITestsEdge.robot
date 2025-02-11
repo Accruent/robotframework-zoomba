@@ -14,7 +14,7 @@ ${RF_PAGE_TEXT}        Robot Framework is an open source automation framework fo
 ${RF_LINK}              //a[@href='https://robotframework.org/']
 ${ALT_URL1}             http://www.google.com
 ${TEXT_AREA}            //textarea[1]
-${CHECK_DIV}            //div[@id='res']
+${CHECK_DIV}            //section[@data-testid='mainline']
 
 
 *** Test Cases ***
@@ -76,20 +76,20 @@ Wait Until Javascript Completes Test
     Title Should Be         jQuery
 
 Web Elements Text Test
-    Go To                   ${ALT_URL1}
+    Go To                   ${DUCKDUCK_SEARCH_URL}
     Wait For Page To Load
-    Wait For And Input Text                             ${TEXT_AREA}                robot framework
-    Press Keys              ${TEXT_AREA}                RETURN
+    Wait For And Input Text                             ${DUCKDUCK_SEARCH}                robot framework
+    Press Keys              ${DUCKDUCK_SEARCH}                RETURN
     Wait Until Element Is Visible                       ${CHECK_DIV}
     ${resultsLinksList}     Get Webelements             ${CHECK_DIV}
     ${linksTextList}        Get Text From Web Elements List                         ${resultsLinksList}
     Should Contain          ${linksTextList}[0]         Robot Framework
 
 Web Elements Vertical Position Test
-    Go To                   ${ALT_URL1}
+    Go To                   ${DUCKDUCK_SEARCH_URL}
     Wait For Page To Load
-    Wait For And Input Text                             ${TEXT_AREA}                robot framework
-    Press Keys              ${TEXT_AREA}                RETURN
+    Wait For And Input Text                             ${DUCKDUCK_SEARCH}                robot framework
+    Press Keys              ${DUCKDUCK_SEARCH}                RETURN
     Wait Until Element Is Visible                       ${CHECK_DIV}
     ${resultsLinksList}     Get Webelements             ${CHECK_DIV}
     ${linksPositionList}    Get Vertical Position From Web Elements List            ${resultsLinksList}
@@ -116,10 +116,10 @@ Truncate String Test
     Should Be Equal         ${reallyLongTestString}     ${actualTruncatedString2}
 
 Scroll To Bottom Of Page Test
-    Go To                   ${ALT_URL1}
+    Go To                   ${DUCKDUCK_SEARCH_URL}
     Wait For Page To Load
-    Wait For And Input Text                             ${TEXT_AREA}                robot framework
-    Press Keys              ${TEXT_AREA}                RETURN
+    Wait For And Input Text                             ${DUCKDUCK_SEARCH}                robot framework
+    Press Keys              ${DUCKDUCK_SEARCH}                RETURN
     Wait Until Element Is Visible                       ${CHECK_DIV}
     Scroll To Bottom Of Page
     ${position}             Execute Javascript          return window.pageYOffset
