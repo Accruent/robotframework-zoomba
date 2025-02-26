@@ -39,9 +39,6 @@ jobs:
     strategy:
       matrix:
         python-version: [ '3.10', '3.11', '3.12', '3.13' ]
-        include:
-          - os: ubuntu-latest
-            set_display: export DISPLAY=:99; Xvfb :99 -screen 0 1024x768x24 -ac -noreset & sleep 3
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python-version }}
@@ -55,7 +52,18 @@ jobs:
           pip install .
           pip install mock
           sudo apt-get update
-          sudo apt-get -y -q install xvfb scrot zip curl libxml2-dev libxslt1-dev
+          sudo apt-get install -y xvfb scrot zip curl libxml2-dev libxslt1-dev
+
+      - name: Install Google Chrome and Chromedriver
+        run: |
+          sudo apt-get install -y google-chrome-stable
+          CHROME_VERSION=$(google-chrome --version | awk '{print $3}')
+          CHROMEDRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION")
+          wget https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip
+          unzip chromedriver_linux64.zip
+          sudo mv chromedriver /usr/bin/chromedriver
+          chromedriver --version
+          google-chrome --version
 
       - name: Run Chrome Robot Tests
         uses: nick-fields/retry@v3.0.0
@@ -63,7 +71,8 @@ jobs:
           timeout_minutes: 10
           max_attempts: 10
           command: |
-            ${{ matrix.set_display }}
+            export DISPLAY=:99
+            Xvfb :99 -screen 0 1024x768x24 -ac -noreset & sleep 3
             robot -e BrokenORWindowsOREdge --output reports/outputChrome.xml test
 
   run-tests-unit:

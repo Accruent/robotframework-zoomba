@@ -185,7 +185,6 @@ Select From Search Field Test
 
 *** Keywords ***
 Test Case Setup
-    ${caps}=    Evaluate    {"goog:chromeOptions": {"w3c": False}}    json
-    Open Browser    browser=Chrome    desired_capabilities=${caps}
+    Open Browser            browser=Chrome
     Maximize Browser Window
     Set Selenium Speed      0.05s
