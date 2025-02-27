@@ -13,8 +13,6 @@ Robotframework-Zoomba is a collection of libraries spanning GUI, REST API, and S
 These libraries are extensions of existing libraries [SeleniumLibrary](https://github.com/robotframework/SeleniumLibrary), [Requests](https://github.com/bulkan/robotframework-requests), 
 and [SudsLibrary](https://github.com/aljcalandra/robotframework-sudslibrary).
 
-### Looking for our extension of [AppiumLibrary](https://github.com/serhatbolsu/robotframework-appiumlibrary) (DesktopLibrary and MobileLibrary)? Check out our new repo [RobotFramework-ApplicationLibrary](https://github.com/Accruent/robotframework-applicationlibrary)!
-
 Zoomba adds a significant amount of data validation support for REST and SOAP API and extends functionality for typical Web GUI automation.
 
 As a team beginning the journey of automation with Robot Framework - we found that there was some time spent ramping up our libraries and Robotframework-Zoomba aims to make that process easier for new projects.
