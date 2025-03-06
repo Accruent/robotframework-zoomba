@@ -186,4 +186,5 @@ Select From Search Field Test
 *** Keywords ***
 Test Case Setup
     Open Browser            browser=Chrome
+    Maximize Browser Window
     Set Selenium Speed      0.05s
