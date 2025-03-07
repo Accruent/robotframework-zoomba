@@ -60,6 +60,19 @@ jobs:
         uses: browser-actions/setup-chrome@v1
         with:
           chrome-version: '134.0'
+          
+      - name: Setup ChromeDriver
+        uses: nanasess/setup-chromedriver@v2
+        with:
+          chromedriver-version: '134.0'
+      
+      - name: Check Chrome installation
+        run: |
+          ${{ matrix.set_display }}
+          echo "Chrome version:"
+          /opt/hostedtoolcache/setup-chrome/chromium/134.0*/x64/chrome --version
+          echo "ChromeDriver version:"
+          chromedriver --version
 
       - name: Run Chrome Robot Tests
         uses: nick-fields/retry@v3.0.2
@@ -68,7 +81,9 @@ jobs:
           max_attempts: 10
           command: |
             ${{ matrix.set_display }}
-            robot -e BrokenORWindowsOREdge --output reports/outputChrome.xml test
+            export PATH=$PATH:/opt/hostedtoolcache/setup-chrome/chromium/134.0*/x64
+            export CHROME_BINARY_PATH=/opt/hostedtoolcache/setup-chrome/chromium/134.0*/x64/chrome
+            robot -e BrokenORWindowsOREdge -v BROWSER:chrome -v OPTIONS:"--binary=$CHROME_BINARY_PATH" --output reports/outputChrome.xml test
 
   run-tests-unit:
     runs-on: ubuntu-latest
