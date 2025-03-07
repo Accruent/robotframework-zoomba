@@ -73,6 +73,10 @@ jobs:
           /opt/hostedtoolcache/setup-chrome/chromium/134.0*/x64/chrome --version
           echo "ChromeDriver version:"
           chromedriver --version
+          echo "Setting CHROME_PATH for use in tests"
+          CHROME_PATH=$(find /opt/hostedtoolcache/setup-chrome/chromium -name "chrome" | head -1)
+          echo "Found Chrome at: $CHROME_PATH"
+          echo "CHROME_PATH=$CHROME_PATH" >> $GITHUB_ENV
 
       - name: Run Chrome Robot Tests
         uses: nick-fields/retry@v3.0.2
@@ -81,9 +85,12 @@ jobs:
           max_attempts: 10
           command: |
             ${{ matrix.set_display }}
-            export PATH=$PATH:/opt/hostedtoolcache/setup-chrome/chromium/134.0*/x64
-            export CHROME_BINARY_PATH=/opt/hostedtoolcache/setup-chrome/chromium/134.0*/x64/chrome
-            robot -e BrokenORWindowsOREdge -v BROWSER:chrome -v OPTIONS:"--binary=$CHROME_BINARY_PATH" --output reports/outputChrome.xml test
+            # Start ChromeDriver explicitly
+            chromedriver --version
+            chromedriver &
+            echo "Using Chrome binary at: $CHROME_PATH"
+            # Run robot with explicit chrome binary path
+            robot -e BrokenORWindowsOREdge -v BROWSER:chrome -v BROWSER_OPTIONS:"add_argument('--no-sandbox');add_argument('--disable-dev-shm-usage');binary_location='$CHROME_PATH'" --output reports/outputChrome.xml test
 
   run-tests-unit:
     runs-on: ubuntu-latest
