@@ -66,12 +66,14 @@ jobs:
         run: |
           wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
           sudo apt-get install ./google-chrome-stable_current_amd64.deb
-          google-chrome --version
+          chrome_version=$(google-chrome --version | cut -d' ' -f3)
+          echo "CHROME_VERSION=${chrome_version}" >> $GITHUB_ENV
+          echo "Installed Chrome version: ${chrome_version}"
           
       - name: Setup ChromeDriver
         uses: nanasess/setup-chromedriver@v2
         with:
-          chromedriver-version: $(google-chrome --version | cut -d' ' -f3)
+          chromedriver-version: ${{ env.CHROME_VERSION }}
       
       - name: Check Chrome installation
         run: |
@@ -92,8 +94,9 @@ jobs:
           max_attempts: 10
           command: |
             ${{ matrix.set_display }}
-            chromedriver --version
             google-chrome --version
+            chromedriver --version
+            chromedriver &
             robot -e BrokenORWindowsOREdge --output reports/outputChrome.xml test
 
   run-tests-unit:
