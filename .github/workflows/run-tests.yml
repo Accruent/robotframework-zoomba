@@ -75,17 +75,13 @@ jobs:
         with:
           chromedriver-version: ${{ env.CHROME_VERSION }}
       
-      - name: Check Chrome installation
+      - name: Verify Chrome Setup
         run: |
           ${{ matrix.set_display }}
           echo "Chrome version:"
-          /opt/hostedtoolcache/setup-chrome/chromium/134.0*/x64/chrome --version
+          google-chrome --version
           echo "ChromeDriver version:"
           chromedriver --version
-          echo "Setting CHROME_PATH for use in tests"
-          CHROME_PATH=$(find /opt/hostedtoolcache/setup-chrome/chromium -name "chrome" | head -1)
-          echo "Found Chrome at: $CHROME_PATH"
-          echo "CHROME_PATH=$CHROME_PATH" >> $GITHUB_ENV
 
       - name: Run Chrome Robot Tests
         uses: nick-fields/retry@v3.0.2
@@ -94,8 +90,6 @@ jobs:
           max_attempts: 10
           command: |
             ${{ matrix.set_display }}
-            google-chrome --version
-            chromedriver --version
             chromedriver &
             robot -e BrokenORWindowsOREdge --output reports/outputChrome.xml test
 
