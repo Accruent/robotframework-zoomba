@@ -56,15 +56,22 @@ jobs:
           sudo apt-get update
           sudo apt-get -y -q install xvfb scrot zip curl libxml2-dev libxslt1-dev
           
-      - name: Setup Chrome
-        uses: browser-actions/setup-chrome@v1
-        with:
-          chrome-version: '134.0'
+      - name: Remove system Chrome
+        run: |
+          sudo apt-get remove google-chrome-stable
+          sudo apt-get purge google-chrome-stable
+          sudo rm -rf /usr/bin/google-chrome*
+
+      - name: Install Chrome
+        run: |
+          wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+          sudo apt-get install ./google-chrome-stable_current_amd64.deb
+          google-chrome --version
           
       - name: Setup ChromeDriver
         uses: nanasess/setup-chromedriver@v2
         with:
-          chromedriver-version: '134.0'
+          chromedriver-version: $(google-chrome --version | cut -d' ' -f3)
       
       - name: Check Chrome installation
         run: |
@@ -85,12 +92,9 @@ jobs:
           max_attempts: 10
           command: |
             ${{ matrix.set_display }}
-            # Start ChromeDriver explicitly
             chromedriver --version
-            chromedriver &
-            echo "Using Chrome binary at: $CHROME_PATH"
-            # Run robot with explicit chrome binary path
-            robot -e BrokenORWindowsOREdge -v BROWSER:chrome -v BROWSER_OPTIONS:"add_argument('--no-sandbox');add_argument('--disable-dev-shm-usage');binary_location='$CHROME_PATH'" --output reports/outputChrome.xml test
+            google-chrome --version
+            robot -e BrokenORWindowsOREdge --output reports/outputChrome.xml test
 
   run-tests-unit:
     runs-on: ubuntu-latest
