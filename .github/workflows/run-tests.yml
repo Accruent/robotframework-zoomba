@@ -48,7 +48,6 @@ jobs:
         uses: actions/setup-python@v5.4.0
         with:
           python-version: ${{ matrix.python-version }}
-
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
@@ -56,6 +55,33 @@ jobs:
           pip install mock
           sudo apt-get update
           sudo apt-get -y -q install xvfb scrot zip curl libxml2-dev libxslt1-dev
+          
+      - name: Remove system Chrome
+        run: |
+          sudo apt-get remove google-chrome-stable
+          sudo apt-get purge google-chrome-stable
+          sudo rm -rf /usr/bin/google-chrome*
+
+      - name: Install Chrome
+        run: |
+          wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+          sudo apt-get install ./google-chrome-stable_current_amd64.deb
+          chrome_version=$(google-chrome --version | cut -d' ' -f3)
+          echo "CHROME_VERSION=${chrome_version}" >> $GITHUB_ENV
+          echo "Installed Chrome version: ${chrome_version}"
+          
+      - name: Setup ChromeDriver
+        uses: nanasess/setup-chromedriver@v2
+        with:
+          chromedriver-version: ${{ env.CHROME_VERSION }}
+      
+      - name: Verify Chrome Setup
+        run: |
+          ${{ matrix.set_display }}
+          echo "Chrome version:"
+          google-chrome --version
+          echo "ChromeDriver version:"
+          chromedriver --version
 
       - name: Run Chrome Robot Tests
         uses: nick-fields/retry@v3.0.2
@@ -64,6 +90,7 @@ jobs:
           max_attempts: 10
           command: |
             ${{ matrix.set_display }}
+            chromedriver &
             robot -e BrokenORWindowsOREdge --output reports/outputChrome.xml test
 
   run-tests-unit:

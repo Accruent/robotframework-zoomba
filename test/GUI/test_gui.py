@@ -3,11 +3,14 @@ import unittest
 import os
 import sys
 from unittest.mock import patch, MagicMock, Mock, PropertyMock
+
+# Add the src directory to the Python path
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../src/')))
+
+# Now import from the src directory
 from Zoomba.GUILibrary import GUILibrary
 from Zoomba.Helpers import ReactSelect
 from selenium.common.exceptions import UnexpectedTagNameException
-
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../src/')))
 
 
 class TestInternal(unittest.TestCase):
@@ -448,3 +451,35 @@ class TestInternal(unittest.TestCase):
         mock_gui.clear_element_text.assert_called_with("some_locator")
         mock_gui.input_text.assert_called_with("some_locator", "some_text")
         mock_gui.press_keys.assert_called_with("some_locator", "RETURN")
+
+    def test_maximize_browser_window_standard(self):
+        mock_gui = Mock()
+        mock_gui.driver = Mock()
+        GUILibrary.maximize_browser_window(mock_gui)
+        mock_gui.driver.maximize_window.assert_called_once()
+        mock_gui.execute_javascript.assert_not_called()
+
+    def test_maximize_browser_window_fallback(self):
+        mock_gui = Mock()
+        mock_gui.driver = Mock()
+        mock_gui.driver.maximize_window.side_effect = Exception("WebDriverException: Message: unknown error: JavaScript code failed")
+        mock_gui.execute_javascript = Mock(side_effect=[1920, 1080])
+        
+        GUILibrary.maximize_browser_window(mock_gui)
+        
+        mock_gui.driver.maximize_window.assert_called_once()
+        mock_gui.execute_javascript.assert_any_call("return screen.width")
+        mock_gui.execute_javascript.assert_any_call("return screen.height")
+        mock_gui.set_window_size.assert_called_with(1920, 1080)
+
+    def test_maximize_browser_window_both_fail(self):
+        mock_gui = Mock()
+        mock_gui.driver = Mock()
+        mock_gui.driver.maximize_window.side_effect = Exception("First method failed")
+        mock_gui.execute_javascript.side_effect = Exception("Second method failed")
+        
+        with self.assertRaises(Exception):
+            GUILibrary.maximize_browser_window(mock_gui)
+            
+        mock_gui.driver.maximize_window.assert_called_once()
+        mock_gui.execute_javascript.assert_called()
