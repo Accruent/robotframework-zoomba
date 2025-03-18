@@ -466,8 +466,7 @@ class GUILibrary(SeleniumLibrary):
         """
         try:
             self.driver.maximize_window()
-        except Exception as e:
-            zoomba.log(f"Standard maximize failed: {str(e)}. Trying alternative method.", "WARN")
+        except Exception:
             try:
                 # Get screen size using JavaScript
                 screen_width = self.execute_javascript("return screen.width")
