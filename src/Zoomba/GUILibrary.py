@@ -456,7 +456,7 @@ class GUILibrary(SeleniumLibrary):
         self.press_keys(locator, "ARROW_DOWN")
         self.press_keys(locator, "RETURN")
 
-    @keyword("Maximize Browser Window")
+    @keyword
     def maximize_browser_window(self):
         """Maximizes current browser window.
         
@@ -479,5 +479,4 @@ class GUILibrary(SeleniumLibrary):
                 # Log the fallback action
                 zoomba.log(f"Browser window resized to {screen_width}x{screen_height} using fallback method", "INFO")
             except Exception as fallback_error:
-                zoomba.log(f"Both maximize methods failed: {str(fallback_error)}", "ERROR")
-                raise
+                zoomba.fail(f"Both maximize methods failed: {str(fallback_error)}")
