@@ -455,3 +455,29 @@ class GUILibrary(SeleniumLibrary):
         self.wait_until_javascript_is_complete()
         self.press_keys(locator, "ARROW_DOWN")
         self.press_keys(locator, "RETURN")
+
+    @keyword("Maximize Browser Window")
+    def maximize_browser_window(self):
+        """Maximizes current browser window.
+        
+        On Chrome 133+ running on Linux, the standard maximize_window() method may fail.
+        This implementation attempts the standard maximize first, and if that fails,
+        it falls back to using JavaScript to set the window size to match the screen resolution.
+        """
+        try:
+            self.driver.maximize_window()
+        except Exception as e:
+            zoomba.log(f"Standard maximize failed: {str(e)}. Trying alternative method.", "WARN")
+            try:
+                # Get screen size using JavaScript
+                screen_width = self.execute_javascript("return screen.width")
+                screen_height = self.execute_javascript("return screen.height")
+                
+                # Set window size to match screen dimensions
+                self.set_window_size(screen_width, screen_height)
+                
+                # Log the fallback action
+                zoomba.log(f"Browser window resized to {screen_width}x{screen_height} using fallback method", "INFO")
+            except Exception as fallback_error:
+                zoomba.log(f"Both maximize methods failed: {str(fallback_error)}", "ERROR")
+                raise
