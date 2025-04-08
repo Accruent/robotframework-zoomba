@@ -2,7 +2,7 @@ RobotFramework-Zoomba
 ===========
 [![PyPI version](https://badge.fury.io/py/robotframework-zoomba.svg)](https://badge.fury.io/py/robotframework-zoomba)
 [![Downloads](https://static.pepy.tech/badge/robotframework-zoomba)](https://pepy.tech/project/robotframework-zoomba)
-![Build Status](https://github.com/Accruent/robotframework-zoomba/actions/workflows/run-tests.yml/badge.svg)
+[![Build Status](https://github.com/Accruent/robotframework-zoomba/actions/workflows/run-tests.yml/badge.svg)](https://github.com/Accruent/robotframework-zoomba/actions/workflows/run-tests.yml)
 [![Coverage Status](https://coveralls.io/repos/github/Accruent/robotframework-zoomba/badge.svg?branch=master)](https://coveralls.io/github/Accruent/robotframework-zoomba?branch=master)
 [![CodeFactor](https://www.codefactor.io/repository/github/accruent/robotframework-zoomba/badge)](https://www.codefactor.io/repository/github/accruent/robotframework-zoomba)
 
