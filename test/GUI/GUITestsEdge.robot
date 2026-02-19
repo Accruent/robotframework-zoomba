@@ -121,6 +121,7 @@ Scroll To Bottom Of Page Test
     Wait For Page To Load
     Wait Until Element Is Visible                       ${SEARCH_RESULTS}
     Scroll To Bottom Of Page
+    Sleep                   0.5s
     ${atBottom}             Execute Javascript          return (window.innerHeight + window.pageYOffset) >= document.body.scrollHeight - 10
     Should Be True          ${atBottom}
 
