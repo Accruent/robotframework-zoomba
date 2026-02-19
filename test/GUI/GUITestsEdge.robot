@@ -9,7 +9,7 @@ Test Tags                   Edge
 
 *** Variables ***
 ${SEARCH_URL}             https://en.wikipedia.org
-${SEARCH_INPUT}           //form[@id='searchform']//input[@name='search']
+${SEARCH_INPUT}           //input[@name='search']
 ${RF_PAGE_TEXT}           Robot Framework is a generic software test automation framework
 ${RF_LINK}                //a[@title='Robot Framework']
 ${SEARCH_RESULTS_URL}     https://en.wikipedia.org/w/index.php?search=robot+framework+automation&title=Special:Search&fulltext=1
