@@ -8,29 +8,30 @@ Test Tags                   Chrome
 
 
 *** Variables ***
-${DUCKDUCK_SEARCH_URL}    https://duckduckgo.com
-${DUCKDUCK_SEARCH}        //input[@id='searchbox_input']
-${RF_PAGE_TEXT}        Robot Framework is an open source automation framework for test automation
-${RF_LINK}              //a[@href='https://robotframework.org/']
-${ALT_URL1}             http://www.google.com
-${TEXT_AREA}            //textarea[1]
-${CHECK_DIV}            //section[@data-testid='mainline']
+${SEARCH_URL}             https://en.wikipedia.org
+${SEARCH_INPUT}           //input[@id='searchInput']
+${RF_PAGE_TEXT}           Robot Framework is a generic software test automation framework
+${RF_LINK}                //a[@title='Robot Framework']
+${SEARCH_RESULTS_URL}     https://en.wikipedia.org/w/index.php?search=robot+framework+automation&title=Special:Search&fulltext=1
+${SEARCH_RESULTS}         //ul[@class='mw-search-results']/li
+${ALT_URL1}               http://www.google.com
+${TEXT_AREA}              //textarea[1]
 
 
 *** Test Cases ***
 Wait For Keywords Test
-    Go To                   ${DUCKDUCK_SEARCH_URL}
-    Wait Until Javascript Is Complete
-    Wait For And Input Text                             ${DUCKDUCK_SEARCH}            robotframework
-    Press Keys              ${DUCKDUCK_SEARCH}           RETURN
+    Go To                   ${SEARCH_URL}
+    Wait For Page To Load
+    Wait For And Input Text                             ${SEARCH_INPUT}               robot framework automation
+    Press Keys              ${SEARCH_INPUT}              RETURN
     Wait For And Click Element                          ${RF_LINK}
     Wait Until Page Contains                            ${RF_PAGE_TEXT}
 
 Wait For Keywords Test With Password
-    Go To                   ${DUCKDUCK_SEARCH_URL}
-    Wait Until Javascript Is Complete
-    Wait For And Input Text                             ${DUCKDUCK_SEARCH}            robotframework
-    Press Keys              ${DUCKDUCK_SEARCH}           RETURN
+    Go To                   ${SEARCH_URL}
+    Wait For Page To Load
+    Wait For And Input Password                         ${SEARCH_INPUT}               robot framework automation
+    Press Keys              ${SEARCH_INPUT}              RETURN
     Wait For And Click Element                          ${RF_LINK}
     Wait Until Page Contains                            ${RF_PAGE_TEXT}
 
@@ -76,22 +77,18 @@ Wait Until Javascript Completes Test
     Title Should Be         jQuery
 
 Web Elements Text Test
-    Go To                   ${DUCKDUCK_SEARCH_URL}
+    Go To                   ${SEARCH_RESULTS_URL}
     Wait For Page To Load
-    Wait For And Input Text                             ${DUCKDUCK_SEARCH}                robot framework
-    Press Keys              ${DUCKDUCK_SEARCH}                RETURN
-    Wait Until Element Is Visible                       ${CHECK_DIV}
-    ${resultsLinksList}     Get Webelements             ${CHECK_DIV}
+    Wait Until Element Is Visible                       ${SEARCH_RESULTS}
+    ${resultsLinksList}     Get Webelements             ${SEARCH_RESULTS}
     ${linksTextList}        Get Text From Web Elements List                         ${resultsLinksList}
     Should Contain          ${linksTextList}[0]         Robot Framework
 
 Web Elements Vertical Position Test
-    Go To                   ${DUCKDUCK_SEARCH_URL}
+    Go To                   ${SEARCH_RESULTS_URL}
     Wait For Page To Load
-    Wait For And Input Text                             ${DUCKDUCK_SEARCH}                robot framework
-    Press Keys              ${DUCKDUCK_SEARCH}                RETURN
-    Wait Until Element Is Visible                       ${CHECK_DIV}
-    ${resultsLinksList}     Get Webelements             ${CHECK_DIV}
+    Wait Until Element Is Visible                       ${SEARCH_RESULTS}
+    ${resultsLinksList}     Get Webelements             ${SEARCH_RESULTS}
     ${linksPositionList}    Get Vertical Position From Web Elements List            ${resultsLinksList}
     Should Be True          ${linksPositionList}[0] > ${140}
 
@@ -116,11 +113,9 @@ Truncate String Test
     Should Be Equal         ${reallyLongTestString}     ${actualTruncatedString2}
 
 Scroll To Bottom Of Page Test
-    Go To                   ${DUCKDUCK_SEARCH_URL}
+    Go To                   ${SEARCH_RESULTS_URL}
     Wait For Page To Load
-    Wait For And Input Text                             ${DUCKDUCK_SEARCH}                robot framework
-    Press Keys              ${DUCKDUCK_SEARCH}                RETURN
-    Wait Until Element Is Visible                       ${CHECK_DIV}
+    Wait Until Element Is Visible                       ${SEARCH_RESULTS}
     Scroll To Bottom Of Page
     ${position}             Execute Javascript          return window.pageYOffset
     Should Be True          ${position} > 700
