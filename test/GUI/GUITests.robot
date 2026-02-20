@@ -8,31 +8,36 @@ Test Tags                   Chrome
 
 
 *** Variables ***
-${DUCKDUCK_SEARCH_URL}    https://duckduckgo.com
-${DUCKDUCK_SEARCH}        //input[@id='searchbox_input']
-${RF_PAGE_TEXT}        Robot Framework is an open source automation framework for test automation
-${RF_LINK}              //a[@href='https://robotframework.org/']
-${ALT_URL1}             http://www.google.com
-${TEXT_AREA}            //textarea[1]
-${CHECK_DIV}            //section[@data-testid='mainline']
+${KEY_PRESSES_URL}        https://the-internet.herokuapp.com/key_presses
+${KEY_PRESSES_INPUT}      //input[@id='target']
+${INTERNET_URL}           https://the-internet.herokuapp.com
+${SEARCH_RESULTS}         //ul/li/a
+${ALT_URL1}               http://www.google.com
+${TEXT_AREA}              //textarea[1]
 
 
 *** Test Cases ***
 Wait For Keywords Test
-    Go To                   ${DUCKDUCK_SEARCH_URL}
-    Wait Until Javascript Is Complete
-    Wait For And Input Text                             ${DUCKDUCK_SEARCH}            robotframework
-    Press Keys              ${DUCKDUCK_SEARCH}           RETURN
-    Wait For And Click Element                          ${RF_LINK}
-    Wait Until Page Contains                            ${RF_PAGE_TEXT}
+    Go To                   ${KEY_PRESSES_URL}
+    Wait For Page To Load
+    Wait For And Input Text                             ${KEY_PRESSES_INPUT}          robot framework
+    Press Keys              ${KEY_PRESSES_INPUT}         TAB
+    Wait Until Page Contains                            You entered: TAB
+    Go To                   ${INTERNET_URL}
+    Wait For Page To Load
+    Wait For And Click Element                          //a[@href='/key_presses']
+    Wait Until Page Contains                            Key Presses
 
 Wait For Keywords Test With Password
-    Go To                   ${DUCKDUCK_SEARCH_URL}
-    Wait Until Javascript Is Complete
-    Wait For And Input Text                             ${DUCKDUCK_SEARCH}            robotframework
-    Press Keys              ${DUCKDUCK_SEARCH}           RETURN
-    Wait For And Click Element                          ${RF_LINK}
-    Wait Until Page Contains                            ${RF_PAGE_TEXT}
+    Go To                   ${KEY_PRESSES_URL}
+    Wait For Page To Load
+    Wait For And Input Password                         ${KEY_PRESSES_INPUT}          robot framework
+    Press Keys              ${KEY_PRESSES_INPUT}         TAB
+    Wait Until Page Contains                            You entered: TAB
+    Go To                   ${INTERNET_URL}
+    Wait For Page To Load
+    Wait For And Click Element                          //a[@href='/key_presses']
+    Wait Until Page Contains                            Key Presses
 
 Element Value Should Be Equal And Not Equal Test
     Go To                   ${ALT_URL1}
@@ -76,22 +81,18 @@ Wait Until Javascript Completes Test
     Title Should Be         jQuery
 
 Web Elements Text Test
-    Go To                   ${DUCKDUCK_SEARCH_URL}
+    Go To                   ${INTERNET_URL}
     Wait For Page To Load
-    Wait For And Input Text                             ${DUCKDUCK_SEARCH}                robot framework
-    Press Keys              ${DUCKDUCK_SEARCH}                RETURN
-    Wait Until Element Is Visible                       ${CHECK_DIV}
-    ${resultsLinksList}     Get Webelements             ${CHECK_DIV}
+    Wait Until Element Is Visible                       ${SEARCH_RESULTS}
+    ${resultsLinksList}     Get Webelements             ${SEARCH_RESULTS}
     ${linksTextList}        Get Text From Web Elements List                         ${resultsLinksList}
-    Should Contain          ${linksTextList}[0]         Robot Framework
+    Should Contain          ${linksTextList}[0]         A/B Testing
 
 Web Elements Vertical Position Test
-    Go To                   ${DUCKDUCK_SEARCH_URL}
+    Go To                   ${INTERNET_URL}
     Wait For Page To Load
-    Wait For And Input Text                             ${DUCKDUCK_SEARCH}                robot framework
-    Press Keys              ${DUCKDUCK_SEARCH}                RETURN
-    Wait Until Element Is Visible                       ${CHECK_DIV}
-    ${resultsLinksList}     Get Webelements             ${CHECK_DIV}
+    Wait Until Element Is Visible                       ${SEARCH_RESULTS}
+    ${resultsLinksList}     Get Webelements             ${SEARCH_RESULTS}
     ${linksPositionList}    Get Vertical Position From Web Elements List            ${resultsLinksList}
     Should Be True          ${linksPositionList}[0] > ${140}
 
@@ -116,14 +117,12 @@ Truncate String Test
     Should Be Equal         ${reallyLongTestString}     ${actualTruncatedString2}
 
 Scroll To Bottom Of Page Test
-    Go To                   ${DUCKDUCK_SEARCH_URL}
+    Go To                   ${INTERNET_URL}
     Wait For Page To Load
-    Wait For And Input Text                             ${DUCKDUCK_SEARCH}                robot framework
-    Press Keys              ${DUCKDUCK_SEARCH}                RETURN
-    Wait Until Element Is Visible                       ${CHECK_DIV}
+    Wait Until Element Is Visible                       ${SEARCH_RESULTS}
     Scroll To Bottom Of Page
-    ${position}             Execute Javascript          return window.pageYOffset
-    Should Be True          ${position} > 700
+    ${atBottom}             Execute Javascript          return (window.innerHeight + window.pageYOffset) >= document.body.scrollHeight - 10
+    Should Be True          ${atBottom}
 
 Wait Until Element Contains Value
     Go To                   ${ALT_URL1}

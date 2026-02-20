@@ -268,7 +268,7 @@ class GUILibrary(SeleniumLibrary):
 
         """
         try:
-            height = self.execute_javascript("return window.outerHeight")
+            height = self.execute_javascript("return document.body.scrollHeight")
         except BaseException as ex:  # lgtm [py/catch-base-exception]
             if ex:
                 height = 20000
