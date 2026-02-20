@@ -121,7 +121,8 @@ Scroll To Bottom Of Page Test
     Wait For Page To Load
     Wait Until Element Is Visible                       ${SEARCH_RESULTS}
     Scroll To Bottom Of Page
-    Wait Until Keyword Succeeds                         5x                          0.5s                        Page Should Be Scrolled To Bottom
+    ${atBottom}             Execute Javascript          return (window.innerHeight + window.pageYOffset) >= document.body.scrollHeight - 10
+    Should Be True          ${atBottom}
 
 Wait Until Element Contains Value
     Go To                   ${ALT_URL1}
@@ -186,7 +187,3 @@ Test Case Setup
     Open Browser            browser=Edge
     Maximize Browser Window
     Set Selenium Speed      0.08s
-
-Page Should Be Scrolled To Bottom
-    ${atBottom}             Execute Javascript          return (window.innerHeight + window.pageYOffset) >= document.body.scrollHeight - 10
-    Should Be True          ${atBottom}
