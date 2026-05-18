@@ -1,6 +1,6 @@
 robotframework==7.4.2
 robotframework-requests==0.9.7
-robotframework-seleniumlibrary==6.8.0
+robotframework-seleniumlibrary==6.9.0
 robotframework-sudslibrary-aljcalandra==1.1.4
 requests==2.34.2
 selenium==4.44.0
