@@ -71,7 +71,7 @@ jobs:
           echo "Installed Chrome version: ${chrome_version}"
           
       - name: Setup ChromeDriver
-        uses: nanasess/setup-chromedriver@v2
+        uses: nanasess/setup-chromedriver@v3
         with:
           chromedriver-version: ${{ env.CHROME_VERSION }}
       
