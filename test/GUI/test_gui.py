@@ -335,6 +335,42 @@ class TestInternal(unittest.TestCase):
         GUILibrary.save_selenium_screenshot(mock_gui)
         mock_gui.capture_page_screenshot.assert_called_with()
 
+    @patch('SeleniumLibrary.ScreenshotKeywords.capture_page_screenshot')
+    def test_save_selenium_screenshot_embed_is_case_insensitive(self, mock_gui):
+        mock_gui.screenshot_root_directory = 'embed'
+        GUILibrary.save_selenium_screenshot(mock_gui)
+        mock_gui.capture_page_screenshot.assert_called_with()
+
+    @patch('SeleniumLibrary.ScreenshotKeywords.capture_page_screenshot')
+    def test_save_selenium_screenshot_base64(self, mock_gui):
+        mock_gui.screenshot_root_directory = 'BASE64'
+        GUILibrary.save_selenium_screenshot(mock_gui)
+        mock_gui.capture_page_screenshot.assert_called_with()
+
+    @patch('SeleniumLibrary.ScreenshotKeywords.capture_page_screenshot')
+    def test_save_selenium_screenshot_directory(self, mock_gui):
+        mock_gui.screenshot_root_directory = 'some_screenshot_directory'
+        GUILibrary.save_selenium_screenshot(mock_gui)
+        mock_gui.capture_page_screenshot.assert_called_with(unittest.mock.ANY)
+        filename = mock_gui.capture_page_screenshot.call_args[0][0]
+        assert filename.startswith('selenium-screenshot-')
+        assert filename.endswith('.png')
+
+    @patch('SeleniumLibrary.ScreenshotKeywords.capture_page_screenshot')
+    def test_save_selenium_screenshot_directory_filenames_are_unique(self, mock_gui):
+        mock_gui.screenshot_root_directory = 'some_screenshot_directory'
+        GUILibrary.save_selenium_screenshot(mock_gui)
+        first_filename = mock_gui.capture_page_screenshot.call_args[0][0]
+        GUILibrary.save_selenium_screenshot(mock_gui)
+        second_filename = mock_gui.capture_page_screenshot.call_args[0][0]
+        assert first_filename != second_filename
+
+    @patch('SeleniumLibrary.ScreenshotKeywords.capture_page_screenshot')
+    def test_save_selenium_screenshot_no_directory(self, mock_gui):
+        mock_gui.screenshot_root_directory = None
+        GUILibrary.save_selenium_screenshot(mock_gui)
+        mock_gui.capture_page_screenshot.assert_called_with(unittest.mock.ANY)
+
     @patch('robot.libraries.BuiltIn.BuiltIn.should_contain')
     def test_wait_until_element_contains_value_with_timeout(self, robot_call):
         mock_gui = Mock()
