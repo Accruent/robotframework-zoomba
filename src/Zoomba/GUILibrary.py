@@ -4,7 +4,6 @@ from robot.libraries.BuiltIn import BuiltIn
 from robot.api.deco import keyword
 from robot.libraries.Collections import Collections
 from time import time
-from robot.utils import is_string
 from selenium.webdriver.common.action_chains import ActionChains, ScrollOrigin
 import importlib
 
@@ -18,6 +17,9 @@ except ModuleNotFoundError:
 zoomba = BuiltIn()
 zoomba_collections = Collections()
 SCREENSHOT_COUNTER = itertools.count()
+# Screenshot directory values that tell SeleniumLibrary to embed the screenshot in the log instead of
+# writing it to a file. See SeleniumLibrary's EMBEDDED_OPTIONS.
+EMBEDDED_DIRECTORIES = ('EMBED', 'BASE64')
 
 
 class GUILibrary(SeleniumLibrary):
@@ -389,15 +391,15 @@ class GUILibrary(SeleniumLibrary):
     def save_selenium_screenshot(self):
         """Takes a screenshot with a unique filename to be stored in Robot Framework compiled reports.
 
-        If `Set Screenshot Directory` has been set to ``EMBED`` then the screenshot will be embedded into the report
+        If `Set Screenshot Directory` has been set to ``EMBED`` (or ``BASE64``) then the screenshot will be embedded
+        into the report. For any other screenshot directory the screenshot is written into that directory.
         """
-        if is_string(self.screenshot_root_directory):
-            if self.screenshot_root_directory.upper() == 'EMBED':
-                return self.capture_page_screenshot()
-        else:
-            timestamp = time()
-            filename = 'selenium-screenshot-' + str(timestamp) + '-' + str(next(SCREENSHOT_COUNTER)) + '.png'
-            return self.capture_page_screenshot(filename)
+        if isinstance(self.screenshot_root_directory, str) and \
+                self.screenshot_root_directory.upper() in EMBEDDED_DIRECTORIES:
+            return self.capture_page_screenshot()
+        timestamp = time()
+        filename = 'selenium-screenshot-' + str(timestamp) + '-' + str(next(SCREENSHOT_COUNTER)) + '.png'
+        return self.capture_page_screenshot(filename)
 
     @keyword("Get Element CSS Attribute Value")
     def get_element_css_attribute_value(self, locator, attribute):
