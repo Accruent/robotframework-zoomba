@@ -3,24 +3,60 @@ pull_request_rules:
     conditions:
     - and:
         - author~=^dependabot
-        - check-success-or-neutral=CodeQL-Build
-        - check-success-or-neutral=run-tests-edge (3.10)
-        - check-success-or-neutral=run-tests-edge (3.11)
-        - check-success-or-neutral=run-tests-edge (3.12)
-        - check-success-or-neutral=run-tests-edge (3.13)
-        - check-success-or-neutral=run-tests-chrome (3.10)
-        - check-success-or-neutral=run-tests-chrome (3.11)
-        - check-success-or-neutral=run-tests-chrome (3.12)
-        - check-success-or-neutral=run-tests-chrome (3.13)
-        - check-success-or-neutral=run-tests-unit (3.10)
-        - check-success-or-neutral=run-tests-unit (3.11)
-        - check-success-or-neutral=run-tests-unit (3.12)
-        - check-success-or-neutral=run-tests-unit (3.13)
-        - check-success-or-neutral=CodeQL
-        - check-success-or-neutral=CodeFactor
-        - "check-success-or-neutral=DeepSource: Python"
-        - check-success-or-neutral=Hound
-        - check-success-or-neutral=coverage/coveralls
+        - or:
+            - check-success=CodeQL-Build
+            - check-neutral=CodeQL-Build
+        - or:
+            - check-success=run-tests-edge (3.10)
+            - check-neutral=run-tests-edge (3.10)
+        - or:
+            - check-success=run-tests-edge (3.11)
+            - check-neutral=run-tests-edge (3.11)
+        - or:
+            - check-success=run-tests-edge (3.12)
+            - check-neutral=run-tests-edge (3.12)
+        - or:
+            - check-success=run-tests-edge (3.13)
+            - check-neutral=run-tests-edge (3.13)
+        - or:
+            - check-success=run-tests-chrome (3.10)
+            - check-neutral=run-tests-chrome (3.10)
+        - or:
+            - check-success=run-tests-chrome (3.11)
+            - check-neutral=run-tests-chrome (3.11)
+        - or:
+            - check-success=run-tests-chrome (3.12)
+            - check-neutral=run-tests-chrome (3.12)
+        - or:
+            - check-success=run-tests-chrome (3.13)
+            - check-neutral=run-tests-chrome (3.13)
+        - or:
+            - check-success=run-tests-unit (3.10)
+            - check-neutral=run-tests-unit (3.10)
+        - or:
+            - check-success=run-tests-unit (3.11)
+            - check-neutral=run-tests-unit (3.11)
+        - or:
+            - check-success=run-tests-unit (3.12)
+            - check-neutral=run-tests-unit (3.12)
+        - or:
+            - check-success=run-tests-unit (3.13)
+            - check-neutral=run-tests-unit (3.13)
+        - or:
+            - check-success=CodeQL
+            - check-neutral=CodeQL
+        - or:
+            - check-success=CodeFactor
+            - check-neutral=CodeFactor
+        - or:
+            - "check-success=DeepSource: Python"
+            - "check-neutral=DeepSource: Python"
+        - or:
+            - check-success=Hound
+            - check-neutral=Hound
+        - or:
+            - check-success=coverage/coveralls
+            - check-neutral=coverage/coveralls
     actions:
       merge:
         method: squash
